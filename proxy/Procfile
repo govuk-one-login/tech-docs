@@ -1,0 +1,1 @@
+web: ./oauth2_proxy -config=./oauth_proxy.cfg -http-address="0.0.0.0:$PORT"

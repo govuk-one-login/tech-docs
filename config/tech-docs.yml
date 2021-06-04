@@ -1,0 +1,46 @@
+# Host to use for canonical URL generation (without trailing slash)
+# Hosting on PaaS on the default domain for now
+host: https://auth-tech-docs.cloudapps.digital
+
+# Header-related options
+show_govuk_logo: false
+
+service_name: Authenication service
+
+# This documentation is for the Pilot scheme
+phase: Beta
+
+# Links to show on right-hand-side of header
+header_links:
+  GitHub: https://github.com/alphagov/di-authentication-tech-docs
+  Support: /support
+
+# Links to show in the page footer
+#footer_links:
+#  Accessibility: /accessibility-statement.html
+
+# Enables search functionality. This indexes pages only and is not recommended for single-page sites.
+enable_search: true
+
+# Enable multipage navigation in the sidebar
+multipage_nav: true
+
+# Enable collapsible navigation in the sidebar
+collapsible_nav: true
+
+# Table of contents depth – how many levels to include in the table of contents.
+# If your ToC is too long, reduce this number and we'll only show higher-level headings.
+max_toc_heading_level: 2
+
+# Prevent robots from indexing (e.g. whilst in development)
+prevent_indexing: true
+
+# Contribution banner
+show_contribution_banner: true
+github_repo: alphagov/di-authentication-tech-docs # used to generate links in the contribution banner
+
+owner_slack_workspace: gds
+default_owner_slack: '#verify-dcs'
+
+# Setting show_expiry: false to not have a red banner at the bottom of the page when it's past the review due date. We'll only have the blue banner saying when the page was last reviewed. The expiry date (determined by the review_in parameter in the frontmatter) is for our internal regular review process.
+show_expiry: false

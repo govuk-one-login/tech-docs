@@ -1,0 +1,5 @@
+---
+applications:
+- name: auth-tech-docs
+  memory: 64M
+  instances: 2
