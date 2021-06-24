@@ -1,5 +1,9 @@
 name: Deploy Docs to PaaS
-on: [push]
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   deploy-to-paas:
     runs-on: ubuntu-latest
