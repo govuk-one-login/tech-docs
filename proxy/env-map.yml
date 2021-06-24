@@ -1,4 +1,4 @@
 env_vars:
-  OAUTH2_PROXY_CLIENT_ID: ."user-provided"[0].credentials.oauth_client_id
-  OAUTH2_PROXY_CLIENT_SECRET: ."user-provided"[0].credentials.oauth_client_secret
+  OAUTH2_PROXY_CLIENT_ID: ."user-provided"[0].credentials.client_id
+  OAUTH2_PROXY_CLIENT_SECRET: ."user-provided"[0].credentials.client_secret
   OAUTH2_PROXY_COOKIE_SECRET: ."user-provided"[0].credentials.cookie_secret
