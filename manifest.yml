@@ -2,6 +2,7 @@
 applications:
 - name: di-auth-tech-docs-proxy
   path: ./proxy
+  memory: 32M
   buildpacks:
     - https://github.com/andy-paine/env-map-buildpack.git
     - binary_buildpack
