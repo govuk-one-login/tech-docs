@@ -1,10 +1,36 @@
 ---
-title: Generate a key
+title: Generate a key pair
 weight: 3
-last_reviewed_on: 2021-07-13
+last_reviewed_on: 2021-07-19
 review_in: 6 months
 ---
 
-# Generate a key
+# Generate a key pair
 
-_this page will contain info about how a user can generate a key_
+You’ll need to provide a public key when registering your service.
+
+You can generate a key pair (a public key and a corresponding private key) using [OpenSSL](https://www.openssl.org/).
+
+You’ll need your private key when:
+
+you’re registering your service to use GOV.UK Sign in environments, such as sandbox or production
+you request the token using the private key authentication mechanism on the `/token` endpoint
+
+<%= warning_text('Once you’ve generated your private key, you must store the key in a secure location, such as a file vault, and you must not share the private key.') %>
+
+Run the following on your command line to generate your key pair:
+
+```
+Generate private_key.pem
+
+openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
+
+Generate corresponding public_key.pem
+
+openssl rsa -pubout -in private_key.pem -out public_key.pem
+```
+
+You have now generated your key pair, which will appear on your machine as 2 files:
+
+`public_key.pem` - this is your public key, which you should share with GOV.UK Sign in
+`private_key.pem` - this is your private key, which you should store securely and not share
