@@ -7,21 +7,32 @@ review_in: 6 months
 
 # How GOV.UK Sign in works
 
-_will have accessible diagram explaining how the service works_
+GOV.UK Sign in is an [OpenID Connect](https://openid.net/connect/)-compliant service that helps you authenticate your users who are using their GOV.UK Account.
 
-## Integrate with GOV.UK Sign in
-
-You’ll need to build a client to integrate with GOV.UK Sign in.
-
-You can choose which programming language your client uses.
-
-To build a working client, you’ll need to:
-
-1. H1 pages from the tech docs.
-1. H1 pages from the tech docs.
-1. H1 pages from the tech docs.
-1. H1 pages from the tech docs.
+1. Your user selects the button to sign in for your service, which sends an authorisation request to GOV.UK Sign in.
+1. GOV.UK Sign in’s `/authorize` endpoint redirects your user and prompts them to sign in.
+1. Your user uses one of the sign in options to authenticate themselves.
+1. Your user may see terms and conditions and also some consent information about which data items GOV.UK Sign in shares with your service.
+1. GOV.UK Sign in redirects your user back to your service, along with an authorisation code tagged onto the end of the URL.
+1. Your service calls the `/token` endpoint with the user’s authorisation code and using a [private_key_jwt](https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication) as the client authentication method.
+1. GOV.UK Sign in verifies the information your service has passed in the token request. If the verification is successful, your service will receive an ID token and an access token.
+1. Your service can use the access token to make a call to the `/userinfo` endpoint to request basic user information such as the user’s unique identifier (UUID).
+1. Your service has now authenticated your user and they can continue their journey.
 
 ## Understand the environments GOV.UK Sign in uses
 
-_will contain info re environments_
+GOV.UK Sign in uses 2 different environments:
+
+* a sandbox environment, which contains sample users and data for you to test your service’s integration with GOV.UK Sign in
+* a production environment, which is the live environment for real users to access and use your service’s integration with GOV.UK Sign in
+
+### Understand and use the sandbox environment
+
+Before you can use GOV.UK Sign in, you need to build a proof of concept client and explore the end-to-end journey in our sandbox environment. This will help you understand how to integrate with GOV.UK Sign in, and where it will fit within your service.
+
+1. [Generate a key pair](/generate-a-key/#generate-a-key-pair).
+1. [Select supported scopes](/select-supported-scopes/#select-supported-scopes).
+1. [Manage your service to use the OpenID Connect provider](/manage-your-service-to-use-OIDC-provider/#manage-your-service-to-use-the-openid-connect-provider).
+1. [Integrate with Authorization Code Flow](/integrate-with-code-flow/#integrate-with-authorization-code-flow).
+
+To get started, you’ll need to [generate a key pair](/generate-a-key/#generate-a-key-pair).
