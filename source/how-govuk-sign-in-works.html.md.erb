@@ -14,7 +14,7 @@ GOV.UK Sign in is an [OpenID Connect](https://openid.net/connect/)-compliant ser
 1. Your user uses one of the sign in options to authenticate themselves.
 1. Your user may see terms and conditions and also some consent information about which data items GOV.UK Sign in shares with your service.
 1. GOV.UK Sign in redirects your user back to your service, along with an authorisation code tagged onto the end of the URL.
-1. Your service calls the `/token` endpoint with the user’s authorisation code and using a [private_key_jwt](https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication) as the client authentication method.
+1. Your service calls the `/token` endpoint with the user’s authorisation code and using the [private_key_jwt](https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication) as the client authentication method.
 1. GOV.UK Sign in verifies the information your service has passed in the token request. If the verification is successful, your service will receive an ID token and an access token.
 1. Your service can use the access token to make a call to the `/userinfo` endpoint to request basic user information such as the user’s unique identifier (UUID).
 1. Your service has now authenticated your user and they can continue their journey.
