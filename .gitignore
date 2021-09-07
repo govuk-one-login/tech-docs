@@ -10,6 +10,7 @@ vendor/
 
 # Ignore everything inside the build directory
 /build/*
+/app/build/*
 
 # Ignore cache
 /.sass-cache
