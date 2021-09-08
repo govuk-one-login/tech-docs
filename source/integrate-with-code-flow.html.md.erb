@@ -195,7 +195,7 @@ To create a JWT assertion, you need to create a JWT which contains certain requi
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">sub</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>sub</code> stands for 'subject'. This claim should contain your <code>client_id</code> you created when you </span><a href="/manage-your-service-to-use-OIDC-provider/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign in</span></a>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>sub</code> stands for 'subject'. This claim should contain your <code>client_id</code> you created when you </span><a href="/manage-your-service-to-use-OIDC-provider/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign in</span></a>.
 </td>
   </tr>
   <tr>
@@ -266,7 +266,7 @@ grant_type=authorization_code
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">client_assertion_type</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">When you’re using <code>private_key_jwt</code>, you must set the value to <code>urn:ietf:params:oauth:client-assertion-type:jwt-bearer</code></span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">When you’re using <code>private_key_jwt</code>, you must set the value to <code>urn:ietf:params:oauth:client-assertion-type:jwt-bearer</code>.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">code</span></td>
@@ -338,7 +338,7 @@ You can use the following table to understand the response for ‘Make a token r
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">id_token</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
     <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A signed JWT that contains basic attributes about the user. GOV.UK Sign in signs this JWT using the </span><a href="https://datatracker.ietf.org/doc/html/rfc7518"><span>ES256 algorithm</span></a>.
-<span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent". </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The public key used to verify this JWT is available from the <code>jwks_uri</code> parameter found in the <a href="https://OIDC_PLACEHOLDER_DOMAIN/.well-known/openid-configuration"><span>discovery endpoint</span></a>.</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">.</span></td>
+<span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent". </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The public key used to verify this JWT is available from the <code>jwks_uri</code> parameter found in the <a href="https://OIDC_PLACEHOLDER_DOMAIN/.well-known/openid-configuration"><span>discovery endpoint</span></a></span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">.</span></td>
   </tr>
 </tbody>
 </table>
