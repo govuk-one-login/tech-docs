@@ -14,7 +14,7 @@ You must set up the functionality to log your users out of a GOV.UK Sign in sess
 
     ```
     HTTP/1.1 GET
-    Location: https://GOV.UKSignin/logout? (placeholder text until the service's name has been agreed)
+    Location: https://OIDC_PLACEHOLDER_DOMAIN/logout?
     id_token_hint=eyJraWQiOiIxZTlnZGs3I...
     &post_logout_redirect_uri=http://example-service.com/my-logout-url
     &state=sadk8d4--lda%d
@@ -26,9 +26,9 @@ If no GOV.UK Sign in session exists, for example if the session has expired, the
 <table class="tg">
 <thead>
   <tr>
-    <th class="tg-0pky"><span style="font-weight:700;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Parameter</span></th>
-    <th class="tg-0pky"><span style="font-weight:700;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required, recommended or optional?</span></th>
-    <th class="tg-0pky"><span style="font-weight:700;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Description</span></th>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Parameter</span></th>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required, recommended or optional?</span></th>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Description</span></th>
   </tr>
 </thead>
 <tbody>
