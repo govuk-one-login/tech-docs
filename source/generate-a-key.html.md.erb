@@ -13,7 +13,7 @@ You can generate a key pair (a public key and a corresponding private key) using
 
 You’ll need your private key when:
 
-* you’re registering your service to use GOV.UK Sign in environments, such as integration or production
+* you’re registering your service to use GOV.UK Sign In environments, such as integration or production
 * you request the token using the private key authentication mechanism on the `/token` endpoint
 
 <%= warning_text('Once you’ve generated your private key, you must store the key in a secure location, such as a file vault, and you must not share the private key.') %>
@@ -32,5 +32,5 @@ openssl rsa -pubout -in private_key.pem -out public_key.pem
 
 You have now generated your key pair, which will appear on your machine as 2 files:
 
-* `public_key.pem` - this is your public key, which you should share with GOV.UK Sign in
+* `public_key.pem` - this is your public key, which you should share with GOV.UK Sign In
 * `private_key.pem` - this is your private key, which you should store securely and not share
