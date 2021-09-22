@@ -56,7 +56,7 @@ redirect_uri=YOUR_REDIRECT_URI
   <tr>
     <td class="tg-0pky">client_id</td>
     <td class="tg-0pky">Required</td>
-    <td class="tg-0pky">You’ll have set your <code>client_ID</code> when you <a href="/manage-your-service-to-use-OIDC-provider/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>. </td>
+    <td class="tg-0pky">You’ll have set your <code>client_ID</code> when you <a href="/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>. </td>
   </tr>
   <tr>
     <td class="tg-0pky">state</td>
@@ -66,7 +66,7 @@ redirect_uri=YOUR_REDIRECT_URI
   <tr>
     <td class="tg-0pky">redirect_uri</td>
     <td class="tg-0pky">Required</td>
-    <td class="tg-0pky">You’ll have specified your <code>redirect_uri</code> when you <a href="/manage-your-service-to-use-OIDC-provider/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.<br>The redirect URI must exactly match one of the redirect URIs you registered for using Dynamic Client Registration, except that it must be URL-encoded.</td>
+    <td class="tg-0pky">You’ll have specified your <code>redirect_uri</code> when you <a href="/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.<br>The redirect URI must exactly match one of the redirect URIs you registered for using Dynamic Client Registration, except that it must be URL-encoded.</td>
   </tr>
   <tr>
     <td class="tg-0pky">nonce</td>
@@ -120,7 +120,7 @@ error=invalid_request
 <tbody>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">unauthorized_client</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Your service is not authorised to request an authorisation code.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Make sure you have </span><a href="/manage-your-service-to-use-OIDC-provider/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Your service is not authorised to request an authorisation code.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Make sure you have </span><a href="/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_request</span></td>
@@ -189,13 +189,13 @@ To create a JWT assertion, you need to create a JWT which contains certain requi
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">iss</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>iss</code> stands for 'issuer'. This claim should contain your <code>client_id</code> you created when you </span><a href="/manage-your-service-to-use-OIDC-provider/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>iss</code> stands for 'issuer'. This claim should contain your <code>client_id</code> you created when you </span><a href="/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.
 </td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">sub</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>sub</code> stands for 'subject'. This claim should contain your <code>client_id</code> you created when you </span><a href="/manage-your-service-to-use-OIDC-provider/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>sub</code> stands for 'subject'. This claim should contain your <code>client_id</code> you created when you </span><a href="/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.
 </td>
   </tr>
   <tr>
@@ -246,7 +246,7 @@ grant_type=authorization_code
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">client_id</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You’ll have set your <code>client_ID</code> when you <a href="/manage-your-service-to-use-OIDC-provider/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.</span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You’ll have set your <code>client_ID</code> when you <a href="/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">grant_type</span></td>
@@ -383,7 +383,7 @@ You can use the following table to understand the ID token’s claims.
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">aud</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The audience, which will be the <code>client_id</code> you set when you <a href="/manage-your-service-to-use-OIDC-provider/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The audience, which will be the <code>client_id</code> you set when you <a href="/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.
 </td>
   </tr>
   <tr>
@@ -404,7 +404,7 @@ Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
 1. If you’re using a library, check whether your library has support for validating ID tokens.
 1. The value of `iss` must exactly match the Issuer Identifier as specified in GOV.UK Sign In’s [discovery endpoint](https://OIDC_PLACEHOLDER_DOMAIN/.well-known/openid-configuration).
-1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK Sign In](/manage-your-service-to-use-OIDC-provider/#register-your-service-to-use-gov-uk-sign-in).
+1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK Sign In](/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in).
 1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/draft-ietf-jose-json-web-signature-41). You can use the value of the JWT `alg` header parameter to validate the ID token. Your application must use the keys provided by the [discovery endpoint](https://OIDC_PLACEHOLDER_DOMAIN/.well-known/openid-configuration).
 1. Check the current time is before the time in the `exp` claim.
 1. If you set a `nonce` value in the authorisation request, check the `nonce` value in the authorisation request matches the `nonce` value in the ID token.
@@ -441,7 +441,7 @@ HTTP/1.1 400 Bad Request
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_client</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Client authentication failed, which could be caused by the request containing an invalid client ID. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">To resolve, check your client ID matches the client ID you had when you <a href="/manage-your-service-to-use-OIDC-provider/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Client authentication failed, which could be caused by the request containing an invalid client ID. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">To resolve, check your client ID matches the client ID you had when you <a href="/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.
 </span></td>
   </tr>
   <tr>
