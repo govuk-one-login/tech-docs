@@ -1,0 +1,213 @@
+---
+title: Manage your service’s configuration with GOV.UK Sign In
+weight: 5.12
+last_reviewed_on: 2021-09-22
+review_in: 6 months
+---
+
+# Manage your service’s configuration with GOV.UK Sign In
+
+GOV.UK Sign In is an OpenID Connect (OIDC) provider.
+
+Before being able to interact with GOV.UK Sign In you must first register your service with GOV.UK Sign In as a ‘relying party’. An OIDC relying party is an app that outsources its user authentication function to an identity provider, which in this instance is GOV.UK Sign In.
+
+## Register your service to use GOV.UK Sign In
+
+To register your service to use GOV.UK Sign In, you need to:
+
+1. Understand GOV.UK Sign In’s user identifiers.
+1. Send a request to register your service with GOV.UK Sign In.
+1. Receive response for ‘Register your service to use GOV.UK Sign In’.
+
+### Understand GOV.UK Sign In’s user identifiers
+
+GOV.UK Sign In supports 2 types of user identifier:
+
+* pairwise - default choice for services integrating with GOV.UK Sign In
+* public - limited to internal use in GDS
+
+You will set the user identifier your service will use when you submit the request to register your service with GOV.UK Sign In.
+
+When you use a pairwise identifier, GOV.UK Sign In provides a unique `sub` value in the ID token to each service. This prevents having the same user ID across services, so each user ID is unique and cannot be correlated.
+
+If you use pairwise as your user identifier, you should fill in the `sector_identifier_uri` parameter, as GOV.UK Sign In will use this to create a unique subject identifier for your user.
+
+<%= warning_text('If you do not fill in the <code>sector_identifier_uri</code> field, GOV.UK Sign In will use the host name of your redirect URI when we generate the subject identifier for your user. You should be aware that if your redirect URI ever changes, your users’ subject identifiers will also change.') %>
+
+### Send a request to register your service with GOV.UK Sign In
+
+Run the following command and fill in:
+
+* `test-client` with your service’s name
+* `redirect_uris` with your service’s redirect callback
+* `contacts` with your service’s contact email addresses - this can be a group email or multiple separate email addresses or a combination of both
+* `scopes` with the [supported scopes you have chosen](/select-supported-scopes/#select-supported-scopes)
+* `public_key` with the [key you generated](/generate-a-key/#generate-a-key-pair) - you only send the contents of the public_key.pem file here
+* `post_logout_redirect_uris` with the URL you’d like your users redirected to if they log out of your service - if you do not specify one, your users will be redirected to the default GOV.UK sign out page
+* `subject_type`, with either `pairwise` or `public` depending on the [user identifier you chose](/manage-your-service-s-configuration/#understand-gov-uk-sign-in-s-user-identifiers)
+* `sector_identifier_uri` (if you chose pairwise as your user identifier), with the identifier for your sector
+* `vtr`, with the vectors of trust you selected when you [chose the level of authentication for your service](/choose-the-level-of-authentication/#choose-the-level-of-authentication-for-your-service) - this is an optional field
+
+```
+POST /connect/register HTTP/1.1
+Host: OIDC_PLACEHOLDER_DOMAIN
+Content-Type: application/json
+
+{
+"client_name": "test-client",
+"redirect_uris": ["http://example.com/auth/callback"],
+"contacts": ["test@example.com"],
+"scopes": ["openid",  "email"],
+"public_key":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxt91w8GsMDdklOpS8ZXAsIM1ztQZd5QT/bRCQahZJeS1a6Os4hbuKwzHlz52zfTNp7BL4RB/KOcRIPhOQLgqeyM+bVngRa1EIfTkugJHS2/gu2Xv0aelwvXj8FZgAPRPD+ps2wiV4tUehrFIsRyHZM3yOp9g6qapCcxF7l0E1PlVkKPcPNmxn2oFiqnP6ZThGbE+N2avdXHcySIqt/v6Hbmk8cDHzSExazW7j/XvA+xnp0nQ5m2GisCZul5If5edCTXD0tKzx/I/gtEG4gkv9kENWOt4grP8/0zjNAl2ac6kpRny3tY5RkKBKCOB1VHwq2lUTSNKs32O1BsA5ByyYQIDAQAB",
+"post_logout_redirect_uris": ["http://example.com/signedout"],
+“subject_type”: ”pairwise”
+“sector_identifier_uri”: “https://example.com”
+“vtr”: [“Cm”,”Cl”]
+}
+
+```
+
+### Receive response for 'Register your service to use GOV.UK Sign In'
+
+After you have made the request, you should see a response similar to:
+
+```
+{
+    "client_name": "test-client",
+    "client_id": "vRaSvFtvVMStlc1yoy8e49vqcvs",
+    "redirect_uris": [
+        "http://example.com/auth/callback"
+    ],
+    "contacts": [
+        "test@example.com"
+    ],
+    "scopes": [
+        "openid",
+        "email"
+    ],
+    "post_logout_redirect_uris": [
+        "http://example.com/signedout"
+    ],
+“sector_identifier_uri”:null
+    "subject_type": "public",
+    "token_endpoint_auth_method": "private_key_jwt",
+    "response_type": "code"
+}
+```
+
+### Error handling for ‘Register your service to use GOV.UK Sign In’
+
+To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` code and an `error_description` which will provide you with information about the error.
+
+```
+HTTP/1.1 400 Bad Request
+  Content-Type: application/json
+  Cache-Control: no-store
+  Pragma: no-cache
+
+  {
+   "error": "invalid_redirect_uri",
+   "error_description": "One or more redirect_uri values are invalid"
+  }
+```
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Error</span></th>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">More information about your error</span></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_redirect_uri</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">If you’re receiving this error, one of your URLs is not in the right format. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">To fix this, check if your URLs are in the correct format, for example: https://myservice.gov.uk/oidc/callback.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_client_metadata</span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A parameter you provided as part of your request is invalid. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">To fix this, look in the <code>error_description</code> for more information.
+      <br>For example, an <code>error_description</code> saying ‘Insufficient Scope’ means you would need to check you have requested the right scopes.</span></td>
+  </tr>
+</tbody>
+</table>
+
+## Update your service’s details with GOV.UK Sign In
+
+To update your service’s details with GOV.UK Sign In, you need to make a `PUT` request to the `connect/register` endpoint using an HTTP client.
+
+You’ll have filled in the fields when you [registered your service to use GOV.UK Sign In](/manage-your-service-s-configuration/#manage-your-service-s-configuration-with-gov-uk-sign-in). When you are updating your service’s details, you’ll only need to fill in the fields of the details you want to change.
+
+For example, to change your service’s name and scopes, a request would look like this:
+
+```
+PUT /connect/register/djui8klldn-opdo HTTP/1.1
+Host: OIDC_PLACEHOLDER_DOMAIN
+Content-Type: application/json
+
+{
+"client_name": "test-service",
+"scopes": ["openid",  "email", "phone_number"],
+}
+
+```
+
+### Receive response for ‘Update your service’s details’
+
+After you have made the request, you should see a response similar to:
+
+```
+{
+"client_name": "test-service",
+"redirect_uris": ["http://example.com/auth/callback"],
+"contacts": ["test@example.com"],
+"scopes": ["openid",  "email", "phone_number"],
+"public_key":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxt91w8GsMDdklOpS8ZXAsIM1ztQZd5QT/bRCQahZJeS1a6Os4hbuKwzHlz52zfTNp7BL4RB/KOcRIPhOQLgqeyM+bVngRa1EIfTkugJHS2/gu2Xv0aelwvXj8FZgAPRPD+ps2wiV4tUehrFIsRyHZM3yOp9g6qapCcxF7l0E1PlVkKPcPNmxn2oFiqnP6ZThGbE+N2avdXHcySIqt/v6Hbmk8cDHzSExazW7j/XvA+xnp0nQ5m2GisCZul5If5edCTXD0tKzx/I/gtEG4gkv9kENWOt4grP8/0zjNAl2ac6kpRny3tY5RkKBKCOB1VHwq2lUTSNKs32O1BsA5ByyYQIDAQAB",
+"post_logout_redirect_uris": ["http://example.com/signedout"],
+“subject_type”: ”pairwise”
+“sector_identifier_uri”: “https://example.com”
+“vtr”: [“Cm”,”Cl”]
+}
+
+```
+
+### Error handling for ‘Update your service’s details’
+
+To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` code and an `error_description` which will provide you with information about the error.
+
+```
+HTTP/1.1 400 Bad Request
+  Content-Type: application/json
+  Cache-Control: no-store
+  Pragma: no-cache
+
+  {
+   "error": "invalid_redirect_uri",
+   "error_description": "One or more redirect_uri values are invalid"
+  }
+```
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Error</span></th>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">More information about your error</span></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_redirect_uri</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">If you’re receiving this error, one of your URLs is not in the right format. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">To fix this, check if your URLs are in the correct format, for example: https://myservice.gov.uk/oidc/callback.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_client_metadata</span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A parameter you provided as part of your request is invalid. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">To fix this, look in the <code>error_description</code> for more information.
+      <br>For example, an <code>error_description</code> saying ‘Insufficient Scope’ means you would need to check you have requested the right scopes.</span></td>
+  </tr>
+</tbody>
+</table>
+
+## Progress your application to integrate with the integration environment
+
+You have now registered your service as a relying party for GOV.UK Sign In.
+
+The next step before you can use the integration environment is to [integrate your application with Authorization Code Flow](/integrate-with-code-flow/#integrate-with-authorization-code-flow).
