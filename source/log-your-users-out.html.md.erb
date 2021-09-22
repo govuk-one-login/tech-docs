@@ -1,16 +1,16 @@
 ---
-title: Log your users out of GOV.UK Sign in
+title: Log your users out of GOV.UK Sign In
 weight: 6
 last_reviewed_on: 2021-08-17
 review_in: 6 months
 ---
 
-# Log your users out of GOV.UK Sign in
+# Log your users out of GOV.UK Sign In
 
-You must set up the functionality to log your users out of a GOV.UK Sign in session.
+You must set up the functionality to log your users out of a GOV.UK Sign In session.
 
 1. Log your user out of using your application - the way you do this will depend on how you have built your service.
-1. In the user's browser, make a `GET` request to GOV.UK Sign in’s `/logout` endpoint to end your user’s session.
+1. In the user's browser, make a `GET` request to GOV.UK Sign In’s `/logout` endpoint to end your user’s session.
 
     ```
     HTTP/1.1 GET
@@ -20,7 +20,7 @@ You must set up the functionality to log your users out of a GOV.UK Sign in sess
     &state=sadk8d4--lda%d
     ```
 
-If no GOV.UK Sign in session exists, for example if the session has expired, the endpoint redirects your user to the default logout page for GOV.UK Sign in. Your user can continue their journey from the default logout page.
+If no GOV.UK Sign In session exists, for example if the session has expired, the endpoint redirects your user to the default logout page for GOV.UK Sign In. Your user can continue their journey from the default logout page.
 
 
 <table class="tg">
@@ -35,12 +35,12 @@ If no GOV.UK Sign in session exists, for example if the session has expired, the
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:#FFF">id_token_hint</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Recommended - however, if you use <code>post_logout_redirect_uri</code>, this parameter is required</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This is the ID token GOV.UK Sign in previously issued when you made a request to the <code>/token</code> endpoint for your user’s current session.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This is the ID token GOV.UK Sign In previously issued when you made a request to the <code>/token</code> endpoint for your user’s current session.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">post_logout_redirect_uri</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Optional - however, if you do not specify this parameter, the endpoint redirects your user to the default logout page for GOV.UK Sign in</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You can only use this parameter if you have specified an <code>id_token_hint</code>.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This parameter is the URL you want to redirect your users to after you have logged them out.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The <code>post_logout_redirect_uri</code> must match the logout URI you specified when you <a href="/manage-your-service-to-use-OIDC-provider/#register-your-service-to-use-gov-uk-sign-in">registered your service to use GOV.UK Sign in</a>. </span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Optional - however, if you do not specify this parameter, the endpoint redirects your user to the default logout page for GOV.UK Sign In</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You can only use this parameter if you have specified an <code>id_token_hint</code>.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This parameter is the URL you want to redirect your users to after you have logged them out.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The <code>post_logout_redirect_uri</code> must match the logout URI you specified when you <a href="/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in">registered your service to use GOV.UK Sign In</a>. </span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">state</span></td>
@@ -50,13 +50,13 @@ If no GOV.UK Sign in session exists, for example if the session has expired, the
 </tbody>
 </table>
 
-## Receive response for ‘Log your users out of GOV.UK Sign in’
+## Receive response for ‘Log your users out of GOV.UK Sign In’
 
-After you have made your `GET` request to GOV.UK Sign in’s `/logout` endpoint, you should receive a response similar to this:
+After you have made your `GET` request to GOV.UK Sign In’s `/logout` endpoint, you should receive a response similar to this:
 
 ```
 HTTP 1.1 302 Found
 Location: https://example-service.com/my-logout-url&state=sadk8d4--lda%d
 ```
 
-You have now logged your user out of GOV.UK Sign in and terminated their session.
+You have now logged your user out of GOV.UK Sign In and terminated their session.

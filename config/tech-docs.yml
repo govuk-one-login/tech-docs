@@ -5,7 +5,7 @@ host: https://auth-tech-docs.cloudapps.digital
 # Header-related options
 show_govuk_logo: false
 
-service_name: GOV.UK Sign in
+service_name: GOV.UK Sign In
 
 # This documentation is for the Pilot scheme
 phase: Beta
