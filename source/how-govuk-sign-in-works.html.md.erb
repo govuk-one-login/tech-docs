@@ -7,7 +7,7 @@ review_in: 6 months
 
 # How GOV.UK Sign In works
 
-GOV.UK Sign In is an [OpenID Connect](https://openid.net/connect/)-compliant service that helps you authenticate your users who are using their GOV.UK Account.
+GOV.UK Sign In is an [OpenID Connect (OIDC)][OIDC]-compliant service that helps you authenticate your users who are using their GOV.UK Account.
 
 1. Your user selects the button to sign in for your service, which sends an authorisation request to GOV.UK Sign In.
 1. GOV.UK Sign In’s `/authorize` endpoint redirects your user and prompts them to sign in.
@@ -20,3 +20,5 @@ GOV.UK Sign In is an [OpenID Connect](https://openid.net/connect/)-compliant ser
 1. Your service has now authenticated your user and they can continue their journey.
 
 There's further [guidance on the environments GOV.UK Sign In uses](/understand-environments/#understand-the-environments-gov-uk-sign-in-uses).
+
+<%= partial "partials/links" %>
