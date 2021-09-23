@@ -404,7 +404,7 @@ Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
 1. If you’re using a library, check whether your library has support for validating ID tokens.
 1. The value of `iss` must exactly match the Issuer Identifier as specified in GOV.UK Sign In’s [discovery endpoint](https://OIDC_PLACEHOLDER_DOMAIN/.well-known/openid-configuration).
-1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK Sign In](/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in).
+1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK Sign In][registered].
 1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/draft-ietf-jose-json-web-signature-41). You can use the value of the JWT `alg` header parameter to validate the ID token. Your application must use the keys provided by the [discovery endpoint](https://OIDC_PLACEHOLDER_DOMAIN/.well-known/openid-configuration).
 1. Check the current time is before the time in the `exp` claim.
 1. If you set a `nonce` value in the authorisation request, check the `nonce` value in the authorisation request matches the `nonce` value in the ID token.
@@ -527,3 +527,5 @@ error_description=”The Access Token expired”
   </tr>
 </tbody>
 </table>
+
+<%= partial "partials/links" %>
