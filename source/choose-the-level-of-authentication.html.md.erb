@@ -7,6 +7,32 @@ review_in: 6 months
 
 # Choose the level of authentication for your service
 
-_this page will have information about the authentication levels_
+You’ll need to choose the level of authentication your service will require your users to have. You can find help on selecting an appropriate level of protection in the [guidance on using authenticators to protect an online service, also known as ‘GPG44’](https://www.gov.uk/government/publications/authentication-credentials-for-online-government-services/giving-users-access-to-online-services#choosing-an-authenticator).
+
+GOV.UK Sign in uses [Vectors of Trust](https://datatracker.ietf.org/doc/html/rfc8485). Your service can use these Vectors of Trust to request the right level of authentication for your users to gain access to your service. You’ll include your vector in the query string as part of the authorisation request you make when you [integrate with Authorization Code Flow][code flow].
+
+GOV.UK Sign in currently supports the following authentication levels, also known as ‘levels of protection’ within GPG44.
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> Levels of protection</span></th>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Description of the levels of protection</span></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Cl</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Low level of protection. This vector requires your users to have a username and password combination. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You should only use this option if your service does not hold personal information about your users, for example if your service is about booking in an MOT. </span></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Cm</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Medium level of protection. This vector requires your users to have a username and password combination, as well as using 2FA (this will be a one-time password sent through SMS). Additional 2FA methods will be available in the future.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">All services use ‘Cm’ as the authentication level by default, unless you change your authentication level to ‘Cl’. </span></td>
+  </tr>
+</tbody>
+</table>
+
+You’ll use your Vector of Trust when you [integrate with Authorization Code Flow][code flow].
+
 
 <%= partial "partials/links" %>
