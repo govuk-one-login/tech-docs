@@ -474,11 +474,11 @@ If you want to access the `/userinfo` endpoint for an extended period of time, y
 
 Using a refresh token is optional. To use a refresh token, you’ll have needed to include the `offline_access` scope when you [selected the supported scopes](select-supported-scopes).
 
-A refresh token lasts longer than an access token. You can find the refresh token’s lifespan within the refresh token’s claims.
+A refresh token lasts longer than an access token. You can find the refresh token’s lifespan in the refresh token’s claims.
 
-To generate your refresh token, you need to make a request to the `/token` endpoint. Within your request, you need to:
+To generate your refresh token, you need to make a request to the `/token` endpoint. In your request, you need to:
 
-1. Fill in the parameters the same way as you did when you [made a POST request to the `/token` endpoint for your access token](https://auth-tech-docs.london.cloudapps.digital/integrate-with-code-flow/#make-a-post-request-to-the-token-endpoint).
+1. Fill in the parameters the same way as when you [made a POST request to the `/token` endpoint for your access token](https://auth-tech-docs.london.cloudapps.digital/integrate-with-code-flow/#make-a-post-request-to-the-token-endpoint).
 2. Leave `grant_type` as `refresh_token` in this instance.
 
 ```
@@ -513,9 +513,9 @@ HTTP/1.1 200 OK
 
 #### Error handling for ‘Make a refresh token request’
 
-To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an error and an error_description which will provide you with information.
+To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
 
-If the token request is invalid or unauthorised, you’ll receive an error response with the Content-Type of application/json, for example:
+If the token request is invalid or unauthorised, you’ll receive an error response with the `Content-Type` of application/json, for example:
 
 ```
 HTTP/1.1 400 Bad Request
