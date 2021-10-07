@@ -16,8 +16,8 @@ header_links:
   Support: /support
 
 # Links to show in the page footer
-#footer_links:
-#  Accessibility: /accessibility-statement.html
+footer_links:
+  Accessibility: /accessibility-statement
 
 # Enables search functionality. This indexes pages only and is not recommended for single-page sites.
 enable_search: true
