@@ -13,7 +13,7 @@ We recommend you [use a certified OpenID Connect (OIDC) client library](https://
 
 ## Use the discovery endpoint
 
-You can use the [discovery endpoint](https://OIDC_PLACEHOLDER_DOMAIN/.well-known/openid-configuration) to get information needed to interact with GOV.UK Sign In, for example:
+You can use the [discovery endpoint][discovery] to get information needed to interact with GOV.UK Sign In, for example:
 
 * issuer name
 * information about the keys
@@ -151,7 +151,13 @@ error=invalid_request
 </tbody>
 </table>
 
-## Make a token request
+## Exchange your authorisation code for an access token
+
+To exchange your authorisation code for an access token, you need to make an access token request.
+
+If you want to access the `/userinfo` endpoint for longer than 3 minutes, you can also [use a refresh token to request a new access token](/integrate-with-code-flow/#use-your-refresh-token-to-request-a-new-access-token).
+
+### Make an access token request
 
 You need to exchange the [authorisation code](/integrate-with-code-flow/#generate-an-authorisation-code) you received for a token. You do this by making a POST request to the `/token` endpoint using the client authentication method `private_key_jwt`.
 
@@ -160,7 +166,7 @@ You need to exchange the [authorisation code](/integrate-with-code-flow/#generat
 
 GOV.UK Sign In will then authenticate your request by verifying the signature and payload of the JWT assertion. This will generate a token response which will include an access token, an ID token and refresh token.
 
-### Create a JWT assertion
+#### Create a JWT assertion
 
 To create a JWT assertion, you need to:
 
@@ -168,7 +174,7 @@ To create a JWT assertion, you need to:
 1. Create a JWT.
 1. Sign your JWT with the key you created - how you sign your JWT will vary depending on the language you’re using.
 
-#### Create a JWT
+##### Create a JWT
 
 To create a JWT assertion, you need to create a JWT which contains certain required claims. There’s some optional claims you can choose to include or not include.
 
@@ -219,7 +225,7 @@ To create a JWT assertion, you need to create a JWT which contains certain requi
 
 Once you have created your JWT and signed your JWT with the key pair, you have created your JWT assertion.
 
-### Make a POST request to the `/token` endpoint
+#### Make a POST request to the `/token` endpoint
 
 Now you have generated your JWT assertion, you’re ready to make a POST request to the `/token` endpoint, for example:
 
@@ -277,9 +283,9 @@ grant_type=authorization_code
 </tbody>
 </table>
 
-### Receive response for ‘Make a token request’
+#### Receive response for ‘Make an access token request’
 
-If your token request is successful, the `/token` endpoint will return a response similar to this example:
+If your access token request is successful, the `/token` endpoint will return a response similar to this example:
 
 ```
 HTTP/1.1 200 OK
@@ -297,7 +303,7 @@ yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg”
 }
 ```
 
-You can use the following table to understand the response for ‘Make a token request’.
+You can use the following table to understand the response for ‘Make an access token request’.
 
 <table class="tg">
 <thead>
@@ -343,9 +349,9 @@ You can use the following table to understand the response for ‘Make a token r
 </tbody>
 </table>
 
-### Understand your ID token
+#### Understand your ID token
 
-The `id_token` parameter in the response for ‘Make a token request’ contains the following claims:
+The `id_token` parameter in the response for ‘Make an access token request’ contains the following claims:
 
 
 ```
@@ -399,7 +405,7 @@ You can use the following table to understand the ID token’s claims.
 
 Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
-### Validate your ID token
+#### Validate your ID token
 
 
 1. If you’re using a library, check whether your library has support for validating ID tokens.
@@ -410,7 +416,7 @@ Now you’ve understood what’s in your ID token, you’ll need to validate it.
 1. If you set a `nonce` value in the authorisation request, check the `nonce` value in the authorisation request matches the `nonce` value in the ID token.
 1. Check the ID token is between the `auth_time` claim value (when the token was issued) and the `exp` claim value. If your ID token is outside this time window, you’ll need to request re-authentication from your user.
 
-### Error handling for ‘Make a token request’
+### Error handling for ‘Make an access token request’
 
 To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
 
@@ -460,6 +466,101 @@ HTTP/1.1 400 Bad Request
 </tbody>
 </table>
 
+### Use your refresh token to request a new access token
+
+A GOV.UK Sign In access token is valid for 3 minutes. After 3 minutes, you cannot use an access token to make a call to `/userinfo`.
+
+If you want to access the `/userinfo` endpoint for longer than 3 minutes, you should use a [refresh token](https://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens) to refresh your access token.
+
+Using a refresh token is optional. To use a refresh token, you’ll have needed to include the `offline_access` scope when you [selected the supported scopes](select-supported-scopes).
+
+A refresh token lasts longer than an access token. You can find the refresh token’s lifespan in the refresh token’s claims.
+
+To generate your refresh token, you need to make a request to the `/token` endpoint. In your request, you need to:
+
+1. Fill in the parameters the same way as when you [made a POST request to the `/token` endpoint for your access token](https://auth-tech-docs.london.cloudapps.digital/integrate-with-code-flow/#make-a-post-request-to-the-token-endpoint).
+2. Leave `grant_type` as `refresh_token`.
+
+```
+​​POST /token HTTP/1.1
+Host: auth.gov.uk
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token
+&code=SplxlOBeZQQYbYS6WxSbIA &redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb &client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclie
+     nt-assertion-type%3Ajwt-bearer
+           &client_assertion=PHNhbWxwOl ... ZT
+&client_id=test-client
+```
+
+#### Receive response for ‘Make a refresh token request’
+
+If your token request is successful, the `/token` endpoint will return a response similar to this example:
+
+
+```
+HTTP/1.1 200 OK
+     Content-Type: application/json
+     Cache-Control: no-store
+     Pragma: no-cache
+     {
+      "access_token": "SlAUH9V32hkKG",
+      "refresh_token": "nJ8tfWD",
+      "token_type": "Bearer",
+      "expires_in": 3600,
+}
+```
+
+#### Error handling for ‘Make a refresh token request’
+
+To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
+
+If the token request is invalid or unauthorised, you’ll receive an error response with the `Content-Type` of application/json, for example:
+
+```
+HTTP/1.1 400 Bad Request
+     Content-Type: application/json
+     Cache-Control: no-store
+     Pragma: no-cache
+     {
+      "error": "invalid_request"
+        “error_description”: “invalid scope”
+}
+```
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Error</span></th>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">More information about your error</span></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_request</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The request is missing a parameter so the server cannot proceed with the request. This error may also be returned if the request includes an unsupported parameter or repeats a parameter. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Review your parameters and check they are supported and not repeated.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_client</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Client authentication failed, which could be caused by the request containing an invalid client ID. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">To resolve, check your client ID matches the client ID you had when you <a href="/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.
+</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_grant</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The authorisation code is invalid or expired. This is also the error which would return if the redirect URL given in the authorisation request does not match the URL provided in this access token request.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">unauthorized_client</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The application is successfully authenticated, but it's not registered to use the requested <a href="https://oauth.net/2/grant-types/"><span>grant type</span></a>.
+</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">unsupported_grant_type</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The grant type is not supported by the server. </span></td>
+  </tr>
+</tbody>
+</table>
+
+
 ## Retrieve user information
 
 You can retrieve information about your users by making a request to the `/userinfo` endpoint.
@@ -498,6 +599,7 @@ Content-Type: application/json
 ```
 
 ### Error handling for ‘Retrieve user information’
+
 To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
 
 When a request fails, the `/userinfo` endpoint will respond with:
