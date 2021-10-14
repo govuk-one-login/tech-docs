@@ -1,7 +1,7 @@
 ---
 title: Manage your service’s configuration with GOV.UK Sign In
 weight: 5.12
-last_reviewed_on: 2021-09-22
+last_reviewed_on: 2021-10-14
 review_in: 6 months
 ---
 
@@ -9,7 +9,7 @@ review_in: 6 months
 
 GOV.UK Sign In is an OpenID Connect (OIDC) provider.
 
-Before being able to interact with GOV.UK Sign In you must first register your service with GOV.UK Sign In as a ‘relying party’. An OIDC relying party is an app that outsources its user authentication function to an identity provider, which in this instance is GOV.UK Sign In.
+Before being able to interact with GOV.UK Sign In you must first register your service with GOV.UK Sign In as a ‘relying party’. You will only have to do this once. An OIDC relying party is an app that outsources its user authentication function to an identity provider, which in this instance is GOV.UK Sign In.
 
 ## Register your service to use GOV.UK Sign In
 
@@ -50,7 +50,7 @@ Run the following command and fill in:
 
 ```
 POST /connect/register HTTP/1.1
-Host: OIDC_PLACEHOLDER_DOMAIN
+Host: https://oidc.account.gov.uk
 Content-Type: application/json
 
 {
@@ -141,7 +141,7 @@ For example, to change your service’s name and scopes, a request would look li
 
 ```
 PUT /connect/register/djui8klldn-opdo HTTP/1.1
-Host: OIDC_PLACEHOLDER_DOMAIN
+Host: https://oidc.account.gov.uk
 Content-Type: application/json
 
 {
