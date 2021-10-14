@@ -38,26 +38,6 @@ jobs:
       - name: Build
         run: bundle exec middleman build
 
-      - name: Create Credentials
-        shell: bash
-        env:
-          CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
-          COOKIE_SECRET: ${{ secrets.PROXY_COOKIE_SECRET }}
-        run: |
-          set +e
-          export CREDENTIALS="$(jq -n '{ client_id: $client_id, client_secret: $client_secret, cookie_secret: $cookie_secret }' \
-            --arg client_id "${CLIENT_ID}" \
-            --arg client_secret "${CLIENT_SECRET}" \
-            --arg cookie_secret "${COOKIE_SECRET}" \
-          )"
-          cf service auth-tech-docs-proxy-credentials > /dev/null
-          if [[ $? == 0 ]]; then
-            cf update-user-provided-service auth-tech-docs-proxy-credentials -p "${CREDENTIALS}"
-          else
-            cf create-user-provided-service auth-tech-docs-proxy-credentials -p "${CREDENTIALS}"
-          fi
-
       - name: Push to PaaS
         run: cf push
 
