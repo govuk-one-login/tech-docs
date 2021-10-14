@@ -1,16 +1,6 @@
 ---
 applications:
-- name: di-auth-tech-docs-proxy
-  path: ./proxy
-  memory: 32M
-  buildpacks:
-    - https://github.com/andy-paine/env-map-buildpack.git
-    - binary_buildpack
-  services:
-    - auth-tech-docs-proxy-credentials
-  routes:
-    - route: auth-tech-docs.london.cloudapps.digital
 - name: di-auth-tech-docs-website
   memory: 64M
   routes:
-    - route: auth-tech-docs.apps.internal
+    - route: auth-tech-docs.london.cloudapps.digital
