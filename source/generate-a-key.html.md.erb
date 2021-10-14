@@ -21,11 +21,7 @@ You’ll need your private key when:
 Run the following on your command line to generate your key pair:
 
 ```
-Generate private_key.pem
-
 openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
-
-Generate corresponding public_key.pem
 
 openssl rsa -pubout -in private_key.pem -out public_key.pem
 ```
@@ -35,6 +31,6 @@ You have now generated your key pair, which will appear on your machine as 2 fil
 * `public_key.pem` - this is your public key, which you should share with GOV.UK Sign In
 * `private_key.pem` - this is your private key, which you should store securely and not share
 
-Once you have generated your key pair, you can [select supported scopes](select-supported-scopes)
+Once you have generated your key pair, you can [select supported scopes](select-supported-scopes).
 
 <%= partial "partials/links" %>
