@@ -26,7 +26,7 @@ To make an authorisation request, your application should first send the user to
 
 ```
 HTTP/1.1 302 Found
-Location: https://OIDC_PLACEHOLDER_DOMAIN/authorize?
+Location: https://oidc.account.gov.uk/authorize?
 response_type=code
 &scope=YOUR_SCOPES
 &client_id=YOUR_CLIENT_ID
@@ -81,8 +81,8 @@ redirect_uri=YOUR_REDIRECT_URI
   <tr>
     <td class="tg-0pky">vtr</td>
     <td class="tg-0pky">Optional<br></td>
-    <td class="tg-0pky">The <code>vtr</code>parameter represents ‘Vectors of Trust’. You selected your Vector of Trust when you chose the level of authentication for your service. <br>
-      This parameter is optional. If you do not specify the <code>vtr</code> parameter, your service will automatically log your users in at the medium level of protection, otherwise known as <code>Cm</code>.</td> There's more <a href=/choose-the-level-of-authentication/#choose-the-level-of-authentication-for-your-service><span> guidance for the level of authentication for your service</span></a> if you need it.
+    <td class="tg-0pky">The <code>vtr</code> parameter represents ‘Vectors of Trust’. You selected your Vector of Trust when you chose the level of authentication for your service. <br>
+    This parameter is optional. If you do not specify the <code>vtr</code>  parameter, your service will automatically log your users in at the medium level of protection, otherwise known as <code>Cm</code>. There's more <a href=/choose-the-level-of-authentication/#choose-the-level-of-authentication-for-your-service><span> guidance for the level of authentication for your service</span></a> if you need it.</td>
   </tr>
 </tbody>
 </table>
@@ -196,7 +196,7 @@ To create a JWT assertion, you need to create a JWT which contains certain requi
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">aud</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>aud</code> stands for 'audience'. This identifies GOV.UK Sign In’s authorisation server as an intended audience. This value should be the </span>URL: https://OIDC_PLACEHOLDER_DOMAIN/token. </span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>aud</code> stands for 'audience'. This identifies GOV.UK Sign In’s authorisation server as an intended audience. This value should be the </span>URL: https://oidc.account.gov.uk/. </span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">iss</span></td>
@@ -350,7 +350,7 @@ You can use the following table to understand the response for ‘Make an access
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">id_token</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
     <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A signed JWT that contains basic attributes about the user. GOV.UK Sign In signs this JWT using the </span><a href="https://datatracker.ietf.org/doc/html/rfc7518"><span>ES256 algorithm</span></a>.
-<span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent". </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The public key used to verify this JWT is available from the <code>jwks_uri</code> parameter found in the <a href="https://OIDC_PLACEHOLDER_DOMAIN/.well-known/openid-configuration"><span>discovery endpoint</span></a></span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">.</span></td>
+<span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent". </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The public key used to verify this JWT is available from the <code>jwks_uri</code> parameter found in the <a href="https://oidc.account.gov.uk/.well-known/openid-configuration"><span>discovery endpoint</span></a></span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">.</span></td>
   </tr>
 </tbody>
 </table>
@@ -363,7 +363,7 @@ The `id_token` parameter in the response for ‘Make an access token request’ 
 ```
 {
   "sub": "b2d2d115-1d7e-4579-b9d6-f8e84f4f56ca",
-  "iss": "https://OIDC_PLACEHOLDER_DOMAIN/",
+  "iss": "https://oidc.account.gov.uk",
   "nonce": "aad0aa969c156b2dfa685f885fac7083",
   "aud": "CLIENT_ID",
     "exp": 1489694196,
@@ -387,7 +387,7 @@ You can use the following table to understand the ID token’s claims.
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">iss</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The GOV.UK Sign In OpenID Provider's Issue identifier as specified in the <a href="https://OIDC_PLACEHOLDER_DOMAIN/.well-known/openid-configuration"><span>discovery endpoint</span></a>.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The GOV.UK Sign In OpenID Provider's Issue identifier as specified in the <a href="https://oidc.account.gov.uk"><span>discovery endpoint</span></a>.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">nonce</span></td>
