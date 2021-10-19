@@ -157,22 +157,24 @@ error=invalid_request
 </tbody>
 </table>
 
-## Exchange your authorisation code for an access token
+## Make a token request
 
-To exchange your authorisation code for an access token, you need to make an access token request.
+You need to exchange your [authorisation code](/integrate-with-code-flow/#generate-an-authorisation-code) for tokens. You'll use these tokens to make a call to the `/userinfo` endpoint.
 
-If you want to access the `/userinfo` endpoint for longer than 3 minutes, you can also [use a refresh token to request a new access token](/integrate-with-code-flow/#use-your-refresh-token-to-request-a-new-access-token).
+To exchange your authorisation code for tokens, you'll need to make a `POST` request to the `/token` endpoint using the client authentication method `private_key_jwt`.
 
-### Make an access token request
-
-You need to exchange the [authorisation code](/integrate-with-code-flow/#generate-an-authorisation-code) you received for a token. You do this by making a POST request to the `/token` endpoint using the client authentication method `private_key_jwt`.
+Before you can make a `POST` request, you need to:
 
 1. Create a JWT assertion.
-1. Include the JWT assertion in your POST request.
+1. Include the JWT assertion in your `POST` request.
 
-GOV.UK Sign In will then authenticate your request by verifying the signature and payload of the JWT assertion. This will generate a token response which will include an access token, an ID token and refresh token.
+GOV.UK Sign In will then authenticate your request by verifying the signature and payload of the JWT assertion. This authentication will generate a token response, which will include:
 
-#### Create a JWT assertion
+* an access token
+* an ID token
+* a refresh token - you'll use this if you want to access the `/userinfo` endpoint for longer than 3 minutes
+
+### Create a JWT assertion
 
 To create a JWT assertion, you need to:
 
@@ -180,7 +182,7 @@ To create a JWT assertion, you need to:
 1. Create a JWT.
 1. Sign your JWT with the key you created - how you sign your JWT will vary depending on the language you’re using.
 
-##### Create a JWT
+#### Create a JWT
 
 To create a JWT assertion, you need to create a JWT which contains certain required claims. There’s some optional claims you can choose to include or not include.
 
@@ -231,9 +233,9 @@ To create a JWT assertion, you need to create a JWT which contains certain requi
 
 Once you have created your JWT and signed your JWT with the key pair, you have created your JWT assertion.
 
-#### Make a POST request to the `/token` endpoint
+### Make a `POST` request to the `/token` endpoint
 
-Now you have generated your JWT assertion, you’re ready to make a POST request to the `/token` endpoint, for example:
+Now you have generated your JWT assertion, you’re ready to make a `POST` request to the `/token` endpoint, for example:
 
 ```
 POST /token HTTP/1.1
@@ -273,7 +275,7 @@ grant_type=authorization_code
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">client_assertion</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You’ll include the JWT assertion you created in the payload when you make the POST request to the <code>/token</code> endpoint.</span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You’ll include the JWT assertion you created in the payload when you make the <code>POST</code> request to the <code>/token</code> endpoint.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">client_assertion_type</span></td>
@@ -289,9 +291,9 @@ grant_type=authorization_code
 </tbody>
 </table>
 
-#### Receive response for ‘Make an access token request’
+### Receive response for ‘Make a token request’
 
-If your access token request is successful, the `/token` endpoint will return a response similar to this example:
+If your token request is successful, the `/token` endpoint will return a response similar to this example:
 
 ```
 HTTP/1.1 200 OK
@@ -309,55 +311,48 @@ yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg"
 }
 ```
 
-You can use the following table to understand the response for ‘Make an access token request’.
+You can use the following table to understand the response for ‘Make a token request’.
 
 <table class="tg">
 <thead>
   <tr>
     <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Parameter</span></th>
-    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required or recommended</span></th>
     <th class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Description</span></th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">access_token</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
     <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The access token value is an opaque access token which you can use with the <code>/userinfo</code> endpoint to return a user's profile.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">refresh_token</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
     <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You can use a refresh token if you need to request a new access token.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">token_type</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
     <td class="tg-0lax">The token type value. GOV.UK Sign In only supports the <a href="https://oauth.net/2/bearer-tokens/"><span>bearer token</span></a>.
 </td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">expires_in</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
     <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The length of time the token is valid for. This is displayed in seconds.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">scope</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
     <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You can read more about <a href="/select-supported-scopes/#select-supported-scopes"><span>supported scopes you can select</span></a>.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">id_token</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
     <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A signed JWT that contains basic attributes about the user. GOV.UK Sign In signs this JWT using the </span><a href="https://datatracker.ietf.org/doc/html/rfc7518"><span>ES256 algorithm</span></a>.
 <span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent". </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The public key used to verify this JWT is available from the <code>jwks_uri</code> parameter found in the <a href="https://oidc.account.gov.uk/.well-known/openid-configuration"><span>discovery endpoint</span></a></span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">.</span></td>
   </tr>
 </tbody>
 </table>
 
-#### Understand your ID token
+### Understand your ID token
 
-The `id_token` parameter in the response for ‘Make an access token request’ contains the following claims:
+The `id_token` parameter in the response for ‘Make a token request’ contains the following claims:
 
 
 ```
@@ -422,7 +417,7 @@ Now you’ve understood what’s in your ID token, you’ll need to validate it.
 1. If you set a `nonce` value in the authorisation request, check the `nonce` value in the authorisation request matches the `nonce` value in the ID token.
 1. Check the ID token is between the `auth_time` claim value (when the token was issued) and the `exp` claim value. If your ID token is outside this time window, you’ll need to request re-authentication from your user.
 
-### Error handling for ‘Make an access token request’
+### Error handling for ‘Make a token request’
 
 To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
 
@@ -484,7 +479,7 @@ A refresh token lasts longer than an access token. You can find the refresh toke
 
 To generate your refresh token, you need to make a request to the `/token` endpoint. In your request, you need to:
 
-1. Fill in the parameters the same way as when you [made a POST request to the `/token` endpoint for your access token](https://auth-tech-docs.london.cloudapps.digital/integrate-with-code-flow/#make-a-post-request-to-the-token-endpoint).
+1. Fill in the parameters the same way as when you [made a `POST` request to the `/token` endpoint for your access token](https://auth-tech-docs.london.cloudapps.digital/integrate-with-code-flow/#make-a-post-request-to-the-token-endpoint).
 2. Leave `grant_type` as `refresh_token`.
 
 ```
