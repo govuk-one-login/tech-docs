@@ -6,18 +6,64 @@ review_in: 6 months
 ---
 
 # How GOV.UK Sign In works
+GOV.UK Sign In is an [OpenID Connect (OIDC)](https://openid.net/connect/)-compliant service that helps you authenticate your users who are using their GOV.UK Account.
 
-GOV.UK Sign In is an [OpenID Connect (OIDC)][OIDC]-compliant service that helps you authenticate your users who are using their GOV.UK Account.
+GOV.UK Sign In’s core functionality works in 3 steps.
 
-1. Your user selects the button to sign in for your service, which sends an authorisation request to GOV.UK Sign In.
-1. GOV.UK Sign In’s `/authorize` endpoint redirects your user and prompts them to sign in.
-1. Your user uses one of the sign in options to authenticate themselves.
-1. Your user may see terms and conditions and also some consent information about which data items GOV.UK Sign In shares with your service.
-1. GOV.UK Sign In redirects your user back to your service, along with an authorisation code tagged onto the end of the URL.
-1. Your service calls the `/token` endpoint with the user’s authorisation code and using the [private_key_jwt](https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication) as the client authentication method.
-1. GOV.UK Sign In verifies the information your service has passed in the token request. If the verification is successful, your service will receive an ID token and an access token.
-1. Your service can use the access token to make a call to the `/userinfo` endpoint to request basic user information such as the user’s unique identifier (UUID).
-1. Your service has now authenticated your user and they can continue their journey.
+1. Sending your users to GOV.UK Sign In to begin authentication.
+1. Getting your user’s consent to share their data.
+1. Generating tokens to get information about your users.
+
+## Sending your users to GOV.UK Sign In to begin authentication
+
+GOV.UK Sign In uses OpenID Connect Authorization Code Flow to authenticate your users.
+
+<%= image_tag "sending-your-users-to-begin-authentication.svg", { :alt => '' } %>
+
+1. Your user selects the button on your service, which causes your service to call the `/authorize` endpoint to start the sign in process.
+1. Your user is redirected to GOV.UK Sign In to begin the authentication process.
+1. If your user is not already logged in, GOV.UK Sign In asks them to authenticate themselves.
+1. Your user either creates a GOV.UK Account, or enters their credentials and submits them to GOV.UK Sign In.
+1. GOV.UK Sign In validates the user’s credentials.
+
+## Getting your user’s consent to share their data
+
+If your user is using your service for the first time, GOV.UK Sign In will send a request to your user to ask if they agree to share their data.
+
+<%= image_tag "getting-user-permission.svg", { :alt => '' } %>
+
+
+1. GOV.UK Sign In shows your user a list of attributes your service has requested.
+1. Your user can choose to accept or reject sharing the attributes with your service.
+1. GOV.UK Sign In records the user’s choice to accept or reject.
+
+## Generating tokens to get information about your users
+
+GOV.UK Sign In will generate:
+
+* an ID token, which contains the unique subject identifier (UUID) for your user
+* an access token, which your service can use to access additional attributes (if the user has given permission)
+
+<%= image_tag "generating-tokens.svg", { :alt => '' } %>
+
+
+1. After getting your user’s consent, GOV.UK Sign In redirects your user back to your service, along with an authorisation code tagged onto the end of the URL.
+1. Your service calls the `/token` endpoint with the authorisation code to get an ID token and an access token.
+1. GOV.UK Sign In returns an ID token and an access token to your service.
+1. Optionally, your service can use the access token to make a call to the `/userinfo` endpoint to access additional attributes if the user has agreed to share these.
+
+## Integrate with GOV.UK Sign In
+
+Before you can integrate with GOV.UK Sign In, there are some steps you need to follow.
+
+1. [Understand the environments GOV.UK Sign In uses](/understand-environments/).
+1. [Choose the level of authentication for your service](/choose-the-level-of-authentication/).
+1. [Generate a key pair](/generate-a-key/).
+1. [Select supported scopes](/select-supported-scopes/).
+1. [Manage your service’s configuration to use GOV.UK Sign In](/manage-your-service-s-configuration/).
+1. [Integrate with Authorization Code Flow](/integrate-with-code-flow/).
+1. [Log your users out of GOV.UK Sign In](/log-your-users-out/).
+1. [Test your integration with GOV.UK Sign In](/test-your-integration/).
 
 There's further [guidance on the environments GOV.UK Sign In uses](/understand-environments/#understand-the-environments-gov-uk-sign-in-uses).
 
