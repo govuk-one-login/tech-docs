@@ -30,6 +30,9 @@ GOV.UK Sign In uses OpenID Connect Authorization Code Flow to authenticate your 
 
 If your user is using your service for the first time, GOV.UK Sign In will send a request to your user to ask if they agree to share their data.
 
+<%= image_tag "getting-user-permission.svg", { :alt => '' } %>
+
+
 1. GOV.UK Sign In shows your user a list of attributes your service has requested.
 1. Your user can choose to accept or reject sharing the attributes with your service.
 1. GOV.UK Sign In records the user’s choice to accept or reject.
@@ -41,6 +44,9 @@ GOV.UK Sign In will generate:
 * an ID token, which contains the unique subject identifier (UUID) for your user
 * an access token, which your service can use to access additional attributes (if the user has given permission)
 
+<%= image_tag "generating-tokens.svg", { :alt => '' } %>
+
+
 1. After getting your user’s consent, GOV.UK Sign In redirects your user back to your service, along with an authorisation code tagged onto the end of the URL.
 1. Your service calls the `/token` endpoint with the authorisation code to get an ID token and an access token.
 1. GOV.UK Sign In returns an ID token and an access token to your service.
@@ -50,7 +56,7 @@ GOV.UK Sign In will generate:
 
 Before you can integrate with GOV.UK Sign In, there are some steps you need to follow.
 
-1. Understand the environments GOV.UK Sign In uses.
+1. Understand the environments GOV.UK Sign In uses](/understand-environments/).
 1. Choose the level of authentication for your service.
 1. Generate a key pair.
 1. Select supported scopes.
