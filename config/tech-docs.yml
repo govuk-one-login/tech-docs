@@ -13,6 +13,7 @@ phase: Beta
 # Links to show on right-hand-side of header
 header_links:
   GitHub: https://github.com/alphagov/di-authentication-tech-docs
+  Support: https://auth-tech-docs.london.cloudapps.digital/support/
 
 # Links to show in the page footer
 footer_links:
