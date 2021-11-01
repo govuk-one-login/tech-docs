@@ -1,0 +1,92 @@
+---
+title: Choose which user attributes your service can request
+weight: 4
+last_reviewed_on: 2021-10-14
+review_in: 6 months
+---
+
+# Choose which user attributes your service can request
+
+Your service can request certain user attributes.
+
+To do this, you need to choose which 'scopes' your service will use and include these scopes in your authorisation request. OpenID Connect (OIDC) scopes are identifiers your application uses during authentication to authorise access to a user's details, such as an email address. Each scope returns a set of user attributes, which OIDC calls ‘claims’.
+
+`openid` is the only scope you must include. You can choose to include other scopes for your authorisation request depending on the user attributes your service needs.
+
+You can find details of the scopes in the table below.
+
+<table>
+<tbody>
+<tr>
+<td>
+<p>Scope</p>
+</td>
+<td>
+<p>Required or optional</p>
+</td>
+<td>
+<p>Description</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><span style="font-weight: 400;">openid&nbsp;</span></p>
+</td>
+<td>
+<p><span style="font-weight: 400;">Required</span></p>
+</td>
+<td>
+<p><span style="font-weight: 400;">OIDC authorisation requests must contain the <code>openid</code> scope value to indicate that an application intends to use the OIDC protocol.</span></p>
+<br />
+<p><span style="font-weight: 400;">This will return the <code>sub</code> claim, which uniquely identifies the user.</span></p>
+</td>
+</tr>
+<tr>
+<td>
+<p><span style="font-weight: 400;">email</span></p>
+</td>
+<td>
+<p><span style="font-weight: 400;">Optional</span></p>
+</td>
+<td>
+<p><span style="font-weight: 400;">Returns the <code>email</code> claim, which contains:</span></p>
+<br />
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">the user's email address</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;"></span><span style="font-weight: 400;"><code>email_verified</code></span><span style="font-weight: 400;">, which is a boolean indicating whether the user has verified their email address or not</span></li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+<p><span style="font-weight: 400;">phone</span></p>
+</td>
+<td>
+<p><span style="font-weight: 400;">Optional</span></p>
+</td>
+<td>
+<p><span style="font-weight: 400;">Returns the <code>phone_number</code> claim, which contains:</span></p>
+<br />
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">the user's phone number</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;"><code>phone_number_verified</code>, which is a boolean indicating whether the user has verified their phone number or not</span></li>
+</ul>
+</td>
+</tr>
+<td>
+<p><span style="font-weight: 400;">offline_access</span></p>
+</td>
+<td>
+<p><span style="font-weight: 400;">Optional</span></p>
+</td>
+<td>
+<p><span style="font-weight: 400;">You use an access token to make calls to the <code>/userinfo</code> endpoint.<br>
+If you want to access the <code>/userinfo</code> endpoint for longer than 3 minutes, you should use a <a href="https://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens"><span>refresh token</span></a> to refresh your access token. <br>
+If you want a refresh token, you must request the <code>offline_access</code> scope. </span></li>
+</ul>
+</tbody>
+</table>
+
+Once you have chosen which attributes your service can request, you can [manage your service's configuration with GOV.UK Sign In](manage-your-service-s-configuration).
+
+<%= partial "partials/links" %>
