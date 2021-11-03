@@ -473,7 +473,7 @@ A GOV.UK Sign In access token is valid for 3 minutes. After 3 minutes, you canno
 
 If you want to access the `/userinfo` endpoint for longer than 3 minutes, you should use a [refresh token](https://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens) to refresh your access token.
 
-Using a refresh token is optional. To use a refresh token, you’ll have needed to include the `offline_access` scope when you read about [choosing which user attributes your service can request](/choose-which-user-attributes-your-service-can-request/).
+Using a refresh token is optional. To use a refresh token, you’ll need to include the `offline_access` scope. You can read more about scopes in [choosing which user attributes your service can request](/choose-which-user-attributes-your-service-can-request/).
 
 A refresh token lasts longer than an access token. You can find the refresh token’s lifespan in the refresh token’s claims.
 
