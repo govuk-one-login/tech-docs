@@ -1,17 +1,15 @@
 ---
-title: Select supported scopes
+title: Choose which user attributes your service can request
 weight: 4
 last_reviewed_on: 2021-10-14
 review_in: 6 months
 ---
 
-# Select supported scopes
+# Choose which user attributes your service can request
 
-OpenID Connect (OIDC) scopes are identifiers your application uses during authentication to authorise access to a user's details, such as an email address.
+Your service can request certain user attributes. To do this, you need to choose which 'scopes' your service will use and include these scopes in your authorisation request.
 
-Each scope returns a set of user attributes, which OIDC calls ‘claims’.
-
-GOV.UK Sign In currently supports 3 scopes and you’ll need to choose which of these scopes your service will use. You’ll provide the scopes when you make your authorisation request.
+OpenID Connect (OIDC) scopes are identifiers your application uses during authentication to authorise access to a user's attributes, such as an email address. Each scope returns a set of user attributes, which OIDC calls ‘claims’.
 
 `openid` is the only scope you must include. You can choose to include other scopes for your authorisation request depending on the user attributes your service needs.
 
@@ -89,6 +87,6 @@ If you want a refresh token, you must request the <code>offline_access</code> sc
 </tbody>
 </table>
 
-Once you have selected your supported scopes, you can [manage your service's configuration with GOV.UK Sign In](manage-your-service-s-configuration).
+Once you have chosen which attributes your service can request, you can [manage your service's configuration with GOV.UK Sign In](manage-your-service-s-configuration).
 
 <%= partial "partials/links" %>
