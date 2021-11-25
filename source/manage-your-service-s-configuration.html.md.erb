@@ -46,7 +46,7 @@ Run the following command and fill in:
 * `post_logout_redirect_uris` with the URL you’d like your users redirected to if they log out of your service - if you do not specify one, your users will be redirected to the default GOV.UK sign out page
 * `subject_type`, with either `pairwise` or `public` depending on the [user identifier you chose](/manage-your-service-s-configuration/#understand-gov-uk-sign-in-s-user-identifiers)
 * `sector_identifier_uri` (if you chose pairwise as your user identifier), with the identifier for your sector
-* `vtr`, with the vectors of trust you selected when you [chose the level of authentication for your service][choose auth] - this is an optional field
+* `service_type` with the field `MANDATORY`
 
 ```
 POST /connect/register HTTP/1.1
@@ -62,7 +62,7 @@ Content-Type: application/json
 "post_logout_redirect_uris": ["http://example.com/signedout"],
 "subject_type": "pairwise",
 "sector_identifier_uri": "https://example.com",
-"vtr": ["Cm","Cl"]
+"service_type": "MANDATORY"
 }
 
 ```
