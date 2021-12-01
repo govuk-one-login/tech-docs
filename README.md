@@ -16,12 +16,7 @@ This will allow you to compile Ruby, and makes it easier to manage multiple Ruby
 
 Download the current version of Ruby that the [application uses](.ruby-version):
 ```
-rbenv install $(cat .ruby-version)
-```
-
-Set your local Ruby version to match what `rbenv` installed in the previous step:
-```
-rbenv local $(cat .ruby-version)
+rbenv install
 ```
 
 Install the application's dependencies:
@@ -37,7 +32,8 @@ There's an incompatibility issue with the latest MacOS and the `ffi` library whi
 To fix the issue you must stop the `ffi` gem using the native `libffi` library by sending this command:
 
 ```shell script
-gem install ffi -- --disable-system-libffi
+bundle config build.ffi --disable-system-libffi
+bundle install # reinstall
 ```
 
 ## Making changes
