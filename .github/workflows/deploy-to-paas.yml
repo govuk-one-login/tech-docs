@@ -40,6 +40,3 @@ jobs:
 
       - name: Push to PaaS
         run: cf push
-
-      - name: Create Network Policies
-        run: cf add-network-policy di-auth-tech-docs-proxy di-auth-tech-docs-website --protocol tcp --port 8080
