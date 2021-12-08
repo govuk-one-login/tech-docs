@@ -30,8 +30,10 @@ Location: https://oidc.integration.account.gov.uk/authorize?
 response_type=code
 &scope=YOUR_SCOPES
 &client_id=YOUR_CLIENT_ID
-&state=STATE &
-redirect_uri=YOUR_REDIRECT_URI
+&state=STATE
+&redirect_uri=YOUR_REDIRECT_URI
+&nonce=aEwkamaos5B
+&vtr=["Cl.Cm"]
 ```
 
 <table class="tg">
@@ -361,7 +363,7 @@ The `id_token` parameter in the response for ‘Make a token request’ contains
   "iss": "https://oidc.integration.account.gov.uk",
   "nonce": "aad0aa969c156b2dfa685f885fac7083",
   "aud": "CLIENT_ID",
-    "exp": 1489694196,
+  "exp": 1489694196,
   "iat": 1489694198
 }
 ```
