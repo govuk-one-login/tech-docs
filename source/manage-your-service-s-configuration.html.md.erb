@@ -32,7 +32,7 @@ When you use a pairwise identifier, GOV.UK Sign In provides a unique `sub` value
 
 If you use pairwise as your user identifier, you should fill in the `sector_identifier_uri` parameter, as GOV.UK Sign In will use this to create a unique subject identifier for your user.
 
-<%= warning_text('If you do not fill in the <code>sector_identifier_uri</code> field, GOV.UK Sign In will use the host name of your redirect URI when we generate the subject identifier for your user. You should be aware that if your redirect URI ever changes, your users’ subject identifiers will also change.') %>
+<%= warning_text('If you do not fill in the <code>sector_identifier_uri</code> value, GOV.UK Sign In will use the host name of your redirect URI when we generate the subject identifier for your user. You should be aware that if your redirect URI ever changes, your users’ subject identifiers will also change.') %>
 
 ### Send a request to register your service with GOV.UK Sign In
 
@@ -46,8 +46,8 @@ Run the following command and fill in:
 * `post_logout_redirect_uris` with the URL you’d like your users redirected to if they log out of your service - if you do not specify one, your users will be redirected to the default GOV.UK sign out page
 * `subject_type`, with either `pairwise` or `public` depending on the [user identifier you chose](/manage-your-service-s-configuration/#understand-gov-uk-sign-in-s-user-identifiers)
 * `sector_identifier_uri` (if you chose pairwise as your user identifier), with the identifier for your sector
-* `service_type` with the field `MANDATORY`
-* `identity_verification_required` with `true` if you require identity verification. This field defaults to `false` if you do not include it.
+* `service_type` with the value `MANDATORY`
+* `identity_verification_required` with `true` if you require identity verification. This value defaults to `false` if you do not include it.
 
 ```
 POST /connect/register HTTP/1.1
@@ -139,7 +139,7 @@ HTTP/1.1 400 Bad Request
 
 To update your service’s details with GOV.UK Sign In, you need to make a `PUT` request to the `connect/register` endpoint using an HTTP client.
 
-You’ll have filled in the fields when you [registered your service to use GOV.UK Sign In][registered]. When you are updating your service’s details, you’ll only need to fill in the fields of the details you want to change.
+You’ll have filled in the values when you [registered your service to use GOV.UK Sign In][registered]. When you are updating your service’s details, you’ll only need to fill in the values of the details you want to change.
 
 For example, to change your service’s name and scopes, a request would look like this:
 
