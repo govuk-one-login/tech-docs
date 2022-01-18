@@ -137,7 +137,7 @@ error=invalid_request
       <li style="font-weight: 400;"><span style="font-weight: 400;">includes an invalid parameter value</span></li>
       <li style="font-weight: 400;"><span style="font-weight: 400;">includes a parameter more than once</span></li>
       <li style="font-weight: 400;"><span style="font-weight: 400;">not in the correct format</span></li>
-      You can </span><a href="/integrate-with-code-flow/#make-an-authorisation-request"><span>check which parameters GOV.UK Sign In supports when you make an authorisation request</span></a>.
+      You can </span><a href="/integrate-with-integration-environment/integrate-with-code-flow/#make-an-authorisation-request"><span>check which parameters GOV.UK Sign In supports when you make an authorisation request</span></a>.
 </td>
   </tr>
   <tr>
@@ -161,7 +161,7 @@ error=invalid_request
 
 ## Make a token request
 
-You need to exchange your [authorisation code](/integrate-with-code-flow/#generate-an-authorisation-code) for tokens. You'll use these tokens to make a call to the `/userinfo` endpoint.
+You need to exchange your [authorisation code](/integrate-with-integration-environment/integrate-with-code-flow/#generate-an-authorisation-code) for tokens. You'll use these tokens to make a call to the `/userinfo` endpoint.
 
 To exchange your authorisation code for tokens, you'll need to make a `POST` request to the `/token` endpoint using the client authentication method `private_key_jwt`.
 
@@ -287,7 +287,7 @@ grant_type=authorization_code
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">code</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The code you received when you generated an </span><a href="/integrate-with-code-flow/#generate-an-authorisation-code"><span>authorisation code</span></a>.
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The code you received when you generated an </span><a href="/integrate-with-integration-environment/integrate-with-code-flow/#generate-an-authorisation-code"><span>authorisation code</span></a>.
 </a><span. </span></td>
   </tr>
 </tbody>
@@ -481,7 +481,7 @@ A refresh token lasts longer than an access token. You can find the refresh toke
 
 To generate your refresh token, you need to make a request to the `/token` endpoint. In your request, you need to:
 
-1. Fill in the parameters the same way as when you [made a `POST` request to the `/token` endpoint for your access token](https://auth-tech-docs.london.cloudapps.digital/integrate-with-code-flow/#make-a-post-request-to-the-token-endpoint).
+1. Fill in the parameters the same way as when you [made a `POST` request to the `/token` endpoint for your access token](/integrate-with-integration-environment/integrate-with-code-flow/#make-a-post-request-to-the-token-endpoint).
 2. Leave `grant_type` as `refresh_token`.
 
 ```
