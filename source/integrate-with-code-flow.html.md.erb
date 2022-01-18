@@ -53,7 +53,7 @@ response_type=code
   <tr>
     <td class="tg-0pky">scope</td>
     <td class="tg-0pky">Required</td>
-    <td class="tg-0pky">A space-separated list of scopes. You must include <code>openid</code> scope value.<br>You should refer to the guidance on <a href="/choose-which-user-attributes-your-service-can-request/"><span>choosing which user attributes your service can request</span></a> for the <code>scope</code> parameter. </td>
+    <td class="tg-0pky">A space-separated list of scopes. You must include <code>openid</code> scope value.<br>You should refer to the guidance on <a href="/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/"><span>choosing which user attributes your service can request</span></a> for the <code>scope</code> parameter. </td>
   </tr>
   <tr>
     <td class="tg-0pky">client_id</td>
@@ -142,7 +142,7 @@ error=invalid_request
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_scope</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The scope or scopes you have requested are invalid, unknown, or are not in the correct format.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You can read more about scopes in <a href="/choose-which-user-attributes-your-service-can-request"><span>choosing which user attributes your service can request</span></a>.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The scope or scopes you have requested are invalid, unknown, or are not in the correct format.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You can read more about scopes in <a href="/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/"><span>choosing which user attributes your service can request</span></a>.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">unsupported_response_type</span></td>
@@ -342,7 +342,7 @@ You can use the following table to understand the response for ‘Make a token r
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">scope</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You can read more about scopes in <a href="/choose-which-user-attributes-your-service-can-request"><span>choosing which user attributes your service can request</span></a>.</span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You can read more about scopes in <a href="/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/"><span>choosing which user attributes your service can request</span></a>.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">id_token</span></td>
@@ -475,7 +475,7 @@ A GOV.UK Sign In access token is valid for 3 minutes. After 3 minutes, you canno
 
 If you want to access the `/userinfo` endpoint for longer than 3 minutes, you should use a [refresh token](https://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens) to refresh your access token.
 
-Using a refresh token is optional. To use a refresh token, you’ll need to include the `offline_access` scope. You can read more about scopes in [choosing which user attributes your service can request](/choose-which-user-attributes-your-service-can-request/).
+Using a refresh token is optional. To use a refresh token, you’ll need to include the `offline_access` scope. You can read more about scopes in [choosing which user attributes your service can request](/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/).
 
 A refresh token lasts longer than an access token. You can find the refresh token’s lifespan in the refresh token’s claims.
 
@@ -584,7 +584,7 @@ GET /userinfo HTTP/1.1
 
 The response you’ll get after making a request to the `/userinfo` endpoint will be a JSON object containing user attributes.
 
-If you included all the scopes when you were [choosing which user attributes your service can request](/choose-which-user-attributes-your-service-can-request/) and made a request to the `/userinfo` endpoint, the response would look similar to this:
+If you included all the scopes when you were [choosing which user attributes your service can request](/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/) and made a request to the `/userinfo` endpoint, the response would look similar to this:
 
 ```
 HTTP/1.1 200 OK
