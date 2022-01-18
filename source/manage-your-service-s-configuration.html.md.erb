@@ -42,12 +42,12 @@ Run the following command and fill in:
 * `redirect_uris` with your service’s redirect callback
 * `contacts` with your service’s contact email addresses - this can be a group email or multiple separate email addresses or a combination of both
 * `scopes` with the scopes you selected when you [chose which user attributes your service can request](/choose-which-user-attributes-your-service-can-request/)
-* `public_key` with the [key you generated][key pair] - you only send the contents of the public_key.pem file here
+* `public_key` with the [key you generated][key pair] - only send the contents of the public_key.pem file and do not include the RSA headers (the words in caps above and below the key)
 * `post_logout_redirect_uris` with the URL you’d like your users redirected to if they log out of your service - if you do not specify one, your users will be redirected to the default GOV.UK sign out page
 * `subject_type`, with either `pairwise` or `public` depending on the [user identifier you chose](/manage-your-service-s-configuration/#understand-gov-uk-sign-in-s-user-identifiers)
 * `sector_identifier_uri` (if you chose pairwise as your user identifier), with the identifier for your sector
 * `service_type` with the field `MANDATORY`
-* `identity_verification_required` with `true` if you require identity verification. This field defaults to `false` if you do not include it. 
+* `identity_verification_required` with `true` if you require identity verification. This field defaults to `false` if you do not include it.
 
 ```
 POST /connect/register HTTP/1.1
