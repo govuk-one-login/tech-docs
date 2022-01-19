@@ -39,7 +39,7 @@ If your user is using your service for the first time, GOV.UK Sign In will send 
 1. Your user can choose to accept or reject sharing the attributes with your service.
 1. GOV.UK Sign In records the user’s choice to accept or reject.
 
-You can read more about [choosing which user attributes your service can request](/choose-which-user-attributes-your-service-can-request/).
+You can read more about [choosing which user attributes your service can request](/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/).
 
 ## Generating tokens to get information about your users
 
@@ -56,19 +56,13 @@ GOV.UK Sign In will generate:
 1. GOV.UK Sign In returns an ID token and an access token to your service.
 1. Optionally, your service can use the access token to make a call to the `/userinfo` endpoint to access additional attributes if the user has agreed to share these.
 
-## Integrate with GOV.UK Sign In
+## Understand the environments GOV.UK Sign In uses
 
-Before you can integrate with GOV.UK Sign In, there are some steps you need to follow.
+GOV.UK Sign In uses 2 different environments:
 
-1. [Understand the environments GOV.UK Sign In uses](/understand-environments/).
-1. [Choose the level of authentication for your service](/choose-the-level-of-authentication/).
-1. [Generate a key pair](/generate-a-key/).
-1. [Choose which user attributes your service can request](/choose-which-user-attributes-your-service-can-request/).
-1. [Manage your service’s configuration to use GOV.UK Sign In](/manage-your-service-s-configuration/).
-1. [Integrate with Authorization Code Flow](/integrate-with-code-flow/).
-1. [Log your users out of GOV.UK Sign In](/log-your-users-out/).
-1. [Test your integration with GOV.UK Sign In](/test-your-integration/).
+* an integration environment, which contains sample users and data for you to test your service’s integration with GOV.UK Sign In
+* a production environment, which is the live environment for real users to access and use your service’s integration with GOV.UK Sign In
 
-There's further [guidance on the environments GOV.UK Sign In uses](/understand-environments/#understand-the-environments-gov-uk-sign-in-uses).
+You can [get started with integrating with GOV.UK Sign In's integration environment](/integrate-with-integration-environment/).
 
 <%= partial "partials/links" %>
