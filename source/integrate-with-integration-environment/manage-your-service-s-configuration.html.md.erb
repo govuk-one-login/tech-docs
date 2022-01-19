@@ -9,7 +9,7 @@ review_in: 6 months
 
 GOV.UK Sign In is an OpenID Connect (OIDC) provider.
 
-Before being able to interact with GOV.UK Sign In you must first register your service with GOV.UK Sign In as a ‘relying party’. You will have to do this once for the integration environment and once for the production environment. An OIDC relying party is an app that outsources its user authentication function to an identity provider, which in this instance is GOV.UK Sign In.
+You must first register your service with GOV.UK Sign In as a ‘relying party’ before being able to interact with GOV.UK Sign In. You need to do this once for the integration environment and once for the production environment. An OIDC relying party is an app that outsources its user authentication function to an identity provider, which in this instance is GOV.UK Sign In.
 
 ## Register your service to use GOV.UK Sign In
 
@@ -29,19 +29,19 @@ You will set the user identifier your service will use when you contact the GOV.
 
 When you use a pairwise identifier, GOV.UK Sign In provides a unique `sub` value in the ID token to each service. This prevents having the same user ID across services, so each user ID is unique and cannot be correlated.
 
-When you use pairwise as your user identifier, you'll need to specify your `sector_identifier_uri` parameter when you contact the GOV.UK Sign In team to register your service. GOV.UK Sign In will use this to create a unique subject identifier for your user.
+When you use pairwise as your user identifier, you need to specify your `sector_identifier_uri` parameter when you contact the GOV.UK Sign In team to register your service. GOV.UK Sign In will use this to create a unique subject identifier for your user.
 
 <%= warning_text('If you do not specify the <code>sector_identifier_uri</code>, GOV.UK Sign In will use the host name of your redirect URI when we generate the subject identifier for your user. You should be aware that if your redirect URI ever changes, your users’ subject identifiers will also change.') %>
 
 ### Contact the GOV.UK Sign In team to register your service
 
-You'll need to contact the GOV.UK Sign In team to register your service.
+You need to contact the GOV.UK Sign In team to register your service.
 
 1. Start an email and include the following details.
 1.  [Send the email with the completed details to govuk-sign-in@digital.cabinet-office.gov.uk](mailto: govuk-sign-in@digital.cabinet-office.gov.uk).
 1. The GOV.UK Sign In team will register your service for you and let you know when the registration is complete.
 
-The GOV.UK Sign In team will need these details to register your service:
+To register your service, you must send:
 
 * your service’s name
 * your service’s redirect callback
