@@ -22,7 +22,7 @@ To register your service to use GOV.UK Sign In, you need to:
 
 Your service will use a [pairwise user identifier](https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg) when you use GOV.UK Sign In.
 
-When using a pairwise identifier, GOV.UK Sign In provides a unique `sub` value in the ID token to each service. This prevents having the same user ID across services, so each user ID is unique and cannot be correlated.
+When using a pairwise identifier, GOV.UK Sign In provides a unique `sub` value in the ID token to each service. This means a user ID will not be the same across services, so the value cannot be matched and used to identify an individual user.
 
 You need to specify your `sector_identifier_uri` parameter when you contact the GOV.UK Sign In team to register your service. GOV.UK Sign In will use this to create a unique subject identifier for your user.
 
