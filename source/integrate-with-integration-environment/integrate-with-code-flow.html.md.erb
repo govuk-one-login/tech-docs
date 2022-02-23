@@ -13,7 +13,7 @@ We recommend you [use a certified OpenID Connect (OIDC) client library](https://
 
 ## Use the discovery endpoint
 
-You can use the [discovery endpoint][discovery] to get information needed to interact with GOV.UK Sign In, for example:
+You can use the [discovery endpoint][external.oidc-discovery] to get information needed to interact with GOV.UK Sign In, for example:
 
 * issuer name
 * information about the keys
@@ -180,7 +180,7 @@ GOV.UK Sign In will then authenticate your request by verifying the signature an
 
 To create a JWT assertion, you need to:
 
-1. Use the [key pair you generated][key pair] earlier in the process.
+1. Use the [key pair you generated][integrate.generate-key-pair] earlier in the process.
 1. Create a JWT.
 1. Sign your JWT with the key you created - how you sign your JWT will vary depending on the language you’re using.
 
@@ -412,9 +412,9 @@ Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
 
 1. If you’re using a library, check whether your library has support for validating ID tokens.
-1. The value of `iss` must exactly match the Issuer Identifier as specified in GOV.UK Sign In’s [discovery endpoint][discovery].
-1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK Sign In][registered].
-1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). You must first [validate that the JWT `alg` header matches](https://datatracker.ietf.org/doc/html/rfc8725#section-3.1) what was returned from the `jwks_uri`. Then you can use the value of the JWT `alg` header parameter to validate the ID token. Your application must use the keys provided by the [discovery endpoint][discovery].
+1. The value of `iss` must exactly match the Issuer Identifier as specified in GOV.UK Sign In’s [discovery endpoint][external.oidc-discovery].
+1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK Sign In][integrate.register-your-service].
+1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). You must first [validate that the JWT `alg` header matches](https://datatracker.ietf.org/doc/html/rfc8725#section-3.1) what was returned from the `jwks_uri`. Then you can use the value of the JWT `alg` header parameter to validate the ID token. Your application must use the keys provided by the [discovery endpoint][external.oidc-discovery].
 1. Check the current time is before the time in the `exp` claim.
 1. If you set a `nonce` value in the authorisation request, check the `nonce` value in the authorisation request matches the `nonce` value in the ID token.
 1. Check the ID token is between the `auth_time` claim value (when the token was issued) and the `exp` claim value. If your ID token is outside this time window, you’ll need to request re-authentication from your user.
@@ -475,7 +475,7 @@ A GOV.UK Sign In access token is valid for 3 minutes. After 3 minutes, you canno
 
 If you want to access the `/userinfo` endpoint for longer than 3 minutes, you should use a [refresh token](https://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens) to refresh your access token.
 
-Using a refresh token is optional. To use a refresh token, you’ll need to include the `offline_access` scope. You can read more about scopes in [choosing which user attributes your service can request](/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/).
+Using a refresh token is optional. To use a refresh token, you’ll need to include the `offline_access` scope. You can read more about scopes in [choosing which user attributes your service can request][integrate.choose-user-attributes].
 
 A refresh token lasts longer than an access token. You can find the refresh token’s lifespan in the refresh token’s claims.
 
@@ -584,7 +584,7 @@ GET /userinfo HTTP/1.1
 
 The response you’ll get after making a request to the `/userinfo` endpoint will be a JSON object containing user attributes.
 
-If you included all the scopes when you were [choosing which user attributes your service can request](/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/) and made a request to the `/userinfo` endpoint, the response would look similar to this:
+If you included all the scopes when you were [choosing which user attributes your service can request][integrate.choose-user-attributes] and made a request to the `/userinfo` endpoint, the response would look similar to this:
 
 ```
 HTTP/1.1 200 OK
