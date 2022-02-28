@@ -1,6 +1,6 @@
 # Host to use for canonical URL generation (without trailing slash)
 # Hosting on PaaS on the default domain for now
-host: https://auth-tech-docs.cloudapps.digital
+host: https://docs.sign-in.service.gov.uk
 
 # Header-related options
 show_govuk_logo: true
@@ -14,7 +14,7 @@ phase: Beta
 # Links to show on right-hand-side of header
 header_links:
   GitHub: https://github.com/alphagov/di-authentication-tech-docs
-  Support: https://auth-tech-docs.london.cloudapps.digital/support/
+  Support: https://docs.sign-in.service.gov.uk/support/
 
 # Links to show in the page footer
 footer_links:
@@ -41,7 +41,7 @@ show_contribution_banner: true
 github_repo: alphagov/di-authentication-tech-docs # used to generate links in the contribution banner
 
 owner_slack_workspace: gds
-default_owner_slack: '#verify-dcs'
+default_owner_slack: '#di-2nd-line'
 
 # Setting show_expiry: false to not have a red banner at the bottom of the page when it's past the review due date. We'll only have the blue banner saying when the page was last reviewed. The expiry date (determined by the review_in parameter in the frontmatter) is for our internal regular review process.
 show_expiry: false
