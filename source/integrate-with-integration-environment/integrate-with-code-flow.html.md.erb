@@ -200,7 +200,7 @@ To create a JWT assertion, you need to create a JWT which contains certain requi
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">aud</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>aud</code> stands for 'audience'. This identifies GOV.UK Sign In’s authorisation server as an intended audience. This value should be the </span>URL: https://oidc.integration.account.gov.uk/. </span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>aud</code> stands for 'audience'. This identifies GOV.UK Sign In’s authorisation server as an intended audience. This value should be the </span>URL: https://oidc.integration.account.gov.uk/token. </span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">iss</span></td>
@@ -232,6 +232,19 @@ To create a JWT assertion, you need to create a JWT which contains certain requi
   </tr>
 </tbody>
 </table>
+
+Your JWT body will look similar to this example:
+
+```
+{
+  "aud":"https://oidc.integration.account.gov.uk/token",
+  "iss":"38174623762",
+  "sub":"38174623762",
+  "exp":1536165540,
+  "jti":"RANDOM_VALUE_JTI",
+  "iat":1536132708
+}
+```
 
 Once you have created your JWT and signed your JWT with the key pair, you have created your JWT assertion.
 
@@ -593,7 +606,7 @@ Content-Type: application/json
   "sub": "b2d2d115-1d7e-4579-b9d6-f8e84f4f56ca",
   "email": "test@example.com",
   "email_verified": true,
-  "phone": "+18881112222",
+  "phone": "01406946277",
   "phone_verified": true,
   "updated_at":1311280970,
 }
