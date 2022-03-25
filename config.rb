@@ -13,9 +13,11 @@ after_build do |builder|
   begin
     HTMLProofer.check_directory(config[:build_dir],
       { :assume_extension => true,
-        :disable_external => true,
         :allow_hash_href => true,
         :empty_alt_ignore => true,
+        :file_ignore => [
+            /search/ # Provided by tech-docs gem but has a "broken" link from html-proofer's point of view
+        ],
         :url_swap => { config[:tech_docs][:host] => "" } }).run
   rescue RuntimeError => e
     abort e.to_s
