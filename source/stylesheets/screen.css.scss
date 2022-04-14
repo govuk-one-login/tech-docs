@@ -1,1 +1,177 @@
 @import "govuk_tech_docs";
+
+.govuk-cookie-banner {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.25;
+  padding-top: 20px;
+  border-bottom: 10px solid transparent;
+  background-color: #f3f2f1; }
+@media print {
+  .govuk-cookie-banner {
+    font-family: sans-serif; } }
+@media (min-width: 40.0625em) {
+  .govuk-cookie-banner {
+    font-size: 19px;
+    font-size: 1.1875rem;
+    line-height: 1.31579; } }
+@media print {
+  .govuk-cookie-banner {
+    font-size: 14pt;
+    line-height: 1.15; } }
+
+.govuk-cookie-banner[hidden] {
+  display: none; }
+
+.govuk-cookie-banner__message {
+  margin-bottom: -10px; }
+.govuk-cookie-banner__message[hidden] {
+  display: none; }
+.govuk-cookie-banner__message:focus {
+  outline: none; }
+
+.govuk-button-group {
+  margin-bottom: 5px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center; }
+@media (min-width: 40.0625em) {
+  .govuk-button-group {
+    margin-bottom: 15px; } }
+.govuk-button-group .govuk-link {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.1875;
+  display: inline-block;
+  max-width: 100%;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  text-align: center; }
+@media print {
+  .govuk-button-group .govuk-link {
+    font-family: sans-serif; } }
+@media (min-width: 40.0625em) {
+  .govuk-button-group .govuk-link {
+    font-size: 19px;
+    font-size: 1.1875rem;
+    line-height: 1; } }
+@media print {
+  .govuk-button-group .govuk-link {
+    font-size: 14pt;
+    line-height: 19px; } }
+.govuk-button-group .govuk-button {
+  margin-bottom: 17px; }
+@media (min-width: 40.0625em) {
+  .govuk-button-group {
+    margin-right: -15px;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-align: baseline;
+    -webkit-align-items: baseline;
+    -ms-flex-align: baseline;
+    align-items: baseline; }
+  .govuk-button-group .govuk-button,
+  .govuk-button-group .govuk-link {
+    margin-right: 15px; }
+  .govuk-button-group .govuk-link {
+    text-align: left; } }
+
+
+.govuk-button {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.1875;
+  box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  margin-top: 0;
+  margin-right: 0;
+  margin-left: 0;
+  margin-bottom: 22px;
+  padding: 8px 10px 7px;
+  border: 2px solid transparent;
+  border-radius: 0;
+  color: #ffffff;
+  background-color: #00703c;
+  box-shadow: 0 2px 0 #002d18;
+  text-align: center;
+  vertical-align: top;
+  cursor: pointer;
+  -webkit-appearance: none; }
+@media print {
+  .govuk-button {
+    font-family: sans-serif; } }
+@media (min-width: 40.0625em) {
+  .govuk-button {
+    font-size: 19px;
+    font-size: 1.1875rem;
+    line-height: 1; } }
+@media print {
+  .govuk-button {
+    font-size: 14pt;
+    line-height: 19px; } }
+@media (min-width: 40.0625em) {
+  .govuk-button {
+    margin-bottom: 32px; } }
+@media (min-width: 40.0625em) {
+  .govuk-button {
+    width: auto; } }
+.govuk-button:link, .govuk-button:visited, .govuk-button:active, .govuk-button:hover {
+  color: #ffffff;
+  text-decoration: none; }
+.govuk-button::-moz-focus-inner {
+  padding: 0;
+  border: 0; }
+.govuk-button:hover {
+  background-color: #005a30; }
+.govuk-button:active {
+  top: 2px; }
+.govuk-button:focus {
+  border-color: #ffdd00;
+  outline: 3px solid transparent;
+  box-shadow: inset 0 0 0 1px #ffdd00; }
+.govuk-button:focus:not(:active):not(:hover) {
+  border-color: #ffdd00;
+  color: #0b0c0c;
+  background-color: #ffdd00;
+  box-shadow: 0 2px 0 #0b0c0c; }
+.govuk-button:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  bottom: -4px;
+  left: -2px;
+  background: transparent; }
+.govuk-button:active:before {
+  top: -4px; }
