@@ -9,6 +9,8 @@ activate :directory_indexes
 
 GovukTechDocs.configure(self)
 
+page "/*", :layout => "dicustom_layout"
+
 after_build do |builder|
   begin
     HTMLProofer.check_directory(config[:build_dir],
