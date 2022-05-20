@@ -275,11 +275,6 @@ OiIiLCJqdGkiOiIifQ.r1Ylfhhy6VNSlhlhW1N89F3WfIGuko2rvSRWO4yK1BI
 </thead>
 <tbody>
   <tr>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">client_id</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You’ll have set your <code>client_ID</code> when you <a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.</span></td>
-  </tr>
-  <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">grant_type</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
     <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">If you’re requesting a refresh token, you must set this parameter to <code>refresh_token</code>. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Otherwise, you need to set the parameter to <code>authorization_code</code>.</span></td>
@@ -500,7 +495,6 @@ Host: oidc.integration.account.gov.uk
 Content-Type: application/x-www-form-urlencoded
 
 grant_type=refresh_token
-&client_id=YOUR_CLIENT_ID
 &refresh_token=i6mapTIAVSp2oJkgUnCACKKfZxt_H5MBLiqcybBBd04
 ```
 
