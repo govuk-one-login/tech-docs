@@ -1,7 +1,7 @@
 ---
 title: How GOV.UK Sign In works
 weight: 2
-last_reviewed_on: 2022-06-08
+last_reviewed_on: 2022-06-10
 review_in: 6 months
 ---
 
@@ -37,8 +37,8 @@ To understand the technical flow, for example the endpoints, requests and tokens
 1. GOV.UK Sign In returns an authorisation code.
 1. Your service makes a [token request](/integrate-with-integration-environment/integrate-with-code-flow/#make-a-token-request) to the `/token` endpoint and includes the authorisation code in the request.
 1. Your service receives an ID token, an access token and a refresh token in the response.
-1. Your service makes a request to the `/userinfo` endpoint to [retrieve user information](/integrate-with-integration-environment/integrate-with-code-flow/#retrieve-user-information).
-1. Your service receives a response containing user attributes. You can read more about [choosing which user attributes your service can request](/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/).
+1. Your service makes a request to the `/userinfo` endpoint to [retrieve user information](/integrate-with-integration-environment/integrate-with-code-flow/#retrieve-user-information). You can read more about [choosing which user attributes your service can request](/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/).
+1. Your service receives a response containing user attributes.
 
 You can [get started with integrating with GOV.UK Sign In's integration environment](/integrate-with-integration-environment/).
 
