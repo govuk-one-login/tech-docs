@@ -1,0 +1,45 @@
+---
+title: Choose the level of identity confidence for your service
+weight: 2.6
+last_reviewed_on: 2022-06-13
+review_in: 6 months
+---
+
+# Choose the level of identity confidence for your service
+
+Using identity assurance is optional. If your service needs identity assurance, you’ll need to choose the level of identity confidence your service needs.
+
+You may need different levels of identity confidence at different points in your user journey. You can set the level of identity confidence your service needs for each request you make to GOV.UK Sign In. Find out when and why to check someone’s identity in the [guidance about how to prove and verify someone's identity, also known as ‘GPG 45’](https://www.gov.uk/government/publications/identity-proofing-and-verification-of-an-individual/how-to-prove-and-verify-someones-identity).
+
+GOV.UK Sign In uses [‘Vectors of Trust’](https://datatracker.ietf.org/doc/html/rfc8485). Your service can use Vectors of Trust to request the right level of identity confidence for your users to gain access to the relevant parts of your service. You’ll include your vector in the query string as part of the authorisation request you make when you integrate with Authorization Code Flow.
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Levels of identity confidence</span></th>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Vector value</span></th>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Description of the levels of identity connfidence</span></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">No identity confidence</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">P0</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">By default, GOV.UK Sign In will not return a level of identity confidence. </span></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Low identity confidence (not available in private beta)</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">P1</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A basic level of identity confidence, which reduces your service’s risk of accepting impostors or fake identities with fabricated credentials, otherwise known as ‘synthetic identities’. </span></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Medium identity confidence</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">P2</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A higher level of identity confidence to further reduce your service’s risk of accepting imposters or fake identities with fabricated credentials, otherwise known as ‘synthetic identities’. </span></td>
+  </tr>
+</tbody>
+</table>
+
+Now you’ve chosen your level of identity confidence, you can [generate a key pair][integrate.generate-key-pair].
+
+<%= partial "partials/links" %>
