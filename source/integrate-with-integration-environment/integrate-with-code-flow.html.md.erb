@@ -21,7 +21,15 @@ You can use the [discovery endpoint][external.oidc-discovery] to get information
 
 ## Make an authorisation request
 
-To make an authorisation request, your application should first send the user to the authorisation URL. To send the user to the authorisation URL, run this command to make a `GET` request, and follow the guidance in the following table to replace the placeholder values.
+There's 2 ways you can make an authorisation request:
+
+1. Create an unsigned authorisation request – you'll receive request parameters in the URL using a browser
+1. Create a signed authorisation request – this uses a request object via a JSON Web Token (JWT) and verifies the signature of the JWT to make sure the authorisation request was sent by you rather than anyone imitating you
+
+
+### Create an unsigned authorisation request
+
+To make an unsigned authorisation request, your application should first send the user to the authorisation URL. To send the user to the authorisation URL, run this command to make a `GET` request, and follow the guidance in the following table to replace the placeholder values.
 
 
 ```
@@ -89,6 +97,14 @@ Host: oidc.integration.account.gov.uk
   </tr>
 </tbody>
 </table>
+
+Once you've made an unsigned authorisation request, you can generate an authorisation code.
+
+### Create a signed authorisation request
+
+XXXX
+
+Once you've made a signed authorisation request, you can generate an authorisation code. 
 
 ### Generate an authorisation code
 
