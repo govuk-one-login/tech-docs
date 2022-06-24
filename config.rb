@@ -20,6 +20,9 @@ after_build do |builder|
         :file_ignore => [
             /search/ # Provided by tech-docs gem but has a "broken" link from html-proofer's point of view
         ],
+        :url_ignore => [
+            /#{Regexp.quote(config[:tech_docs][:github_repo])}/ # Avoid chicken-and-egg problem when new pages in a PR break the link checker
+        ],
         :url_swap => { config[:tech_docs][:host] => "" } }).run
   rescue RuntimeError => e
     abort e.to_s
