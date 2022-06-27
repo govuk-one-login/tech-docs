@@ -39,6 +39,7 @@ prevent_indexing: true
 # Contribution banner
 show_contribution_banner: true
 github_repo: alphagov/di-authentication-tech-docs # used to generate links in the contribution banner
+github_branch: main
 
 owner_slack_workspace: gds
 default_owner_slack: '#di-2nd-line'
