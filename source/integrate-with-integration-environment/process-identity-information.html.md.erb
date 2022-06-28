@@ -1,0 +1,295 @@
+---
+title: Process your user’s identity information
+weight: 5.6
+last_reviewed_on: 2021-06-27
+review_in: 6 months
+---
+
+# Process your user’s identity information
+When you [retrieve user information with `/userinfo`](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/integrate-with-code-flow/#retrieve-user-information), if you [requested identity assurance](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-the-level-of-identity-confidence/) and the appropriate claims, you’ll receive a response containing additional claims (user attributes). You may receive different claims, depending on how your user proved their identity.
+
+Your service’s needs will determine how you process the other claims that GOV.UK Sign In provides about your user. You’ll probably need to match against information held by your service or organisations you work with.
+
+Most claims are represented by JSON objects. The [core identity claim](#understand-your-user-s-core-identity-claim) is a JSON web token (JWT) protected by an electronic signature for additional security.
+
+You’ll receive a response from `userinfo` that will look similar to this example:
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "sub": "urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=",
+  "email": "test@example.com",
+  "email_verified": true,
+  "phone": "01406946277",
+  "phone_verified": true,
+  "updated_at":1311280970,
+  "https://vocab.account.gov.uk/v1/coreIdentityJWT": <JWT>,
+  "https://vocab.account.gov.uk/v1/address": [
+    {
+      "uprn": "10022812929",
+      "subBuildingName": "FLAT 5",
+      "buildingName": "WEST LEA",
+      "buildingNumber": "16",
+      "dependentStreetName": "KINGS PARK",
+      "streetName": "HIGH STREET",
+      "doubleDependentAddressLocality": "EREWASH",
+      "dependentAddressLocality": "LONG EATON",
+      "addressLocality": "GREAT MISSENDEN",
+      "postalCode": "HP16 0AL",
+      "addressCountry": "GB",
+      "validFrom": "2022-01-01"
+    },
+    {
+      "uprn": "10002345923",
+      "buildingName": "SAWLEY MARINA",
+      "streetName": "INGWORTH ROAD",
+      "dependentAddressLocality": "LONG EATON",
+      "addressLocality": "NOTTINGHAM",
+      "postalCode": "BH12 1JY",
+      "addressCountry": "GB",
+      "validUntil": "2022-01-01"
+    }
+  ],
+  "https://vocab.account.gov.uk/v1/passport": [
+     {
+        "documentNumber": "1223456",
+        "expiryDate": "2022-02-02"
+      }
+    ]
+}
+```
+## Understand your user’s core identity claim
+The `https://vocab.account.gov.uk/v1/coreIdentityJWT` property in the `/userinfo` response is the core identity claim, which is a JWT representing core identity attributes.
+
+The following are core identity attributes:
+
+* your user's name
+* your user’s date of birth
+* the level of identity confidence GOV.UK Sign In has reached
+
+<%= warning_text("If the <code>https://vocab.account.gov.uk/v1/coreIdentityJWT</code> property is not present, then GOV.UK Sign In was not able to prove your user's identity.") %>
+
+Our support team will give you the public key you must use to verify this JWT. We recommend you [use a certified JWT/JWS implementation](https://openid.net/developers/jwt/).
+
+The JWT contains the following claims:
+
+```
+{
+  "sub": "urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=",
+  "iss": "https://identity.integration.account.gov.uk/",
+  "nbf": 1541493724,
+  "iat": 1541493724,
+  "exp": 1573029723,
+  "vot": "P2",
+  "vtm": "https://oidc.integration.account.gov.uk/trustmark",
+  "vc": {
+    "type": [
+      "VerifiableCredential",
+      "VerifiableIdentityCredential"
+    ],
+    "credentialSubject": {
+      "name": [
+        {
+          "validFrom": "2020-03-01",
+          "nameParts": [
+            {
+              "value": "Alice",
+              "type": "GivenName"
+            },
+            {
+              "value": "Jane",
+              "type": "GivenName"
+            },
+            {
+              "value": "Laura",
+              "type": "GivenName"
+            },
+            {
+              "value": "Doe",
+              "type": "FamilyName"
+            }
+          ]
+        },
+        {
+          "validUntil": "2020-03-01",
+          "nameParts": [
+            {
+              "value": "Alice",
+              "type": "GivenName"
+            },
+            {
+              "value": "Jane",
+              "type": "GivenName"
+            },
+            {
+              "value": "Laura",
+              "type": "GivenName"
+            },
+            {
+              "value": "O’Donnell",
+              "type": "FamilyName"
+            }
+          ]
+        }
+      ],
+      "birthDate": [
+        {
+          "value": "1970-01-01"
+        }
+      ]
+    }
+  }
+}
+```
+
+The `vc` claim in the JWT is a [verifiable credential (VC)](https://www.w3.org/TR/vc-data-model/). Claims about your user are contained in the `credentialSubject` JSON object.
+
+### Validate your user’s identity credential
+
+1. You must validate the JWT signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Check that the JWT `alg` header is `ES256`. Then you can use the value of the JWT `alg` header parameter to validate the JWT.
+1. Check the `iss` claim is `https://identity.integration.account.gov.uk/`.
+1. Check the `sub` claim matches the `sub` claim you received in [the `id_token` from your token request](../integrate-with-code-flow/#understand-your-id-token).
+1. Check the current time is before the time in the `exp` claim.
+
+### Check your user’s identity credential matches the level of confidence needed
+
+You must check the `vot` claim in the JWT matches or exceeds the level of confidence you need to let your user access your service. You may receive a lower level of confidence than you requested. For example, if you asked for medium confidence (`P2`), you may receive an identity credential containing low confidence (`P1` in the `vot` claim).
+
+### Process your user’s identity credential
+
+The identity credential contains the following claims as properties of `credentialSubject`.
+
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Property</span></th>
+    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Description</span></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>name</code></span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A list showing the names proven by GOV.UK Sign In. This list reflects name changes by using the <code>validFrom</code> and <code>validUntil</code> metadata properties. If <code>validUntil</code> is <code>null</code> or not present, that name is your user’s current name. If <code>validFrom</code> is <code>null</code> or not present, your user may have used that name from birth.
+<br><br>
+Each name is presented as an array in the <code>nameParts</code> property. Each part of the name is either a <code>GivenName</code> or a <code>FamilyName</code>, identified in its <code>type</code> property. The <code>value</code> property could be any text string. GOV.UK Sign In cannot specify a maximum length or restrictions on what characters may appear.
+<br><br>
+<code>GivenName</code> or <code>FamilyName</code> can appear in any order within the list. The order of names may depend on either your user’s preferences or the order they appear on documents used to prove your user’s identity.
+</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>birthDate</code></span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A list of <a href=https://schema.org/Date><span>ISO 8601 date</span></a> strings. There may be multiple dates of birth, for example, if there’s evidence an incorrect date of birth was previously recorded for your user. The date of birth GOV.UK Sign In has highest confidence in will be the first item in the list.</span></td>
+  </tr>
+</tbody>
+</table>
+
+## Understand your user’s address claim
+The `https://vocab.account.gov.uk/v1/address` claim contains all addresses your user has declared, including previous addresses.
+
+Each JSON object in the list may contain any of the following properties:
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Property</span></th>
+    <th class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Definition</span></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>validFrom</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><a href=https://schema.org/Date><span>ISO 8601 date<span></a> strings representing the date your user moved into the address.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">If the month is unknown for <code>validFrom</code>, GOV.UK Sign In will show that as <code>01</code>. GOV.UK Sign In will also show an unknown day of the month as <code>01</code>.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>validUntil</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><a href=https://schema.org/Date><span>ISO 8601 date<span></a> strings representing the date your user moved from the address. This property is not included for your user’s current address.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">If the month is unknown for <code>validUntil</code>, GOV.UK Sign In will show that as <code>01</code>. GOV.UK Sign In will also show an unknown day of month as <code>01</code>.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>uprn</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">GOV.UK Sign In will provide a <a href=https://www.gov.uk/government/publications/open-standards-for-government/identifying-property-and-street-information><span>Unique Property Reference Number (UPRN)</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> for UK addresses, unless your user has manually corrected their address.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>organisationName</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Maps to <code>ORGANISATION_NAME</code> in the </span><a href="https://www.royalmail.com/find-a-postcode"><span>Postcode Address File</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> and </span><a href="https://apidocs.os.uk/docs/os-places-dpa-output"><span>Ordnance Survey Places API</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">. </span><br></td>
+  </tr>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>departmentName</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Maps to <code>DEPARTMENT_NAME</code> in the </span><a href="https://www.royalmail.com/find-a-postcode"><span>Postcode Address File</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> and </span><a href="https://apidocs.os.uk/docs/os-places-dpa-output"><span>Ordnance Survey Places API</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">. </span><br></td>
+  </tr>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>subBuildingName</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Maps to <code>SUB_BUILDING_NAME</code> in the </span><a href="https://www.royalmail.com/find-a-postcode"><span>Postcode Address File</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> and </span><a href="https://apidocs.os.uk/docs/os-places-dpa-output"><span>Ordnance Survey Places API</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">. </span><br></td>
+  </tr>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>buildingNumber</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Maps to <code>BUILDING_NUMBER</code> in the </span><a href="https://www.royalmail.com/find-a-postcode"><span>Postcode Address File</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> and </span><a href="https://apidocs.os.uk/docs/os-places-dpa-output"><span>Ordnance Survey Places API</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">. </span><br></td>
+  </tr>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>buildingName</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Maps to <code>BUILDING_NAME</code> in the </span><a href="https://www.royalmail.com/find-a-postcode"><span>Postcode Address File</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> and </span><a href="https://apidocs.os.uk/docs/os-places-dpa-output"><span>Ordnance Survey Places API</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">. </span><br></td>
+  </tr>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>dependentStreetName</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Maps to <code>DEPENDENT_THOROUGHFARE_NAME</code> in the </span><a href="https://www.royalmail.com/find-a-postcode"><span>Postcode Address File</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> and </span><a href="https://apidocs.os.uk/docs/os-places-dpa-output"><span>Ordnance Survey Places API</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">. </span><br></td>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>streetName</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Maps to <code>THOROUGHFARE_NAME</code> in the </span><a href="https://www.royalmail.com/find-a-postcode"><span>Postcode Address File</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> and </span><a href="https://apidocs.os.uk/docs/os-places-dpa-output"><span>Ordnance Survey Places API</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">. </span><br></td>
+  </tr>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>doubleDependentAddressLocality</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Maps to <code>DOUBLE_DEPENDENT_LOCALITY</code> in the </span><a href="https://www.royalmail.com/find-a-postcode"><span>Postcode Address File</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> and </span><a href="https://apidocs.os.uk/docs/os-places-dpa-output"><span>Ordnance Survey Places API</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">. </span><br></td>
+  </tr>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>dependentAddressLocality</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Maps to <code>DEPENDENT_LOCALITY</code> in the </span><a href="https://www.royalmail.com/find-a-postcode"><span>Postcode Address File</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> and </span><a href="https://apidocs.os.uk/docs/os-places-dpa-output"><span>Ordnance Survey Places API</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">. </span><br></td>
+  </tr>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>addressLocality</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Maps to <code>POST_TOWN</code> in the </span><a href="https://www.royalmail.com/find-a-postcode"><span>Postcode Address File</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> and </span><a href="https://apidocs.os.uk/docs/os-places-dpa-output"><span>Ordnance Survey Places API</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">. </span><br></td>
+  </tr>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>postalCode</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Maps to <code>POST_CODE</code> in the </span><a href="https://www.royalmail.com/find-a-postcode"><span>Postcode Address File</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> and </span><a href="https://apidocs.os.uk/docs/os-places-dpa-output"><span>Ordnance Survey Places API</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">. </span><br></td>
+  </tr>
+  <tr>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>addressCountry</code></span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Two-letter <a href=https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2><span>ISO 3166-1 alpha-2 country code</span></a>. </span></td>
+  </tr>
+</tbody>
+</table>
+
+Do not assume address properties always map to the same line of an address. For example, <code>addressLocality</code> may map to a different line of an address, depending on whether other properties are present (in this case, <code>dependentAddressLocality</code> and <code>doubleDependentAddressLocality</code>).
+
+## Understand your user's passport claim
+The <code>https://vocab.account.gov.uk/v1/passport</code> claim contains the details of your user’s passport, if they submitted one when proving their identity.
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Property</span></th>
+    <th class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Definition</span></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>documentNumber</code></span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The passport number.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>expiryDate</code></span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The expiration date as an <a href=https://schema.org/Date><span>ISO 8601 date</span></a> string.</span></td>
+  </tr>
+</tbody>
+</table>
+
+## Handling unsuccessful user journeys
+Your user may not complete their user journey. If their journey is unsuccessful, you'll need to provide them with another way to prove their identity or access your service.
+
+GOV.UK Sign In will respond to the authorisation request with an OAuth error. You can [read more about error handling when you make an authorisation request](../integrate-with-code-flow/#error-handling-for-make-an-authorisation-request).
+
+
+
+<%= partial "partials/links" %>
