@@ -148,7 +148,7 @@ The `vc` claim in the JWT is a [verifiable credential (VC)](https://www.w3.org/T
 
 ### Validate your user’s identity credential
 
-1. You must validate the JWT signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Check that the JWT `alg` header is `ES256`. Then you can use the value of the JWT `alg` header parameter to validate the JWT.
+1. You must validate the JWT signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Check the JWT `alg` header is `ES256` and then use the value of the JWT `alg` header parameter to validate the JWT.
 1. Check the `iss` claim is `https://identity.integration.account.gov.uk/`.
 1. Check the `sub` claim matches the `sub` claim you received in [the `id_token` from your token request](../integrate-with-code-flow/#understand-your-id-token).
 1. Check the current time is before the time in the `exp` claim.
