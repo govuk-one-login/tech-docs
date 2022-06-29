@@ -20,9 +20,21 @@ You can use the [discovery endpoint][external.oidc-discovery] to get information
 * supported scopes, which will contain the user attributes your service can request
 
 ## Make an authorisation request
+To make an authorisation request, your application should first send your user to the authorisation URL.
 
-To make an authorisation request, your application should first send the user to the authorisation URL. To send the user to the authorisation URL, run this command to make a `GET` request, and follow the guidance in the following table to replace the placeholder values.
+The way you make an authorisation request will depend on whether you need:
 
+* an authentication request only
+* an authentication and identity assurance request (if you need identity, you must include authentication too)
+
+You can then use one of the following example messages to make a `GET` request. You should [use a certified OIDC client library](https://openid.net/developers/certified/). Use the guidance in the following table to [replace your example message’s placeholder values][integrate.replace-example-message].
+
+### Make an authorisation request for authentication only
+If you only need a level of authentication without identity assurance, use this example message to make a `GET` request.
+
+The following example specifies low (`Cl`) and medium (`Cm`) authentication. There’s further guidance on choosing the [level of authentication][integrate.choose-level-of-auth].
+
+You can [replace your example message’s placeholder values][integrate.replace-example-message].
 
 ```
 GET /authorize?response_type=code
@@ -37,58 +49,101 @@ HTTP/1.1
 Host: oidc.integration.account.gov.uk
 ```
 
+### Make an authorisation request for authentication and identity
+If you need identity assurance as well as authentication, use this example message to make a `GET` request.
+
+The following example uses medium authentication (`Cm`) and a medium level of identity confidence (`P2`). There’s further guidance on choosing the [level of authentication][integrate.choose-level-of-auth] and choosing the [level of identity confidence][integrate.choose-level-of-confidence].
+You can [replace your example message’s placeholder values][integrate.replace-example-message].
+
+```
+GET /authorize?response_type=code
+&scope=YOUR_SCOPES
+&client_id=YOUR_CLIENT_ID
+&state=STATE
+&redirect_uri=YOUR_REDIRECT_URI
+&nonce=aEwkamaos5B
+&vtr=["Cl.Cm.P2"]
+&claims=<claims-request>
+HTTP/1.1
+Host: oidc.integration.account.gov.uk
+```
+
+#### Create a URL-encoded JSON object for `<claims-request>`
+
+After you’ve made an authorisation request for authentication and identity, you should then [use a certified OIDC client library](https://openid.net/developers/certified/) to create a URL-encoded JSON object for ``<claims-request>``. Your JSON object should look similar to this example:
+
+```
+{
+  "userinfo": {
+    "https://vocab.account.gov.uk/v1/coreIdentityJWT": null,
+    "https://vocab.account.gov.uk/v1/address": null,
+    "https://vocab.account.gov.uk/v1/passport": null
+  }
+}
+```
+
+You can only request user attributes to be returned in the `/userinfo` response. You cannot configure the claims returned in the [ID token][integrate.understand-id-token].
+
+### Replace your example message’s placeholder values
+Use the guidance in the following table to replace placeholder values in your example message.
+
 <table class="tg">
 <thead>
   <tr>
-    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Parameter</span></th>
-    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required or optional</span></th>
-    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Description</span></th>
+    <th class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Parameter</span></th>
+    <th class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required or optional</span></th>
+    <th class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Description</span></th>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td class="tg-0pky">response_type</td>
-    <td class="tg-0pky">Required</td>
-    <td class="tg-0pky">You must set this value to be code: <code>response_type=code</code>.</td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">response_type</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Required</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You must set this value to be code: </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">response_type=code</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.</span></td>
   </tr>
   <tr>
-    <td class="tg-0pky">scope</td>
-    <td class="tg-0pky">Required</td>
-    <td class="tg-0pky">A space-separated list of scopes. You must include <code>openid</code> scope value.<br>You should refer to the guidance on <a href="/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/"><span>choosing which user attributes your service can request</span></a> for the <code>scope</code> parameter. </td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">scope</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Required</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">A space-separated list of scopes. You must include </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">openid</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> scope value.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You should refer to the guidance on </span><a href="https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">choosing which user attributes your service can request</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> for the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">scope</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter.</span></td>
   </tr>
   <tr>
-    <td class="tg-0pky">client_id</td>
-    <td class="tg-0pky">Required</td>
-    <td class="tg-0pky">You’ll have set your <code>client_ID</code> when you <a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>. </td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">client_id</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Required</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You’ll have set your </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">client_ID</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> when you </span><a href="https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">registered your service to use GOV.UK Sign In</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.</span></td>
   </tr>
   <tr>
-    <td class="tg-0pky">state</td>
-    <td class="tg-0pky">Required </td>
-    <td class="tg-0pky">When you receive a response at the redirect URL, there must be a way to verify the response came for a request which you sent. The <code>state</code> value solves this issue by binding the request and response, which reduces impact of <a href="https://owasp.org/www-community/attacks/csrf"><span>Cross Site Request Forgery</span></a> attacks.<br>This value will be returned to the client in the authentication response.</td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">state</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Required</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">When you receive a response at the redirect URL, there must be a way to verify the response came for a request which you sent. The </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">state</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> value solves this issue by binding the request and response, which reduces impact of </span><a href="https://owasp.org/www-community/attacks/csrf"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">Cross Site Request Forgery</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> attacks.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">This value will be returned to the client in the authentication response.</span></td>
   </tr>
   <tr>
-    <td class="tg-0pky">redirect_uri</td>
-    <td class="tg-0pky">Required</td>
-    <td class="tg-0pky">You’ll have specified your <code>redirect_uri</code> when you <a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.<br>The redirect URI must exactly match one of the redirect URIs you registered for using Dynamic Client Registration, except that it must be URL-encoded.</td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">redirect_uri</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Required</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You’ll have specified your </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">redirect_uri</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> when you </span><a href="https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">registered your service to use GOV.UK Sign In</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">The redirect URI must exactly match one of the redirect URIs you registered for using Dynamic Client Registration, except that it must be URL-encoded.</span></td>
   </tr>
   <tr>
-    <td class="tg-0pky">nonce</td>
-    <td class="tg-0pky">Required </td>
-    <td class="tg-0pky">A unique value generated by your application that is used to verify the integrity of the <code>id_token</code> and mitigate replay attacks. <br>This value will be present in the <code>id_token</code> and should include the per-session state, as well as being impossible for attackers to guess. <br>Your application will need to verify the <code>nonce</code> claim value is the same as the <code>nonce</code> parameter sent in the authentication request.</td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">nonce</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Required</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">A unique value generated by your application that is used to verify the integrity of the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">id_token</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> and mitigate replay attacks.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">This value will be present in the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">id_token</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> and should include the per-session state, as well as being impossible for attackers to guess.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Your application will need to verify the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">nonce</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> claim value is the same as the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">nonce</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter sent in the authentication request.</span></td>
   </tr>
   <tr>
-    <td class="tg-0pky">prompt</td>
-    <td class="tg-0pky">Optional<br></td>
-    <td class="tg-0pky">GOV.UK Sign In supports the <code>login</code> parameter. This will always force your users to re-authenticate even if they have an existing session. <br>If you use the <code>prompt</code> parameter, your users will be prompted to authenticate. <br>If you do not use the <code>prompt</code> parameter, your service will silently authenticate your users if they have an existing session.</td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">prompt</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Optional</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">GOV.UK Sign In supports the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">login</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter. This will always force your users to re-authenticate even if they have an existing session.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">If you use the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">prompt</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter, your users will be prompted to authenticate.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">If you do not use the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">prompt</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter, your service will silently authenticate your users if they have an existing session.</span></td>
   </tr>
   <tr>
-    <td class="tg-0pky">vtr</td>
-    <td class="tg-0pky">Optional<br></td>
-    <td class="tg-0pky">The <code>vtr</code> parameter represents ‘Vectors of Trust’. You selected your Vector of Trust when you chose the level of authentication for your service. <br>
-    This parameter is optional. If you do not specify the <code>vtr</code>  parameter, your service will automatically log your users in at the medium level of protection, otherwise known as <code>Cm</code>. There's more <a href=/integrate-with-integration-environment/choose-the-level-of-authentication/#choose-the-level-of-authentication-for-your-service><span> guidance for the level of authentication for your service</span></a> if you need it.</td>
+    <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">vtr</span></td>
+    <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">Optional</span></td>
+    <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">The `</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D">vtr`</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> parameter represents ‘Vectors of Trust’ where you request authentication and, optionally, identity assurance. For example, if you want the medium level of authentication and medium identity confidence, request <code>vtr=[“Cl.Cm.p2”]</code>. </span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">You selected your Vector of Trust when you <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-the-level-of-authentication><span>chose the level of authentication</span></a> and <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-the-level-of-identity-confidence><span>the level of identity confidence</span></a> for your service.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">You can read more about how to combine the vectors for authentication level and identity confidence in </span><a href=https://datatracker.ietf.org/doc/html/rfc8485#section-3.1><span>Section 3 of RFC 8485</span></a>. If you need identity assurance, you must request <code>Cl.Cm</code> (the medium level of authentication) or higher (higher levels of authentication will be available soon).<br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">If you do not specify the <code>vtr</code></span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> parameter, your service will automatically log your users in at the medium level of authentication (<code>`Cl.Cm`</code>).</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> This means you will not receive identity information in your response. </span><br></td>
+  </tr>
+  <tr>
+    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">claims</span></td>
+    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">Optional</span></td>
+    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">To get the identity attributes your service needs, you should specify these in the `claims` parameter using the <code>/userinfo</code> endpoint. The <code>/userinfo</code> endpoint returns a JSON object listing the requested claims.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">You can read more about <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/><span>choosing which user attributes your service can request.</span></a><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">You can </span><a href=https://openid.net/specs/openid-connect-core-1_0.html#ClaimsParameter><span>read more about the structure of the claims request in OpenID Connect section 5.5</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">.</span></td>
   </tr>
 </tbody>
 </table>
+
 
 ### Generate an authorisation code
 
@@ -597,7 +652,7 @@ Content-Type: application/json
 }
 ```
 
-If you included a [level of identity confidence][integrate.choose-level-of-confidence] when you made a request to the `/userinfo` endpoint, you’ll also see identity attributes in the response. You can read more about [how to process your user’s identity information](../process-identity-information/). 
+If you included a [level of identity confidence][integrate.choose-level-of-confidence] when you made a request to the `/userinfo` endpoint, you’ll also see identity attributes in the response. You can read more about [how to process your user’s identity information](../process-identity-information/).
 
 ### Error handling for ‘Retrieve user information’
 
