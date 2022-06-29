@@ -597,6 +597,8 @@ Content-Type: application/json
 }
 ```
 
+If you included a [level of identity confidence][integrate.choose-level-of-confidence] when you made a request to the `/userinfo` endpoint, you’ll also see identity attributes in the response. You can read more about [how to process your user’s identity information](../process-identity-information/). 
+
 ### Error handling for ‘Retrieve user information’
 
 To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
