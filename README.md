@@ -1,6 +1,9 @@
-# Authentication technical documentation
+# GOV.UK One Login technical documentation
 
-TBA
+This documentation is for government services that want to integrate with GOV.UK One Login to 
+
+* authenticate their users
+* verify their users' identity  
 
 # Getting Started
 
