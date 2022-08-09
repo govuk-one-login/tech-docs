@@ -1,6 +1,7 @@
 //= require govuk_tech_docs
 
 var cookieBanner = function () {
+  const PROD_HOSTNAME = 'sign-in.service.gov.uk';
   const COOKIES_PREFERENCES_SET = "cookies_preferences_set";
 
   const cookiesAccepted = document.querySelector("#cookies-accepted");
@@ -49,7 +50,7 @@ var cookieBanner = function () {
     );
 
     const hideButtons = Array.prototype.slice.call(hideCookieBanner);
-    hideButtons.forEach(function(element) {
+    hideButtons.forEach(function (element) {
       element.addEventListener(
         "click",
         function (event) {
@@ -60,18 +61,30 @@ var cookieBanner = function () {
     });
   }
 
-  function getCookieDomain () {
-    const PROD_HOSTNAME = 'sign-in.service.gov.uk';
+  function isProdDomain() {
+    return window.location.hostname.includes(PROD_HOSTNAME);
+  }
 
-    if (window.location.hostname.includes(PROD_HOSTNAME)) {
-      return window.location.hostname.replace(/^(www.){0,1}(docs.){0,1}/, '.')
+  function isLocalhost() {
+    return window.location.hostname.includes("localhost");
+  }
+
+  function isAws() {
+    return window.location.hostname.includes("eu-west-2.elb.amazonaws.com");
+  }
+
+  function getCookiesDomainAttribute() {
+    if (isProdDomain()) {
+      return "; domain=" + PROD_HOSTNAME;
     }
+    return "";
+  }
 
-    if (window.location.hostname.includes('localhost')) {
-      return 'localhost'
+  function getCookiesSecureAttribute() {
+    if (isLocalhost() || isAws()) {
+      return "";
     }
-
-    return undefined
+    return "; Secure";
   }
 
   function setCookie(name, value) {
@@ -79,13 +92,13 @@ var cookieBanner = function () {
     const expiryDate = new Date(
       currentDate.setMonth(currentDate.getMonth() + 12)
     );
+
     document.cookie =
-      name + "=" +
-      JSON.stringify(value) +
-      "; domain=" + getCookieDomain() +
-      "; expires=" +
-      expiryDate +
-      "; path=/; ";
+      name + "=" + JSON.stringify(value) +
+      getCookiesDomainAttribute() +
+      "; expires=" + expiryDate +
+      "; path=/" +
+      getCookiesSecureAttribute();
   }
 
   function hideElement(el) {
@@ -121,10 +134,10 @@ var cookieBanner = function () {
         initGATagManager(analyticsEnabled);
 
         showElement(document.querySelector("#save-success-banner"));
-        if(analyticsEnabled){
+        if (analyticsEnabled) {
           showElement(document.querySelector("#policy-cookies-accepted-banner"));
           hideElement(document.querySelector("#policy-cookies-rejected-banner"));
-        }else{
+        } else {
           hideElement(document.querySelector("#policy-cookies-accepted-banner"));
           showElement(document.querySelector("#policy-cookies-rejected-banner"));
         }
@@ -138,7 +151,7 @@ var cookieBanner = function () {
     if (hasGivenConsent) {
 
       const commentStart = document.createComment(' Google Tag Manager ')
-      document.head.append(commentStart) ;
+      document.head.append(commentStart);
 
       const script = document.createElement("script");
       const scriptValue = "(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-W38DXV2');";
@@ -146,12 +159,11 @@ var cookieBanner = function () {
       document.head.append(script);
 
       const commentEnd = document.createComment(' End Google Tag Manager ')
-      document.head.append(commentEnd) ;
-
+      document.head.append(commentEnd);
     } else {
       deleteCookie("_gid");
       deleteCookie("_ga");
-      deleteCookie("_gat_gtag_" + gaTrackingCode.replace("-", "_"));
+      deleteCookie("_gat_gtag_" + gaTrackingCode.value.replace("-", "_"));
     }
   }
 
