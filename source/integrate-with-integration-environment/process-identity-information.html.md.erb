@@ -285,6 +285,44 @@ The <code>https://vocab.account.gov.uk/v1/passport</code> claim contains the det
 </tbody>
 </table>
 
+## Understand your user's driving permit claim
+The <code>https://vocab.account.gov.uk/v1/drivingPermit</code> claim contains the details of your user’s driving licence, if they submitted one when proving their identity.
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Property</span></th>
+    <th class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Definition</span></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>personalNumber</code></span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The licence number (In position 5 on the UK driving licence).</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>fullAddress</code></span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The users full address as a string value, including address details and postcode.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>issueNumber</code></span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The last 2 characters of the "personalNumber".</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>issuedBy</code></span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Who issued the driving licence (DVA or DVLA).</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>issueDate</code></span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The date that the driving licence was issued as an <a href=https://schema.org/Date><span>ISO 8601 date</span></a> string.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>expiryDate</code></span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The expiration date as an <a href=https://schema.org/Date><span>ISO 8601 date</span></a> string.</span></td>
+  </tr>
+</tbody>
+</table>
+
 ## Handling unsuccessful user journeys
 Your user may not complete their user journey. If their journey is unsuccessful, you'll need to provide them with another way to prove their identity or access your service.
 
