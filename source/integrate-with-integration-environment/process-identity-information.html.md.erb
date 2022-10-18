@@ -51,11 +51,22 @@ Content-Type: application/json
       "addressCountry": "GB",
       "validUntil": "2022-01-01"
     }
+  ]
+},
+  "https://vocab.account.gov.uk/v1/drivingPermit": [
+    {
+      "expiryDate": "2023-01-18",
+      "issueNumber": "5",
+      "issuedBy": "DVLA",
+      "fullAddress": "122 BURNS CRESCENT EDINBURGH EH1 9GP",
+      "personalNumber": "DOE99802085J99FG",
+      "issueDate": "2010-01-18"
+}
   ],
   "https://vocab.account.gov.uk/v1/passport": [
      {
         "documentNumber": "1223456",
-        "expiryDate": "2022-02-02"
+        "expiryDate": "2032-02-02"
       }
     ]
 }
@@ -281,6 +292,32 @@ The <code>https://vocab.account.gov.uk/v1/passport</code> claim contains the det
   <tr>
     <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>expiryDate</code></span></td>
     <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The expiration date as an <a href=https://schema.org/Date><span>ISO 8601 date</span></a> string.</span></td>
+  </tr>
+</tbody>
+</table>
+
+## Understand your user's driving licence claim
+The <code>https://vocab.account.gov.uk/v1/drivingPermit</code> claim contains the details of your user’s driving licence, if they submitted one when proving their identity.
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Property</span></th>
+    <th class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Definition</span></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>personalNumber</code></span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The licence number.</span></td>
+  </tr>
+  <tr>
+  <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>fullAddress</code></span></td>
+  <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The user's full address as a text string, including address lines and postcode.</span></td>
+</tr>
+  <tr>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>issueNumber</code></span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The last 2 characters of the <code>personalNumber</code>. You will only receive this property for licences issued by the Driver and Vehicle Licensing Agency (DVLA).</span></td>
   </tr>
 </tbody>
 </table>
