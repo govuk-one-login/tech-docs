@@ -44,6 +44,7 @@ GET /authorize?response_type=code
 &redirect_uri=YOUR_REDIRECT_URI
 &nonce=aEwkamaos5B
 &vtr=["Cl.Cm"]
+&ui_locales=en
 
 HTTP/1.1
 Host: oidc.integration.account.gov.uk
@@ -63,6 +64,7 @@ GET /authorize?response_type=code
 &redirect_uri=YOUR_REDIRECT_URI
 &nonce=aEwkamaos5B
 &vtr=["Cl.Cm.P2"]
+&ui_locales=en
 &claims=<claims-request>
 HTTP/1.1
 Host: oidc.integration.account.gov.uk
@@ -131,6 +133,13 @@ Use the guidance in the following table to replace placeholder values in your ex
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">prompt</span></td>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Optional</span></td>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">GOV.UK Sign In supports the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">login</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter. This will always force your users to re-authenticate even if they have an existing session.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">If you use the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">prompt</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter, your users will be prompted to authenticate.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">If you do not use the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">prompt</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter, your service will silently authenticate your users if they have an existing session.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">ui_locales</span></td>
+    <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">Optional</span></td>
+    <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">GOV.UK Sign In supports English and Welsh as language choices. <br><br> If your service is in Welsh, you may want to display GOV.UK Sign In in Welsh for a consistent user experience. You can use <code>ui_locales</code> to do this. <br> <br> In the <code>ui_locales</code> parameter, you can choose either <code>en</code> (English) or <code>cy</code> (Welsh). <br><br> Using <code>ui_locales</code> is optional. If you do not include it, your service will continue using English by default. <br><br> GOV.UK Sign In does not support any other languages.
+
+</td>
   </tr>
   <tr>
     <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">vtr</span></td>
