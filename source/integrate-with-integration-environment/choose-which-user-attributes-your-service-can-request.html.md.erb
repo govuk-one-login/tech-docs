@@ -1,7 +1,7 @@
 ---
 title: Choose which user attributes your service can request
 weight: 4
-last_reviewed_on: 2022-06-27
+last_reviewed_on: 2022-10-21
 review_in: 6 months
 ---
 
@@ -39,7 +39,10 @@ The user attributes and how you request them will depend on whether you are requ
 You'll need to agree which scopes and claims you want to use when you [register your service to use GOV.UK Sign In](../manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in).
 
 ## Choose which scopes your service can request
+
 `openid` is the only scope you must include. You can choose to include other scopes for your authorisation request depending on the user attributes your service needs.
+
+You can store your scopes on your [GOV.UK Sign In account](admin.sign-in.service.gov.uk/sign-in) if you're needing authentication only (instead of authenticaion and identity).
 
 You can find details of the scopes in the following table.
 
@@ -115,6 +118,7 @@ If you want a refresh token, you must request the <code>offline_access</code> sc
 </tbody>
 </table>
 
+
 ## Choose which claims your service can request
 
 You can also request specific claims from GOV.UK Sign In, if you need more information than the scopes in the previous section can provide. You must [choose a level of identity confidence][integrate.choose-level-of-confidence] `P2` or above, otherwise you will not receive any claims in the authorisation response.
@@ -152,7 +156,7 @@ You can see more about the structure of this information when you [process your 
 
 You can only ask us for claims that are covered by your [Data Protection Impact Assessment](https://ico.org.uk/for-organisations/guide-to-data-protection/guide-to-the-general-data-protection-regulation-gdpr/data-protection-impact-assessments-dpias/). You must clearly explain to your users why you are collecting the data and what you will use it for.
 
-Once you have chosen which attributes your service can request, you can [manage your service’s configuration with GOV.UK Sign In](../manage-your-service-s-configuration/).
+Once you have chosen which attributes your service can request, you can [integrate with Authorization Code Flow](/integrate-with-integration-environment/integrate-with-code-flow/).
 
 
 <%= partial "partials/links" %>

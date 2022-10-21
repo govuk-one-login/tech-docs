@@ -1,7 +1,7 @@
 ---
 title: Generate a key pair
 weight: 3
-last_reviewed_on: 2021-10-14
+last_reviewed_on: 2022-10-21
 review_in: 6 months
 ---
 
@@ -30,6 +30,12 @@ You have now generated your key pair, which will appear on your machine as 2 fil
 
 * `public_key.pem` - this is your public key, which you should share with GOV.UK Sign In
 * `private_key.pem` - this is your private key, which you should store securely and not share
+
+## Storing your public key
+
+If you're needing authentication only, you can store your public key on your [GOV.UK Sign In Account](admin.sign-in.service.gov.uk/sign-in). 
+
+If you're needing both authentication and identity, you'll need to XXXXX? IDENTITY PROCESS email your public key contents (not including RSA headers) to [govuk-sign-in@digital.cabinet-office.gov.uk](mailto: govuk-sign-in@digital.cabinet-office.gov.uk). We'll get back to you with the next steps.
 
 Once you have generated your key pair, you can [choose which user attributes your service can request][integrate.choose-user-attributes].
 
