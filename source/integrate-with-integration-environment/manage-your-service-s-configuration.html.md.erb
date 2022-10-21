@@ -1,7 +1,7 @@
 ---
 title: Manage your service’s configuration with GOV.UK Sign In
-weight: 5.12
-last_reviewed_on: 2022-01-21
+weight: 0.5
+last_reviewed_on: 2022-10-21
 review_in: 6 months
 ---
 
@@ -13,27 +13,24 @@ You must first register your service with GOV.UK Sign In as a ‘relying party�
 
 ## Register your service to use GOV.UK Sign In
 
-To register your service to use GOV.UK Sign In, you need to:
+The process to register your service will be different depending on whether you're registering needing authentication only, or both authentication and identity. 
 
-1. Choose your `sector_identifier_uri`.
-1. Contact the GOV.UK Sign In team and we'll register your service for you.
+### Registering your service which needs authentication only
 
-### Choose your `sector_identifier_uri`
+To register your service needing authentication only, you can use your XXXX beth needs to confirm exact name [GOV.UK Sign In Account](admin.sign-in.service.gov.uk/email-address). 
 
-Your service will use a [pairwise user identifier](https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg) when you use GOV.UK Sign In.
+You can use your GOV.UK Sign In Account to store all aspects of your registration, for example your service name, which user attributes you want to request, or your private key. 
 
-When using a pairwise identifier, GOV.UK Sign In provides a unique `sub` value in the ID token to each service. This means a user ID will not be the same across services, so the value cannot be matched and used to identify an individual user.
+### Registering your service which needs both authentication and identity
 
-You need to specify your `sector_identifier_uri` parameter when you contact the GOV.UK Sign In team to register your service. GOV.UK Sign In will use this to create a unique subject identifier for your user.
+XXXXX? IDENTITY PROCESS
 
-<%= warning_text('If you do not specify the <code>sector_identifier_uri</code>, GOV.UK Sign In will use the host name of your redirect URI when we generate the subject identifier for your user. You should be aware that if your redirect URI ever changes, your users’ subject identifiers will also change.') %>
+The functionality for using a GOV.UK Sign In Account to register your service if you need both authentication and identity is coming soon.
 
-### Contact the GOV.UK Sign In team to register your service
-
-You need to contact the GOV.UK Sign In team to register your service.
+In the meantime, you need to contact the GOV.UK Sign In team to register your service.
 
 1. Start an email and include the following details.
-1. [Send the email with the completed details to govuk-sign-in@digital.cabinet-office.gov.uk](mailto: govuk-sign-in@digital.cabinet-office.gov.uk).
+1. Send the email with the completed details to [govuk-sign-in@digital.cabinet-office.gov.uk](mailto: govuk-sign-in@digital.cabinet-office.gov.uk).
 1. The GOV.UK Sign In team will register your service for you and let you know when the registration is complete.
 
 To register your service, you must send:
@@ -44,20 +41,33 @@ To register your service, you must send:
 * the scopes you selected when you [chose which user attributes your service can request](/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/)
 * the [key you generated][integrate.generate-key-pair] - only send the contents of the `public_key.pem` file and do not include the RSA headers (the words in caps above and below the key)
 * the URL you’d like your users redirected to if they log out of your service - if you do not specify one, your users will be redirected to the [default GOV.UK sign out page](https://signin.account.gov.uk/signed-out)
-* your `sector_identifier_uri` with the identifier for your sector
+* your `sector_identifier_uri` with the identifier for your sector – you can [follow the guidance on choosing your `sector_identifier_uri](/integrate-with-integration-environment/manage-your-service-s-configuration/#choosing-your-sector-identifier-uri)
 
-You can also receive user logout notifications from GOV.UK Sign In. To use this, send the GOV.UK Sign In team a `back_channel_logout_uri` specifying the URL you want GOV.UK Sign In to send notifications to when a user who was signed into your service using GOV.UK Sign In has logged out. There’s further [guidance on responding to logout notifications from GOV.UK Sign In](/integrate-with-integration-environment/log-your-users-out/#responding-to-logout-notifications-from-gov-uk-sign-in)
+You can also optionally receive [user logout notifications from GOV.UK Sign In](/integrate-with-integration-environment/log-your-users-out/#responding-to-logout-notifications-from-gov-uk-sign-in). If you would like to use this, you'll need to include a `back_channel_logout_uri` specifying the URL you want GOV.UK Sign In to send notifications to when a user who was signed into your service using GOV.UK Sign In has logged out to [govuk-sign-in@digital.cabinet-office.gov.uk](mailto: govuk-sign-in@digital.cabinet-office.gov.uk).
+
+### Choosing your `sector_identifier_uri` 
+
+Your service will use a [pairwise user identifier](https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg) when you use GOV.UK Sign In.
+
+When using a pairwise identifier, GOV.UK Sign In provides a unique `sub` value in the ID token to each service. This means a user ID will not be the same across services, so the value cannot be matched and used to identify an individual user.
+
+Sector identifiers are optional. If this field is left empty, the redirect URI's root path is automatically used as the sector identifier.
+
+If you're needing authentication only, you can specify and store your `sector_identifier_uri` in your [GOV.UK Sign In Account](admin.sign-in.service.gov.uk/sign-in
+). 
+
+If you're needing both authentication and identity, you can specify your `sector_identifier_uri` parameter when you XXXXX IDENTITY PROCESS contact the GOV.UK Sign In team to register your service. GOV.UK Sign In will use this to create a unique subject identifier for your user.
+
+<%= warning_text('If you do not specify the <code>sector_identifier_uri</code>, GOV.UK Sign In will use the host name of your redirect URI when we generate the subject identifier for your user. You should be aware that if your redirect URI ever changes, your users’ subject identifiers will also change.') %>
 
 
 
 ## Update your service’s details with GOV.UK Sign In
 
-To update your service’s details with GOV.UK Sign In, you need to send an email to [govuk-sign-in@digital.cabinet-office.gov.uk](mailto: govuk-sign-in@digital.cabinet-office.gov.uk). We'll get back to you with the next steps.
+If you're needing authentication only, you can update your details on your [GOV.UK Sign In Account](admin.sign-in.service.gov.uk/sign-in). 
 
-## Progress your application to integrate with the integration environment
+If you're needing both authentication and identity, you'll need to XXXXX? IDENTITY PROCESS email to [govuk-sign-in@digital.cabinet-office.gov.uk](mailto: govuk-sign-in@digital.cabinet-office.gov.uk). We'll get back to you with the next steps.
 
-Once the GOV.UK Sign In team has registered your service, you are now a relying party for GOV.UK Sign In.
-
-The next step before you can use the integration environment is to [integrate your application with Authorization Code Flow][integrate.code-flow].
+The next step is to [choose your level of authentication for your service](/integrate-with-integration-environment/choose-the-level-of-authentication/).
 
 <%= partial "partials/links" %>
