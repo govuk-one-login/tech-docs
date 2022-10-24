@@ -1,7 +1,7 @@
 ---
 title: Integrate with Authorization Code Flow
 weight: 5.5
-last_reviewed_on: 2021-10-14
+last_reviewed_on: 2022-10-24
 review_in: 6 months
 ---
 
@@ -54,6 +54,7 @@ Host: oidc.integration.account.gov.uk
 If you need identity assurance as well as authentication, use this example message to make a `GET` request.
 
 The following example uses medium authentication (`Cm`) and a medium level of identity confidence (`P2`). There’s further guidance on choosing the [level of authentication][integrate.choose-level-of-auth] and choosing the [level of identity confidence][integrate.choose-level-of-confidence].
+
 You can [replace your example message’s placeholder values][integrate.replace-example-message].
 
 ```
@@ -63,7 +64,7 @@ GET /authorize?response_type=code
 &state=STATE
 &redirect_uri=YOUR_REDIRECT_URI
 &nonce=aEwkamaos5B
-&vtr=["Cl.Cm.P2"]
+&vtr=["P2.Cl.Cm"]
 &ui_locales=en
 &claims=<claims-request>
 HTTP/1.1
@@ -144,7 +145,8 @@ Use the guidance in the following table to replace placeholder values in your ex
   <tr>
     <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">vtr</span></td>
     <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">Optional</span></td>
-    <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">The </span><code>vtr</code><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> parameter represents ‘Vectors of Trust’ where you request authentication and, optionally, identity assurance. For example, if you want the medium level of authentication and medium identity confidence, request <code>vtr=[“Cl.Cm.p2”]</code>. </span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">You selected your Vector of Trust when you <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-the-level-of-authentication><span>chose the level of authentication</span></a> and <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-the-level-of-identity-confidence><span>the level of identity confidence</span></a> for your service.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">You can read more about how to combine the vectors for authentication level and identity confidence in </span><a href=https://datatracker.ietf.org/doc/html/rfc8485#section-3.1><span>Section 3 of RFC 8485</span></a>. If you need identity assurance, you must request <code>Cl.Cm</code> (the medium level of authentication) or higher (higher levels of authentication will be available soon).<br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">If you do not specify the <code>vtr</code></span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> parameter, your service will automatically log your users in at the medium level of authentication (<code>Cl.Cm</code>).</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> This means you will not receive identity information in your response. </span><br></td>
+    <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">The </span><code>vtr</code><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> parameter represents ‘Vectors of Trust’ where you request authentication and, optionally, identity assurance. For example, if you want the medium level of authentication and medium identity confidence, request <code>vtr=[“P2.Cl.Cm”]</code><br></br>Currently, the <code>vtr</code> field is order-specific, so <code>P2.Cl.Cm</code> is a valid request, but <code>Cl.Cm.P2</code> will result in an error. 
+    . </span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">You selected your Vector of Trust when you <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-the-level-of-authentication><span>chose the level of authentication</span></a> and <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-the-level-of-identity-confidence><span>the level of identity confidence</span></a> for your service.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">You can read more about how to combine the vectors for authentication level and identity confidence in </span><a href=https://datatracker.ietf.org/doc/html/rfc8485#section-3.1><span>Section 3 of RFC 8485</span></a>. If you need identity assurance, you must request <code>Cl.Cm</code> (the medium level of authentication) or higher (higher levels of authentication will be available soon).<br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">If you do not specify the <code>vtr</code></span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> parameter, your service will automatically log your users in at the medium level of authentication (<code>Cl.Cm</code>).</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> This means you will not receive identity information in your response. </span><br></td>
   </tr>
   <tr>
     <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">claims</span></td>
