@@ -29,19 +29,15 @@ If you’re part of our identity private beta, contact the onboarding team you�
 
 If you’re not part of our identity private beta and you’re a central government service which needs identity checks, [join our mailing list](https://www.sign-in.service.gov.uk/mailing-list) to be updated when they become available. In the meantime, you can test the authentication journey. 
 
-## Choosing your `sector_identifier_uri` 
+## Understanding `sector_identifier_uri` for the integration environment
 
 Your service will use a [pairwise user identifier](https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg) when you use GOV.UK Sign In.
 
 When using a pairwise identifier, GOV.UK Sign In provides a unique `sub` value in the ID token to each service. This means a user ID will not be the same across services, so the value cannot be matched and used to identify an individual user.
 
-Sector identifiers are optional. If this field is left empty, the redirect URI's root path is automatically used as the sector identifier.
+When you are integrating with our integration environment, we'll issue you with a default sector identifier URI. There is no action needed from your end. 
 
-If you're needing authentication only, you can specify and store your `sector_identifier_uri` in the [admin portal](admin.sign-in.service.gov.uk/sign-in
-). 
+When you're integrating with the production environment, you'll optionally be able to choose your own sector identifier URI. 
 
-<%= warning_text('If you do not specify the <code>sector_identifier_uri</code>, GOV.UK Sign In will use the host name of your redirect URI when we generate the subject identifier for your user. You should be aware that if your redirect URI ever changes, your users’ subject identifiers will also change.') %>
-
-The next step is to [choose your level of authentication for your service](/integrate-with-integration-environment/choose-the-level-of-authentication/).
 
 <%= partial "partials/links" %>
