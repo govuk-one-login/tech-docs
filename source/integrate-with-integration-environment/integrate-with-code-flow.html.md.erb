@@ -1,7 +1,7 @@
 ---
 title: Integrate with Authorization Code Flow
 weight: 5.5
-last_reviewed_on: 2021-10-14
+last_reviewed_on: 2022-11-11
 review_in: 6 months
 ---
 
@@ -53,7 +53,7 @@ Host: oidc.integration.account.gov.uk
 ### Make an authorisation request for authentication and identity
 If you need identity assurance as well as authentication, use this example message to make a `GET` request.
 
-The following example uses medium authentication (`Cm`) and a medium level of identity confidence (`P2`). There’s further guidance on choosing the [level of authentication][integrate.choose-level-of-auth] and choosing the [level of identity confidence][integrate.choose-level-of-confidence].
+The following example uses medium authentication (`Cl.Cm`) and a medium level of identity confidence (`P2`). There’s further guidance on choosing the [level of authentication][integrate.choose-level-of-auth] and choosing the [level of identity confidence][integrate.choose-level-of-confidence].
 You can [replace your example message’s placeholder values][integrate.replace-example-message].
 
 ```
@@ -144,7 +144,7 @@ Use the guidance in the following table to replace placeholder values in your ex
   <tr>
     <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">vtr</span></td>
     <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">Optional</span></td>
-    <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">The </span><code>vtr</code><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> parameter represents ‘Vectors of Trust’ where you request authentication and, optionally, identity assurance. For example, if you want the medium level of authentication and medium identity confidence, request <code>vtr=[“Cl.Cm.p2”]</code>. </span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">You selected your Vector of Trust when you <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-the-level-of-authentication><span>chose the level of authentication</span></a> and <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-the-level-of-identity-confidence><span>the level of identity confidence</span></a> for your service.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">You can read more about how to combine the vectors for authentication level and identity confidence in </span><a href=https://datatracker.ietf.org/doc/html/rfc8485#section-3.1><span>Section 3 of RFC 8485</span></a>. If you need identity assurance, you must request <code>Cl.Cm</code> (the medium level of authentication) or higher (higher levels of authentication will be available soon).<br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">If you do not specify the <code>vtr</code></span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> parameter, your service will automatically log your users in at the medium level of authentication (<code>Cl.Cm</code>).</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> This means you will not receive identity information in your response. </span><br></td>
+    <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">The </span><code>vtr</code><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> parameter represents ‘Vectors of Trust’ where you request authentication and, optionally, identity assurance. For example, if you want the medium level of authentication and medium identity confidence, request <code>vtr=[“Cl.Cm.P2”]</code>. </span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">You selected your Vector of Trust when you <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-the-level-of-authentication><span>chose the level of authentication</span></a> and <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-the-level-of-identity-confidence><span>the level of identity confidence</span></a> for your service.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">You can read more about how to combine the vectors for authentication level and identity confidence in </span><a href=https://datatracker.ietf.org/doc/html/rfc8485#section-3.1><span>Section 3 of RFC 8485</span></a>. If you need identity assurance, you must request <code>Cl.Cm</code> (the medium level of authentication) or higher (higher levels of authentication will be available soon).<br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">If you do not specify the <code>vtr</code></span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> parameter, your service will automatically log your users in at the medium level of authentication (<code>Cl.Cm</code>).</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> This means you will not receive identity attributes in your response. </span><br></td>
   </tr>
   <tr>
     <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">claims</span></td>
@@ -220,6 +220,10 @@ Location: https://YOUR_REDIRECT_URI?error=invalid_request
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">temporarily_unavailable</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">If you're only making an authentication request (as opposed to requesting both authentication and identity), this error code means the GOV.UK Sign In authentication server is temporarily unavailable, which might be caused by temporary overloading or planned maintenance. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Make your authorisation request again in a few minutes. <br>  <br> If you're making an identity request and you get this error, it means the identity proofing and verification does not currently have capacity for this request.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">access_denied</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The identity evidence provided by your user has a lower score than the identity confidence specified in your request. As a result, GOV.UK Sign In could not return the medium level of identity confidence (<code>Cl.Cm.P2</code>) and instead returned a lower level of identity confidence. <br></br>To resolve this, make sure your user has entered the correct information for their identity evidence. If they have entered it correctly and this error is still appearing, you must ask your user to provide different identity evidence which meets a medium level of identity confidence.</span></td>
   </tr>
 </tbody>
 </table>
