@@ -1,16 +1,16 @@
 ---
-title: Log your users out of GOV.UK Sign In
+title: Log your users out of GOV.UK One Login
 weight: 6
 last_reviewed_on: 2022-05-30
 review_in: 6 months
 ---
 
-# Log your users out of GOV.UK Sign In
+# Log your users out of GOV.UK One Login
 
-You must set up the functionality to log your users out of a GOV.UK Sign In session.
+You must set up the functionality to log your users out of a GOV.UK One Login session.
 
 1. Log your user out of using your application - the way you do this will depend on how you have built your service.
-1. In the user's browser, make a `GET` request to GOV.UK Sign In’s `/logout` endpoint to end your user’s session.
+1. In the user's browser, make a `GET` request to GOV.UK One Login’s `/logout` endpoint to end your user’s session.
 
     ```
     HTTP/1.1 GET
@@ -20,7 +20,7 @@ You must set up the functionality to log your users out of a GOV.UK Sign In sess
     &state=sadk8d4--lda%d
     ```
 
-If no GOV.UK Sign In session exists, for example if the session has expired, the endpoint redirects your user to the default logout page for GOV.UK Sign In. Your user can continue their journey from the default logout page.
+If no GOV.UK One Login session exists, for example if the session has expired, the endpoint redirects your user to the default logout page for GOV.UK One Login. Your user can continue their journey from the default logout page.
 
 
 <table class="tg">
@@ -35,12 +35,12 @@ If no GOV.UK Sign In session exists, for example if the session has expired, the
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:#FFF">id_token_hint</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Recommended - however, if you use <code>post_logout_redirect_uri</code>, this parameter is required</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This is the ID token GOV.UK Sign In previously issued when you made a request to the <code>/token</code> endpoint for your user’s current session.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This is the ID token GOV.UK One Login previously issued when you made a request to the <code>/token</code> endpoint for your user’s current session.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">post_logout_redirect_uri</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Optional - however, if you do not specify this parameter, the endpoint redirects your user to the default logout page for GOV.UK Sign In</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You can only use this parameter if you have specified an <code>id_token_hint</code>.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This parameter is the URL you want to redirect your users to after you have logged them out.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The <code>post_logout_redirect_uri</code> must match the logout URI you specified when you <a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in">registered your service to use GOV.UK Sign In</a>. </span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Optional - however, if you do not specify this parameter, the endpoint redirects your user to the default logout page for GOV.UK One Login</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You can only use this parameter if you have specified an <code>id_token_hint</code>.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This parameter is the URL you want to redirect your users to after you have logged them out.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The <code>post_logout_redirect_uri</code> must match the logout URI you specified when you <a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in">registered your service to use GOV.UK One Login</a>. </span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">state</span></td>
@@ -52,18 +52,18 @@ If no GOV.UK Sign In session exists, for example if the session has expired, the
 
 ## Receive response for ‘Log your users out of GOV.UK Sign In’
 
-After you have made your `GET` request to GOV.UK Sign In’s `/logout` endpoint, you should receive a response similar to this:
+After you have made your `GET` request to GOV.UK One Login’s `/logout` endpoint, you should receive a response similar to this:
 
 ```
 HTTP 1.1 302 Found
 Location: https://example-service.com/my-logout-url&state=sadk8d4--lda%d
 ```
 
-You have now logged your user out of GOV.UK Sign In and terminated their session.
+You have now logged your user out of GOV.UK One Login and terminated their session.
 
 ## Responding to logout notifications from GOV.UK Sign In
 
-GOV.UK Sign In can notify you using a `POST` request when a user who has logged into your service using GOV.UK Sign In has logged out. These notifications are optional, but we recommend supporting them to maintain a consistent user experience.
+GOV.UK One Login can notify you using a `POST` request when a user who has logged into your service using GOV.UK One Login has logged out. These notifications are optional, but we recommend supporting them to maintain a consistent user experience.
 
 The logout notifications follow the [OIDC back-channel logout specification](https://openid.net/specs/openid-connect-backchannel-1_0.html#Backchannel).
 
@@ -72,15 +72,15 @@ There’s an [example implementation of handling a back-channel logout notificat
 
 ### Opt in to logout notifications
 
-You opt in to receive logout notifications by providing a `back_channel_logout_uri` when you [register your service to use GOV.UK Sign In][integrate.register-your-service].
+You opt in to receive logout notifications by providing a `back_channel_logout_uri` when you [register your service to use GOV.UK One Login][integrate.register-your-service].
 
 When you receive a logout notification for an end user, you should close all the sessions you hold for that user in your service.
 
 ### Receive the back-channel logout request
 
-You must make sure your `back_channel_logout_uri` can accept `POST` requests from GOV.UK Sign In.
+You must make sure your `back_channel_logout_uri` can accept `POST` requests from GOV.UK One Login.
 
-GOV.UK Sign In will send a `POST` request to your `back_channel_logout_uri` when a user who has logged into your service using GOV.UK Sign In has logged out. The `POST` body will contain a `logout_token`, which will be a signed JSON web token (JWT).
+GOV.UK One Login will send a `POST` request to your `back_channel_logout_uri` when a user who has logged into your service using GOV.UK One Login has logged out. The `POST` body will contain a `logout_token`, which will be a signed JSON web token (JWT).
 
 Here’s an example of a back-channel logout request:
 
@@ -111,8 +111,8 @@ After you do these steps, you’ve validated the signature of the back-channel l
 
 ### Validate the payload’s content for a back-channel logout request
 
-1. Check the value of `iss` exactly matches the Issuer Identifier specified in GOV.UK Sign In’s [discovery endpoint](https://oidc.integration.account.gov.uk/.well-known/openid-configuration).
-1. Check the `aud` claim is the same client ID you received when you [registered your service to use GOV.UK Sign In](https://auth-tech-docs.london.cloudapps.digital/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in).
+1. Check the value of `iss` exactly matches the Issuer Identifier specified in GOV.UK One Login’s [discovery endpoint](https://oidc.integration.account.gov.uk/.well-known/openid-configuration).
+1. Check the `aud` claim is the same client ID you received when you [registered your service to use GOV.UK One Login](https://auth-tech-docs.london.cloudapps.digital/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in).
 1. Check the `iat` (issued at) value is in the past.
 1. Check the logout token contains a `sub` claim - this is the subject identifier, otherwise known as the unique ID of a user.
 1. Check the logout token contains an `events` claim, which should be a JSON object with a single key: `http://schemas.openid.net/event/backchannel-logout`, and the value for that key should be an empty object.

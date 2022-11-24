@@ -4,7 +4,7 @@ host: https://docs.sign-in.service.gov.uk
 
 # Header-related options
 show_govuk_logo: true
-service_name: Sign In
+service_name: One Login
 service_link: https://www.sign-in.service.gov.uk/
 
 

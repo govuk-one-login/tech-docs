@@ -13,7 +13,7 @@ We recommend you [use a certified OpenID Connect (OIDC) client library](https://
 
 ## Use the discovery endpoint
 
-You can use the [discovery endpoint][external.oidc-discovery] to get information needed to interact with GOV.UK Sign In, for example:
+You can use the [discovery endpoint][external.oidc-discovery] to get information needed to interact with GOV.UK One Login, for example:
 
 * issuer name
 * information about the keys
@@ -112,7 +112,7 @@ Use the guidance in the following table to replace placeholder values in your ex
   <tr>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">client_id</span></td>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Required</span></td>
-    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You’ll have set your </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">client_ID</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> when you </span><a href="https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">registered your service to use GOV.UK Sign In</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You’ll have set your </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">client_ID</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> when you </span><a href="https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">registered your service to use GOV.UK One Login</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.</span></td>
   </tr>
   <tr>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">state</span></td>
@@ -122,7 +122,7 @@ Use the guidance in the following table to replace placeholder values in your ex
   <tr>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">redirect_uri</span></td>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Required</span></td>
-    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You’ll have specified your </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">redirect_uri</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> when you </span><a href="https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">registered your service to use GOV.UK Sign In</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">The redirect URI must exactly match one of the redirect URIs you registered for using Dynamic Client Registration, except that it must be URL-encoded.</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You’ll have specified your </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">redirect_uri</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> when you </span><a href="https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">registered your service to use GOV.UK One Login</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">The redirect URI must exactly match one of the redirect URIs you registered for using Dynamic Client Registration, except that it must be URL-encoded.</span></td>
   </tr>
   <tr>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">nonce</span></td>
@@ -132,12 +132,12 @@ Use the guidance in the following table to replace placeholder values in your ex
   <tr>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">prompt</span></td>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Optional</span></td>
-    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">GOV.UK Sign In supports the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">login</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter. This will always force your users to re-authenticate even if they have an existing session.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">If you use the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">prompt</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter, your users will be prompted to authenticate.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">If you do not use the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">prompt</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter, your service will silently authenticate your users if they have an existing session.</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">GOV.UK One Login supports the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">login</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter. This will always force your users to re-authenticate even if they have an existing session.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">If you use the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">prompt</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter, your users will be prompted to authenticate.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">If you do not use the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">prompt</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter, your service will silently authenticate your users if they have an existing session.</span></td>
   </tr>
   <tr>
     <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">ui_locales</span></td>
     <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">Optional</span></td>
-    <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">GOV.UK Sign In supports English and Welsh as language choices. <br><br> If your service is in Welsh, you may want to display GOV.UK Sign In in Welsh for a consistent user experience. You can use <code>ui_locales</code> to do this. <br> <br> In the <code>ui_locales</code> parameter, you can choose either <code>en</code> (English) or <code>cy</code> (Welsh). <br><br> Using <code>ui_locales</code> is optional. If you do not include it, your service will continue using English by default. <br><br> GOV.UK Sign In does not support any other languages.
+    <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">GOV.UK One Login supports English and Welsh as language choices. <br><br> If your service is in Welsh, you may want to display GOV.UK One Login in Welsh for a consistent user experience. You can use <code>ui_locales</code> to do this. <br> <br> In the <code>ui_locales</code> parameter, you can choose either <code>en</code> (English) or <code>cy</code> (Welsh). <br><br> Using <code>ui_locales</code> is optional. If you do not include it, your service will continue using English by default. <br><br> GOV.UK One Login does not support any other languages.
 
 </td>
   </tr>
@@ -193,7 +193,7 @@ Location: https://YOUR_REDIRECT_URI?error=invalid_request
 <tbody>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">unauthorized_client</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Your service is not authorised to request an authorisation code.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Make sure you have </span><a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Your service is not authorised to request an authorisation code.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Make sure you have </span><a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK One Login</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_request</span></td>
@@ -202,7 +202,7 @@ Location: https://YOUR_REDIRECT_URI?error=invalid_request
       <li style="font-weight: 400;"><span style="font-weight: 400;">includes an invalid parameter value</span></li>
       <li style="font-weight: 400;"><span style="font-weight: 400;">includes a parameter more than once</span></li>
       <li style="font-weight: 400;"><span style="font-weight: 400;">not in the correct format</span></li>
-      You can </span><a href="/integrate-with-integration-environment/integrate-with-code-flow/#make-an-authorisation-request"><span>check which parameters GOV.UK Sign In supports when you make an authorisation request</span></a>.
+      You can </span><a href="/integrate-with-integration-environment/integrate-with-code-flow/#make-an-authorisation-request"><span>check which parameters GOV.UK One Login supports when you make an authorisation request</span></a>.
 </td>
   </tr>
   <tr>
@@ -215,15 +215,15 @@ Location: https://YOUR_REDIRECT_URI?error=invalid_request
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">server_error</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The GOV.UK Sign In authentication server has experienced an internal server error.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The GOV.UK One Login authentication server has experienced an internal server error.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">temporarily_unavailable</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">If you're only making an authentication request (as opposed to requesting both authentication and identity), this error code means the GOV.UK Sign In authentication server is temporarily unavailable, which might be caused by temporary overloading or planned maintenance. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Make your authorisation request again in a few minutes. <br>  <br> If you're making an identity request and you get this error, it means the identity proofing and verification does not currently have capacity for this request.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">If you're only making an authentication request (as opposed to requesting both authentication and identity), this error code means the GOV.UK One Login authentication server is temporarily unavailable, which might be caused by temporary overloading or planned maintenance. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Make your authorisation request again in a few minutes. <br>  <br> If you're making an identity request and you get this error, it means the identity proofing and verification does not currently have capacity for this request.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">access_denied</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The identity evidence provided by your user has a lower score than the identity confidence specified in your request. As a result, GOV.UK Sign In could not return the medium level of identity confidence (<code>Cl.Cm.P2</code>) and instead returned a lower level of identity confidence. <br></br>To resolve this, make sure your user has entered the correct information for their identity evidence. If they have entered it correctly and this error is still appearing, you must ask your user to provide different identity evidence which meets a medium level of identity confidence.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The identity evidence provided by your user has a lower score than the identity confidence specified in your request. As a result, GOV.UK One Login could not return the medium level of identity confidence (<code>Cl.Cm.P2</code>) and instead returned a lower level of identity confidence. <br></br>To resolve this, make sure your user has entered the correct information for their identity evidence. If they have entered it correctly and this error is still appearing, you must ask your user to provide different identity evidence which meets a medium level of identity confidence.</span></td>
   </tr>
 </tbody>
 </table>
@@ -239,7 +239,7 @@ Before you can make a `POST` request, you need to:
 1. Create a JWT assertion.
 1. Include the JWT assertion in your `POST` request.
 
-GOV.UK Sign In will then authenticate your request by verifying the signature and payload of the JWT assertion. This authentication will generate a token response, which will include:
+GOV.UK One Login will then authenticate your request by verifying the signature and payload of the JWT assertion. This authentication will generate a token response, which will include:
 
 * an access token
 * an ID token
@@ -269,18 +269,18 @@ To create a JWT assertion, you need to create a JWT which contains certain requi
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">aud</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>aud</code> stands for 'audience'. This identifies GOV.UK Sign In’s authorisation server as an intended audience. This value should be the </span>URL: https://oidc.integration.account.gov.uk/token. </span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>aud</code> stands for 'audience'. This identifies GOV.UK One Login’s authorisation server as an intended audience. This value should be the </span>URL: https://oidc.integration.account.gov.uk/token. </span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">iss</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>iss</code> stands for 'issuer'. This claim should contain your <code>client_id</code> you created when you </span><a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>iss</code> stands for 'issuer'. This claim should contain your <code>client_id</code> you created when you </span><a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK One Login</span></a>.
 </td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">sub</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>sub</code> stands for 'subject'. This claim should contain your <code>client_id</code> you created when you </span><a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>sub</code> stands for 'subject'. This claim should contain your <code>client_id</code> you created when you </span><a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK One Login</span></a>.
 </td>
   </tr>
   <tr>
@@ -409,7 +409,7 @@ You can use the following table to understand the response for ‘Make a token r
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">token_type</span></td>
-    <td class="tg-0lax">The token type value. GOV.UK Sign In only supports the <a href="https://oauth.net/2/bearer-tokens/"><span>bearer token</span></a>.
+    <td class="tg-0lax">The token type value. GOV.UK One Login only supports the <a href="https://oauth.net/2/bearer-tokens/"><span>bearer token</span></a>.
 </td>
   </tr>
   <tr>
@@ -422,7 +422,7 @@ You can use the following table to understand the response for ‘Make a token r
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">id_token</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A signed JWT that contains basic attributes about the user. GOV.UK Sign In signs this JWT using the </span><a href="https://datatracker.ietf.org/doc/html/rfc7518"><span>ES256 algorithm</span></a>.
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A signed JWT that contains basic attributes about the user. GOV.UK One Login signs this JWT using the </span><a href="https://datatracker.ietf.org/doc/html/rfc7518"><span>ES256 algorithm</span></a>.
 <span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent". </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The public key used to verify this JWT is available from the <code>jwks_uri</code> parameter found in the <a href="https://oidc.integration.account.gov.uk/.well-known/openid-configuration"><span>discovery endpoint</span></a></span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">.</span></td>
   </tr>
 </tbody>
@@ -460,7 +460,7 @@ You can use the following table to understand the ID token’s claims.
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">iss</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The GOV.UK Sign In OpenID Provider's Issue identifier as specified in the <a href="https://oidc.integration.account.gov.uk/.well-known/openid-configuration"><span>discovery endpoint</span></a>.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The GOV.UK One Login OpenID Provider's Issue identifier as specified in the <a href="https://oidc.integration.account.gov.uk/.well-known/openid-configuration"><span>discovery endpoint</span></a>.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">nonce</span></td>
@@ -468,7 +468,7 @@ You can use the following table to understand the ID token’s claims.
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">aud</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The audience, which will be the <code>client_id</code> you set when you <a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The audience, which will be the <code>client_id</code> you set when you <a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK One Login</span></a>.
 </td>
   </tr>
   <tr>
@@ -477,7 +477,7 @@ You can use the following table to understand the ID token’s claims.
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">iat</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>iat</code> stands for ‘issued at’. This identifies the time at which GOV.UK Sign In created the JWT. You can use this claim to understand the age of the JWT.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This will appear as an integer timestamp representing the number of seconds since the <a href="https://www.epochconverter.com/"><span>Unix Epoch</span></a>.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>iat</code> stands for ‘issued at’. This identifies the time at which GOV.UK One Login created the JWT. You can use this claim to understand the age of the JWT.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This will appear as an integer timestamp representing the number of seconds since the <a href="https://www.epochconverter.com/"><span>Unix Epoch</span></a>.</span></td>
   </tr>
 </tbody>
 </table>
@@ -488,8 +488,8 @@ Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
 
 1. If you’re using a library, check whether your library has support for validating ID tokens.
-1. The value of `iss` must exactly match the Issuer Identifier as specified in GOV.UK Sign In’s [discovery endpoint][external.oidc-discovery].
-1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK Sign In][integrate.register-your-service].
+1. The value of `iss` must exactly match the Issuer Identifier as specified in GOV.UK One Login’s [discovery endpoint][external.oidc-discovery].
+1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service].
 1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). You must first [validate that the JWT `alg` header matches](https://datatracker.ietf.org/doc/html/rfc8725#section-3.1) what was returned from the `jwks_uri`. Then you can use the value of the JWT `alg` header parameter to validate the ID token. Your application must use the keys provided by the [discovery endpoint][external.oidc-discovery].
 1. Check the current time is before the time in the `exp` claim.
 1. If you set a `nonce` value in the authorisation request, check the `nonce` value in the authorisation request matches the `nonce` value in the ID token.
@@ -524,7 +524,7 @@ Content-Type: application/json
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_client</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Client authentication failed, which could be caused by the request containing an invalid client ID. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">To resolve, check your client ID matches the client ID you had when you <a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Client authentication failed, which could be caused by the request containing an invalid client ID. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">To resolve, check your client ID matches the client ID you had when you <a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK One Login</span></a>.
 </span></td>
   </tr>
   <tr>
@@ -545,7 +545,7 @@ Content-Type: application/json
 
 ### Use your refresh token to request a new access token
 
-A GOV.UK Sign In access token is valid for 3 minutes. After 3 minutes, you cannot use an access token to make a call to `/userinfo`.
+A GOV.UK One Login access token is valid for 3 minutes. After 3 minutes, you cannot use an access token to make a call to `/userinfo`.
 
 If you want to access the `/userinfo` endpoint for longer than 3 minutes, you should use a [refresh token](https://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens) to refresh your access token.
 
@@ -611,7 +611,7 @@ Content-Type: application/json
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_client</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Client authentication failed, which could be caused by the request containing an invalid client ID. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">To resolve, check your client ID matches the client ID you had when you <a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK Sign In</span></a>.
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Client authentication failed, which could be caused by the request containing an invalid client ID. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">To resolve, check your client ID matches the client ID you had when you <a href="/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in"><span>registered your service to use GOV.UK One Login</span></a>.
 </span></td>
   </tr>
   <tr>
@@ -695,7 +695,7 @@ error_description="The Access Token expired"
 <tbody>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_token</span></td>
-    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">GOV.UK Sign In denied your request as you have an invalid or missing bearer access token. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">To proceed, you must use the authorisation header field to send the token as a <a href="https://oauth.net/2/bearer-tokens/"><span>bearer token</span></a>.</span></td>
+    <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">GOV.UK One Login denied your request as you have an invalid or missing bearer access token. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">To proceed, you must use the authorisation header field to send the token as a <a href="https://oauth.net/2/bearer-tokens/"><span>bearer token</span></a>.</span></td>
   </tr>
 </tbody>
 </table>

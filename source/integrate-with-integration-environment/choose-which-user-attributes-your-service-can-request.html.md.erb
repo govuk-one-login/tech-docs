@@ -36,7 +36,7 @@ The user attributes and how you request them will depend on whether you are requ
 </tbody>
 </table>
 
-You'll need to agree which scopes and claims you want to use when you [register your service to use GOV.UK Sign In](../manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in).
+You'll need to agree which scopes and claims you want to use when you [register your service to use GOV.UK One Login](../manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-sign-in).
 
 ## Choose which scopes your service can request
 `openid` is the only scope you must include. You can choose to include other scopes for your authorisation request depending on the user attributes your service needs.
@@ -117,7 +117,7 @@ If you want a refresh token, you must request the <code>offline_access</code> sc
 
 ## Choose which claims your service can request
 
-You can also request specific claims from GOV.UK Sign In, if you need more information than the scopes in the previous section can provide. You must [choose a level of identity confidence][integrate.choose-level-of-confidence] `P2` or above, otherwise you will not receive any claims in the authorisation response.
+You can also request specific claims from GOV.UK One Login, if you need more information than the scopes in the previous section can provide. You must [choose a level of identity confidence][integrate.choose-level-of-confidence] `P2` or above, otherwise you will not receive any claims in the authorisation response.
 
 You can find details of the claims in the following table.
 
@@ -131,7 +131,7 @@ You can find details of the claims in the following table.
 <tbody>
   <tr>
     <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000"><code>https://vocab.account.gov.uk/v1/coreIdentityJWT</code></span></td>
-    <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">This claim contains core identity information about your user: </span><br><ul><li>their names</li><li>their date of birth</li><li>the level of confidence GOV.UK Sign In reached in your user’s identity</li></ul></td>
+    <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">This claim contains core identity information about your user: </span><br><ul><li>their names</li><li>their date of birth</li><li>the level of confidence GOV.UK One Login reached in your user’s identity</li></ul></td>
   </tr>
   <tr>
     <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000"><code>https://vocab.account.gov.uk/v1/address</code></span></td>
@@ -139,11 +139,11 @@ You can find details of the claims in the following table.
   </tr>
   <tr>
     <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000"><code>https://vocab.account.gov.uk/v1/passport</code></span></td>
-    <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">This claim contains your user's passport details if GOV.UK Sign In proved their identity using their passport.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">If GOV.UK Sign In did not prove your user’s identity using their passport, the authorisation response will not return this claim.</span></td>
+    <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">This claim contains your user's passport details if GOV.UK One Login proved their identity using their passport.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">If GOV.UK One Login did not prove your user’s identity using their passport, the authorisation response will not return this claim.</span></td>
   </tr>
   <tr>
     <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000"><code>https://vocab.account.gov.uk/v1/drivingPermit</code></span></td>
-    <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">This claim contains your user's driving licence details if GOV.UK Sign In proved their identity using their driving licence.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">If GOV.UK Sign In did not prove your user’s identity using their driving licence, the authorisation response will not return this claim.</span></td>
+    <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">This claim contains your user's driving licence details if GOV.UK One Login proved their identity using their driving licence.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">If GOV.UK One Login did not prove your user’s identity using their driving licence, the authorisation response will not return this claim.</span></td>
   </tr>
 </tbody>
 </table>
@@ -152,7 +152,7 @@ You can see more about the structure of this information when you [process your 
 
 You can only ask us for claims that are covered by your [Data Protection Impact Assessment](https://ico.org.uk/for-organisations/guide-to-data-protection/guide-to-the-general-data-protection-regulation-gdpr/data-protection-impact-assessments-dpias/). You must clearly explain to your users why you are collecting the data and what you will use it for.
 
-Once you have chosen which attributes your service can request, you can [manage your service’s configuration with GOV.UK Sign In](../manage-your-service-s-configuration/).
+Once you have chosen which attributes your service can request, you can [manage your service’s configuration with GOV.UK One Login](../manage-your-service-s-configuration/).
 
 
 <%= partial "partials/links" %>
