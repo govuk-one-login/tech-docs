@@ -50,7 +50,7 @@ If no GOV.UK One Login session exists, for example if the session has expired, t
 </tbody>
 </table>
 
-## Receive response for ‘Log your users out of GOV.UK Sign In’
+## Receive response for ‘Log your users out of GOV.UK One Login’
 
 After you have made your `GET` request to GOV.UK One Login’s `/logout` endpoint, you should receive a response similar to this:
 
@@ -61,7 +61,7 @@ Location: https://example-service.com/my-logout-url&state=sadk8d4--lda%d
 
 You have now logged your user out of GOV.UK One Login and terminated their session.
 
-## Responding to logout notifications from GOV.UK Sign In
+## Responding to logout notifications from GOV.UK One Login
 
 GOV.UK One Login can notify you using a `POST` request when a user who has logged into your service using GOV.UK One Login has logged out. These notifications are optional, but we recommend supporting them to maintain a consistent user experience.
 

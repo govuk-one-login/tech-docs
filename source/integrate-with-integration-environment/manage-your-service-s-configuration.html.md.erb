@@ -11,7 +11,7 @@ GOV.UK One Login is an OpenID Connect (OIDC) provider.
 
 You must first register your service with GOV.UK One Login as a ‘relying party’ before being able to interact with GOV.UK One Login. You need to do this once for the integration environment and once for the production environment. An OIDC relying party is an app that outsources its user authentication function to an identity provider, which in this instance is GOV.UK One Login.
 
-## Register your service to use GOV.UK Sign In
+## Register your service to use GOV.UK One Login
 
 To register your service to use GOV.UK One Login, you need to:
 
@@ -46,7 +46,7 @@ To register your service, you must send:
 * the URL you’d like your users redirected to if they log out of your service - if you do not specify one, your users will be redirected to the [default GOV.UK sign out page](https://signin.account.gov.uk/signed-out)
 * your `sector_identifier_uri` with the identifier for your sector
 
-You can also receive user logout notifications from GOV.UK One Login. To use this, send the GOV.UK One Login team a `back_channel_logout_uri` specifying the URL you want GOV.UK One Login to send notifications to when a user who was signed into your service using GOV.UK One Login has logged out. There’s further [guidance on responding to logout notifications from GOV.UK One Login](/integrate-with-integration-environment/log-your-users-out/#responding-to-logout-notifications-from-gov-uk-sign-in)
+You can also receive user logout notifications from GOV.UK One Login. To use this, send the GOV.UK One Login team a `back_channel_logout_uri` specifying the URL you want GOV.UK One Login to send notifications to when a user who was signed into your service using GOV.UK One Login has logged out. There’s further [guidance on responding to logout notifications from GOV.UK One Login](/integrate-with-integration-environment/log-your-users-out/#responding-to-logout-notifications-from-gov-uk-one-login)
 
 
 
