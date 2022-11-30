@@ -9,9 +9,9 @@ review_in: 6 months
 
 You’ll need to choose the level of authentication your service will require your users to have. You can find help on selecting an appropriate level of protection in the [guidance on using authenticators to protect an online service, also known as ‘GPG 44’](https://www.gov.uk/government/publications/authentication-credentials-for-online-government-services/giving-users-access-to-online-services#choosing-an-authenticator).
 
-GOV.UK Sign In uses ['Vectors of Trust'](https://datatracker.ietf.org/doc/html/rfc8485). Your service can use these Vectors of Trust to request the right level of authentication for your users to gain access to your service. You’ll include your vector in the query string as part of the authorisation request you make when you integrate with Authorization Code Flow.
+GOV.UK One Login uses ['Vectors of Trust'](https://datatracker.ietf.org/doc/html/rfc8485). Your service can use these Vectors of Trust to request the right level of authentication for your users to gain access to your service. You’ll include your vector in the query string as part of the authorisation request you make when you integrate with Authorization Code Flow.
 
-GOV.UK Sign In currently supports the following authentication levels, also known as ‘levels of protection’ in GPG 44.
+GOV.UK One Login currently supports the following authentication levels, also known as ‘levels of protection’ in GPG 44.
 
 <table class="tg">
 <thead>
@@ -30,7 +30,7 @@ GOV.UK Sign In currently supports the following authentication levels, also know
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Medium level of protection</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>Cl.Cm</code> (credential medium)</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This vector requires your users to have a username and password combination, as well as using two-factor authentication (2FA). GOV.UK Sign In currently supports 2FA either through a one-time password sent through SMS, or an authenticator app.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">All services use <code>Cl.Cm</code> as the authentication level by default, unless you change your authentication level to <code>Cl</code>. <br></br>If you need to request identity attributes, you must request <code>Cl.Cm</code>. </span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This vector requires your users to have a username and password combination, as well as using two-factor authentication (2FA). GOV.UK One Login currently supports 2FA either through a one-time password sent through SMS, or an authenticator app.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">All services use <code>Cl.Cm</code> as the authentication level by default, unless you change your authentication level to <code>Cl</code>. <br></br>If you need to request identity attributes, you must request <code>Cl.Cm</code>. </span></td>
   </tr>
 </tbody>
 </table>

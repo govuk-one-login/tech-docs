@@ -8,7 +8,7 @@ review_in: 6 months
 # Process your user’s identity information
 If you [requested identity assurance](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-the-level-of-identity-confidence/), when you [retrieve user information with `/userinfo`](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/integrate-with-code-flow/#retrieve-user-information), you’ll receive a response containing additional claims (user attributes). You may receive different claims, depending on how your user proved their identity.
 
-Your service’s needs will determine how you process the other claims that GOV.UK Sign In provides about your user. You’ll probably need to match against information held by your service or organisations you work with.
+Your service’s needs will determine how you process the other claims that GOV.UK One Login provides about your user. You’ll probably need to match against information held by your service or organisations you work with.
 
 Most claims are represented by JSON objects. The [core identity claim](#understand-your-user-s-core-identity-claim) is a JSON web token (JWT) protected by an electronic signature for additional security.
 
@@ -76,9 +76,9 @@ The following are core identity attributes:
 
 * your user's name
 * your user’s date of birth
-* the level of identity confidence GOV.UK Sign In has reached
+* the level of identity confidence GOV.UK One Login has reached
 
-<%= warning_text("If the <code>https://vocab.account.gov.uk/v1/coreIdentityJWT</code> property is not present, then GOV.UK Sign In was not able to prove your user's identity.") %>
+<%= warning_text("If the <code>https://vocab.account.gov.uk/v1/coreIdentityJWT</code> property is not present, then GOV.UK One Login was not able to prove your user's identity.") %>
 
 Our support team will give you the public key you must use to validate this JWT. We recommend you [use a certified JWT/JWS implementation](https://openid.net/developers/jwt/).
 
@@ -181,16 +181,16 @@ The identity credential contains the following claims as properties of `credenti
 <tbody>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>name</code></span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A list showing the names proven by GOV.UK Sign In. This list reflects name changes by using the <code>validFrom</code> and <code>validUntil</code> metadata properties. If <code>validUntil</code> is <code>null</code> or not present, that name is your user’s current name. If <code>validFrom</code> is <code>null</code> or not present, your user may have used that name from birth.
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A list showing the names proven by GOV.UK One Login. This list reflects name changes by using the <code>validFrom</code> and <code>validUntil</code> metadata properties. If <code>validUntil</code> is <code>null</code> or not present, that name is your user’s current name. If <code>validFrom</code> is <code>null</code> or not present, your user may have used that name from birth.
 <br><br>
-Each name is presented as an array in the <code>nameParts</code> property. Each part of the name is either a <code>GivenName</code> or a <code>FamilyName</code>, identified in its <code>type</code> property. The <code>value</code> property could be any text string. GOV.UK Sign In cannot specify a maximum length or restrictions on what characters may appear.
+Each name is presented as an array in the <code>nameParts</code> property. Each part of the name is either a <code>GivenName</code> or a <code>FamilyName</code>, identified in its <code>type</code> property. The <code>value</code> property could be any text string. GOV.UK One Login cannot specify a maximum length or restrictions on what characters may appear.
 <br><br>
 <code>GivenName</code> or <code>FamilyName</code> can appear in any order within the list. The order of names may depend on either your user’s preferences or the order they appear on documents used to prove your user’s identity.
 </span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>birthDate</code></span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A list of <a href=https://schema.org/Date><span>ISO 8601 date</span></a> strings. There may be multiple dates of birth, for example, if there’s evidence an incorrect date of birth was previously recorded for your user. The date of birth GOV.UK Sign In has highest confidence in will be the first item in the list.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A list of <a href=https://schema.org/Date><span>ISO 8601 date</span></a> strings. There may be multiple dates of birth, for example, if there’s evidence an incorrect date of birth was previously recorded for your user. The date of birth GOV.UK One Login has highest confidence in will be the first item in the list.</span></td>
   </tr>
 </tbody>
 </table>
@@ -210,15 +210,15 @@ Each JSON object in the list may contain any of the following properties:
 <tbody>
   <tr>
     <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>validFrom</code></span></td>
-    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><a href=https://schema.org/Date><span>ISO 8601 date<span></a> strings representing the date your user moved into the address.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">If the month is unknown for <code>validFrom</code>, GOV.UK Sign In will show that as <code>01</code>. GOV.UK Sign In will also show an unknown day of the month as <code>01</code>.</span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><a href=https://schema.org/Date><span>ISO 8601 date<span></a> strings representing the date your user moved into the address.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">If the month is unknown for <code>validFrom</code>, GOV.UK One Login will show that as <code>01</code>. GOV.UK One Login will also show an unknown day of the month as <code>01</code>.</span></td>
   </tr>
   <tr>
     <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>validUntil</code></span></td>
-    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><a href=https://schema.org/Date><span>ISO 8601 date<span></a> strings representing the date your user moved from the address. This property is not included for your user’s current address.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">If the month is unknown for <code>validUntil</code>, GOV.UK Sign In will show that as <code>01</code>. GOV.UK Sign In will also show an unknown day of month as <code>01</code>.</span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><a href=https://schema.org/Date><span>ISO 8601 date<span></a> strings representing the date your user moved from the address. This property is not included for your user’s current address.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">If the month is unknown for <code>validUntil</code>, GOV.UK One Login will show that as <code>01</code>. GOV.UK One Login will also show an unknown day of month as <code>01</code>.</span></td>
   </tr>
   <tr>
     <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>uprn</code></span></td>
-    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">GOV.UK Sign In will provide a <a href=https://www.gov.uk/government/publications/open-standards-for-government/identifying-property-and-street-information><span>Unique Property Reference Number (UPRN)</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> for UK addresses, unless your user has manually corrected their address.</span></td>
+    <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">GOV.UK One Login will provide a <a href=https://www.gov.uk/government/publications/open-standards-for-government/identifying-property-and-street-information><span>Unique Property Reference Number (UPRN)</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"> for UK addresses, unless your user has manually corrected their address.</span></td>
   </tr>
   <tr>
     <td class="tg-ktyi"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>organisationName</code></span></td>
@@ -327,7 +327,7 @@ The <code>https://vocab.account.gov.uk/v1/drivingPermit</code> claim contains th
 ## Handling unsuccessful user journeys
 Your user may not complete their user journey. If their journey is unsuccessful, you'll need to provide them with another way to prove their identity or access your service.
 
-GOV.UK Sign In will respond to the authorisation request with an OAuth error. You can [read more about error handling when you make an authorisation request](../integrate-with-code-flow/#error-handling-for-make-an-authorisation-request).
+GOV.UK One Login will respond to the authorisation request with an OAuth error. You can [read more about error handling when you make an authorisation request](../integrate-with-code-flow/#error-handling-for-make-an-authorisation-request).
 
 
 
