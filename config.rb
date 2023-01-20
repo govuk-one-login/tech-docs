@@ -21,7 +21,8 @@ after_build do |builder|
             /search/ # Provided by tech-docs gem but has a "broken" link from html-proofer's point of view
         ],
         :url_ignore => [
-            /#{Regexp.quote(config[:tech_docs][:github_repo])}/ # Avoid chicken-and-egg problem when new pages in a PR break the link checker
+            /#{Regexp.quote(config[:tech_docs][:github_repo])}/, # Avoid chicken-and-egg problem when new pages in a PR break the link checker
+            "https://ico.org.uk/for-organisations/guide-to-data-protection/guide-to-the-general-data-protection-regulation-gdpr/data-protection-impact-assessments-dpias", # Avoid flagging checker because of CloudFlare security on site
         ],
         :url_swap => { config[:tech_docs][:host] => "" },
         typhoeus: {
