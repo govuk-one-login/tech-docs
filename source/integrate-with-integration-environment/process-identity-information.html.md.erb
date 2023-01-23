@@ -1,7 +1,7 @@
 ---
 title: Process your user’s identity information
 weight: 5.6
-last_reviewed_on: 2021-06-27
+last_reviewed_on: 2023-01-20
 review_in: 6 months
 ---
 
@@ -64,6 +64,7 @@ Content-Type: application/json
   "https://vocab.account.gov.uk/v1/passport": [
      {
         "documentNumber": "1223456",
+        "icaoIssuerCode": "GBR",
         "expiryDate": "2032-02-02"
       }
     ]
@@ -286,6 +287,10 @@ The <code>https://vocab.account.gov.uk/v1/passport</code> claim contains the det
   <tr>
     <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>documentNumber</code></span></td>
     <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The passport number.</span></td>
+  </tr>
+  <tr>
+  <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>icaoIssuerCode</code></span></td>
+  <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"></span>An identifier for the state or organisation that issued the passport. This is defined by the International Civil Aviation Organization (ICAO) standard <a href="https://www.icao.int/publications/Documents/9303_p3_cons_en.pdf">9303 Machine Readable Travel Documents</a>. The identifier is up to 3 characters.</td>
   </tr>
   <tr>
     <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>expiryDate</code></span></td>
