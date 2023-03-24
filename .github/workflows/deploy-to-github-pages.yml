@@ -18,7 +18,7 @@ concurrency:
 jobs:
   deploy:
     environment:
-      name: Deploy Team Manual
+      name: GitHub Pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
