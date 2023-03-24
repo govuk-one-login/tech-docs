@@ -4,6 +4,9 @@ require 'govuk_tech_docs'
 require 'html-proofer'
 require_relative 'test'
 
+set :relative_links, true
+activate :relative_assets
+
 # Pretty URLs see https://middlemanapp.com/advanced/pretty-urls/
 activate :directory_indexes
 
