@@ -333,9 +333,9 @@ The <code>https://vocab.account.gov.uk/v1/drivingPermit</code> claim contains th
 </table>
 
 ## Handling unsuccessful user journeys
-Your user may not complete their user journey. If their journey is unsuccessful, you'll need to provide them with another way to prove their identity or access your service.
+Your user may not complete their user journey. If their journey is unsuccessful, you'll need to provide them with another way to prove their identity or access your service. You can [read more about error handling when you make an authorisation request](../integrate-with-code-flow/#error-handling-for-make-an-authorisation-request).
 
-GOV.UK One Login will respond to the authorisation request with an OAuth error. You can [read more about error handling when you make an authorisation request](../integrate-with-code-flow/#error-handling-for-make-an-authorisation-request).
+If your user’s state query parameter does not match your client store, this may be because they changed browsers during the identity verification process. This can happen in journeys using the GOV.UK One Login app when switching between the app and a mobile browser. In this scenario, you should ask your user to log in again.
 
 
 
