@@ -435,7 +435,8 @@ The `id_token` parameter in the response for ‘Make a token request’ contains
   "nonce": "aad0aa969c156b2dfa685f885fac7083",
   "aud": "YOUR_CLIENT_ID",
   "exp": 1489694196,
-  "iat": 1489694198
+  "iat": 1489694198,
+  "sid": "LeiKvyPXZorTmSgOTsYhPehsGNw="
 }
 ```
 
@@ -472,7 +473,11 @@ You can use the following table to understand the ID token’s claims.
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">iat</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>iat</code> stands for ‘issued at’. This identifies the time at which GOV.UK One Login created the JWT. You can use this claim to understand the age of the JWT.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This will appear as an integer timestamp representing the number of seconds since the <a href="https://www.epochconverter.com/"><span>Unix Epoch</span></a>.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>iat</code> stands for ‘issued at’. This identifies the time at which GOV.UK One Login created the JWT. You can use this claim to understand the age of the JWT.</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This will appear as an integer timestamp representing the number of seconds since the <a href="https://www.epochconverter.com/"><span>Unix Epoch</span></a>.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">sid</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>sid</code> stands for ‘session identifier’. This uniquely identifies the user's journey within GOV.UK One Login.</span></td>
   </tr>
 </tbody>
 </table>
