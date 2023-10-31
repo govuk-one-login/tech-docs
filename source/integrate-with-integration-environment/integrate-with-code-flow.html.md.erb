@@ -153,6 +153,134 @@ Use the guidance in the following table to replace placeholder values in your ex
 </tbody>
 </table>
 
+### (Optional) Use JWT-secured OAuth 2.0 authorisation request (JAR)
+Instead of specifying the parameters of your request directly in query parameters as above, you can send them in a signed
+JWT known as a request object. If you do this, One Login will verify the signature of the request object, which prevents
+anyone from tampering with the request.
+
+<%= warning_text('You must set the <code>response_type</code>, <code>scope</code>, and <code>client_id</code> in the query parameters and in the request object, and they must match. You may not set any other OIDC parameters using query parameters. ') %>
+
+To do this, you would make a request like the following:
+
+```
+GET /authorize?response_type=code
+&scope=YOUR_SCOPES
+&client_id=YOUR_CLIENT_ID
+&request=YOUR_REQUEST_OBJECT
+HTTP/1.1
+Host: oidc.integration.account.gov.uk
+```
+<%= warning_text('This code example uses formatting that makes it easier to read. If you copy the example, you must make sure the request is:<ul><li>a continuous line of text separating each parameter with an ampersand (&)</li><li>not split across multiple lines</li><li>without any additional separators such as newline, commas or tabs</li></ul>') %>
+
+The following is an example of a request object before base64url encoding and signing. You should use the [private key you
+created][integrate.generate-key-pair] when setting up your integration with One Login to sign the request object in JWS format.
+
+```json
+{
+  "aud": "https://oidc.integration.account.gov.uk/authorize",
+  "iss": "YOUR_CLIENT_ID",
+  "response_type": "code",
+  "client_id": "YOUR_CLIENT_ID",
+  "redirect_uri": "https://client.example.org/cb",
+  "scope": "YOUR_SCOPES",
+  "state": "af0ifjsldkj",
+  "nonce": "n-0S6_WzA2Mj",
+  "vtr": [
+    "Cl.Cm.P2"
+  ],
+  "ui_locales": "en",
+  "claims": {
+    "userinfo": {
+      "https://vocab.account.gov.uk/v1/coreIdentityJWT": null,
+      "https://vocab.account.gov.uk/v1/address": null,
+      "https://vocab.account.gov.uk/v1/passport": null,
+      "https://vocab.account.gov.uk/v1/drivingPermit": null
+    }
+  }
+}
+```
+
+#### Replace the example request objects’s placeholder values
+Use the guidance in the following table to replace placeholder values in example request object.
+
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-ktyi">Parameter</th>
+    <th class="tg-ktyi">Required or optional</th>
+    <th class="tg-ktyi">Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-n81y">aud</td>
+    <td class="tg-n81y">Required</td>
+    <td class="tg-n81y"><code>aud</code> stands for ‘audience’. This identifies GOV.UK One Login’s authorisation server as an intended audience. This value should be the URL: https://oidc.integration.account.gov.uk/authorize.</td>
+  </tr>
+  <tr>
+    <td class="tg-n81y">iss</td>
+    <td class="tg-n81y">Required</td>
+    <td class="tg-n81y"><code>iss</code> stands for ‘issuer’. This should be your `client_id`. You’ll have set your <code>client_id</code> when you <a href="https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login">registered your service to use GOV.UK One Login</a>.</td>
+  </tr>
+  <tr>
+    <td class="tg-n81y">response_type</td>
+    <td class="tg-n81y">Required</td>
+    <td class="tg-n81y">You must set this value to be code: <code>response_type=code</code>. This must match the value set in query parameters.</td>
+  </tr>
+  <tr>
+    <td class="tg-n81y">client_id</td>
+    <td class="tg-n81y">Required</td>
+    <td class="tg-n81y">You’ll have set your <code>client_id</code> when you <a href="https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login">registered your service to use GOV.UK One Login</a>. This value must match the value set in query parameters.</td>
+  </tr>
+  <tr>
+    <td class="tg-n81y">redirect_uri</td>
+    <td class="tg-n81y">Required</td>
+    <td class="tg-n81y">You’ll have specified your <code>redirect_uri</code> when you <a href="https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login">registered your service to use GOV.UK One Login</a>.<br> The redirect URI must exactly match one of the redirect URIs you registered for using Dynamic Client Registration, except that it must be URL-encoded.</td>
+  </tr>
+  <tr>
+    <td class="tg-n81y">scope</span></td>
+    <td class="tg-n81y">Required</span></td>
+    <td class="tg-n81y">A space-separated list of scopes. You must include <code>openid</code> scope value.<br>You should refer to the guidance on <a href="https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/">choosing which user attributes your service can request</a> for the <code>scope</code> parameter. This value must match the value set in query parameters.</td>
+  </tr>
+  <tr>
+    <td class="tg-n81y">state</td>
+    <td class="tg-n81y">Required</td>
+    <td class="tg-n81y">When you receive a response at the redirect URL, there must be a way to verify the response came for a request which you sent. The <code>state</code> value solves this issue by binding the request and response, which reduces impact of <a href="https://owasp.org/www-community/attacks/csrf">Cross Site Request Forgery</a> attacks.<br> This value will be returned to the client in the authentication response.</td>
+  </tr>
+  <tr>
+    <td class="tg-n81y">nonce</td>
+    <td class="tg-n81y">Required</td>
+    <td class="tg-n81y">A unique value generated by your application that is used to verify the integrity of the <code>id_token</code> and mitigate replay attacks.<br> This value will be present in the <code>id_token</code> and should include the per-session state, as well as being impossible for attackers to guess.<br>Your application will need to verify the <code>nonce</code> claim value is the same as the <code>nonce</code> parameter sent in the authentication request.</td>
+  </tr>
+  <tr>
+    <td class="tg-rars">vtr</span></td>
+    <td class="tg-rars">Optional</span></td>
+    <td class="tg-rars">The <code>vtr</code> parameter represents ‘Vectors of Trust’ where you request authentication and, optionally, identity assurance. For example, if you want the medium level of authentication and medium identity confidence, request <code>vtr=[“Cl.Cm.P2”]</code>. <br><br> You selected your Vector of Trust when you <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-the-level-of-authentication>chose the level of authentication</a> and <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-the-level-of-identity-confidence>the level of identity confidence</a> for your service.<br><br> You can read more about how to combine the vectors for authentication level and identity confidence in <a href=https://datatracker.ietf.org/doc/html/rfc8485#section-3.1>Section 3 of RFC 8485</a>. If you need identity assurance, you must request <code>Cl.Cm</code> (the medium level of authentication) or higher (higher levels of authentication will be available soon).<br><br>If you do not specify the <code>vtr</code> parameter, your service will automatically log your users in at the medium level of authentication (<code>Cl.Cm</code>). This means you will not receive identity attributes in your response. </span><br></td>
+  </tr>
+  <tr>
+    <td class="tg-rars">ui_locales</span></td>
+    <td class="tg-rars">Optional</span></td>
+    <td class="tg-rars">GOV.UK One Login supports English and Welsh as language choices. <br><br> If your service is in Welsh, you may want to display GOV.UK One Login in Welsh for a consistent user experience. You can use <code>ui_locales</code> to do this. <br> <br> In the <code>ui_locales</code> parameter, you can choose either <code>en</code> (English) or <code>cy</code> (Welsh). <br><br> Using <code>ui_locales</code> is optional. If you do not include it, your service will continue using English by default. <br><br> GOV.UK One Login does not support any other languages.</td>
+  </tr>
+  <tr>
+    <td class="tg-ycr8">claims</span></td>
+    <td class="tg-ycr8">Optional</span></td>
+    <td class="tg-ycr8">To get the identity attributes your service needs, you should specify these in the <code>claims</code> parameter using the <code>/userinfo</code> endpoint. The <code>/userinfo</code> endpoint returns a JSON object listing the requested claims.<br><br>You can read more about <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/>choosing which user attributes your service can request.</a><br><br> You can <a href=https://openid.net/specs/openid-connect-core-1_0.html#ClaimsParameter>read more about the structure of the claims request in OpenID Connect section 5.5</a>.</td>
+  </tr>
+</tbody>
+</table>
+
+#### Example
+
+```
+GET /authorize?response_type=code
+&scope=openid
+&client_id=abc123
+&request=eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL29pZGMuaW50ZWdyYXRpb24uYWNjb3VudC5nb3YudWsvYXV0aG9yaXplIiwiaXNzIjoiYWJjMTIzIiwicmVzcG9uc2VfdHlwZSI6ImNvZGUiLCJjbGllbnRfaWQiOiJZT1VSX0NMSUVOVF9JRCIsInJlZGlyZWN0X3VyaSI6Imh0dHBzOi8vY2xpZW50LmV4YW1wbGUub3JnL2NiIiwic2NvcGUiOiJvcGVuaWQiLCJzdGF0ZSI6ImFmMGlmanNsZGtqIiwibm9uY2UiOiJuLTBTNl9XekEyTWoiLCJ2dHIiOlsiQ2wuQ20uUDIiXSwidWlfbG9jYWxlcyI6ImVuIiwiY2xhaW1zIjp7InVzZXJpbmZvIjp7Imh0dHBzOi8vdm9jYWIuYWNjb3VudC5nb3YudWsvdjEvY29yZUlkZW50aXR5SldUIjpudWxsLCJodHRwczovL3ZvY2FiLmFjY291bnQuZ292LnVrL3YxL2FkZHJlc3MiOm51bGwsImh0dHBzOi8vdm9jYWIuYWNjb3VudC5nb3YudWsvdjEvcGFzc3BvcnQiOm51bGwsImh0dHBzOi8vdm9jYWIuYWNjb3VudC5nb3YudWsvdjEvZHJpdmluZ1Blcm1pdCI6bnVsbH19fQ.aEdvutPWVnOsr5dxDzaa9KBzXlix6QZcOJQuFaEVQgmBzFoXR5pGvjct5jkCmgi4uh8MggjRkTmMYHIFbD3Y7JLzbRkSPYz9ffiA7_y7m8PmdwD7CXCkd77yOu9QW_4vyDQTYWt0G9YQLSDWhmO2Dc7OrHeFFW-ZMicfc2lb7cHXZ0Ce3pKdWqxbXxYZuRF-bUmEWH2MKFnyPiJzIumQv7parsDwlZx_1UBiTcv0EO_hUMBy1aQ9s5JDOkLTI6h9XdqUbTzchXVmMrC-SbDJi-4PyQyL5oI1Qa_4on7ilqXTmsJVut8q7Jn5uI9Ev7n9hF7wbOiMgiRJOtO8SFiY9w
+HTTP/1.1
+Host: oidc.integration.account.gov.uk
+```
+<%= warning_text('This code example uses formatting that makes it easier to read. If you copy the example, you must make sure the request is:<ul><li>a continuous line of text separating each parameter with an ampersand (&)</li><li>not split across multiple lines</li><li>without any additional separators such as newline, commas or tabs</li></ul>') %>
 
 ### Generate an authorisation code
 
