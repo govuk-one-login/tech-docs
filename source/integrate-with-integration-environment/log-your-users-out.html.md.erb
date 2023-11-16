@@ -134,4 +134,6 @@ You must respond to the back-channel logout HTTP request with an HTTP response c
 | `HTTP 501 Not Implemented` | You have not been able to log the user out of your service. Diagnose any issues with your service but do not replay the logout if the payload has expired.      |
 | `HTTP 504 Gateway Timeout` | You have successfully closed all the user’s sessions in the receiving service but have not been able to close one or more related sessions in related services. |
 
+Continue to [test your integration with GOV.UK One Login][integrate.test-connection]. 
+
 <%= partial "partials/links" %>

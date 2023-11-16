@@ -7,19 +7,6 @@ review_in: 6 months
 
 # Create a configuration for each service you’re integrating
 
-Before you begin your integration with GOV.UK One Login, you should consider:
-
-* how many services within your organisation you’re planning to integrate
-* if your services need to share users, in case you’re integrating more than 1 service
-* if you need to create a reusable component to standardise integration across your organisation, in case you’re integrating a large number of services
-* what the scope of your individual services is and whether this meets the GOV.UK Service Standard definition of a service 
-
-If you’re integrating multiple services, you should [create a configuration for each service you’re integrating](/before-integrating/#create-a-configuration-for-each-service-you-re-integrating). 
-
-Make sure you scope your services according to the [GOV.UK Service Standard guidance](https://www.gov.uk/service-manual/service-standard) on how users think and what they need to do. Find more [information on scoping your service](https://www.gov.uk/service-manual/design/scoping-your-service). 
-
-## ADD A SENSIBLE HEADING
-
 GOV.UK One Login is an OpenID Connect (OIDC) provider. An OIDC ‘relying party’ is an app that outsources its user authentication function to an identity provider, which in this instance is GOV.UK One Login.
 
 To interact with GOV.UK One Login, you must first [register each of your services with GOV.UK One Login as a relying party](/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login). You need to do this for each of the services that you want to integrate with GOV.UK One Login.
@@ -35,7 +22,7 @@ GOV.UK One Login uses `client-id` for:
 
 When you are ready to set up your service’s configuration, follow the guidance on how to [manage your service’s configuration with GOV.UK One Login](/integrate-with-integration-environment/manage-your-service-s-configuration/#manage-your-service-s-configuration-with-gov-uk-one-login).
 
-### Why you should use a specific configuration for each service
+## Why you should use a specific configuration for each service
 
 You must use individual configurations for each of your services to get the following benefits: 
 

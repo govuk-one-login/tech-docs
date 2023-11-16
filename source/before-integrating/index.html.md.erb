@@ -7,6 +7,15 @@ review_in: 6 months
 
 # Before you integrate with GOV.UK One Login
 
+When you plan your integration with GOV.UK One Login, you should consider:
+
+* how many services within your organisation you’re planning to integrate
+* if your services need to share users, in case you’re integrating more than 1 service
+* if you need to create a reusable component to standardise integration across your organisation, in case you’re integrating a large number of services
+* what the scope of your individual services is and whether this meets the GOV.UK Service Standard definition of a service 
+
+Make sure you scope your services according to the [GOV.UK Service Standard guidance](https://www.gov.uk/service-manual/service-standard) on how users think and what they need to do. Find more [information on scoping your service](https://www.gov.uk/service-manual/design/scoping-your-service). 
+
 Before you can start integrating with GOV.UK One Login, you need to:
 
 * [choose the level of authentication for your service][integrate.choose-level-of-auth]
@@ -14,7 +23,7 @@ Before you can start integrating with GOV.UK One Login, you need to:
 * [generate a key pair][integrate.generate-key-pair]
 * [choose which user attributes your service can request][integrate.choose-user-attributes]
 * [create a configuration for each service you’re integrating][integrate.create-configurations-for-each-service]
-* [manage your service's configuration with GOV.UK One Login][integrate.manage-configuration]
+* [set up your service's configuration with GOV.UK One Login][integrate.manage-configuration]
 
 To get started, you’ll need to [choose the level of authentication for your service][integrate.choose-level-of-auth].
 
