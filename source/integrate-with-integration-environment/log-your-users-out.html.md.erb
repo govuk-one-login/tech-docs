@@ -114,7 +114,7 @@ After you do these steps, you’ve validated the signature of the back-channel l
 ### Validate the payload’s content for a back-channel logout request
 
 1. Check the value of `iss` exactly matches the Issuer Identifier specified in GOV.UK One Login’s [discovery endpoint](https://oidc.integration.account.gov.uk/.well-known/openid-configuration).
-1. Check the `aud` claim is the same client ID you received when you [registered your service to use GOV.UK One Login](https://auth-tech-docs.london.cloudapps.digital/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login).
+1. Check the `aud` claim is the same client ID you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service].
 1. Check the `iat` (issued at) value is in the past.
 1. Check the logout token contains a `sub` claim - this is the subject identifier, otherwise known as the unique ID of a user.
 1. Check the logout token contains an `events` claim, which should be a JSON object with a single key: `http://schemas.openid.net/event/backchannel-logout`, and the value for that key should be an empty object.
