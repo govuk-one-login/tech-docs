@@ -23,11 +23,11 @@ The user attributes and how you request them will depend on whether you are requ
 <tbody>
   <tr>
     <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">Authentication only </span></td>
-    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">You can only <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/#choose-which-scopes-your-service-can-request><span>request user attributes using scopes</span></a>.</span></td>
+    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">You can only <a href=/before-integrating/choose-which-user-attributes-your-service-can-request/#choose-which-scopes-your-service-can-request><span>request user attributes using scopes</span></a>.</span></td>
   </tr>
   <tr>
     <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">Authentication and <code>P1</code> identity assurance</span></td>
-    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">You can only <a href=https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/choose-which-user-attributes-your-service-can-request/#choose-which-scopes-your-service-can-request><span>request user attributes using scopes</span></a>.</span></td>
+    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">You can only <a href=/before-integrating/choose-which-user-attributes-your-service-can-request/#choose-which-scopes-your-service-can-request><span>request user attributes using scopes</span></a>.</span></td>
   </tr>
   <tr>
     <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">Authentication and <code>P2</code> (or higher) identity assurance</span></td>
@@ -36,7 +36,7 @@ The user attributes and how you request them will depend on whether you are requ
 </tbody>
 </table>
 
-You'll need to agree which scopes and claims you want to use when you [register your service to use GOV.UK One Login](../manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login).
+You'll need to agree which scopes and claims you want to use when you [register your service to use GOV.UK One Login][integrate.register-your-service].
 
 ## Choose which scopes your service can request
 `openid` is the only scope you must include. You can choose to include other scopes for your authorisation request depending on the user attributes your service needs.
@@ -152,7 +152,7 @@ You can see more about the structure of this information when you [process your 
 
 You can only ask us for claims that are covered by your [Data Protection Impact Assessment](https://ico.org.uk/for-organisations/guide-to-data-protection/guide-to-the-general-data-protection-regulation-gdpr/data-protection-impact-assessments-dpias/). You must clearly explain to your users why you are collecting the data and what you will use it for.
 
-Once you have chosen which attributes your service can request, you can [manage your service’s configuration with GOV.UK One Login](../manage-your-service-s-configuration/).
+Once you have chosen which attributes your service can request, you can [create a configuration for each service you’re integrating][integrate.create-configurations-for-each-service].
 
 
 <%= partial "partials/links" %>
