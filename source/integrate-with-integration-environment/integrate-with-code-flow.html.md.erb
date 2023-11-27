@@ -34,7 +34,7 @@ If you only need a level of authentication without identity assurance, use this 
 
 The following example specifies a medium level of authentication. There’s further guidance on choosing the [level of authentication][integrate.choose-level-of-auth].
 
-You can [replace your example message’s placeholder values][integrate.replace-example-message].
+You can [replace your example's placeholder values][integrate.replace-example-message].
 
 ```
 GET /authorize?response_type=code
@@ -56,7 +56,7 @@ Host: oidc.integration.account.gov.uk
 If you need identity assurance as well as authentication, use this example message to make a `GET` request.
 
 The following example uses medium authentication (`Cl.Cm`) and a medium level of identity confidence (`P2`). There’s further guidance on choosing the [level of authentication][integrate.choose-level-of-auth] and choosing the [level of identity confidence][integrate.choose-level-of-confidence].
-You can [replace your example message’s placeholder values][integrate.replace-example-message].
+You can [replace your example's placeholder values][integrate.replace-example-message].
 
 ```
 GET /authorize?response_type=code
@@ -91,7 +91,64 @@ After you’ve made an authorisation request for authentication and identity, yo
 
 You can only request user attributes to be returned in the `/userinfo` response. You cannot configure the claims returned in the [ID token][integrate.understand-id-token].
 
-### Replace your example message’s placeholder values
+### Secure your authorisation request parameters with JWT 
+
+You can use JWT-secured OAuth 2.0 (JAR) to encode your request parameters and protect against unwanted tampering with your request. 
+
+GOV.UK One Login follows the [OIDC principles on passing the request objects](https://openid.net/specs/openid-connect-core-1_0.html#RequestObject).
+
+1. Build a request object and sign it using the [private key you created][integrate.generate-key-pair] when setting up your integration with GOV.UK One Login.
+1. Encode the signed request object.
+1. Make a `GET` request replacing `YOU_REQUEST_OBJECT` with your signed and encoded request object.
+
+Use this example to make a `GET` request, replacing your example’s placeholder values: 
+
+```
+GET /authorize?response_type=code
+&scope=YOUR_SCOPES
+&client_id=YOUR_CLIENT_ID
+&request=YOUR_REQUEST_OBJECT
+HTTP/1.1
+Host: oidc.integration.account.gov.uk
+```
+
+You must make sure:
+
+* `response_type`, `scope`, and `client_id` are identical in the query parameters and the request object
+* you do not set any other OIDC parameters using query parameters
+
+Before you encode and sign the request object, it should look similar to this example:
+
+```
+{
+  "aud":   "https://oidc.integration.account.gov.uk/authorize",
+  "iss": "YOUR_CLIENT_ID",
+  "response_type": "code",
+  "client_id": "YOUR_CLIENT_ID",
+  "redirect_uri": "https://client.example.org/cb",
+  "scope": "YOUR_SCOPES",
+  "state": "af0ifjsldkj",
+  "nonce": "n-0S6_WzA2Mj",
+  "vtr": [
+    "Cl.Cm.P2"
+  ],
+  "ui_locales": "en",
+  "claims": {
+    "userinfo": {
+      "https://vocab.account.gov.uk/v1/coreIdentityJWT": null,
+      "https://vocab.account.gov.uk/v1/address": null,
+      "https://vocab.account.gov.uk/v1/passport": null,
+      "https://vocab.account.gov.uk/v1/drivingPermit": null
+    }
+  }
+}
+```
+
+You can [replace your example’s placeholder values][integrate.replace-example-message].
+
+
+### Replace the placeholder values in your example
+
 Use the guidance in the following table to replace placeholder values in your example message.
 
 <table class="tg">
@@ -106,17 +163,17 @@ Use the guidance in the following table to replace placeholder values in your ex
   <tr>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">response_type</span></td>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Required</span></td>
-    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You must set this value to be code: </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">response_type=code</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You must set this value to be code: </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">response_type=code</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.<br><br>If you’re using JAR, make sure the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">response_type</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> values in the query parameters and the request object are identical.</span></td>
   </tr>
   <tr>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">scope</span></td>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Required</span></td>
-    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">A space-separated list of scopes. You must include </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">openid</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> scope value.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You should refer to the guidance on </span><a href="/before-integrating/choose-which-user-attributes-your-service-can-request/"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">choosing which user attributes your service can request</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> for the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">scope</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter.</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">A space-separated list of scopes. You must include </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">openid</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> as one scope value.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You should refer to the guidance on </span><a href="/before-integrating/choose-which-user-attributes-your-service-can-request/"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">choosing which user attributes your service can request</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> for the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">scope</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter.</span><br><br>If you’re using JAR, make sure the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">scope</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> values in the query parameters and the request object are identical.</span></td>
   </tr>
   <tr>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">client_id</span></td>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Required</span></td>
-    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You’ll have set your </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">client_ID</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> when you </span><a href="/before-integrating/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">registered your service to use GOV.UK One Login</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You’ll have set your </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">client_ID</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> when you </span><a href="/before-integrating/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">registered your service to use GOV.UK One Login</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.</span><br><br>If you’re using JAR, make sure the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">client_id</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> values in the query parameters and the request object are identical.</span></td>
   </tr>
   <tr>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">state</span></td>
@@ -126,12 +183,22 @@ Use the guidance in the following table to replace placeholder values in your ex
   <tr>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">redirect_uri</span></td>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Required</span></td>
-    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You’ll have specified your </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">redirect_uri</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> when you </span><a href="/before-integrating/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">registered your service to use GOV.UK One Login</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">The redirect URI must exactly match one of the redirect URIs you registered for using Dynamic Client Registration, except that it must be URL-encoded.</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You’ll have specified your </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">redirect_uri</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> when you </span><a href="/before-integrating/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">registered your service to use GOV.UK One Login</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">The redirect URI must exactly match one of the redirect URIs you registered with GOV.UK One Login.</span><br><br><span>If you’re using request parameters, the value must be URL-encoded.</span></td>
   </tr>
   <tr>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">nonce</span></td>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Required</span></td>
     <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">A unique value generated by your application that is used to verify the integrity of the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">id_token</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> and mitigate replay attacks.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">This value will be present in the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">id_token</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> and should include the per-session state, as well as being impossible for attackers to guess.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Your application will need to verify the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">nonce</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> claim value is the same as the </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">nonce</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> parameter sent in the authentication request.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">aud</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Optional</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">If you’re using JAR, you must include </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">aud</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> in your JSON object.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You must set this value to specify GOV.UK One Login’s authorisation server as the intended audience: </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">aud=https://oidc.integration.account.gov.uk/authorize</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.</span></td>
+  </tr>
+  <tr>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">iss</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">Optional</span></td>
+    <td class="tg-n81y"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">If you’re using JAR, you must include </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">iss</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> in your JSON object.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">You must set this value to be your </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">client_id</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">. You'll have set your </span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#A71D5D;background-color:#F5F5F5">client_id</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent"> when you </span><a href="/before-integrating/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login"><span style="font-weight:400;font-style:normal;text-decoration:underline;color:#1D70B8;background-color:transparent">registered your service to use GOV.UK One Login</span></a><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C;background-color:transparent">.</span></td>
   </tr>
   <tr>
     <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">ui_locales</span></td>
