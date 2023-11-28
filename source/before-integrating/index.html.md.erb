@@ -7,53 +7,24 @@ review_in: 6 months
 
 # Before you integrate with GOV.UK One Login
 
-Before you begin your integration with GOV.UK One Login, you should consider:
+When you plan your integration with GOV.UK One Login, you should consider:
 
 * how many services within your organisation you’re planning to integrate
 * if your services need to share users, in case you’re integrating more than 1 service
 * if you need to create a reusable component to standardise integration across your organisation, in case you’re integrating a large number of services
 * what the scope of your individual services is and whether this meets the GOV.UK Service Standard definition of a service 
 
-If you’re integrating multiple services, you should [create a configuration for each service you’re integrating](/before-integrating/#create-a-configuration-for-each-service-you-re-integrating). 
-
 Make sure you scope your services according to the [GOV.UK Service Standard guidance](https://www.gov.uk/service-manual/service-standard) on how users think and what they need to do. Find more [information on scoping your service](https://www.gov.uk/service-manual/design/scoping-your-service). 
 
-## Create a configuration for each service you’re integrating
+Before you can start integrating with GOV.UK One Login, you need to:
 
-GOV.UK One Login is an OpenID Connect (OIDC) provider. An OIDC ‘relying party’ is an app that outsources its user authentication function to an identity provider, which in this instance is GOV.UK One Login.
+* [choose the level of authentication for your service][integrate.choose-level-of-auth]
+* [choose the level of identity confidence for your service][integrate.choose-level-of-confidence]
+* [generate a key pair][integrate.generate-key-pair]
+* [choose which user attributes your service can request][integrate.choose-user-attributes]
+* [create a configuration for each service you’re integrating][integrate.create-configurations-for-each-service]
+* [set up your service's configuration with GOV.UK One Login][integrate.manage-configuration]
 
-To interact with GOV.UK One Login, you must first [register each of your services with GOV.UK One Login as a relying party](/integrate-with-integration-environment/manage-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login). You need to do this for each of the services that you want to integrate with GOV.UK One Login.
+To get started, you’ll need to [choose the level of authentication for your service][integrate.choose-level-of-auth].
 
-Part of the service’s configuration is the `client-id`, which is a unique identifier that GOV.UK One Login uses to identify your services. Each service should have a distinct `client-id`.
-
-GOV.UK One Login uses `client-id` for: 
-
-* retrieving configurations
-* event auditing
-* performance analytics 
-* fraud prevention and data sharing
-
-When you are ready to set up your service’s configuration, follow the guidance on how to [manage your service’s configuration with GOV.UK One Login](/integrate-with-integration-environment/manage-your-service-s-configuration/#manage-your-service-s-configuration-with-gov-uk-one-login).
-
-### Why you should use a specific configuration for each service
-
-You must use individual configurations for each of your services to get the following benefits: 
-
-* service specific reports with information about success rates and volumes
-* protection for each service if another service has an outage - your other services will not be affected
-* effective monitoring and detection of fraudulent activity
-* better help for your users because the support team will have more detailed information on user activity
-
-If you do not use individual configurations for each of your services, GOV.UK One Login cannot:
-
-* monitor or detect fraudulent activities as effectively 
-* give you service specific analytics - we cannot generate this retrospectively if you later switch to individual configurations 
-* provide your users with a simpler and more personalised user journey
-
-Organisations with multiple services may have additional requirements such as:
-
-* sharing users across services - to enable this, [set up a common sector identifier](/integrate-with-integration-environment/manage-your-service-s-configuration/#choose-your-sector-identifier-uri)
-* users that want to switch between services - to support users switching between services, your service must call the `/authorize` endpoint each time a user requests access to a new service
-
-
-You can [get started with integrating with GOV.UK One Login’s integration environment](/integrate-with-integration-environment/).
+<%= partial "partials/links" %>
