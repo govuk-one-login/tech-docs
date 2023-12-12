@@ -1,12 +1,11 @@
 name: AWS build and deploy
 
 on:
-  schedule:
-    - cron: '00 6 * * *' # deploy at 6am to get updated readmes
   workflow_dispatch:
   push:
     branches:
       - main
+      - bau-migrate-to-aws
 
 defaults:
   run:
