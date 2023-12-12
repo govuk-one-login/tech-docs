@@ -56,7 +56,7 @@ Resources:
       DomainName: "tech-docs.account.gov.uk"
       DomainValidationOptions:
         - DomainName: "tech-docs.account.gov.uk"
-          HostedZoneId: !ImportValue PublicHostedZoneId
+          HostedZoneId: !ImportValue TechDocsPublicHostedZoneId
       ValidationMethod: DNS
 
   #
