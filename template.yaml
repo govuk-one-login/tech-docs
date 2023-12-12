@@ -59,6 +59,25 @@ Resources:
           HostedZoneId: !ImportValue TechDocsPublicHostedZoneId
       ValidationMethod: DNS
 
+  DocsSigninDnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Name: "docs.sign-in.service.gov.uk"
+      Type: A
+      HostedZoneId: !ImportValue DocsSigninPublicHostedZoneId
+      AliasTarget:
+        DNSName: !GetAtt ApplicationLoadBalancer.DNSName
+        HostedZoneId: !GetAtt ApplicationLoadBalancer.CanonicalHostedZoneID
+
+  DocsSigninCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: "docs.sign-in.service.gov.uk"
+      DomainValidationOptions:
+        - DomainName: "docs.sign-in.service.gov.uk"
+          HostedZoneId: !ImportValue DocsSigninPublicHostedZoneId
+      ValidationMethod: DNS
+
   #
   # Fargate cluster
   #
@@ -328,6 +347,7 @@ Resources:
       SslPolicy: ELBSecurityPolicy-TLS13-1-2-2021-06
       Certificates:
         - CertificateArn: !Ref TechDocsCertificate
+        - CertificateArn: !Ref DocsSigninCertificate
 
   ApplicationLoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
