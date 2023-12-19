@@ -126,7 +126,9 @@ Resources:
           Value: ci/cd
         - Key: Source
           Value: govuk-one-login/team-manual/deploy/template.yaml
-    DependsOn: ApplicationLoadBalancerListener
+    DependsOn:
+      - ApplicationLoadBalancerListener
+      - ApplicationLoadBalancerListener2
 
   ContainerAutoScalingTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
@@ -347,6 +349,28 @@ Resources:
       SslPolicy: ELBSecurityPolicy-TLS13-1-2-2021-06
       Certificates:
         - CertificateArn: !Ref TechDocsCertificate
+
+  ApplicationLoadBalancerListener2:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    # checkov:skip=CKV_AWS_2:Certificate generation must be resolved before the listener can use HTTPS.
+    # checkov:skip=CKV_AWS_103:The load balancer cannot use TLS v1.2 until HTTPS is enabled.
+    Metadata:
+      checkov:
+        skip:
+          - id: "CKV_AWS_2"
+            comment: "Certificate generation must be resolved before the listener can use HTTPS"
+          - id: "CKV_AWS_103"
+            comment: "The load balancer cannot use TLS v1.2 until HTTPS is enabled"
+    Properties:
+      DefaultActions:
+        - Order: 1
+          TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroup
+          Type: forward
+      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      Port: 443
+      Protocol: HTTPS
+      SslPolicy: ELBSecurityPolicy-TLS13-1-2-2021-06
+      Certificates:
         - CertificateArn: !Ref DocsSigninCertificate
 
   ApplicationLoadBalancerSecurityGroup:
