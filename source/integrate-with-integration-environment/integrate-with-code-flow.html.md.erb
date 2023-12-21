@@ -52,7 +52,7 @@ Host: oidc.integration.account.gov.uk
 
 ### Make a request for authentication and identity
 
-If you need to authenticate and process identity data, you should send 2 separate requests, one for authentication and one for identity. 
+If you need to authenticate your user and check their identity, you should send 2 separate requests: one for authentication and one for identity. 
 
 1. [Send a request to the `/authorize` endpoint to authenticate your user](/integrate-with-integration-environment/integrate-with-code-flow/#make-a-request-to-the-authorize-endpoint) specifying the Vector of Trust (vtr) parameter as ["Cl.Cm"].
 1. Send a request for identity to the `/authorize` endpoint specifying the Vector of Trust parameter `vtr` as ["Cl.Cm.P2"].
