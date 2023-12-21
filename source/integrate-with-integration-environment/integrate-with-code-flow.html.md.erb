@@ -1,7 +1,7 @@
 ---
 title: Integrate with Authorization Code Flow
 weight: 5.5
-last_reviewed_on: 2022-11-11
+last_reviewed_on: 2023-12-21
 review_in: 6 months
 ---
 
@@ -19,22 +19,20 @@ You can use the [discovery endpoint][external.oidc-discovery] to get information
 * information about the keys
 * supported scopes, which will contain the user attributes your service can request
 
-## Make an authorisation request
-To make an authorisation request, your application should first send your user to the authorisation URL.
+## Make a request to the `/authorize` endpoint
 
-The way you make an authorisation request will depend on whether you need:
+You can send a request to the `/authorize` endpoint:
 
-* an authentication request only
-* an authentication and identity assurance request (if you need identity, you must include authentication too)
+* to authenticate your user
+* to verify your user’s level of identity confidence - you must have authenticated your user first
 
-You can then use one of the following example messages to make a `GET` request. You should [use a certified OIDC client library](https://openid.net/developers/certified/). Use the guidance in the following table to [replace your example message’s placeholder values][integrate.replace-example-message].
+Choose one of the following example messages to make your own `GET` request. You can use the following table to [replace the placeholders in your example message][integrate.replace-example-message].
 
-### Make an authorisation request for authentication only
-If you only need a level of authentication without identity assurance, use this example message to make a `GET` request.
+### Make a request for authentication
+
+To authenticate your user, customise the following example `GET` request by [replacing the example’s placeholder values][integrate.replace-example-message]. 
 
 The following example specifies a medium level of authentication. There’s further guidance on choosing the [level of authentication][integrate.choose-level-of-auth].
-
-You can [replace your example's placeholder values][integrate.replace-example-message].
 
 ```
 GET /authorize?response_type=code
@@ -52,10 +50,22 @@ Host: oidc.integration.account.gov.uk
 
 <%= warning_text('This code example uses formatting that makes it easier to read. If you copy the example, you must make sure the request is:<ul><li>a continuous line of text separating each parameter with an ampersand (&)</li><li>not split across multiple lines</li><li>without any additional separators such as newline, commas or tabs</li></ul>') %>
 
-### Make an authorisation request for authentication and identity
-If you need identity assurance as well as authentication, use this example message to make a `GET` request.
+### Make a request for authentication and identity
+
+If you need to authenticate and process identity data, you should send 2 separate requests, one for authentication and one for identity. 
+
+1. [Send a request to the `/authorize` endpoint to authenticate your user](/integrate-with-integration-environment/integrate-with-code-flow/#make-a-request-to-the-authorize-endpoint) specifying the Vector of Trust (vtr) parameter as ["Cl.Cm"].
+1. Send a request for identity to the `/authorize` endpoint specifying the Vector of Trust parameter `vtr` as ["Cl.Cm.P2"].
+
+By using 2 separate requests: 
+
+* more users are likely to create their account successfully
+* you can track which users could not verify their identity
+* you can support your users better when returning from an in-person identity check because you’ll have authenticated them previously
+* you simplify the migration of existing users to GOV.UK One Login
 
 The following example uses medium authentication (`Cl.Cm`) and a medium level of identity confidence (`P2`). There’s further guidance on choosing the [level of authentication][integrate.choose-level-of-auth] and choosing the [level of identity confidence][integrate.choose-level-of-confidence].
+
 You can [replace your example's placeholder values][integrate.replace-example-message].
 
 ```
@@ -76,7 +86,7 @@ Host: oidc.integration.account.gov.uk
 
 #### Create a URL-encoded JSON object for `<claims-request>`
 
-After you’ve made an authorisation request for authentication and identity, you should then [use a certified OIDC client library](https://openid.net/developers/certified/) to create a URL-encoded JSON object for ``<claims-request>``. Your JSON object should look similar to this example:
+After you’ve made a request for authentication and identity, you should then [use a certified OIDC client library](https://openid.net/developers/certified/) to create a URL-encoded JSON object for ``<claims-request>``. Your JSON object should look similar to this example:
 
 ```
 {
@@ -268,7 +278,7 @@ Location: https://YOUR_REDIRECT_URI?error=invalid_request
       <li style="font-weight: 400;"><span style="font-weight: 400;">includes an invalid parameter value</span></li>
       <li style="font-weight: 400;"><span style="font-weight: 400;">includes a parameter more than once</span></li>
       <li style="font-weight: 400;"><span style="font-weight: 400;">not in the correct format</span></li>
-      You can </span><a href="/integrate-with-integration-environment/integrate-with-code-flow/#make-an-authorisation-request"><span>check which parameters GOV.UK One Login supports when you make an authorisation request</span></a>.
+      You can </span><a href="/integrate-with-integration-environment/integrate-with-code-flow/#make-a-request-to-the-authorize-endpoint"><span>check which parameters GOV.UK One Login supports when you make an authorisation request</span></a>.
 </td>
   </tr>
   <tr>
