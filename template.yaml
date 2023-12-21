@@ -54,6 +54,8 @@ Resources:
     Type: AWS::CertificateManager::Certificate
     Properties:
       DomainName: "tech-docs.account.gov.uk"
+      SubjectAlternativeNames:
+        - "docs.sign-in.service.gov.uk"
       DomainValidationOptions:
         - DomainName: "tech-docs.account.gov.uk"
           HostedZoneId: !ImportValue TechDocsPublicHostedZoneId
@@ -69,14 +71,14 @@ Resources:
         DNSName: !GetAtt ApplicationLoadBalancer.DNSName
         HostedZoneId: !GetAtt ApplicationLoadBalancer.CanonicalHostedZoneID
 
-  DocsSigninCertificate:
-    Type: AWS::CertificateManager::Certificate
-    Properties:
-      DomainName: "docs.sign-in.service.gov.uk"
-      DomainValidationOptions:
-        - DomainName: "docs.sign-in.service.gov.uk"
-          HostedZoneId: !ImportValue DocsSigninPublicHostedZoneId
-      ValidationMethod: DNS
+  #DocsSigninCertificate:
+  #  Type: AWS::CertificateManager::Certificate
+  #  Properties:
+  #    DomainName: "docs.sign-in.service.gov.uk"
+  #    DomainValidationOptions:
+  #      - DomainName: "docs.sign-in.service.gov.uk"
+  #        HostedZoneId: !ImportValue DocsSigninPublicHostedZoneId
+  #    ValidationMethod: DNS
 
   #
   # Fargate cluster
@@ -349,29 +351,6 @@ Resources:
       SslPolicy: ELBSecurityPolicy-TLS13-1-2-2021-06
       Certificates:
         - CertificateArn: !Ref TechDocsCertificate
-
-  ApplicationLoadBalancerListener2:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    # checkov:skip=CKV_AWS_2:Certificate generation must be resolved before the listener can use HTTPS.
-    # checkov:skip=CKV_AWS_103:The load balancer cannot use TLS v1.2 until HTTPS is enabled.
-    Metadata:
-      checkov:
-        skip:
-          - id: "CKV_AWS_2"
-            comment: "Certificate generation must be resolved before the listener can use HTTPS"
-          - id: "CKV_AWS_103"
-            comment: "The load balancer cannot use TLS v1.2 until HTTPS is enabled"
-    Properties:
-      DefaultActions:
-        - Order: 1
-          TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroup
-          Type: forward
-      LoadBalancerArn: !Ref ApplicationLoadBalancer
-      Port: 443
-      Protocol: HTTPS
-      SslPolicy: ELBSecurityPolicy-TLS13-1-2-2021-06
-      Certificates:
-        - CertificateArn: !Ref DocsSigninCertificate
 
   ApplicationLoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
