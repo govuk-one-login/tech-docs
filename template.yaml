@@ -130,7 +130,6 @@ Resources:
           Value: govuk-one-login/team-manual/deploy/template.yaml
     DependsOn:
       - ApplicationLoadBalancerListener
-      - ApplicationLoadBalancerListener2
 
   ContainerAutoScalingTarget:
     Type: AWS::ApplicationAutoScaling::ScalableTarget
