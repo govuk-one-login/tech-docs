@@ -13,27 +13,10 @@ GOV.UK One Login uses ['Vectors of Trust'](https://datatracker.ietf.org/doc/html
 
 GOV.UK One Login currently supports the following authentication levels, also known as ‘levels of protection’ in GPG 44.
 
-<table class="tg">
-<thead>
-  <tr>
-    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Levels of protection</span></th>
-    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Vector value</span></th>
-    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Description of the levels of protection</span></th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Low level of protection</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>Cl</code> (credential low)</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This vector requires your users to have a username and password combination. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You should only use this option if your service does not hold personal information about your users, for example if your service is about booking in an MOT. <br>All services use <code>Cl.Cm</code> as the authentication level by default, unless you change your authentication level to <code>Cl</code>.<br></br>If you request <code>Cl</code>, you will not be able to request identity attributes.</span></td>
-  </tr>
-  <tr>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Medium level of protection</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent"><code>Cl.Cm</code> (credential medium)</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This vector requires your users to have a username and password combination, as well as using two-factor authentication (2FA). GOV.UK One Login currently supports 2FA either through a one-time password sent through SMS, or an authenticator app.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">All services use <code>Cl.Cm</code> as the authentication level by default, unless you change your authentication level to <code>Cl</code>. <br></br>If you need to request identity attributes, you must request <code>Cl.Cm</code>. </span></td>
-  </tr>
-</tbody>
-</table>
+| Levels of protection       | Vector value                | Description of the levels of protection                                                                                                                                                                                                                                                                                                                                                                                                                |
+|----------------------------|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Low level of protection    | `Cl` (credential low)       | This vector requires your users to have a username and password combination. <br>You should only use this option if your service does not hold personal information about your users, for example if your service is about booking in an MOT. <br>All services use `Cl.Cm` as the authentication level by default, unless you change your authentication level to `Cl`.<br><br>If you request `Cl`, you will not be able to request identity attributes.     |
+| Medium level of protection | `Cl.Cm` (credential medium) | This vector requires your users to have a username and password combination, as well as using two-factor authentication (2FA). GOV.UK One Login currently supports 2FA either through a one-time password sent through SMS, or an authenticator app.<br>All services use `Cl.Cm` as the authentication level by default, unless you change your authentication level to `Cl`. <br><br>If you need to request identity attributes, you must request `Cl.Cm`.  |
 
 You'll include your level of authentication in your authorisation request.
 
