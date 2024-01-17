@@ -220,7 +220,7 @@ Use the guidance in the following table to replace placeholder values in your ex
   <tr>
     <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">vtr</span></td>
     <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">Optional</span></td>
-    <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">The </span><code>vtr</code><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> parameter represents ‘Vectors of Trust’ where you request authentication and, optionally, identity assurance. For example, if you want the medium level of authentication and medium identity confidence, request <code>vtr=[“Cl.Cm.P2”]</code>. </span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">You selected your Vector of Trust when you <a href=/before-integrating/choose-the-level-of-authentication><span>chose the level of authentication</span></a> and <a href=/before-integrating/choose-the-level-of-identity-confidence><span>the level of identity confidence</span></a> for your service.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">You can read more about how to combine the vectors for authentication level and identity confidence in </span><a href=https://datatracker.ietf.org/doc/html/rfc8485#section-3.1><span>Section 3 of RFC 8485</span></a>. If you need identity assurance, you must request <code>Cl.Cm</code> (the medium level of authentication) or higher (higher levels of authentication will be available soon).<br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">If you do not specify the <code>vtr</code></span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> parameter, your service will automatically log your users in at the medium level of authentication (<code>Cl.Cm</code>).</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> This means you will not receive identity attributes in your response. </span><br></td>
+    <td class="tg-rars"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">The </span><code>vtr</code><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> parameter represents ‘Vectors of Trust’ where you request authentication and, optionally, identity proving. For example, if you want the medium level of authentication and medium identity confidence, request <code>vtr=[“Cl.Cm.P2”]</code>. </span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">You selected your Vector of Trust when you <a href=/before-integrating/choose-the-level-of-authentication><span>chose the level of authentication</span></a> and <a href=/before-integrating/choose-the-level-of-identity-confidence><span>the level of identity confidence</span></a> for your service.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">You can read more about how to combine the vectors for authentication level and identity confidence in </span><a href=https://datatracker.ietf.org/doc/html/rfc8485#section-3.1><span>Section 3 of RFC 8485</span></a>. If you need identity proving, you must request <code>Cl.Cm</code> (the medium level of authentication) or higher (higher levels of authentication will be available soon).<br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C">If you do not specify the <code>vtr</code></span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> parameter, your service will automatically log your users in at the medium level of authentication (<code>Cl.Cm</code>).</span><span style="font-weight:400;font-style:normal;text-decoration:none;color:#0B0C0C"> This means you will not receive identity attributes in your response. </span><br></td>
   </tr>
   <tr>
     <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">claims</span></td>
@@ -233,7 +233,7 @@ Use the guidance in the following table to replace placeholder values in your ex
 
 ### Generate an authorisation code
 
-If your user does not have an existing session they’re signed in to when your service makes the authorisation request, the OIDC sign-in page will open. Your user can enter their details on this page to authenticate themselves.
+If your user does not have an existing session they’re signed in to when your service makes the request to the `/authorize` endpoint, the OIDC sign-in page will open. Your user can enter their details on this page to authenticate themselves.
 
 If your user has an existing session, or after they authenticate, they will be redirected to the `redirect_uri` your service specified.
 
@@ -244,9 +244,9 @@ HTTP/1.1 302 Found
 Location: https://YOUR_REDIRECT_URI?code=AUTHORIZATION_CODE&state=xyzABC123
 ```
 
-If your authorisation request included the `state` parameter, the URI will also include this parameter.
+If your request included the `state` parameter, the URI will also include this parameter.
 
-### Error handling for ‘Make an authorisation request’
+### Error handling for ‘Make a request to the `/authorize` endpoint’
 
 To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
 
@@ -278,7 +278,7 @@ Location: https://YOUR_REDIRECT_URI?error=invalid_request
       <li style="font-weight: 400;"><span style="font-weight: 400;">includes an invalid parameter value</span></li>
       <li style="font-weight: 400;"><span style="font-weight: 400;">includes a parameter more than once</span></li>
       <li style="font-weight: 400;"><span style="font-weight: 400;">not in the correct format</span></li>
-      You can </span><a href="/integrate-with-integration-environment/integrate-with-code-flow/#make-a-request-to-the-authorize-endpoint"><span>check which parameters GOV.UK One Login supports when you make an authorisation request</span></a>.
+      You can </span><a href="/integrate-with-integration-environment/integrate-with-code-flow/#make-a-request-to-the-authorize-endpoint"><span>check which parameters GOV.UK One Login supports when you make a request to the <code>/authorize</code> endpoint</span></a>.
 </td>
   </tr>
   <tr>
@@ -295,7 +295,7 @@ Location: https://YOUR_REDIRECT_URI?error=invalid_request
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">temporarily_unavailable</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">If you're only making an authentication request (as opposed to requesting both authentication and identity), this error code means the GOV.UK One Login authentication server is temporarily unavailable, which might be caused by temporary overloading or planned maintenance. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Make your authorisation request again in a few minutes. <br>  <br> If you're making an identity request and you get this error, it means the identity proofing and verification does not currently have capacity for this request.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">If you're only making an authentication request (as opposed to requesting both authentication and identity), this error code means the GOV.UK One Login authentication server is temporarily unavailable, which might be caused by temporary overloading or planned maintenance. </span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Make your request again in a few minutes. <br>  <br> If you're making an identity request and you get this error, it means the identity proofing and verification does not currently have capacity for this request.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">access_denied</span></td>
@@ -445,7 +445,7 @@ OiIiLCJqdGkiOiIifQ.r1Ylfhhy6VNSlhlhW1N89F3WfIGuko2rvSRWO4yK1BI
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">code</span></td>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required</span></td>
     <td class="tg-0lax"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The code you received when you generated an </span><a href="/integrate-with-integration-environment/integrate-with-code-flow/#generate-an-authorisation-code"><span>authorisation code</span></a>.
-</a><span. </span></td>
+</a><span>. </span></td>
   </tr>
 </tbody>
 </table>
@@ -543,7 +543,7 @@ You can use the following table to understand the ID token’s claims.
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">nonce</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The <code>nonce</code> value your application provided when you made the authorisation request.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The <code>nonce</code> value your application provided when you made the request to the <code>/authorize</code> endpoint.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">aud</span></td>
@@ -575,7 +575,7 @@ Now you’ve understood what’s in your ID token, you’ll need to validate it.
 1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service].
 1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). You must first [validate that the JWT `alg` header matches](https://datatracker.ietf.org/doc/html/rfc8725#section-3.1) what was returned from the `jwks_uri`. Then you can use the value of the JWT `alg` header parameter to validate the ID token. Your application must use the keys provided by the [discovery endpoint][external.oidc-discovery].
 1. Check the current time is before the time in the `exp` claim.
-1. If you set a `nonce` value in the authorisation request, check the `nonce` value in the authorisation request matches the `nonce` value in the ID token.
+1. If you set a `nonce` value in the request to the `/authorize` endpoint, check this matches the `nonce` value in the ID token.
 1. Check the ID token is between the `auth_time` claim value (when the token was issued) and the `exp` claim value. If your ID token is outside this time window, you’ll need to request re-authentication from your user.
 
 ### Error handling for ‘Make a token request’
@@ -700,7 +700,7 @@ Content-Type: application/json
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">invalid_grant</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The authorisation code is invalid or expired. This is also the error which would return if the redirect URL given in the authorisation request does not match the URL provided in this access token request.</span></td>
+    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The authorisation code is invalid or expired. This is also the error which would return if the redirect URL given in the request to the <code>/authorize</code> endpoint does not match the URL provided in this access token request.</span></td>
   </tr>
   <tr>
     <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">unauthorized_client</span></td>
