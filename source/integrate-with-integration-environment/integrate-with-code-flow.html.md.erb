@@ -9,8 +9,6 @@ review_in: 6 months
 
 To get an access token which will allow you to access basic user information, you’ll need to integrate with [OAuth’s Authorization Code Flow](https://openid.net/specs/openid-connect-core-1_0.html).
 
-We recommend you [use a certified OpenID Connect (OIDC) client library](https://openid.net/developers/certified/) rather than building your own.
-
 ## Use the discovery endpoint
 
 You can use the [discovery endpoint][external.oidc-discovery] to get information needed to interact with GOV.UK One Login, for example:
@@ -86,7 +84,7 @@ Host: oidc.integration.account.gov.uk
 
 #### Create a URL-encoded JSON object for `<claims-request>`
 
-After you’ve made a request for authentication and identity, you should then [use a certified OIDC client library](https://openid.net/developers/certified/) to create a URL-encoded JSON object for ``<claims-request>``. Your JSON object should look similar to this example:
+After you’ve made a request for authentication and identity, you should then create a URL-encoded JSON object for ``<claims-request>``. Your JSON object should look similar to this example:
 
 ```
 {
