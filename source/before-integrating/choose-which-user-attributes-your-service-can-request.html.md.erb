@@ -7,11 +7,11 @@ review_in: 6 months
 
 # Choose which user attributes your service can request
 
-Your service can request certain user attributes. To do this, you need to choose which ‘scopes’ or ‘claims’ your service will use and include these when you make your authorisation request.
+Your service can request certain user attributes. To do this, you need to choose which ‘scopes’ and ‘claims’ your service will use and include these when you make your request to the `/authorize` endpoint.
 
 OpenID Connect (OIDC) scopes are identifiers your application uses during authentication to authorise access to a user’s attributes, such as an email address. Each scope returns a set of user attributes contained within it. OIDC calls this set of user attributes ‘claims’.
 
-The user attributes and how you request them will depend on whether you are requesting authentication only, or authentication with identity assurance.
+The user attributes and how you request them will depend on whether you are requesting authentication only, or authentication with a level of identity confidence.
 
 <table class="tg">
 <thead>
@@ -26,12 +26,8 @@ The user attributes and how you request them will depend on whether you are requ
     <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">You can only <a href=/before-integrating/choose-which-user-attributes-your-service-can-request/#choose-which-scopes-your-service-can-request><span>request user attributes using scopes</span></a>.</span></td>
   </tr>
   <tr>
-    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">Authentication and <code>P1</code> identity assurance</span></td>
-    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">You can only <a href=/before-integrating/choose-which-user-attributes-your-service-can-request/#choose-which-scopes-your-service-can-request><span>request user attributes using scopes</span></a>.</span></td>
-  </tr>
-  <tr>
-    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">Authentication and <code>P2</code> (or higher) identity assurance</span></td>
-    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">You can request user attributes using both claims and scopes (or either claims or scopes, depending on what your service needs).</span></td>
+    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">Authentication and identity confidence</span></td>
+    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">You can request user attributes using a combination of scopes and claims, depending on what your service needs.</td>
   </tr>
 </tbody>
 </table>
@@ -39,7 +35,8 @@ The user attributes and how you request them will depend on whether you are requ
 You'll need to agree which scopes and claims you want to use when you [register your service to use GOV.UK One Login][integrate.register-your-service].
 
 ## Choose which scopes your service can request
-`openid` is the only scope you must include. You can choose to include other scopes for your authorisation request depending on the user attributes your service needs.
+
+`openid` is the only scope you must include. You can choose to include other scopes for your request to the `/authorize` endpoint depending on the user attributes your service needs.
 
 You can find details of the scopes in the following table.
 
@@ -64,7 +61,7 @@ You can find details of the scopes in the following table.
 <p><span style="font-weight: 400;">Required</span></p>
 </td>
 <td>
-<p><span style="font-weight: 400;">OIDC authorisation requests must contain the <code>openid</code> scope value to indicate that an application intends to use the OIDC protocol.</span></p>
+<p><span style="font-weight: 400;">OIDC requests to the <code>/authorize</code> endpoint must contain the <code>openid</code> scope value to indicate that an application intends to use the OIDC protocol.</span></p>
 <br />
 <p><span style="font-weight: 400;">This will return the <code>sub</code> claim, which uniquely identifies your user.</span></p>
 </td>
