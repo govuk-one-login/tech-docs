@@ -1,15 +1,15 @@
 ---
-title: Process your user’s identity information
+title: Prove your user's identity
 weight: 5.6
-last_reviewed_on: 2023-01-20
+last_reviewed_on: 2024-01-17
 review_in: 6 months
 ---
 
-# Process your user’s identity information
+# Prove your user's identity
 
 You must have authenticated your users before you can verify their identity.
 
-If you [requested identity proving][integrate.choose-level-of-confidence], when you [retrieve user information with `/userinfo`](/integrate-with-integration-environment/integrate-with-code-flow/#retrieve-user-information), you’ll receive a response containing additional claims (user attributes). You may receive different claims, depending on how your user proved their identity.
+If you [requested identity assurance][integrate.choose-level-of-confidence], when you [retrieve user information with `/userinfo`](/integrate-with-integration-environment/authenticate-your-user/#retrieve-user-information), you’ll receive a response containing additional claims (user attributes). You may receive different claims, depending on how your user proved their identity.
 
 Your service’s needs will determine how you process the other claims that GOV.UK One Login provides about your user. You’ll probably need to match against information held by your service or organisations you work with.
 
@@ -163,7 +163,7 @@ The `vc` claim in the JWT is a [verifiable credential (VC)](https://www.w3.org/T
 
 1. You must validate the JWT signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Check the JWT `alg` header is `ES256` and then use the value of the JWT `alg` header parameter to validate the JWT.
 1. Check the `iss` claim is `https://identity.integration.account.gov.uk/`.
-1. Check the `sub` claim matches the `sub` claim you received in [the `id_token` from your token request](../integrate-with-code-flow/#understand-your-id-token).
+1. Check the `sub` claim matches the `sub` claim you received in [the `id_token` from your token request](../authenticate-your-user/#understand-your-id-token).
 1. Check the current time is before the time in the `exp` claim.
 
 ### Check your user’s identity credential matches the level of confidence needed
