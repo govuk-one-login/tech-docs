@@ -1,15 +1,13 @@
 ---
-title: Integrate with Authorization Code Flow
+title: Authenticate your user
 weight: 5.5
-last_reviewed_on: 2023-12-21
+last_reviewed_on: 2024-01-17
 review_in: 6 months
 ---
 
-# Integrate with Authorization Code Flow
+# Authenticate your user
 
 To get an access token which will allow you to access basic user information, you’ll need to integrate with [OAuth’s Authorization Code Flow](https://openid.net/specs/openid-connect-core-1_0.html).
-
-We recommend you [use a certified OpenID Connect (OIDC) client library](https://openid.net/developers/certified/) rather than building your own.
 
 ## Use the discovery endpoint
 
@@ -54,7 +52,7 @@ Host: oidc.integration.account.gov.uk
 
 If you need to authenticate your user and check their identity, you should send 2 separate requests: one for authentication and one for identity. 
 
-1. [Send a request to the `/authorize` endpoint to authenticate your user](/integrate-with-integration-environment/integrate-with-code-flow/#make-a-request-to-the-authorize-endpoint) specifying the Vector of Trust (vtr) parameter as ["Cl.Cm"].
+1. [Send a request to the `/authorize` endpoint to authenticate your user](/integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-authorize-endpoint) specifying the Vector of Trust (vtr) parameter as ["Cl.Cm"].
 1. Send a request for identity to the `/authorize` endpoint specifying the Vector of Trust parameter `vtr` as ["Cl.Cm.P2"].
 
 By using 2 separate requests: 
@@ -86,7 +84,7 @@ Host: oidc.integration.account.gov.uk
 
 #### Create a URL-encoded JSON object for `<claims-request>`
 
-After you’ve made a request for authentication and identity, you should then [use a certified OIDC client library](https://openid.net/developers/certified/) to create a URL-encoded JSON object for ``<claims-request>``. Your JSON object should look similar to this example:
+After you’ve made a request for authentication and identity, you should then create a URL-encoded JSON object for ``<claims-request>``. Your JSON object should look similar to this example:
 
 ```
 {
@@ -161,6 +159,7 @@ You can [replace your example’s placeholder values][integrate.replace-example-
 
 Use the guidance in the following table to replace placeholder values in your example message.
 
+
 | Parameter       | Required or optional | Description    |
 |-----------------|----------------------|----------------|
 | `response_type` | Required             | You must set this value to be code: `response_type=code`.<br><br>If you’re using JAR, make sure the `response_type` values in the query parameters and the request object are identical. |
@@ -175,10 +174,9 @@ Use the guidance in the following table to replace placeholder values in your ex
 | `vtr`           | Optional             | The `vtr` parameter represents ‘Vectors of Trust’ where you request authentication and, optionally, identity proving. For example, if you want the medium level of authentication and medium identity confidence, request `vtr=[“Cl.Cm.P2”]`. <br><br>You selected your Vector of Trust when you [chose the level of authentication][integrate.choose-level-of-auth] and [the level of identity confidence][integrate.choose-level-of-confidence] for your service.<br><br>You can read more about how to combine the vectors for authentication level and identity confidence in [Section 3 of RFC 8485](https://datatracker.ietf.org/doc/html/rfc8485#section-3.1). If you need identity proving, you must request `Cl.Cm` (the medium level of authentication) or higher (higher levels of authentication will be available soon).<br><br>If you do not specify the `vtr` parameter, your service will automatically log your users in at the medium level of authentication (`Cl.Cm`). This means you will not receive identity attributes in your response. |
 | `claims`        | Optional             | To get the identity attributes your service needs, you should specify these in the `claims` parameter using the `/userinfo` endpoint. The `/userinfo` endpoint returns a JSON object listing the requested claims.<br><br>You can read more about [choosing which user attributes your service can request][integrate.choose-user-attributes].<br><br>You can [read more about the structure of the claims request in OpenID Connect section 5.5](https://openid.net/specs/openid-connect-core-1_0.html#ClaimsParameter). |
 
-
 ### Generate an authorisation code
 
-If your user does not have an existing session they’re signed in to when your service makes the authorisation request, the OIDC sign-in page will open. Your user can enter their details on this page to authenticate themselves.
+If your user does not have an existing session they’re signed in to when your service makes the request to the `/authorize` endpoint, the OIDC sign-in page will open. Your user can enter their details on this page to authenticate themselves.
 
 If your user has an existing session, or after they authenticate, they will be redirected to the `redirect_uri` your service specified.
 
@@ -189,9 +187,9 @@ HTTP/1.1 302 Found
 Location: https://YOUR_REDIRECT_URI?code=AUTHORIZATION_CODE&state=xyzABC123
 ```
 
-If your authorisation request included the `state` parameter, the URI will also include this parameter.
+If your request included the `state` parameter, the URI will also include this parameter.
 
-### Error handling for ‘Make an authorisation request’
+### Error handling for ‘Make a request to the `/authorize` endpoint’
 
 To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
 
@@ -214,10 +212,9 @@ Location: https://YOUR_REDIRECT_URI?error=invalid_request
 | `temporarily_unavailable`   | If you're only making an authentication request (as opposed to requesting both authentication and identity), this error code means the GOV.UK One Login authentication server is temporarily unavailable, which might be caused by temporary overloading or planned maintenance. <br>Make your request again in a few minutes. <br>  <br> If you're making an identity request and you get this error, it means the identity proving and verification does not currently have capacity for this request.                                                                                                                                                                                                                                                                                       |
 | `access_denied`             | GOV.UK One Login returns this error in 3 potential scenarios.<br><br>The first scenario is that the identity evidence your user provided has a lower score than the identity confidence specified in your request. As a result, GOV.UK One Login could not return the medium level of identity confidence (`P2`) and instead returned a lower level of identity confidence.<br><br>The second scenario is that your user selected **Cancel** during the identity verification process.<br><br>The third scenario is that the session in the user’s browser is unavailable. This can happen when your user’s cookies have been lost or your user changed browsers during the identity verification process. In this scenario, you should ask your user to log in again or restart the identity verification process. |
 
-
 ## Make a token request
 
-You need to exchange your [authorisation code](/integrate-with-integration-environment/integrate-with-code-flow/#generate-an-authorisation-code) for tokens. You'll use these tokens to make a call to the `/userinfo` endpoint.
+You need to exchange your [authorisation code](/integrate-with-integration-environment/authenticate-your-user/#generate-an-authorisation-code) for tokens. You'll use these tokens to make a call to the `/userinfo` endpoint.
 
 To exchange your authorisation code for tokens, you'll need to make a `POST` request to the `/token` endpoint using the client authentication method `private_key_jwt`.
 
@@ -244,6 +241,7 @@ To create a JWT assertion, you need to:
 
 To create a JWT assertion, you need to create a JWT which contains certain required claims. There’s some optional claims you can choose to include or not include.
 
+
 | Claim   | Required or recommended | Description    |
 |---------|-------------------------|----------------|
 | `aud`   | Required                | `aud` stands for 'audience'. This identifies GOV.UK One Login’s authorisation server as an intended audience. This value should be the URL: https://oidc.integration.account.gov.uk/token. |
@@ -252,7 +250,6 @@ To create a JWT assertion, you need to create a JWT which contains certain requi
 | `exp`   | Required                | `exp` stands for 'expiration time'. This is the expiration time for this token, which must be an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch].  This is the time after which you must not accept the JWT. We recommend an expiration after 5 minutes. <br>The current date and time must be before the expiration date and time listed in the `exp` claim. |
 | `jti`   | Required                | `jti` stands for ‘JWT ID’. In this claim, you should include a unique identifier for the token. <br>This unique identifier will prevent the token being reused as your application must only use these tokens once. |
 | `iat`   | Recommended             | `iat` stands for ‘issued at’. This identifies the time at which your application created the JWT. You can use this claim to understand the age of the JWT.<br>This must appear as an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch]. |
-
 
 Your JWT body will look similar to this example:
 
@@ -296,7 +293,6 @@ OiIiLCJqdGkiOiIifQ.r1Ylfhhy6VNSlhlhW1N89F3WfIGuko2rvSRWO4yK1BI
 | `client_assertion_type` | Required                | When you’re using `private_key_jwt`, you must set the value to `urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.                                   |
 | `code`                  | Required                | The code you received when you [generated an authorisation code][integrate.generate-auth-code].                                                                                        |
 
-
 ### Receive response for ‘Make a token request’
 
 If your token request is successful, the `/token` endpoint will return a response similar to this example:
@@ -324,7 +320,6 @@ You can use the following table to understand the response for ‘Make a token r
 | `expires_in`    | The length of time the token is valid for. This is displayed in seconds. |
 | `scope`         | You can read more about scopes in [choosing which user attributes your service can request][integrate.choose-user-attributes]. |
 | `id_token`      | A signed JWT that contains basic attributes about the user. <br><br>By default, GOV.UK One Login signs this JWT using the `ES256` algorithm.<br><br>If your service cannot support the `ES256` algorithm (for example, some third-party tooling does not support `ES256`), GOV.UK One Login can sign the JWT using the `RS256` algorithm. You’ll have specified whether your service can support `ES256` when you [registered your service to use GOV.UK One Login][integrate.register-your-service].<br><br>The public key used to verify this JWT is available from the `jwks_uri` parameter found in the [discovery endpoint][external.oidc-discovery]. |
-
 
 ### Understand your ID token
 
@@ -355,7 +350,6 @@ You can use the following table to understand the ID token’s claims.
 | `iat`   | `iat` stands for ‘issued at’. This identifies the time at which GOV.UK One Login created the JWT. You can use this claim to understand the age of the JWT.This will appear as an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch]. |
 | `sid`   | `sid` stands for ‘session identifier’. This uniquely identifies the user's journey within GOV.UK One Login. |
 
-
 Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
 #### Validate your ID token
@@ -366,7 +360,7 @@ Now you’ve understood what’s in your ID token, you’ll need to validate it.
 1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service].
 1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). You must first [validate that the JWT `alg` header matches](https://datatracker.ietf.org/doc/html/rfc8725#section-3.1) what was returned from the `jwks_uri`. Then you can use the value of the JWT `alg` header parameter to validate the ID token. Your application must use the keys provided by the [discovery endpoint][external.oidc-discovery].
 1. Check the current time is before the time in the `exp` claim.
-1. If you set a `nonce` value in the authorisation request, check the `nonce` value in the authorisation request matches the `nonce` value in the ID token.
+1. If you set a `nonce` value in the request to the `/authorize` endpoint, check this matches the `nonce` value in the ID token.
 1. Check the ID token is between the `auth_time` claim value (when the token was issued) and the `exp` claim value. If your ID token is outside this time window, you’ll need to request re-authentication from your user.
 
 ### Error handling for ‘Make a token request’
@@ -392,7 +386,6 @@ Content-Type: application/json
 | `unauthorized_client`    | The application is successfully authenticated, but it's not registered to use the requested [grant type](https://oauth.net/2/grant-types/). |
 | `unsupported_grant_type` | The grant type is not supported by the server. |
 
-
 ### Use your refresh token to request a new access token
 
 A GOV.UK One Login access token is valid for 3 minutes. After 3 minutes, you cannot use an access token to make a call to `/userinfo`.
@@ -405,7 +398,7 @@ A refresh token lasts longer than an access token. You can find the refresh toke
 
 To generate your refresh token, you need to make a request to the `/token` endpoint. In your request, you need to:
 
-1. Fill in the parameters the same way as when you [made a `POST` request to the `/token` endpoint for your access token](/integrate-with-integration-environment/integrate-with-code-flow/#make-a-post-request-to-the-token-endpoint).
+1. Fill in the parameters the same way as when you [made a `POST` request to the `/token` endpoint for your access token](/integrate-with-integration-environment/authenticate-your-user/#make-a-post-request-to-the-token-endpoint).
 2. Leave `grant_type` as `refresh_token`.
 
 ```
@@ -458,13 +451,12 @@ Content-Type: application/json
 | `unauthorized_client`    | The application is successfully authenticated, but it's not registered to use the requested [grant type](https://oauth.net/2/grant-types/). |
 | `unsupported_grant_type` | The grant type is not supported by the server. |
 
-
 ## Retrieve user information
 
 You can retrieve information about your users by making a request to the `/userinfo` endpoint.
 
 Make the request to the `/userinfo` endpoint using the access token you received when making a token request.
-Using the authorisation header field, send the access token as a [bearer token][external.bearer-token].
+Using the authorisation header field, send the access token as a [bearer token](https://oauth.net/2/bearer-tokens/).
 You’ll receive a JSON object which contains a collection of name and value pairs.
 
 An example request to the `/userinfo` endpoint would look similar to this example:
@@ -494,7 +486,7 @@ Content-Type: application/json
 }
 ```
 
-If you included a [level of identity confidence][integrate.choose-level-of-confidence] when you made a request to the `/userinfo` endpoint, you’ll also see identity attributes in the response. You can read more about [how to process your user’s identity information](../process-identity-information/).
+If you included a [level of identity confidence][integrate.choose-level-of-confidence] when you made a request to the `/userinfo` endpoint, you’ll also see identity attributes in the response. You can read more about [how to prove your user's identity](../prove-users-identity/).
 
 ### Error handling for ‘Retrieve user information’
 
@@ -517,7 +509,7 @@ error_description="The Access Token expired"
 |-----------------|--------------------------------------|
 | `invalid_token` | GOV.UK One Login denied your request as you have an invalid or missing bearer access token.<br><br>To proceed, you must use the authorisation header field to send the token as a [bearer token][external.bearer-token]. |
 
-Once you’ve authenticated your user, you can continue with [processing your user’s identity information][integrate.identity-proving]. 
+Once you’ve authenticated your user, you can continue with [proving your user’s identity][integrate.identity-proving]. 
 
 If you’re only authenticating your users, skip the next section and continue to [log your users out of GOV.UK One Login][integrate.log-users-out].
 

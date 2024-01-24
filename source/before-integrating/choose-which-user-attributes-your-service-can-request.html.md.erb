@@ -7,21 +7,22 @@ review_in: 6 months
 
 # Choose which user attributes your service can request
 
-Your service can request certain user attributes. To do this, you need to choose which ‘scopes’ or ‘claims’ your service will use and include these when you make your authorisation request.
+Your service can request certain user attributes. To do this, you need to choose which ‘scopes’ and ‘claims’ your service will use and include these when you make your request to the `/authorize` endpoint.
 
 OpenID Connect (OIDC) scopes are identifiers your application uses during authentication to authorise access to a user’s attributes, such as an email address. Each scope returns a set of user attributes contained within it. OIDC calls this set of user attributes ‘claims’.
 
-The user attributes and how you request them will depend on whether you are requesting authentication only, or authentication with identity assurance.
+The user attributes and how you request them will depend on whether you are requesting authentication only, or authentication with a level of identity confidence.
 
-| Type of request you’re making        | What type of user attributes you can request                                                                                     |
-|--------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| Type of request you’re making        | What type of user attributes you can request                                         |
+|--------------------------------------|--------------------------------------------------------------------------------------|
 | Authentication only                  | You can only [request user attributes using scopes][integrate.choose-request-scope]. |
-| Authentication and identity proving  | You can request user attributes using both claims and scopes (or either claims or scopes, depending on what your service needs). |
+| Authentication and identity proving  | You can request user attributes using a combination of scopes and claims, depending on what your service needs. |
 
 You'll need to agree which scopes and claims you want to use when you [register your service to use GOV.UK One Login][integrate.register-your-service].
 
 ## Choose which scopes your service can request
-`openid` is the only scope you must include. You can choose to include other scopes for your authorisation request depending on the user attributes your service needs.
+
+`openid` is the only scope you must include. You can choose to include other scopes for your request to the `/authorize` endpoint depending on the user attributes your service needs.
 
 You can find details of the scopes in the following table.
 
@@ -45,7 +46,7 @@ You can find details of the claims in the following table.
 | `https://vocab.account.gov.uk/v1/passport`        | This claim contains your user's passport details if GOV.UK One Login proved their identity using their passport.<br><br>If GOV.UK One Login did not prove your user’s identity using their passport, the authorisation response will not return this claim. |
 | `https://vocab.account.gov.uk/v1/drivingPermit`   | This claim contains your user's driving licence details if GOV.UK One Login proved their identity using their driving licence.<br><br>If GOV.UK One Login did not prove your user’s identity using their driving licence, the authorisation response will not return this claim. |
 
-You can see more about the structure of this information when you [process your user’s identity information](integrate-with-integration-environment/process-identity-information).
+You can see more about the structure of this information when you [prove your user’s identity](integrate-with-integration-environment/prove-users-identity).
 
 You can only ask us for claims that are covered by your [Data Protection Impact Assessment](https://ico.org.uk/for-organisations/guide-to-data-protection/guide-to-the-general-data-protection-regulation-gdpr/data-protection-impact-assessments-dpias/). You must clearly explain to your users why you are collecting the data and what you will use it for.
 

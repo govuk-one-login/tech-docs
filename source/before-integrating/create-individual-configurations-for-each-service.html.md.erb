@@ -7,9 +7,9 @@ review_in: 6 months
 
 # Create a configuration for each service you’re integrating
 
-GOV.UK One Login is an OpenID Connect (OIDC) provider. An OIDC ‘relying party’ is an app that outsources its user authentication function to an identity provider, which in this instance is GOV.UK One Login.
+GOV.UK One Login is an OpenID Connect (OIDC) provider. An OIDC ‘relying party’ is a client application that outsources its user authentication function to an identity provider, which in this instance is GOV.UK One Login.
 
-To interact with GOV.UK One Login, you must first [register each of your services with GOV.UK One Login as a relying party][integrate.register-your-service]. You need to do this for each of the services that you want to integrate with GOV.UK One Login.
+To interact with GOV.UK One Login, you must first [register each of your services with GOV.UK One Login][integrate.register-your-service]. You need to do this for each of the services that you want to integrate with GOV.UK One Login.
 
 Part of the service’s configuration is the `client-id`, which is a unique identifier that GOV.UK One Login uses to identify your services. Each service should have a distinct `client-id`.
 
@@ -20,7 +20,7 @@ GOV.UK One Login uses `client-id` for:
 * performance analytics 
 * fraud prevention and data sharing
 
-When you are ready to set up your service’s configuration, follow the guidance on how to [set up your service’s configuration with GOV.UK One Login](/before-integrating/manage-your-service-s-configuration/#set-up-your-service-s-configuration-with-gov-uk-one-login).
+When you are ready to set up your service’s configuration, follow the guidance on how to [set up your service’s configuration with GOV.UK One Login][integrate.set-up-configuration].
 
 ## Why you should use a specific configuration for each service
 
@@ -39,11 +39,11 @@ If you do not use individual configurations for each of your services, GOV.UK On
 
 Organisations with multiple services may have additional requirements such as:
 
-* sharing users across services - to enable this, [set up a common sector identifier](/before-integrating/manage-your-service-s-configuration/#choose-your-sector-identifier-uri)
+* sharing users across services - to enable this, [set up a common sector identifier](/before-integrating/set-up-your-service-s-configuration/#choose-your-sector-identifier-uri)
 * users that want to switch between services - to support users switching between services, your service must call the `/authorize` endpoint each time a user requests access to a new service
 
 
-Once you have chosen which attributes your service can request, you can [set up your service’s configuration with GOV.UK One Login][integrate.manage-configuration].
+Once you have chosen which attributes your service can request, you can [set up your service’s configuration with GOV.UK One Login][integrate.set-up-configuration].
 
 <%= partial "partials/links" %>
 
