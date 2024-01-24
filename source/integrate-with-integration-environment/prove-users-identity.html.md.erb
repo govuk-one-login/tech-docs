@@ -7,15 +7,15 @@ review_in: 6 months
 
 # Prove your user's identity
 
-You must have authenticated your users before you can verify their identity.
+You must have authenticated your users before you can prove their identity.
 
-If you [requested identity assurance][integrate.choose-level-of-confidence], when you [retrieve user information with `/userinfo`][integrate.retrieve-user-info], you’ll receive a response containing additional claims (user attributes). You may receive different claims, depending on how your user proved their identity.
+If you [requested identity proving][integrate.choose-level-of-confidence], when you [retrieve user information with `/userinfo`][integrate.retrieve-user-info], you’ll receive a response containing additional claims (user attributes). You may receive different claims, depending on how your user proved their identity.
 
 Your service’s needs will determine how you process the other claims that GOV.UK One Login provides about your user. You’ll probably need to match against information held by your service or organisations you work with.
 
 Most claims are represented by JSON objects. The [core identity claim](#understand-your-user-s-core-identity-claim) is a JSON web token (JWT) protected by an electronic signature for additional security.
 
-You’ll receive a response from `userinfo` that will look similar to this example:
+You’ll receive a response from `/userinfo` that will look similar to this example:
 
 ```
 HTTP/1.1 200 OK
