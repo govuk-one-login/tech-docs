@@ -52,7 +52,7 @@ Host: oidc.integration.account.gov.uk
 
 If you need to authenticate your user and check their identity, you should send 2 separate requests: one for authentication and one for identity. 
 
-1. [Send a request to the `/authorize` endpoint to authenticate your user](/integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-authorize-endpoint) specifying the Vector of Trust (vtr) parameter as ["Cl.Cm"].
+1. [Send a request to the `/authorize` endpoint to authenticate your user][integrate.make-authorization-request] specifying the Vector of Trust (vtr) parameter as ["Cl.Cm"].
 1. Send a request for identity to the `/authorize` endpoint specifying the Vector of Trust parameter `vtr` as ["Cl.Cm.P2"].
 
 By using 2 separate requests: 
@@ -214,7 +214,7 @@ Location: https://YOUR_REDIRECT_URI?error=invalid_request
 
 ## Make a token request
 
-You need to exchange your [authorisation code](/integrate-with-integration-environment/authenticate-your-user/#generate-an-authorisation-code) for tokens. You'll use these tokens to make a call to the `/userinfo` endpoint.
+You need to exchange your [authorisation code][integrate.generate-auth-code] for tokens. You'll use these tokens to make a call to the `/userinfo` endpoint.
 
 To exchange your authorisation code for tokens, you'll need to make a `POST` request to the `/token` endpoint using the client authentication method `private_key_jwt`.
 
