@@ -13,24 +13,10 @@ OpenID Connect (OIDC) scopes are identifiers your application uses during authen
 
 The user attributes and how you request them will depend on whether you are requesting authentication only, or authentication with a level of identity confidence.
 
-<table class="tg">
-<thead>
-  <tr>
-    <th class="tg-6v43"><span style="font-weight:700;font-style:normal;text-decoration:none;color:#000">Type of request you’re making</span></th>
-    <th class="tg-6v43"><span style="font-weight:700;font-style:normal;text-decoration:none;color:#000">What type of user attributes you can request </span></th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">Authentication only </span></td>
-    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">You can only <a href=/before-integrating/choose-which-user-attributes-your-service-can-request/#choose-which-scopes-your-service-can-request><span>request user attributes using scopes</span></a>.</span></td>
-  </tr>
-  <tr>
-    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">Authentication and identity confidence</span></td>
-    <td class="tg-ycr8"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">You can request user attributes using a combination of scopes and claims, depending on what your service needs.</td>
-  </tr>
-</tbody>
-</table>
+| Type of request you’re making        | What type of user attributes you can request                                         |
+|--------------------------------------|--------------------------------------------------------------------------------------|
+| Authentication only                  | You can only [request user attributes using scopes][integrate.choose-request-scope]. |
+| Authentication and identity proving  | You can request user attributes using a combination of scopes and claims, depending on what your service needs. |
 
 You'll need to agree which scopes and claims you want to use when you [register your service to use GOV.UK One Login][integrate.register-your-service].
 
@@ -40,77 +26,12 @@ You'll need to agree which scopes and claims you want to use when you [register 
 
 You can find details of the scopes in the following table.
 
-<table>
-<tbody>
-<tr>
-<td>
-<p>Scope</p>
-</td>
-<td>
-<p>Required or optional</p>
-</td>
-<td>
-<p>Description</p>
-</td>
-</tr>
-<tr>
-<td>
-<p><span style="font-weight: 400;">openid&nbsp;</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">Required</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">OIDC requests to the <code>/authorize</code> endpoint must contain the <code>openid</code> scope value to indicate that an application intends to use the OIDC protocol.</span></p>
-<br />
-<p><span style="font-weight: 400;">This will return the <code>sub</code> claim, which uniquely identifies your user.</span></p>
-</td>
-</tr>
-<tr>
-<td>
-<p><span style="font-weight: 400;">email</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">Optional</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">Returns the <code>email</code> claim, which contains:</span></p>
-<br />
-<ul>
-<li style="font-weight: 400;"><span style="font-weight: 400;">your user's email address</span></li>
-<li style="font-weight: 400;"><span style="font-weight: 400;"></span><span style="font-weight: 400;"><code>email_verified</code></span><span style="font-weight: 400;">, which is a boolean indicating whether your user has verified their email address or not</span></li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<p><span style="font-weight: 400;">phone</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">Optional</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">Returns the <code>phone_number</code> claim, which contains:</span></p>
-<br />
-<ul>
-<li style="font-weight: 400;"><span style="font-weight: 400;">your user's phone number</span></li>
-<li style="font-weight: 400;"><span style="font-weight: 400;"><code>phone_number_verified</code>, which is a boolean indicating whether your user has verified their phone number or not</span></li>
-</ul>
-</td>
-</tr>
-<td>
-<p><span style="font-weight: 400;">offline_access</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">Optional</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">You use an access token to make calls to the <code>/userinfo</code> endpoint.<br>
-If you want to access the <code>/userinfo</code> endpoint for longer than 3 minutes, you should use a <a href="https://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens"><span>refresh token</span></a> to refresh your access token. <br>
-If you want a refresh token, you must request the <code>offline_access</code> scope. </span></li>
-</ul>
-</tbody>
-</table>
+| Scope             | Required or optional  | Description         |
+|-------------------|-----------------------|---------------------|
+| `openid`          | Required              | OIDC requests to the `/authorize` endpoint must contain the `openid` scope value to indicate that an application intends to use the OIDC protocol. <br> <br>This will return the sub claim, which uniquely identifies your user. |
+| `email`           | Optional              | Returns the `email` claim, which contains:<ul><li>your user's email address</li><li>`email_verified`, which is a boolean indicating whether your user has verified their email address or not</li></ul> |
+| `phone`           | Optional              | Returns the `phone_number` claim, which contains:<ul><li>your user's phone number</li><li>`phone_number_verified`, which is a boolean indicating whether your user has verified their phone number or not</li></ul> |
+| `offline_access`  | Optional              | You use an access token to make calls to the `/userinfo` endpoint.<br> If you want to access the `/userinfo` endpoint for longer than 3 minutes, you should use a [refresh token](https://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens) to refresh your access token. <br> If you want a refresh token, you must request the `offline_access` scope.    |
 
 ## Choose which claims your service can request
 
@@ -118,32 +39,12 @@ You can also request specific claims from GOV.UK One Login, if you need more inf
 
 You can find details of the claims in the following table.
 
-<table class="tg">
-<thead>
-  <tr>
-    <th class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">Claim</span></th>
-    <th class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">Description</span></th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000"><code>https://vocab.account.gov.uk/v1/coreIdentityJWT</code></span></td>
-    <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">This claim contains core identity information about your user: </span><br><ul><li>their names</li><li>their date of birth</li><li>the level of confidence GOV.UK One Login reached in your user’s identity</li></ul></td>
-  </tr>
-  <tr>
-    <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000"><code>https://vocab.account.gov.uk/v1/address</code></span></td>
-    <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">This claim contains your user's postal addresses.</span></td>
-  </tr>
-  <tr>
-    <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000"><code>https://vocab.account.gov.uk/v1/passport</code></span></td>
-    <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">This claim contains your user's passport details if GOV.UK One Login proved their identity using their passport.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">If GOV.UK One Login did not prove your user’s identity using their passport, the authorisation response will not return this claim.</span></td>
-  </tr>
-  <tr>
-    <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000"><code>https://vocab.account.gov.uk/v1/drivingPermit</code></span></td>
-    <td class="tg-82rs"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">This claim contains your user's driving licence details if GOV.UK One Login proved their identity using their driving licence.</span><br><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000">If GOV.UK One Login did not prove your user’s identity using their driving licence, the authorisation response will not return this claim.</span></td>
-  </tr>
-</tbody>
-</table>
+| Claim                                             | Description            |
+|---------------------------------------------------|------------------------|
+| `https://vocab.account.gov.uk/v1/coreIdentityJWT` | This claim contains core identity information about your user:<ul><li>their names</li><li>their date of birth</li><li>the level of confidence GOV.UK One Login reached in your user’s identity</li></ul> |
+| `https://vocab.account.gov.uk/v1/address`         | This claim contains your user's postal addresses. |
+| `https://vocab.account.gov.uk/v1/passport`        | This claim contains your user's passport details if GOV.UK One Login proved their identity using their passport.<br><br>If GOV.UK One Login did not prove your user’s identity using their passport, the authorisation response will not return this claim. |
+| `https://vocab.account.gov.uk/v1/drivingPermit`   | This claim contains your user's driving licence details if GOV.UK One Login proved their identity using their driving licence.<br><br>If GOV.UK One Login did not prove your user’s identity using their driving licence, the authorisation response will not return this claim. |
 
 You can see more about the structure of this information when you [prove your user’s identity](integrate-with-integration-environment/prove-users-identity).
 

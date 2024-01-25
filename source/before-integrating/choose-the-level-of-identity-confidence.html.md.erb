@@ -13,33 +13,11 @@ You may need different levels of identity confidence at different points in your
 
 GOV.UK One Login uses [‘Vectors of Trust’](https://datatracker.ietf.org/doc/html/rfc8485). Your service can use Vectors of Trust to request the right level of identity confidence for your users to gain access to the relevant parts of your service. You’ll include your vector in the query string as part of the request to the `/authorize` endpoint you make when you integrate with Authorization Code Flow.
 
-<table class="tg">
-<thead>
-  <tr>
-    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Levels of identity confidence</span></th>
-    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Vector value</span></th>
-    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Description of the levels of identity confidence</span></th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">No identity confidence</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">P0</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">By default, GOV.UK One Login will not return a level of identity confidence. </span></td>
-  </tr>
-  <tr>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Low identity confidence (not available in private beta)</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">P1</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A basic level of identity confidence, which reduces your service’s risk of accepting impostors or fake identities with fabricated credentials, otherwise known as ‘synthetic identities’.</span></td>
-</span></td>
-  </tr>
-  <tr>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Medium identity confidence</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">P2</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">A higher level of identity confidence to further reduce your service’s risk of accepting imposters or fake identities with fabricated credentials, otherwise known as ‘synthetic identities’. <br></br>To request a medium level of identity confidence (<code>P2</code>), you must have specified <code>Cl.Cm</code> (the medium level of authentication) when you chose the level of authentication for your service.</span></td>
-  </tr>
-</tbody>
-</table>
+| Levels of identity confidence                           | Vector value   | Description of the levels of identity confidence                                                                                                                                                                                                                                                                                                                                            |
+|---------------------------------------------------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| No identity confidence                                  | `P0`           | By default, GOV.UK One Login will not return a level of identity confidence.                                                                                                                                                                                                                                                                                                                 |
+| Low identity confidence (not available in private beta) | `P1`           | A basic level of identity confidence, which reduces your service’s risk of accepting impostors or fake identities with fabricated credentials, otherwise known as ‘synthetic identities’.                                                                                                                                                                                                    |
+| Medium identity confidence                              | `P2`           | A higher level of identity confidence to further reduce your service’s risk of accepting imposters or fake identities with fabricated credentials, otherwise known as ‘synthetic identities’. <br><br>To request a medium level of identity confidence (`P2`), you must have specified `Cl.Cm` (the medium level of authentication) when you chose the level of authentication for your service. |
 
 Now you’ve chosen your level of identity confidence, you can [generate a key pair][integrate.generate-key-pair].
 

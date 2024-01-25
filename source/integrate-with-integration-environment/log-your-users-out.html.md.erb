@@ -24,33 +24,11 @@ You must set up the functionality to log your users out of a GOV.UK One Login se
 
 If no GOV.UK One Login session exists, for example if the session has expired, the endpoint redirects your user to the default logout page for GOV.UK One Login. Your user can continue their journey from the default logout page.
 
-
-<table class="tg">
-<thead>
-  <tr>
-    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Parameter</span></th>
-    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Required, recommended or optional?</span></th>
-    <th class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Description</span></th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:#FFF">id_token_hint</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Recommended - however, if you use <code>post_logout_redirect_uri</code>, this parameter is required</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This is the ID token GOV.UK One Login previously issued when you made a request to the <code>/token</code> endpoint for your user’s current session.</span></td>
-  </tr>
-  <tr>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">post_logout_redirect_uri</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Optional - however, if you do not specify this parameter, the endpoint redirects your user to the default logout page for GOV.UK One Login</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You can only use this parameter if you have specified an <code>id_token_hint</code>.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">This parameter is the URL you want to redirect your users to after you have logged them out.</span><br><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">The <code>post_logout_redirect_uri</code> must match the logout URI you specified when you registered your service to use GOV.UK One Login. </span></td>
-  </tr>
-  <tr>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">state</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">Optional</span></td>
-    <td class="tg-0pky"><span style="font-weight:400;font-style:normal;text-decoration:none;color:#000;background-color:transparent">You can use this query parameter to maintain state between the logout request and your user being redirected to the <code>post_logout_redirect_uri</code>. </span></td>
-  </tr>
-</tbody>
-</table>
+| Parameter                  | Required, recommended or optional                                                                                                            | Description                                                                                                                                                                                                                                                                                                |
+|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `id_token_hint`            | Recommended - however, if you use `post_logout_redirect_uri`, this parameter is required                                                     | This is the ID token GOV.UK One Login previously issued when you made a request to the `/token` endpoint for your user’s current session.                                                                                                                                                                    |
+| `post_logout_redirect_uri` | Optional - however, if you do not specify this parameter, the endpoint redirects your user to the default logout page for GOV.UK One Login   | You can only use this parameter if you have specified an `id_token_hint`.<br>This parameter is the URL you want to redirect your users to after you have logged them out.<br>The `post_logout_redirect_uri` must match the logout URI you specified when you registered your service to use GOV.UK One Login.  |
+| `state`                    | Optional                                                                                                                                     | You can use this query parameter to maintain state between the logout request and your user being redirected to the `post_logout_redirect_uri`.                                                                                                                                                              |
 
 ## Receive response for ‘Log your users out of GOV.UK One Login’
 
@@ -129,10 +107,10 @@ You must respond to the back-channel logout HTTP request with an HTTP response c
 
 | HTTP status code             | Description                                                                                                                                                     |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `HTTP 200 OK`              | You successfully closed all the user’s sessions.                                                                                                                |
-| `HTTP 400 Bad Request`     | You were unable to validate the payload. Check you have validated it correctly.                                                                                 |
-| `HTTP 501 Not Implemented` | You have not been able to log the user out of your service. Diagnose any issues with your service but do not replay the logout if the payload has expired.      |
-| `HTTP 504 Gateway Timeout` | You have successfully closed all the user’s sessions in the receiving service but have not been able to close one or more related sessions in related services. |
+| `HTTP 200 OK`                | You successfully closed all the user’s sessions.                                                                                                                |
+| `HTTP 400 Bad Request`       | You were unable to validate the payload. Check you have validated it correctly.                                                                                 |
+| `HTTP 501 Not Implemented`   | You have not been able to log the user out of your service. Diagnose any issues with your service but do not replay the logout if the payload has expired.      |
+| `HTTP 504 Gateway Timeout`   | You have successfully closed all the user’s sessions in the receiving service but have not been able to close one or more related sessions in related services. |
 
 Continue to [test your integration with GOV.UK One Login][integrate.test-connection]. 
 
