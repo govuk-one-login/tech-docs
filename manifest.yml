@@ -1,6 +1,0 @@
----
-applications:
-- name: di-auth-tech-docs-website
-  memory: 64M
-  routes:
-    - route: auth-tech-docs.london.cloudapps.digital
