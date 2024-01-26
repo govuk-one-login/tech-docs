@@ -11,16 +11,15 @@ GOV.UK One Login is an OpenID Connect (OIDC) provider. An OIDC ‘relying party�
 
 To interact with GOV.UK One Login, you must first [register each of your services with GOV.UK One Login][integrate.register-your-service]. You need to do this for each of the services that you want to integrate with GOV.UK One Login.
 
-Part of the service’s configuration is the `client-id`, which is a unique identifier that GOV.UK One Login uses to identify your services. Each service should have a distinct `client-id`.
+## Understanding the client identifier
 
-GOV.UK One Login uses `client-id` for: 
+The [client identifier](https://datatracker.ietf.org/doc/html/rfc6749#section-2.2) is a unique value GOV.UK One Login requires to identify your services. GOV.UK One Login generates the client identifier for each of your services, when you [register your service with GOV.UK One Login][integrate.register-your-service].
+GOV.UK One Login uses the client identifier to:
 
-* retrieving configurations
-* event auditing
-* performance analytics 
-* fraud prevention and data sharing
-
-When you are ready to set up your service’s configuration, follow the guidance on how to [set up your service’s configuration with GOV.UK One Login][integrate.set-up-configuration].
+* retrieve configurations
+* audit events
+* capture performance analytics
+* perform fraud prevention and data sharing
 
 ## Why you should use a specific configuration for each service
 
