@@ -16,7 +16,6 @@ after_build do |builder|
     HTMLProofer.check_directory(config[:build_dir],
       { :assume_extension => true,
         :allow_hash_href => true,
-        :ignore_empty_alt => true,
         :ignore_files => [
             /search/ # Provided by tech-docs gem but has a "broken" link from html-proofer's point of view
         ],
