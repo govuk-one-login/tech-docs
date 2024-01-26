@@ -1,2 +1,14 @@
 # See https://help.github.com/en/articles/about-code-owners
-* @PippaClarkGDS @sabrinaharris @elenaschwan
+* @govuk-one-login/adoption-lead-developers @govuk-one-login/digital-identity-lead-tech-writers
+
+*.md @govuk-one-login/tech-writers
+*.erb @govuk-one-login/tech-writers
+*.svg @govuk-one-login/tech-writers
+
+*.scss @govuk-one-login/adoption-architects
+*.js @govuk-one-login/adoption-architects
+*.yml @govuk-one-login/adoption-architects
+*.yaml @govuk-one-login/adoption-architects
+*.conf @govuk-one-login/adoption-architects
+*.sh @govuk-one-login/adoption-architects
+*.rb @govuk-one-login/adoption-architects
