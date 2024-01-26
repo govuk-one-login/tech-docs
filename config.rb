@@ -27,7 +27,7 @@ after_build do |builder|
         :swap_urls => { config[:tech_docs][:host] => "" },
         typhoeus: {
             # Some external links need to think you're in a browser to serve non-error codes
-            headers: { "User-Agent" => "Mozilla/5.0 (Android 12; Mobile; rv:68.0) Gecko/68.0 Firefox/101.0" }
+            headers: { "User-Agent" => "Mozilla/5.0 (Android 14; Mobile; LG-M255; rv:122.0) Gecko/122.0 Firefox/122.0" }
         }
     }).run
   rescue RuntimeError => e
