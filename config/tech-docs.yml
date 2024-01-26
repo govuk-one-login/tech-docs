@@ -7,7 +7,6 @@ show_govuk_logo: true
 service_name: One Login
 service_link: https://www.sign-in.service.gov.uk/
 
-
 # This documentation is for the Pilot scheme
 phase: Beta
 
@@ -42,7 +41,7 @@ github_repo: govuk-one-login/authentication-tech-docs # used to generate links i
 github_branch: main
 
 owner_slack_workspace: gds
-default_owner_slack: '#di-2nd-line'
+default_owner_slack: "#di-2nd-line"
 
 # Setting show_expiry: false to not have a red banner at the bottom of the page when it's past the review due date. We'll only have the blue banner saying when the page was last reviewed. The expiry date (determined by the review_in parameter in the frontmatter) is for our internal regular review process.
 show_expiry: false
