@@ -24,6 +24,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+          ruby-version: 3.2.2
       - name: Install Gems
         run: bundle install
 
@@ -37,5 +38,5 @@ jobs:
           container-sign-kms-key-arn: ${{ secrets.CONTAINER_SIGN_KMS_KEY }}
           ecr-repo-name: ${{ secrets.ECR_REPOSITORY }}
           artifact-bucket-name: ${{ secrets.ARTIFACT_BUCKET }}
-          dockerfile: './DockerfileAWS'
+          dockerfile: "./DockerfileAWS"
           checkout-repo: false
