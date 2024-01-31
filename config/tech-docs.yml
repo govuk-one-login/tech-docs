@@ -7,13 +7,12 @@ show_govuk_logo: true
 service_name: One Login
 service_link: https://www.sign-in.service.gov.uk/
 
-
 # This documentation is for the Pilot scheme
 phase: Beta
 
 # Links to show on right-hand-side of header
 header_links:
-  GitHub: https://github.com/alphagov/di-authentication-tech-docs
+  GitHub: https://github.com/govuk-one-login/authentication-tech-docs
   Support: https://docs.sign-in.service.gov.uk/support/
 
 # Links to show in the page footer
@@ -38,11 +37,11 @@ prevent_indexing: true
 
 # Contribution banner
 show_contribution_banner: true
-github_repo: alphagov/di-authentication-tech-docs # used to generate links in the contribution banner
+github_repo: govuk-one-login/authentication-tech-docs # used to generate links in the contribution banner
 github_branch: main
 
 owner_slack_workspace: gds
-default_owner_slack: '#di-2nd-line'
+default_owner_slack: "#di-2nd-line"
 
 # Setting show_expiry: false to not have a red banner at the bottom of the page when it's past the review due date. We'll only have the blue banner saying when the page was last reviewed. The expiry date (determined by the review_in parameter in the frontmatter) is for our internal regular review process.
 show_expiry: false
