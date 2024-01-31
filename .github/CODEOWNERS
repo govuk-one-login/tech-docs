@@ -1,5 +1,5 @@
 # See https://help.github.com/en/articles/about-code-owners
-* @govuk-one-login/adoption-lead-developers @govuk-one-login/digital-identity-lead-tech-writers
+* @govuk-one-login/adoption-lead-developers @govuk-one-login/digital-identity-lead-tech-writers @govuk-one-login/digital-identity-leads
 
 *.md @govuk-one-login/tech-writers
 *.erb @govuk-one-login/tech-writers
