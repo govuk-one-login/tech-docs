@@ -9,11 +9,15 @@ review_in: 6 months
 
 You must have authenticated your users before you can prove their identity.
 
-If you [requested identity proving][integrate.choose-level-of-confidence], when you [retrieve user information with `/userinfo`][integrate.retrieve-user-info], you’ll receive a response containing additional claims (user attributes). You may receive different claims, depending on how your user proved their identity.
+If you [requested identity proving][integrate.choose-level-of-confidence], when
+you [retrieve user information with `/userinfo`][integrate.retrieve-user-info], you’ll receive a response containing
+additional claims (user attributes). You may receive different claims, depending on how your user proved their identity.
 
-Your service’s needs will determine how you process the other claims that GOV.UK One Login provides about your user. You’ll probably need to match against information held by your service or organisations you work with.
+Your service’s needs will determine how you process the other claims that GOV.UK One Login provides about your user.
+You’ll probably need to match against information held by your service or organisations you work with.
 
-Most claims are represented by JSON objects. The [core identity claim](#understand-your-user-s-core-identity-claim) is a JSON web token (JWT) protected by an electronic signature for additional security.
+Most claims are represented by JSON objects. The [core identity claim](#understand-your-user-s-core-identity-claim) is a
+JSON web token (JWT) protected by an electronic signature for additional security.
 
 You’ll receive a response from `/userinfo` that will look similar to this example:
 
@@ -21,13 +25,12 @@ You’ll receive a response from `/userinfo` that will look similar to this exam
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{
   "sub": "urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=",
   "email": "test@example.com",
   "email_verified": true,
   "phone": "01406946277",
   "phone_verified": true,
-  "updated_at":1311280970,
+  "updated_at": 1311280970,
   "https://vocab.account.gov.uk/v1/coreIdentityJWT": <JWT>,
   "https://vocab.account.gov.uk/v1/address": [
     {
@@ -54,27 +57,32 @@ Content-Type: application/json
       "addressCountry": "GB",
       "validUntil": "2022-01-01"
     }
-  ]
-},
+  ],
   "https://vocab.account.gov.uk/v1/drivingPermit": [
     {
       "expiryDate": "2023-01-18",
       "issueNumber": "5",
       "issuedBy": "DVLA",
-      "personalNumber": "DOE99802085J99FG",
-}
+      "personalNumber": "DOE99802085J99FG"
+    }
   ],
   "https://vocab.account.gov.uk/v1/passport": [
-     {
-        "documentNumber": "1223456",
-        "icaoIssuerCode": "GBR",
-        "expiryDate": "2032-02-02"
-      }
-    ]
+    {
+      "documentNumber": "1223456",
+      "icaoIssuerCode": "GBR",
+      "expiryDate": "2032-02-02"
+    }
+  ],
+  "https://vocab.account.gov.uk/v1/socialSecurityRecord": [
+    {
+      "personalNumber": "QQ123456C"
+    }
+  ]
 }
 ```
 ## Understand your user’s core identity claim
-The `https://vocab.account.gov.uk/v1/coreIdentityJWT` property in the `/userinfo` response is the core identity claim, which is a JWT representing core identity attributes.
+The `https://vocab.account.gov.uk/v1/coreIdentityJWT` property in the `/userinfo` response is the core identity claim,
+which is a JWT representing core identity attributes.
 
 The following are core identity attributes:
 
@@ -84,7 +92,8 @@ The following are core identity attributes:
 
 <%= warning_text("If the <code>https://vocab.account.gov.uk/v1/coreIdentityJWT</code> property is not present, then GOV.UK One Login was not able to prove your user's identity.") %>
 
-Our support team will give you the public key you must use to validate this JWT. We recommend you [use a certified JWT/JWS implementation](https://openid.net/developers/jwt/).
+Our support team will give you the public key you must use to validate this JWT. We recommend
+you [use a certified JWT/JWS implementation](https://openid.net/developers/jwt/).
 
 The JWT contains the following claims:
 
@@ -157,74 +166,92 @@ The JWT contains the following claims:
 }
 ```
 
-The `vc` claim in the JWT is a [verifiable credential (VC)](https://www.w3.org/TR/vc-data-model/). Claims about your user are contained in the `credentialSubject` JSON object.
+The `vc` claim in the JWT is a [verifiable credential (VC)](https://www.w3.org/TR/vc-data-model/). Claims about your
+user are contained in the `credentialSubject` JSON object.
 
 ### Validate your user’s identity credential
 
-1. You must validate the JWT signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Check the JWT `alg` header is `ES256` and then use the value of the JWT `alg` header parameter to validate the JWT.
+1. You must validate the JWT signature according to
+   the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Check the JWT `alg` header
+   is `ES256` and then use the value of the JWT `alg` header parameter to validate the JWT.
 1. Check the `iss` claim is `https://identity.integration.account.gov.uk/`.
-1. Check the `sub` claim matches the `sub` claim you received in [the `id_token` from your token request](../authenticate-your-user/#understand-your-id-token).
+1. Check the `sub` claim matches the `sub` claim you received
+   in [the `id_token` from your token request](../authenticate-your-user/#understand-your-id-token).
 1. Check the current time is before the time in the `exp` claim.
 
 ### Check your user’s identity credential matches the level of confidence needed
 
-You must check the `vot` claim in the JWT matches or exceeds the level of confidence you need to let your user access your service. You may receive a lower level of confidence than you requested. For example, if you asked for medium confidence (`P2`), you may receive an identity credential containing low confidence (`P1` in the `vot` claim).
+You must check the `vot` claim in the JWT matches or exceeds the level of confidence you need to let your user access
+your service. You may receive a lower level of confidence than you requested. For example, if you asked for medium
+confidence (`P2`), you may receive an identity credential containing low confidence (`P1` in the `vot` claim).
 
 ### Process your user’s identity credential
 
 The identity credential contains the following claims as properties of `credentialSubject`.
 
-| Property    | Description               |
-|-------------|---------------------------|
-| `name`      | A list showing the names proven by GOV.UK One Login. This list reflects name changes by using the `validFrom` and `validUntil` metadata properties. If `validUntil` is `null` or not present, that name is your user’s current name. If `validFrom` is `null` or not present, your user may have used that name from birth. <br><br> Each name is presented as an array in the `nameParts` property. Each part of the name is either a `GivenName` or a `FamilyName`, identified in its `type` property. The `value` property could be any text string. GOV.UK One Login cannot specify a maximum length or restrictions on what characters may appear. <br><br> `GivenName` or `FamilyName` can appear in any order within the list. The order of names may depend on either your user’s preferences or the order they appear on documents used to prove your user’s identity.  |
-| `birthDate` | A list of [ISO 8601 date][external.ISO-8601-date] strings. There may be multiple dates of birth, for example, if there’s evidence an incorrect date of birth was previously recorded for your user. The date of birth GOV.UK One Login has highest confidence in will be the first item in the list. |
+| Property    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`      | A list showing the names proven by GOV.UK One Login. This list reflects name changes by using the `validFrom` and `validUntil` metadata properties. If `validUntil` is `null` or not present, that name is your user’s current name. If `validFrom` is `null` or not present, your user may have used that name from birth. <br><br> Each name is presented as an array in the `nameParts` property. Each part of the name is either a `GivenName` or a `FamilyName`, identified in its `type` property. The `value` property could be any text string. GOV.UK One Login cannot specify a maximum length or restrictions on what characters may appear. <br><br> `GivenName` or `FamilyName` can appear in any order within the list. The order of names may depend on either your user’s preferences or the order they appear on documents used to prove your user’s identity. |
+| `birthDate` | A list of [ISO 8601 date][external.ISO-8601-date] strings. There may be multiple dates of birth, for example, if there’s evidence an incorrect date of birth was previously recorded for your user. The date of birth GOV.UK One Login has highest confidence in will be the first item in the list.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ## Understand your user’s address claim
-The `https://vocab.account.gov.uk/v1/address` claim contains all addresses your user has declared, including previous addresses.
+The `https://vocab.account.gov.uk/v1/address` claim contains all addresses your user has declared, including previous
+addresses.
 
 Each JSON object in the list may contain any of the following properties:
 
-| Property                         | Definition          |
-|----------------------------------|---------------------|
-| `validFrom`                      | [ISO 8601 date][external.ISO-8601-date] strings representing the date your user moved into the address.<br>If the month is unknown for `validFrom`, GOV.UK One Login will show that as `01`. GOV.UK One Login will also show an unknown day of the month as `01`. |
+| Property                         | Definition                                                                                                                                                                                                                                                                                                                    |
+|----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `validFrom`                      | [ISO 8601 date][external.ISO-8601-date] strings representing the date your user moved into the address.<br>If the month is unknown for `validFrom`, GOV.UK One Login will show that as `01`. GOV.UK One Login will also show an unknown day of the month as `01`.                                                             |
 | `validUntil`                     | [ISO 8601 date][external.ISO-8601-date] strings representing the date your user moved from the address. This property is not included for your user’s current address.<br>If the month is unknown for `validUntil`, GOV.UK One Login will show that as `01`. GOV.UK One Login will also show an unknown day of month as `01`. |
-| `uprn`                           | GOV.UK One Login will provide a [Unique Property Reference Number (UPRN)](https://www.gov.uk/government/publications/open-standards-for-government/identifying-property-and-street-information) for UK addresses, unless your user has manually corrected their address.                                                                                                                                              |
-| `organisationName`               | Maps to `ORGANISATION_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                                        |
-| `departmentName`                 | Maps to `DEPARTMENT_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                                          |
-| `subBuildingName`                | Maps to `SUB_BUILDING_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].<br><br>`subBuildingName` may accompany either `buildingName` or `buildingNumber`.                                                                                                                 |
-| `buildingNumber`                 | Maps to `BUILDING_NUMBER` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                                          |
-| `buildingName`                   | Maps to `BUILDING_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                                            |
-| `dependentStreetName`            | Maps to `DEPENDENT_THOROUGHFARE_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                              |
-| `streetName`                     | Maps to `THOROUGHFARE_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                                        |
-| `doubleDependentAddressLocality` | Maps to `DOUBLE_DEPENDENT_LOCALITY` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                                |
-| `dependentAddressLocality`       | Maps to `DEPENDENT_LOCALITY` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                                       |
-| `addressLocality`                | Maps to `POST_TOWN` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                                                |
-| `postalCode`                     | Maps to `POST_CODE` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                                                |
-| `addressCountry`                 | Two-letter [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).                                                                                                                                                                                                                                                   |
+| `uprn`                           | GOV.UK One Login will provide a [Unique Property Reference Number (UPRN)](https://www.gov.uk/government/publications/open-standards-for-government/identifying-property-and-street-information) for UK addresses, unless your user has manually corrected their address.                                                      |
+| `organisationName`               | Maps to `ORGANISATION_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                  |
+| `departmentName`                 | Maps to `DEPARTMENT_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                    |
+| `subBuildingName`                | Maps to `SUB_BUILDING_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].<br><br>`subBuildingName` may accompany either `buildingName` or `buildingNumber`.                                                                                                |
+| `buildingNumber`                 | Maps to `BUILDING_NUMBER` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                    |
+| `buildingName`                   | Maps to `BUILDING_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                      |
+| `dependentStreetName`            | Maps to `DEPENDENT_THOROUGHFARE_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                        |
+| `streetName`                     | Maps to `THOROUGHFARE_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                  |
+| `doubleDependentAddressLocality` | Maps to `DOUBLE_DEPENDENT_LOCALITY` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                          |
+| `dependentAddressLocality`       | Maps to `DEPENDENT_LOCALITY` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                 |
+| `addressLocality`                | Maps to `POST_TOWN` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                          |
+| `postalCode`                     | Maps to `POST_CODE` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                          |
+| `addressCountry`                 | Two-letter [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).                                                                                                                                                                                                                               |
 
 
-Do not assume address properties always map to the same line of an address. For example, <code>addressLocality</code> may map to a different line of an address, depending on whether other properties are present (in this case, <code>dependentAddressLocality</code> and <code>doubleDependentAddressLocality</code>).
+Do not assume address properties always map to the same line of an address. For example, <code>addressLocality</code>
+may map to a different line of an address, depending on whether other properties are present (in this case, <code>
+dependentAddressLocality</code> and <code>doubleDependentAddressLocality</code>).
 
 ## Understand your user's passport claim
-The <code>https://vocab.account.gov.uk/v1/passport</code> claim contains the details of your user’s passport, if they submitted one when proving their identity.
+The <code>https://vocab.account.gov.uk/v1/passport</code> claim contains the details of your user’s passport, if they
+submitted one when proving their identity.
 
-| Property         | Definition       |
-|------------------|------------------|
-| `documentNumber` | The passport number. |
+| Property         | Definition                                                                                                                                                                                                                                                                                              |
+|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `documentNumber` | The passport number.                                                                                                                                                                                                                                                                                    |
 | `icaoIssuerCode` | An identifier for the state or organisation that issued the passport. This is defined by the International Civil Aviation Organization (ICAO) standard [9303 Machine Readable Travel Documents](https://www.icao.int/publications/Documents/9303_p3_cons_en.pdf). The identifier is up to 3 characters. |
-| `expiryDate`     | The expiration date as an [ISO 8601 date][external.ISO-8601-date] string. |
+| `expiryDate`     | The expiration date as an [ISO 8601 date][external.ISO-8601-date] string.                                                                                                                                                                                                                               |
 
 
 ## Understand your user's driving licence claim
-The <code>https://vocab.account.gov.uk/v1/drivingPermit</code> claim contains the details of your user’s driving licence, if they submitted one when proving their identity.
+The <code>https://vocab.account.gov.uk/v1/drivingPermit</code> claim contains the details of your user’s driving
+licence, if they submitted one when proving their identity.
 
-| Property         | Definition         |
-|------------------|--------------------|
-| `expiryDate`     | The expiry date of the driving licence as an [ISO 8601 date][external.ISO-8601-date] string. |
+| Property         | Definition                                                                                                                                                                                                                            |
+|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `expiryDate`     | The expiry date of the driving licence as an [ISO 8601 date][external.ISO-8601-date] string.                                                                                                                                          |
 | `issueNumber`    | The last 2 characters of the driving licence number – these show how many times the user has received a new driving licence. You'll only receive this property for licences issued by the Driver and Vehicle Licensing Agency (DVLA). |
-| `issuedBy`       | The organisation that issued the driving licence. |
-| `personalNumber` | The driver number of the driving licence. This is a string unique to the user. |
+| `issuedBy`       | The organisation that issued the driving licence.                                                                                                                                                                                     |
+| `personalNumber` | The driver number of the driving licence. This is a string unique to the user.                                                                                                                                                        |
 
+## Understand your user's National Insurance number claim
+The <code>https://vocab.account.gov.uk/v1/socialSecurityRecord</code> claim contains the details of your user’s National
+Insurance Number, if they submitted it while proving their identity.
+
+| Property         | Definition                                |
+|------------------|-------------------------------------------|
+| `personalNumber` | The National Insurance number of the user |
 
 Continue to [log your users out of GOV.UK One Login][integrate.log-users-out].
 

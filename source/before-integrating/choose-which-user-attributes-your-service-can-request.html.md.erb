@@ -39,12 +39,13 @@ You can also request specific claims from GOV.UK One Login, if you need more inf
 
 You can find details of the claims in the following table.
 
-| Claim                                             | Description            |
-|---------------------------------------------------|------------------------|
-| `https://vocab.account.gov.uk/v1/coreIdentityJWT` | This claim contains core identity information about your user:<ul><li>their names</li><li>their date of birth</li><li>the level of confidence GOV.UK One Login reached in your user’s identity</li></ul> |
-| `https://vocab.account.gov.uk/v1/address`         | This claim contains your user's postal addresses. |
-| `https://vocab.account.gov.uk/v1/passport`        | This claim contains your user's passport details if GOV.UK One Login proved their identity using their passport.<br><br>If GOV.UK One Login did not prove your user’s identity using their passport, the authorisation response will not return this claim. |
-| `https://vocab.account.gov.uk/v1/drivingPermit`   | This claim contains your user's driving licence details if GOV.UK One Login proved their identity using their driving licence.<br><br>If GOV.UK One Login did not prove your user’s identity using their driving licence, the authorisation response will not return this claim. |
+| Claim                                                  | Description                                                                                                                                                                                                                                                                                            |
+|--------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `https://vocab.account.gov.uk/v1/coreIdentityJWT`      | This claim contains core identity information about your user:<ul><li>their names</li><li>their date of birth</li><li>the level of confidence GOV.UK One Login reached in your user’s identity</li></ul>                                                                                               |
+| `https://vocab.account.gov.uk/v1/address`              | This claim contains your user's postal addresses.                                                                                                                                                                                                                                                      |
+| `https://vocab.account.gov.uk/v1/passport`             | This claim contains your user's passport details if GOV.UK One Login proved their identity using their passport.<br><br>If GOV.UK One Login did not prove your user’s identity using their passport, the authorisation response will not return this claim.                                            |
+| `https://vocab.account.gov.uk/v1/drivingPermit`        | This claim contains your user's driving licence details if GOV.UK One Login proved their identity using their driving licence.<br><br>If GOV.UK One Login did not prove your user’s identity using their driving licence, the authorisation response will not return this claim.                       |
+| `https://vocab.account.gov.uk/v1/socialSecurityRecord` | This claim contains your user's National Insurance number if GOV.UK One Login proved their identity using their National Insurance number.<br><br>If GOV.UK One Login did not prove your user’s identity using their National Insurance number, the authorisation response will not return this claim. |
 
 You can see more about the structure of this information when you [prove your user’s identity](integrate-with-integration-environment/prove-users-identity).
 
