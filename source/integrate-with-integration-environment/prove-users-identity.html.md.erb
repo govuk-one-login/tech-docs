@@ -101,6 +101,7 @@ The JWT contains the following claims:
 {
   "sub": "urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=",
   "iss": "https://identity.integration.account.gov.uk/",
+  "aud": "YOUR_CLIENT_ID",
   "nbf": 1541493724,
   "iat": 1541493724,
   "exp": 1573029723,
@@ -175,6 +176,7 @@ user are contained in the `credentialSubject` JSON object.
    the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Check the JWT `alg` header
    is `ES256` and then use the value of the JWT `alg` header parameter to validate the JWT.
 1. Check the `iss` claim is `https://identity.integration.account.gov.uk/`.
+1. Check the `aud` claim matches your client ID you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service].
 1. Check the `sub` claim matches the `sub` claim you received
    in [the `id_token` from your token request](../authenticate-your-user/#understand-your-id-token).
 1. Check the current time is before the time in the `exp` claim.
