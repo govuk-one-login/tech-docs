@@ -19,9 +19,9 @@ jobs:
       contents: read
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # pin@v4
       - name: Install Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@22fdc77bf4148f810455b226c90fb81b5cbc00a7 # pin@v1
         with:
           bundler-cache: true
           ruby-version: 3.2.2
@@ -32,7 +32,7 @@ jobs:
         run: bundle exec middleman build
 
       - name: Upload to ECR and tag
-        uses: govuk-one-login/devplatform-upload-action-ecr@1.0.5
+        uses: govuk-one-login/devplatform-upload-action-ecr@4e97f7e56e8be55c3cfe2198a3349c5d6b9104ea # pin@1.0.5
         with:
           role-to-assume-arn: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           container-sign-kms-key-arn: ${{ secrets.CONTAINER_SIGN_KMS_KEY }}
