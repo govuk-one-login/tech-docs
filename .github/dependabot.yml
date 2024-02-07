@@ -6,3 +6,8 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "BAU"
+  - package-ecosystem: "github-actions"
+    directory: "/.github/"
+    schedule:
+      # Check for updates to GitHub Actions every week
+      interval: "weekly"
