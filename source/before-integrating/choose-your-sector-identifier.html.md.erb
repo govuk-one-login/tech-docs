@@ -1,0 +1,46 @@
+---
+title: Choose your sector identifier
+weight: 4.99
+last_reviewed_on: 2024-02-09
+review_in: 6 months
+---
+
+# Choose your sector identifier
+
+The sector identifier is a uniform resource identifier (URI) which GOV.UK One Login uses to create a pairwise user identifier, called the ‘subject identifier’. 
+
+This means you can use the sector identifier to:
+
+* share users across multiple services
+* explicitly prevent services from sharing users
+
+You must set the sector identifier when you [register your service with GOV.UK One Login][integrate.register-your-service].
+
+<%= warning_text('Do not change the sector identifier once your service has started to sign up or migrate users. It will change the subject identifiers GOV.UK One Login creates for each individual user.') %>
+
+If you’re not sure whether you want to share users across services when onboarding your first service, you should use a generic sector identifier. Once your second service onboards, you must decide whether your services will share users. 
+
+## Set your sector identifier
+
+Make sure your sector identifier:
+
+* accurately represents your service or services which share users
+* does not contain path information 
+
+For example, you should use `https://do-a-thing.service.gov.uk` not `https://service.gov.uk/do-a-thing`. GOV.UK One Login only uses the host part of the URI. 
+
+The following table shows an example of how to set your sector identifier using the (fictional) Department of Mythical Creatures, which has 3 services:
+
+* tax your dragon 
+* register your hydra
+* report a unicorn
+
+| User sharing  | How to set your sector identifier &nbsp; | Example &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
+|-------------------------------------|----------------------------------|-----------------------------------------------------|
+| Share users across all services     | Set the sector identifier in all services to the same value.   | Set `https://mythical-creatures.gov.uk` as the  `sector_identifier_uri` for all 3 services. |
+| Prevent services from sharing users | Set the sector identifier in each service to a different value. | Set a separate `sector_identifier_uri` for each service: <ul><li>`http://register-your-hydra.mythical-creatures.gov.uk`</li><br><li>`http://tax-your-dragon.mythical-creatures.gov.uk`</li><br><li>`http://report-a-unicorn.mythical-creatures.gov.uk`</li></ul> |
+| Share users across some services    | Set the sector identifier in the services that share users to the same value. <br><br>Give the services that should not share users a different sector identifier. | Set `https://mythical-creatures.gov.uk` as the `sector_identifier_uri` for 'register your hydra' and 'report a unicorn' to share users. <br><br> Set `https://tax-your-dragon.mythical-creatures.gov.uk` as the `sector_identifier_uri` for 'tax your dragon' to have a separate user base.|
+
+
+
+<%= partial "partials/links" %>

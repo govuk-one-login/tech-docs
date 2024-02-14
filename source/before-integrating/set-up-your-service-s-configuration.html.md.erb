@@ -15,39 +15,35 @@ You must first register your service with GOV.UK One Login before being able to 
 
 To register your service to use GOV.UK One Login, you need to:
 
-1. Choose your `sector_identifier_uri`.
-1. Contact the GOV.UK One Login team and we'll register your service for you.
+1. [Choose your authentication level][integrate.choose-level-of-auth].
+1. [Choose the level of identity confidence for your service][integrate.choose-level-of-confidence].
+1. [Choose the scopes and claims your service needs][integrate.choose-request-scope].
+1. [Choose your sector identifier][integrate.choose-sector-id].
+1. [Generate a key pair][integrate.generate-key-pair].
+1. [Contact the GOV.UK One Login team and we’ll register your service for you][integrate.register-your-service].
 
-### Choose your `sector_identifier_uri`
-
-Your service will use a [pairwise user identifier](https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg) when you use GOV.UK One Login.
-
-When using a pairwise identifier, GOV.UK One Login provides a unique `sub` value in the ID token to each service. This means a user ID will not be the same across services, so the value cannot be matched and used to identify an individual user.
-
-You need to specify your `sector_identifier_uri` parameter when you contact the GOV.UK One Login team to register your service. GOV.UK One Login will use this to create a unique subject identifier for your user.
-
-<%= warning_text('If you do not specify the <code>sector_identifier_uri</code>, GOV.UK One Login will use the host name of your redirect URI when we generate the subject identifier for your user. You should be aware that if your redirect URI ever changes, your users’ subject identifiers will also change.') %>
 
 ### Contact the GOV.UK One Login team to register your service
 
 You need to contact the GOV.UK One Login team to register your service.
 
-1. Start an email and include the following details.
-1. [Send the email with the completed details to govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk).
-1. The GOV.UK One Login team will register your service for you and let you know when the registration is complete.
-
-To register your service, you must send:
+Send an email to [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) including:
 
 * your service’s name
-* your service’s redirect URL
+* your service’s redirect URLs
 * your service’s contact email addresses - this can be a group email or multiple separate email addresses or a combination of both
-* the scopes you selected when you [chose which user attributes your service can request][integrate.choose-user-attributes]
-* the [key you generated][integrate.generate-key-pair] - only send the contents of the `public_key.pem` file and do not include the RSA headers (the words in caps above and below the key)
-* the URL you’d like your users redirected to if they log out of your service - if you do not specify one, your users will be redirected to the [default GOV.UK sign out page](https://signin.account.gov.uk/signed-out)
-* your `sector_identifier_uri` with the identifier for your sector
+* the scopes you selected when you [chose which user attributes your service can request][integrate.choose-request-scope]
+* the claims you selected when you [chose which user attributes your service can request][integrate.choose-user-attributes]
+* the public key you generated - only send the contents of the 'public_key.pem' file and do not include the RSA headers (the words in caps above and below the key)
+* the URL you’d like your users redirected to if they log out of your service - if you do not specify one, your users will be redirected to the default GOV.UK sign out page
+* your [sector identifier][integrate.choose-sector-id]
 
+The GOV.UK One Login team will send you a confirmation email once they have registered your service.
+
+#### Request signing with the RS256 algorithm 
 By default, GOV.UK One Login will sign the `id_token` JSON Web Token (JWT) using the `ES256` algorithm but some third party tooling does not support `ES256`. If your service needs an alternative algorithm, we can sign your `id_token` JWT using the `RS256` algorithm. Let us know if you need this when you register your service.
 
+#### Request logout notifications
 You can also receive user logout notifications from GOV.UK One Login. To use this, send the GOV.UK One Login team a `back_channel_logout_uri` specifying the URL you want GOV.UK One Login to send notifications to when a user who was signed into your service using GOV.UK One Login has logged out. There’s further [guidance on responding to logout notifications from GOV.UK One Login](/integrate-with-integration-environment/log-your-users-out/#responding-to-logout-notifications-from-gov-uk-one-login).
 
 
