@@ -1,30 +1,33 @@
 # GOV.UK One Login technical documentation
 
-This documentation is for government services that want to integrate with GOV.UK One Login to 
+This documentation is for government services that want to integrate with GOV.UK One Login to:
 
 * authenticate their users
 * verify their users' identity  
 
-# Getting Started
+## Getting Started
 
 To see the version of Ruby used by the application, see [the ruby-version file](.ruby-version).
 
 ## Install Ruby
 
 Start by installing [rbenv](https://github.com/rbenv/rbenv) and [ruby-build](https://github.com/rbenv/ruby-build):
-```
+
+```bash
 brew upgrade rbenv ruby-build
 ```
+
 This will allow you to compile Ruby, and makes it easier to manage multiple Ruby environments (macOS comes with Ruby installed, so this simplifies things).
 
 Download the current version of Ruby that the [application uses](.ruby-version):
-```
+
+```bash
 rbenv install
 ```
 
 Install the application's dependencies:
 
-```
+```bash
 bundle install
 ```
 
@@ -40,6 +43,7 @@ bundle install # reinstall
 ```
 
 ## Making changes
+
 To make changes, edit the markdown files in the source folder.
 
 Although a single page of HTML is generated, the markdown is spread across multiple files to make it easier to manage. They can be found in `source/`.
@@ -62,13 +66,14 @@ The repository uses Github actions.
 
 Before committing any changes, the contributor should run this command in the application directory:
 
-```
+```bash
 bundle exec middleman build
 ```
 
 This command mimics the command run by the Github Actions Build Agent.
 
 ### Preview
+
 Whilst writing documentation, you can run a middleman server to preview how the published version will look in the browser.
 
 The preview is only available on your own computer. Others will not be able to access it if you give them the link.
@@ -80,13 +85,14 @@ Type one of the following to start the server:
 
 If all goes well, something like the following output will be displayed:
 
-```
+```bash
 == The Middleman is loading
 == LiveReload accepting connections from ws://192.168.0.8:35729
 == View your site at "http://Laptop.local:4567", "http://192.168.0.8:4567"
 == Inspect your site configuration at "http://Laptop.local:4567/__middleman", "http://192.168.0.8:4567/__middleman"
 You should now be able to view a live preview at http://localhost:4567.
 ```
+
 Changes to the tech-docs.yml file require stopping and restarting the server to show up in the preview. You can stop it with Ctrl-C.
 
 ## Code of conduct
