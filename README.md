@@ -95,6 +95,43 @@ You should now be able to view a live preview at http://localhost:4567.
 
 Changes to the tech-docs.yml file require stopping and restarting the server to show up in the preview. You can stop it with Ctrl-C.
 
+## Linting the GOV.UK One Login Technical Documentation
+
+This repository uses [Vale](https://vale.sh/) and the [GDS Tech Docs Linter ruleset](https://github.com/alphagov/tech-docs-linter).
+
+### Installing the linter on your local machine
+
+You need to:
+
+* install [Homebrew](https://brew.sh/)
+* install [Vale](https://vale.sh/docs/vale-cli/installation/)
+
+### Linting with your code editor
+
+Many code editors provide extensions or plugins for Vale which can raise errors as you update documentation. You will still need Vale installed on your local machine.
+
+### Linting with Vale Command Line Interface (CLI)
+
+By default, Vale must be run from the same directory as this config file, unless the `--config` flag is provide with a path.
+To run the linter using Vale CLI:
+
+1. In a terminal window, navigate to your repo.
+1. Run `vale sync` to download the latest tech-docs-linter package and unzip this to your `StylesPath` listed in your config file.
+1. Run the command `vale .` to lint the entire repo or provide a path to a directory to lint only that directory for example: `vale ./source/go-live`
+
+### Updating to the latest tech docs linter ruleset
+
+If a new rule is added to the tech docs linter ruleset, you can upversion the package used by this repo when you're ready.
+A later version of the ruleset can be tested and added by:
+
+1. Create a branch.
+1. Update the package version number in the [Vale config file](.vale.ini).
+1. Run `vale sync` to download and unzip the latest package.
+1. Run `vale ./source` to test the linter.
+1. Fix any changes new ruleset throws up (preferably one commit for each rule violation).
+1. Raise a PR with the latest version number in the vale config file.
+
+
 ## Code of conduct
 
 Please refer to the `alphagov` [code of conduct](https://github.com/alphagov/code-of-conduct).
