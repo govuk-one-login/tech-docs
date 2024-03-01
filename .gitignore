@@ -20,3 +20,6 @@ vendor/
 .DS_Store
 
 .idea/
+
+# Used by Vale for linting 
+/vale-styles/
