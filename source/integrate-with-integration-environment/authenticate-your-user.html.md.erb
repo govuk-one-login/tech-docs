@@ -362,8 +362,8 @@ Now you’ve understood what’s in your ID token, you’ll need to validate it.
 1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service].
 1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). You must first [validate that the JWT `alg` header matches](https://datatracker.ietf.org/doc/html/rfc8725#section-3.1) what was returned from the `jwks_uri`. Then you can use the value of the JWT `alg` header parameter to validate the ID token. Your application must use the keys provided by the [discovery endpoint][external.oidc-discovery].
 1. Check the current time is before the time in the `exp` claim.
+1. Check the current time is after the time in the `iat` claim.
 1. If you set a `nonce` value in the request to the `/authorize` endpoint, check this matches the `nonce` value in the ID token.
-1. Check the ID token is between the `auth_time` claim value (when the token was issued) and the `exp` claim value. If your ID token is outside this time window, you’ll need to request re-authentication from your user.
 
 ### Error handling for ‘Make a token request’
 
