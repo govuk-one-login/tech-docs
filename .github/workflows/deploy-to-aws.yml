@@ -24,7 +24,7 @@ jobs:
         uses: ruby/setup-ruby@22fdc77bf4148f810455b226c90fb81b5cbc00a7 # pin@v1
         with:
           bundler-cache: true
-          ruby-version: 3.2.2
+          ruby-version: 3.2.3
       - name: Install Gems
         run: bundle install
 
