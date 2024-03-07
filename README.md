@@ -97,40 +97,49 @@ Changes to the tech-docs.yml file require stopping and restarting the server to 
 
 ## Linting the GOV.UK One Login Technical Documentation
 
-This repository uses [Vale](https://vale.sh/) and the [GDS Tech Docs Linter ruleset](https://github.com/alphagov/tech-docs-linter).
+This repository uses [Vale](https://vale.sh/) and the [tech-docs-linter ruleset](https://github.com/alphagov/tech-docs-linter) to make sure that the documention follows widely-agreed style rules in the GOV.UK technical style guide.
+
+Rules are added to the tech-docs-linter ruleset incrementally and the version of the ruleset can be [updated in the linter config for this repo](#updating-to-the-latest-tech-docs-linter-ruleset).
+
+You may find it helpful to [use the linter in your code editor](#linting-with-your-code-editor) before you push changes to documentation.
 
 ### Installing the linter on your local machine
 
-You need to:
+To use the tech docs linter locally, you will need to install [Vale](https://vale.sh/) and configure it to work with the tech docs linter ruleset. Once installed, you can use the Vale Command Line Interface (CLI) to run the linter against your content.
+Before you start using the linter, you will need to install:
 
-* install [Homebrew](https://brew.sh/)
-* install [Vale](https://vale.sh/docs/vale-cli/installation/)
+* [Homebrew](https://brew.sh/)
+* [Vale](https://vale.sh/docs/vale-cli/installation/)
 
 ### Linting with your code editor
 
-Many code editors provide extensions or plugins for Vale which can raise errors as you update documentation. You will still need Vale installed on your local machine.
+Many code editors provide [extensions or plugins](https://vale.sh/docs/integrations/guide/) for Vale which can raise errors as you update documentation. You will still need Vale installed on your local machine.
 
 ### Linting with Vale Command Line Interface (CLI)
 
-By default, Vale must be run from the same directory as this config file, unless the `--config` flag is provide with a path.
+Before you start using the Vale CLI, you can configure Vale using the `.vale.ini` file in the repository's root. This file specifies:
+
+* `StylesPath` - the root folder path where the latest tech-writing-style-guide package will be downloaded to
+* `Packages` - where the latest tech-writing-style-guide package is downloaded from
+
 To run the linter using Vale CLI:
 
 1. In a terminal window, navigate to your repo.
 1. Run `vale sync` to download the latest tech-docs-linter package and unzip this to your `StylesPath` listed in your config file.
-1. Run the command `vale .` to lint the entire repo or provide a path to a directory to lint only that directory for example: `vale ./source/go-live`
+1. To lint the entire repo, run `vale .`. Alternatively, to lint a specific directory, add its path after the vale command, for example: `vale ./source/go-live`.
 
 ### Updating to the latest tech docs linter ruleset
 
 If a new rule is added to the tech docs linter ruleset, you can upversion the package used by this repo when you're ready.
-A later version of the ruleset can be tested and added by:
+To add and test the latest version of the ruleset:
 
 1. Create a branch.
+1. Go to [tech-docs-linter/releases](https://github.com/alphagov/tech-docs-linter/releases) and find the latest version number.
 1. Update the package version number in the [Vale config file](.vale.ini).
 1. Run `vale sync` to download and unzip the latest package.
 1. Run `vale ./source` to test the linter.
 1. Fix any changes new ruleset throws up (preferably one commit for each rule violation).
 1. Raise a PR with the latest version number in the vale config file.
-
 
 ## Code of conduct
 
