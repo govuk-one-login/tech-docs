@@ -1,7 +1,7 @@
 ---
 title: Choose which user attributes your service can request
 weight: 4
-last_reviewed_on: 2022-06-27
+last_reviewed_on: 2024-03-12
 review_in: 6 months
 ---
 
@@ -31,7 +31,6 @@ You can find details of the scopes in the following table.
 | `openid`          | Required              | OIDC requests to the `/authorize` endpoint must contain the `openid` scope value to indicate that an application intends to use the OIDC protocol. <br> <br>This will return the sub claim, which uniquely identifies your user. |
 | `email`           | Optional              | Returns the `email` claim, which contains:<ul><li>your user's email address</li><li>`email_verified`, which is a boolean indicating whether your user has verified their email address or not</li></ul> |
 | `phone`           | Optional              | Returns the `phone_number` claim, which contains:<ul><li>your user's phone number</li><li>`phone_number_verified`, which is a boolean indicating whether your user has verified their phone number or not</li></ul> |
-| `offline_access`  | Optional              | You use an access token to make calls to the `/userinfo` endpoint.<br> If you want to access the `/userinfo` endpoint for longer than 3 minutes, you should use a [refresh token](https://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens) to refresh your access token. <br> If you want a refresh token, you must request the `offline_access` scope.    |
 
 ## Choose which claims your service can request
 
