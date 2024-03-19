@@ -1,7 +1,7 @@
 ---
 title: Authenticate your user
 weight: 5.5
-last_reviewed_on: 2024-01-17
+last_reviewed_on: 2024-03-19
 review_in: 6 months
 ---
 
@@ -229,7 +229,6 @@ GOV.UK One Login will then authenticate your request by verifying the signature 
 
 * an access token
 * an ID token
-* a refresh token - you'll use this if you want to access the `/userinfo` endpoint for longer than 3 minutes
 
 ### Create a JWT assertion
 
@@ -289,7 +288,7 @@ OiIiLCJqdGkiOiIifQ.r1Ylfhhy6VNSlhlhW1N89F3WfIGuko2rvSRWO4yK1BI
 
 | Parameter               | Required or recommended | Description                                                                                                                                            |
 |-------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `grant_type`            | Required                | If you’re requesting a refresh token, you must set this parameter to `refresh_token`.<br><br>Otherwise, you need to set the parameter to `authorization_code`. |
+| `grant_type`            | Required                | You need to set the parameter to `authorization_code`. |
 | `redirect_uri`          | Required                | You’ll have specified your `redirect_uri` when you made the initial authorisation request.                                                               |
 | `client_assertion`      | Required                | You’ll include the JWT assertion you created in the payload when you make the `POST` request to the `/token` endpoint.                                     |
 | `client_assertion_type` | Required                | When you’re using `private_key_jwt`, you must set the value to `urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.                                   |
@@ -304,7 +303,6 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 {
   "access_token": "SlAV32hkKG",
-  "refresh_token": "i6mapTIAVSp2oJkgUnCACKKfZxt_H5MBLiqcybBBd04",
   "token_type": "Bearer",
   "expires_in": 180,
   "id_token":"eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
@@ -317,7 +315,6 @@ You can use the following table to understand the response for ‘Make a token r
 | Parameter       | Description    |
 |-----------------|----------------|
 | `access_token`  | The access token value is an opaque access token which you can use with the `/userinfo` endpoint to return a user's profile. |
-| `refresh_token` | You can use a refresh token if you need to request a new access token. |
 | `token_type`    | The token type value. GOV.UK One Login only supports the [bearer token][external.bearer-token]. |
 | `expires_in`    | The length of time the token is valid for. This is displayed in seconds. |
 | `scope`         | You can read more about scopes in [choosing which user attributes your service can request][integrate.choose-user-attributes]. |
@@ -385,71 +382,6 @@ Content-Type: application/json
 | `invalid_request`        | The request is missing a parameter so the server cannot proceed with the request. This error may also be returned if the request includes an unsupported parameter or repeats a parameter.<br><br>Review your parameters and check they are supported and not repeated. |
 | `invalid_client`         | Client authentication failed, which could be caused by the request containing an invalid `client_id` or an issue in validating the signature of the `client_assertion`. <br><br>To resolve, check:<br><ul><li>your `client_id` matches the `client_id` you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service]</li><li>you have signed your `client_assertion` JWT with the private key generated when you [registered your service to use GOV.UK One Login][integrate.register-your-service]</li><li>your service uses a [key signing algorithm which GOV.UK One Login supports](https://oidc.account.gov.uk/.well-known/openid-configuration) |
 | `invalid_grant`          | The authorisation code is invalid or expired. This is also the error which would return if the redirect URL given in the authorisation request does not match the URL provided in this access token request. |
-| `unauthorized_client`    | The application is successfully authenticated, but it's not registered to use the requested [grant type](https://oauth.net/2/grant-types/). |
-| `unsupported_grant_type` | The grant type is not supported by the server. |
-
-### Use your refresh token to request a new access token
-
-A GOV.UK One Login access token is valid for 3 minutes. After 3 minutes, you cannot use an access token to make a call to `/userinfo`.
-
-If you want to access the `/userinfo` endpoint for longer than 3 minutes, you should use a [refresh token](https://openid.net/specs/openid-connect-core-1_0.html#RefreshTokens) to refresh your access token.
-
-Using a refresh token is optional. To use a refresh token, you’ll need to include the `offline_access` scope. You can read more about scopes in [choosing which user attributes your service can request][integrate.choose-user-attributes].
-
-A refresh token lasts longer than an access token. You can find the refresh token’s lifespan in the refresh token’s claims.
-
-To generate your refresh token, you need to make a request to the `/token` endpoint. In your request, you need to:
-
-1. Fill in the parameters the same way as when you [made a `POST` request to the `/token` endpoint for your access token](/integrate-with-integration-environment/authenticate-your-user/#make-a-post-request-to-the-token-endpoint).
-2. Leave `grant_type` as `refresh_token`.
-
-```
-POST /token HTTP/1.1
-Host: oidc.integration.account.gov.uk
-Content-Type: application/x-www-form-urlencoded
-
-grant_type=refresh_token
-&refresh_token=i6mapTIAVSp2oJkgUnCACKKfZxt_H5MBLiqcybBBd04
-```
-
-<%= warning_text('This code example uses formatting that makes it easier to read. If you copy the example, you must make sure the request is:<ul><li>a continuous line of text separating each parameter with an ampersand (&)</li><li>not split across multiple lines</li><li>without any additional separators such as newline, commas or tabs</li></ul>') %>
-
-#### Receive response for ‘Make a refresh token request’
-
-If your token request is successful, the `/token` endpoint will return a response similar to this example:
-
-
-```
-HTTP/1.1 200 OK
-Content-Type: application/json
-{
-  "access_token": "SlAUH9V32hkKG",
-  "refresh_token": "nJ8tfWD",
-  "token_type": "Bearer",
-  "expires_in": 180
-}
-```
-
-#### Error handling for ‘Make a refresh token request’
-
-To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
-
-If the token request is invalid or unauthorised, you’ll receive an error response with the `Content-Type` of application/json, for example:
-
-```
-HTTP/1.1 400 Bad Request
-Content-Type: application/json
-{
-  "error": "invalid_request"
-  "error_description": "invalid scope"
-}
-```
-
-| Error                    | More information about your error     |
-|--------------------------|---------------------------------------|
-| `invalid_request`        | The request is missing a parameter so the server cannot proceed with the request. This error may also be returned if the request includes an unsupported parameter or repeats a parameter.<br><br>Review your parameters and check they are supported and not repeated. |
-| `invalid_client`         | Client authentication failed, which could be caused by the request containing an invalid `client_id` or an issue in validating the signature of the `client_assertion`. <br><br>To resolve, check:<br><ul><li>your `client_id` matches the `client_id` you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service]</li><li>you have signed your `client_assertion` JWT with the private key generated when you [registered your service to use GOV.UK One Login][integrate.register-your-service]</li><li>your service uses a [key signing algorithm which GOV.UK One Login supports](https://oidc.account.gov.uk/.well-known/openid-configuration) |
-| `invalid_grant`          | The authorisation code is invalid or expired. This is also the error which would return if the redirect URL given in the request to the `/authorize` endpoint does not match the URL provided in this access token request. |
 | `unauthorized_client`    | The application is successfully authenticated, but it's not registered to use the requested [grant type](https://oauth.net/2/grant-types/). |
 | `unsupported_grant_type` | The grant type is not supported by the server. |
 
