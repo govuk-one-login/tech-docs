@@ -1,16 +1,9 @@
-<mxfile host="Electron" modified="2024-03-21T16:10:45.136Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.0.4 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="dg4NwOR5U1I3JMF6Kx7R" version="24.0.4" type="device">
+<mxfile host="Electron" modified="2024-03-22T11:41:30.544Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.0.4 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="p49cnWZYH4ehY-05LLyF" version="24.0.4" type="device">
   <diagram id="jDXm07tgXYISBxCqzXAf" name="DIAGRAM">
-    <mxGraphModel dx="2375" dy="1553" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="3265" dy="2135" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
-        <mxCell id="1" value="original" style="" parent="0" visible="0" />
-        <mxCell id="PvmlFijKTM-vlUUMhSwj-1" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://docs.sign-in.service.gov.uk/images/technical-flow-diagram.svg;" parent="1" vertex="1">
-          <mxGeometry x="453" y="77" width="1102" height="1200" as="geometry" />
-        </mxCell>
-        <mxCell id="dB1YIGcMaLWi2a2UbY99-1" value="This is the original diagram imported from the svg into a layer to act as a template&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;hide the original layer when generating the svg!&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;fontSize=28;fontFamily=Courier New;" parent="1" vertex="1">
-          <mxGeometry x="1724" y="293" width="418" height="538" as="geometry" />
-        </mxCell>
-        <mxCell id="Fiu6I9fKg-t11FWcx7a8-1" value="new" style="" parent="0" />
+        <mxCell id="Fiu6I9fKg-t11FWcx7a8-1" value="diagram" style="" parent="0" />
         <mxCell id="Zjj35iwSidgFIm4rOuPw-1" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;fillColor=none;" parent="Fiu6I9fKg-t11FWcx7a8-1" vertex="1">
           <mxGeometry x="423" y="80" width="302" height="1200" as="geometry" />
         </mxCell>
@@ -76,8 +69,8 @@
         </mxCell>
         <mxCell id="51PhYfbsmGn6uyoIoGke-3" value="" style="endArrow=classic;html=1;rounded=0;strokeWidth=3;endFill=1;dashed=1;" parent="Fiu6I9fKg-t11FWcx7a8-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1282" y="877" as="sourcePoint" />
-            <mxPoint x="812" y="877" as="targetPoint" />
+            <mxPoint x="1248" y="877" as="sourcePoint" />
+            <mxPoint x="799" y="877" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="JiZYq4sonDCHXdN_REJM-14" value="5" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;fontColor=#FFFFFF;fontSize=28;fontStyle=1" parent="Fiu6I9fKg-t11FWcx7a8-1" vertex="1">
@@ -119,9 +112,6 @@
         </mxCell>
         <mxCell id="51PhYfbsmGn6uyoIoGke-8" value="Your&lt;div style=&quot;font-size: 26px;&quot;&gt;user&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=26;fontStyle=1" parent="Fiu6I9fKg-t11FWcx7a8-1" vertex="1">
           <mxGeometry x="1198" y="402" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="u0-lLxxtez0dMvbI3_ig-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontStyle=1" edge="1" parent="Fiu6I9fKg-t11FWcx7a8-1" source="JiZYq4sonDCHXdN_REJM-20" target="JiZYq4sonDCHXdN_REJM-20">
-          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
