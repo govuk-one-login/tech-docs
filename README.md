@@ -60,50 +60,6 @@ Images to be included in the docs are kept in `source/images`
 
 In order to configure some aspects of layout, like the header, edit `config/tech-docs.yml`.
 
-## Making changes to diagrams
-
-To make changes to the diagrams, edit the `drawio` files in `source/images/originals` using the drawio app.
-
-
-### Workflow
-
-You need to:
-
-- create and modify diagrams using [draw.io](https://about.draw.io/)
-- store draw.io master files in `source/images/originals`
-- publish diagrams as [Scalable Vector Graphics (SVG)](https://www.w3.org/Graphics/SVG/)
-- store svg image files in the `source/images` folder
-
-### Prerequisites
-
-Install the draw.io desktop application for interactive editing
-
-```
-brew cask install drawio
-```
-
-Alias the binary so that your can just type `draw.io` at the command line
-
-```
-alias=draw.io='/Applications/draw.io.app/Contents/MacOS/draw.io'
-```
-
-### Useful commands
-
-Update a diagram
-
-```
-draw.io source/images/originals/top-level-technical-diagram.drawio
-```
-
-Generate an SVG versions of the diagrams
-
-```
-draw.io -x -o source/images/top-level-technical-diagram.svg source/images/originals/top-level-technical-diagram.drawio
-
-draw.io -x -o source/images/technical-flow-diagram.svg source/images/originals/technical-flow-diagram.drawio
-```
-
 ### Workflow
 
 The repository uses Github actions.
