@@ -5,30 +5,48 @@ This documentation is for government services that want to integrate with GOV.UK
 * authenticate their users
 * verify their users' identity  
 
-## Preview your documentation changes
+## Getting Started
 
-To preview any changes and additions you have made to the documentation in a browser, clone this repo and use the [Dockerfile in this repo](Dockerfile) to run a Middleman server on your machine without having to set up Ruby locally.
+To see the version of Ruby used by the application, see [the ruby-version file](.ruby-version).
 
-This setup has live reload enabled, which means your changes will be applied as you edit files in the source directory. The only exception to this is if you make changes to `config/tech-docs.yml`, you must stop and restart the server to see your changes in the preview. You can stop the server with `Ctrl-C`.
+## Install Ruby
 
-Run the [helper script](preview-with-docker.sh):
-
-```bash
-./preview-with-docker.sh
-```
-
-It may take a few minutes to build the docker container, particularly if it is your first time running the script. When the server has finished loading you should then see the following output in the terminal:
+Start by installing [rbenv](https://github.com/rbenv/rbenv) and [ruby-build](https://github.com/rbenv/ruby-build):
 
 ```bash
-== View your site at "http://localhost:4567", "http://127.0.0.1:4567"
-== Inspect your site configuration at "http://localhost:4567/__middleman", "http://127.0.0.1:4567/__middleman"/usr/local/bundle/gems/tilt-2.0.11/lib/tilt/redcarpet.
+brew upgrade rbenv ruby-build
 ```
 
-## Making changes to content
+This will allow you to compile Ruby, and makes it easier to manage multiple Ruby environments (macOS comes with Ruby installed, so this simplifies things).
 
-To add or change content, edit the markdown in the `.html.md.erb` files in the `source` folder.
+Download the current version of Ruby that the [application uses](.ruby-version):
 
-Although a single page of HTML is generated, the markdown is spread across multiple files to make it easier to manage. 
+```bash
+rbenv install
+```
+
+Install the application's dependencies:
+
+```bash
+bundle install
+```
+
+### Fix `ffi` bug on MacOS
+
+There's an incompatibility issue with the latest MacOS and the `ffi` library which stops Middleman from starting on MacOS.
+
+To fix the issue you must stop the `ffi` gem using the native `libffi` library by sending this command:
+
+```shell script
+bundle config build.ffi --disable-system-libffi
+bundle install # reinstall
+```
+
+## Making changes
+
+To make changes, edit the markdown files in the source folder.
+
+Although a single page of HTML is generated, the markdown is spread across multiple files to make it easier to manage. They can be found in `source/`.
 
 A new markdown file is not automatically included in the generated output. If you add a new markdown file at the location `source/agile/scrum.md`, the following snippet in `source/index.html.md.erb` will include it in the generated output.
 
@@ -42,7 +60,40 @@ Images to be included in the docs are kept in `source/images`
 
 In order to configure some aspects of layout, like the header, edit `config/tech-docs.yml`.
 
-If you move pages around and URLs change, make sure you set up redirects from the old URLs to the new URLs.
+### Workflow
+
+The repository uses Github actions.
+
+Before committing any changes, the contributor should run this command in the application directory:
+
+```bash
+bundle exec middleman build
+```
+
+This command mimics the command run by the Github Actions Build Agent.
+
+### Preview
+
+Whilst writing documentation, you can run a middleman server to preview how the published version will look in the browser.
+
+The preview is only available on your own computer. Others will not be able to access it if you give them the link.
+
+Type one of the following to start the server:
+
+* `bundle exec middleman server` - if you have ruby installed locally
+* `./preview-with-docker.sh` - if you have Docker installed
+
+If all goes well, something like the following output will be displayed:
+
+```bash
+== The Middleman is loading
+== LiveReload accepting connections from ws://192.168.0.8:35729
+== View your site at "http://Laptop.local:4567", "http://192.168.0.8:4567"
+== Inspect your site configuration at "http://Laptop.local:4567/__middleman", "http://192.168.0.8:4567/__middleman"
+You should now be able to view a live preview at http://localhost:4567.
+```
+
+Changes to the tech-docs.yml file require stopping and restarting the server to show up in the preview. You can stop it with Ctrl-C.
 
 ## Linting the GOV.UK One Login Technical Documentation
 
@@ -79,6 +130,7 @@ A later version of the ruleset can be tested and added by:
 1. Run `vale ./source` to test the linter.
 1. Fix any changes new ruleset throws up (preferably one commit for each rule violation).
 1. Raise a PR with the latest version number in the vale config file.
+
 
 ## Code of conduct
 
