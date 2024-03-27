@@ -44,6 +44,37 @@ In order to configure some aspects of layout, like the header, edit `config/tech
 
 If you move pages around and URLs change, make sure you set up redirects from the old URLs to the new URLs.
 
+## Making changes to a diagram
+To make changes to a diagram, you'll need to edit the `drawio` files in `source/images/originals` using the draw.io desktop app.
+
+Use one drawio file per diagram.
+
+### Install draw.io desktop app
+1. Install the draw.io desktop app using Homebrew with the following command: 
+```
+brew cask install drawio
+```
+2. Alias the binary so that you can just type `draw.io` at the command line. Use the following command to do this:
+```
+alias=draw.io='/Applications/draw.io.app/Contents/MacOS/draw.io'
+```
+### Edit and publish the diagram
+Follow these steps:
+1. Create and modify the diagram using [draw.io](https://about.draw.io/).
+1. Store the draw.io original file in `source/images/originals`.
+1. Publish the diagram as a [scalable vector graphic (SVG)](https://www.w3.org/Graphics/SVG/).
+1. Store the SVG in the `source/images` folder.
+### Useful commands
+Update a diagram:
+```
+draw.io source/images/originals/top-level-technical-diagram.drawio
+```
+Generate SVG versions of the diagrams:
+```
+draw.io -x -o source/images/top-level-technical-diagram.svg source/images/originals/top-level-technical-diagram.drawio
+draw.io -x -o source/images/technical-flow-diagram.svg source/images/originals/technical-flow-diagram.drawio
+```
+
 ## Linting the GOV.UK One Login Technical Documentation
 
 This repository uses [Vale](https://vale.sh/) and the [GDS Tech Docs Linter ruleset](https://github.com/alphagov/tech-docs-linter).
