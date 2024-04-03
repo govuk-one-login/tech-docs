@@ -247,6 +247,50 @@ licence, if they submitted one when proving their identity.
 | `issuedBy`       | The organisation that issued the driving licence.                                                                                                                                                                                     |
 | `personalNumber` | The driver number of the driving licence. This is a string unique to the user.                                                                                                                                                        |
 
+## Understand your user’s return code claim
+
+The `https://vocab.account.gov.uk/v1/returnCode` claim gives information about any issues with the evidence your user provided to prove their identity. For example, if GOV.UK One Login was not able to prove your user’s identity. 
+
+To use this claim, you must let us know when [registering your service with GOV.UK One Login][integrate.register-your-service].
+
+When you use this claim and there’s an issue with the evidence your user provided to prove their identity:
+
+1. You’ll receive an authorisation code in the `redirect_uri` instead of an `access_denied` error.
+1. Use this authorisation code to get an ID token and an access token.
+1. When you make a request to the `/userinfo` endpoint using the access token, the response may contain only authentication data, and an array of one or more `returnCode` values, for example `[{"code": "B"},{"code": "C"}]`.
+1. For security reasons, you’ll need to contact GOV.UK One Login on [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) for more detailed information on what each return code means.  
+
+You may receive a return code even if a user’s identity verification is successful. Contact GOV.UK One Login on [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) for more detailed information on what each return code means.  
+
+| Property         | Definition                                                                                                                                                                                                                            |
+|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `code`     | An array of single letter codes for `returnCode` values. <br><br> You can use these codes to identify the reason(s) for any issues that occurred during the identity proving journey. For security reasons, you’ll need to contact GOV.UK One Login on [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) for more detailed information on what each return code means.  
+ 
+If you want to add this feature to an existing integration, contact GOV.UK One Login on [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) to update your client registration. You must also update your code to make sure your integration is able to use the new behaviour. 
+
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+  "sub": "urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=",
+  "email": "test@example.com",
+  "email_verified": true,
+  "phone_number": "01406946277",
+  "phone_number_verified": true,
+  "updated_at":1311280970,  
+  "https://vocab.account.gov.uk/v1/returnCode": [
+    {
+      "code": "B"
+    },
+    {
+      "code": "C"
+    }
+  ]
+}
+```
+
+
 ## Understand your user's National Insurance number claim
 The <code>https://vocab.account.gov.uk/v1/socialSecurityRecord</code> claim contains the details of your user’s National
 Insurance Number, if they submitted it while proving their identity.
