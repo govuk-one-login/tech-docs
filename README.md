@@ -62,7 +62,7 @@ Follow these steps:
 1. Create and modify a diagram using [draw.io](https://about.draw.io/).
 2. Save the draw.io file to the `source/images/originals` folder.
 3. Publish the diagram as a [scalable vector graphic (SVG)](https://www.w3.org/Graphics/SVG/).
-4. Store the SVG in the `source/images` folder.
+4. Save the SVG file to the `source/images` folder.
  
 ### Useful commands
 Update a diagram:
