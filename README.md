@@ -45,7 +45,7 @@ In order to configure some aspects of layout, like the header, edit `config/tech
 If you move pages around and URLs change, make sure you set up redirects from the old URLs to the new URLs.
 
 ## Making changes to a diagram
-Edit the draw.io files in `source/images/originals` folder by installing and using the draw.io desktop app.
+Edit the draw.io files in the `source/images/originals` folder by installing and using the draw.io desktop app.
 
 Use one draw.io file per diagram.
 
