@@ -47,7 +47,7 @@ If you move pages around and URLs change, make sure you set up redirects from th
 ## Making changes to a diagram
 Edit the draw.io files in `source/images/originals` folder by installing and using the draw.io desktop app.
 
-Use one drawio file per diagram.
+Use one draw.io file per diagram.
 
 ### Installing the draw.io desktop app
 Run the following commands to use the draw.io desktop app from the command line.
