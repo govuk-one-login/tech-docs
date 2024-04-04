@@ -45,23 +45,22 @@ In order to configure some aspects of layout, like the header, edit `config/tech
 If you move pages around and URLs change, make sure you set up redirects from the old URLs to the new URLs.
 
 ## Making changes to a diagram
-Edit the `drawio` files in `source/images/originals` using the draw.io desktop app.
+Edit the draw.io files in `source/images/originals` folder by installing and using the draw.io desktop app.
 
 Use one drawio file per diagram.
 
-### Install draw.io desktop app
-1. Use the following commands so that you can use draw.io at the command line (this will alias the binary): 
-```
-brew cask install drawio
-```
+### Installing the draw.io desktop app
+Run the following commands to use the draw.io desktop app from the command line.
 
 ```
-alias=draw.io='/Applications/draw.io.app/Contents/MacOS/draw.io'
+brew install --cask drawio
+alias draw.io='/Applications/draw.io.app/Contents/MacOS/draw.io'
 ```
-### Edit and publish the diagram
+
+### Editing and publishing a diagram
 Follow these steps:
-1. Create and modify the diagram using [draw.io](https://about.draw.io/).
-2. Store the draw.io original file in `source/images/originals`.
+1. Create and modify a diagram using [draw.io](https://about.draw.io/).
+2. Save the draw.io file to the `source/images/originals` folder.
 3. Publish the diagram as a [scalable vector graphic (SVG)](https://www.w3.org/Graphics/SVG/).
 4. Store the SVG in the `source/images` folder.
  
@@ -70,7 +69,7 @@ Update a diagram:
 ```
 draw.io source/images/originals/top-level-technical-diagram.drawio
 ```
-Generate SVG versions of the diagrams:
+Generate SVG versions of the diagrams and save them to the `source/images/originals` folder:
 ```
 draw.io -x -o source/images/top-level-technical-diagram.svg source/images/originals/top-level-technical-diagram.drawio
 
