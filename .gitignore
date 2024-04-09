@@ -23,3 +23,6 @@ vendor/
 
 # Used by Vale for linting 
 /vale-styles/
+
+# used by drawio
+*.bkp
