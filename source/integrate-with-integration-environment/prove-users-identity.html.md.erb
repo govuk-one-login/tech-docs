@@ -181,7 +181,7 @@ user are contained in the `credentialSubject` JSON object.
    in [the `id_token` from your token request](../authenticate-your-user/#understand-your-id-token).
 1. Check the current time is before the time in the `exp` claim.
 
-### Check your user’s identity credential matches the level of protection and confidence needed
+### Check your user’s level of authentication protection matches the requested level
 
 You must look for the `vot` claim in the ID Token and make sure the level of protection matches or exceeds the level a user needs to access your service. If you make an identity request, this vot will only contain the credential trust level, not the level of confidence.
 You may receive a lower level of confidence than you requested. For example, if you asked for medium
