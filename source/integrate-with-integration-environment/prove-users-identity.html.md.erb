@@ -1,7 +1,7 @@
 ---
 title: Prove your user's identity
 weight: 5.6
-last_reviewed_on: 2024-01-17
+last_reviewed_on: 2024-04-15
 review_in: 6 months
 ---
 
@@ -181,13 +181,13 @@ user are contained in the `credentialSubject` JSON object.
    in [the `id_token` from your token request](../authenticate-your-user/#understand-your-id-token).
 1. Check the current time is before the time in the `exp` claim.
 
-### Check your user’s identity credential matches the level of confidence needed
+### Check your user’s identity credential matches the level of protection and confidence needed
 
-You must look for the `vot` claim in the ID Token then make sure the expected and achieved level of protection matches or exceeds the level of confidence you need to let your user access
-your service. You may receive a lower level of confidence than you requested. For example, if you asked for medium
-confidence (`P2`), you may receive an identity credential containing low confidence (`P1` in the `vot` claim).
+You must look for the `vot` claim in the ID Token and make sure the level of protection matches or exceeds the level a user needs to access your service. If you make an identity request, this vot will only contain the credential trust level, not the level of confidence.
+You may receive a lower level of confidence than you requested. For example, if you asked for medium
+confidence (`P2`), you may receive an identity credential containing low confidence (`P1` in the `vot` claim). Additionally, if you ask for medium confidence ('P2') you must also request a protection level of Cl.Cm. This means logging in with second factor authenticaion. If you do not do this, you will receive an error back `invalid_request - Request vtr not valid`.
 
-### Process your user’s identity credential
+  ### Process your user’s identity credential
 
 The identity credential contains the following claims as properties of `credentialSubject`.
 
