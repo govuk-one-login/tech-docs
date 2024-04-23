@@ -1,7 +1,7 @@
 ---
 title: Authenticate your user
 weight: 5.5
-last_reviewed_on: 2024-03-19
+last_reviewed_on: 2024-04-15
 review_in: 6 months
 ---
 
@@ -208,6 +208,7 @@ Location: https://YOUR_REDIRECT_URI?error=invalid_request
 |-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `unauthorized_client`       | Your service is not authorised to request an authorisation code.<br>Make sure you have [registered your service to use GOV.UK One Login][integrate.register-your-service].                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `invalid_request`           | The request has one or more of the following issues: <ul><li>missing a required parameter</li><li>includes an invalid parameter value</li><li>includes a parameter more than once</li><li>not in the correct format</li></ul><br>You can [check which parameters GOV.UK One Login supports when you make an authorisation request][integrate.make-authorization-request].                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `invalid_request - Request vtr not valid`| If you're logging in without second factor authentication (requesting medium confidence ('P2')), you must request a protection level of Cl.Cm or you will receive this error.
 | `invalid_scope`             | The scope or scopes you have requested are invalid, unknown, or are not in the correct format.<br>You can read more about scopes in [choosing which user attributes your service can request][integrate.choose-user-attributes].                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | `unsupported_response_type` | Your service is not registered for the requested `response_type`. <br>You must set the `response_type` to be code: `response_type=code`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `server_error`              | The GOV.UK One Login authentication server has experienced an internal server error.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
@@ -327,14 +328,18 @@ The `id_token` parameter in the response for ‘Make a token request’ contains
 
 ```
 {
-  "sub": "urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=",
-  "iss": "https://oidc.integration.account.gov.uk",
-  "nonce": "aad0aa969c156b2dfa685f885fac7083",
+  "at_hash": "ZDevf74CkYWNPa8qmflQyA",
+  "sub": "urn:fdc:gov.uk:2022:VtcZjnU4Sif2oyJZola3OkN0e3Jeku1cIMN38rFlhU4",
   "aud": "YOUR_CLIENT_ID",
-  "exp": 1489694196,
-  "iat": 1489694198,
-  "sid": "LeiKvyPXZorTmSgOTsYhPehsGNw="
-}
+  "iss": "https://oidc.integration.account.gov.uk/",
+  "vot": "Cl.Cm",
+  "exp": 1704894526,
+  "iat": 1704894406,
+  "nonce": "lZk16Vmu8-h7r8L8bFFiHJxpC3L73UBpfb68WC1Qoqg",
+  "vtm": "https://oidc.integration.account.gov.uk/trustmark",
+  "sid": "dX5xv0XgHh6yfD1xy-ss_1EDK0I"
+ }
+
 ```
 
 You can use the following table to understand the ID token’s claims.
@@ -348,6 +353,7 @@ You can use the following table to understand the ID token’s claims.
 | `exp`   | `exp` means ‘expiration time’. This is the expiration time for this token, which will be an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch]. |
 | `iat`   | `iat` stands for ‘issued at’. This identifies the time at which GOV.UK One Login created the JWT. You can use this claim to understand the age of the JWT.This will appear as an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch]. |
 | `sid`   | `sid` stands for ‘session identifier’. This uniquely identifies the user's journey within GOV.UK One Login. |
+| `vot`   | Check the `vot` matches the authentication protection level you requested in your authorise request. If you make an identity request, this vot will only contain the credential trust level, not the level of confidence.  |
 
 Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
