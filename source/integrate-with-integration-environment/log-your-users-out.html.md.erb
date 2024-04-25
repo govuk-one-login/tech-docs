@@ -57,7 +57,7 @@ There’s an [example implementation of handling a back-channel logout notificat
 
 You must make sure your `back_channel_logout_uri` can accept `POST` requests with a `Content-Type` of `application/x-www-form-urlencoded` from GOV.UK One Login.
 
-The `back_channel_logout_uri` must be available using the internet. Using [http://localhost](http://localhost) will not work.
+The `back_channel_logout_uri` must be available using the internet. Using `localhost` will not work.
 
 GOV.UK One Login will send a `POST` request to your `back_channel_logout_uri` when a user who has logged into your service using GOV.UK One Login has logged out. The `POST` body will contain a `logout_token`, which will be a signed JSON web token (JWT).
 
