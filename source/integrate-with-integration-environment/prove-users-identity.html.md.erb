@@ -80,6 +80,53 @@ Content-Type: application/json
   ]
 }
 ```
+
+## Validating the JWT
+The public keys you must use to validate this JWT are published by GOV.UK One Login as [Decentralized Identifier (DID) documents](https://www.w3.org/TR/did-core/) and can be downloaded from one of the following endpoints:
+
+| Environment | Endpoint                                                         |
+| ----------- | ---------------------------------------------------------------- |
+| Integration | https://identity.integration.account.gov.uk/.well-known/did.json |
+| Production  | https://identity.account.gov.uk/.well-known/did.json             |
+
+You should read this endpoint when validating a document. However, to reduce latency we recommend caching the returned DID Document. To facilitate the endpoint includes the `Cache-Control` HTTP header field which holds directives how the result of the endpoint should be cached and how long the DID Document is expected to remain valid. For example, the following response header says that the result is expected to remain valid for up to 1 hour (3600 seconds / 60 seconds = 60 minutes or 1 hour), and that it should be cached only by the requester and not in a shared cache. For more details on the Cache-Control header see [RFC 9111: HTTP Caching](https://www.rfc-editor.org/rfc/rfc9111#field.cache-control).
+
+```
+Cache-Control: max-age=3600, private
+...
+```
+
+The DID Document returned by the service uses the `did:web` method, see [did:web Method Specification](https://w3c-ccg.github.io/did-method-web/) for further information and the section [2.5.2 Read (Resolve)](https://w3c-ccg.github.io/did-method-web) when resolving the DID Document. The following is an example of a web DID Document which may be downloaded from the GOV.UK One Login service.
+
+```json
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://www.w3.org/ns/security/jwk/v1"
+  ],
+  "id": "did:web:identity.account.gov.uk",
+  "assertionMethod": [
+    {
+      "id": "cfeebabeeac2d9749993523f143fbc3f8c83411853f2996323a2efbd7acda754",
+      "type": "JsonWebKey",
+      "controller": "did:web:staging.identity.account.gov.uk",
+      "publicKeyJwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "1_WJai9R0PRJrw12kRRq_dk1Kh5eSll7QYC2JTrY0Hg",
+        "y": "Wm5YhRJSsXVmAFGCEUgNBJyvR-oAQo2xvYA9DMVMYdk"
+      }
+    }
+  ]
+}
+```
+
+When validating a JWT the JWT header will include a `kid` (Key ID) in the format `{scheme}:{DID-method}:{DID-method-specific identifier}#{unique key identifier}`. The `kid` can be used to determine which public key was used to the sign the JWT:
+* `{scheme}:{DID-method}:{DID-method-specific identifier}` should always match the `id` within the DID Document. For example `did:web:identity.account.gov.uk`.
+* `{unique key identifier}` should always match one `id` within the DID Document `assertionMethod` array. For example, `cfeebabeeac2d9749993523f143fbc3f8c83411853f2996323a2efbd7acda754`.
+
+One Login will rotate it's keys on regular basis and, in the event of a compromised key, will need to rotate at short notice. When we rotate keys the new public key will be added to the `assertionMethod` array in advance to allow time for all relying parties to consume prior to rotation. The old public key will be removed following a rotation, after which time the key will no longer be valid and should not be trusted. 
+
 ## Understand your user’s core identity claim
 The `https://vocab.account.gov.uk/v1/coreIdentityJWT` property in the `/userinfo` response is the core identity claim,
 which is a JWT representing core identity attributes.
@@ -91,9 +138,6 @@ The following are core identity attributes:
 * the level of identity confidence GOV.UK One Login has reached
 
 <%= warning_text("If the <code>https://vocab.account.gov.uk/v1/coreIdentityJWT</code> property is not present, then GOV.UK One Login was not able to prove your user's identity.") %>
-
-Our support team will give you the public key you must use to validate this JWT. We recommend
-you [use a certified JWT/JWS implementation](https://openid.net/developers/jwt/).
 
 The JWT contains the following claims:
 
