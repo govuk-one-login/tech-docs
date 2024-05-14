@@ -353,7 +353,7 @@ You can use the following table to understand the ID token’s claims.
 | `exp`   | `exp` means ‘expiration time’. This is the expiration time for this token, which will be an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch]. |
 | `iat`   | `iat` stands for ‘issued at’. This identifies the time at which GOV.UK One Login created the JWT. You can use this claim to understand the age of the JWT.This will appear as an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch]. |
 | `sid`   | `sid` stands for ‘session identifier’. This uniquely identifies the user's journey within GOV.UK One Login. |
-| `vot`   | `vot` stands for 'Vector of Trust'. Check the `vot` matches the authentication protection level you requested in your authorise request. If you make an identity request, the `vot` claim will only contain the credential trust level, not the level of confidence.  |
+| `vot`   | `vot` stands for 'Vector of Trust'. Check the `vot` matches the authentication protection level you requested in your authorise request. The `vot` claim will only contain the credential trust level and not the level of confidence, even if you make an identity request.  |
 
 Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
