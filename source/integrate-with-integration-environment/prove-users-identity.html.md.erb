@@ -183,8 +183,9 @@ user are contained in the `credentialSubject` JSON object.
 
 ### Check your user’s level of authentication protection matches the requested level
 
-You must look for the `vot` claim in the ID Token and make sure the level of protection matches or exceeds the level a user needs to access your service. If you make an identity request, this vot will only contain the credential trust level, not the level of confidence.
-Additionally, if you ask for medium confidence ('P2') you must also request a protection level of Cl.Cm. This means logging in with second factor authenticaion. If you do not do this, you will receive an error back `invalid_request - Request vtr not valid`.
+You must look for the `vot` (Vector of Trust) claim in the ID token and make sure the level of protection matches or exceeds the level a user needs to access your service. The `vot` claim will only contain the credential trust level, not the level of confidence, even if you make an identity request.
+Additionally, if you ask for medium confidence (`P2`) you must also request a protection level of `Cl.Cm`. This means logging in with two-factor authenticaion. If you do not do this, you'll receive the error: `invalid_request - Request vtr not valid`.
+
 
 ### Process your user’s identity credential
 
