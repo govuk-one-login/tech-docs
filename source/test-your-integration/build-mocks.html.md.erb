@@ -1,0 +1,87 @@
+---
+title: Build mocks to work with GOV.UK One Login
+weight: 3.5
+last_reviewed_on: 2024-05-17
+review_in: 6 months
+---
+
+# Build mocks to work with GOV.UK One Login
+
+Once you’ve integrated your service with Authorization Code Flow, you can build your mocks to work with GOV.UK One Login.
+This page describes:
+
+- what to do [before you start](#before-you-start) to build mocks
+- how to [set up your local development environment](/test-your-integration/build-mocks/#set-up-your-local-development-environment)
+- how to [build mocks for the GOV.UK One Login integration environment endpoints](#build-your-mocks)
+
+## Before you start
+
+
+Before you can build mocks, make sure you have completed the following steps. This confirms your service is connected with GOV.UK One Login’s integration environment.
+
+
+1. [Created a key pair](https://docs.sign-in.service.gov.uk/before-integrating/generate-a-key/).
+1. [Registered with GOV.UK One Login](https://docs.sign-in.service.gov.uk/before-integrating/set-up-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login).
+1. Configured your client ID and private key into your application so your application can create the OpenID Connect (OIDC) requests.
+1. Check your application can call all GOV.UK One Login endpoints (`https://oidc.integration.account.gov.uk/.well-known/openid-configuration`, `/authorize`, `/token`, `/userinfo`, `/logout`).
+If you need to log in to the integration environment, use the user ID and password issued to you by email when you registered your service. 
+
+
+## Set up your local development environment
+
+
+To set up your local development environment, you can do one or both of these options, depending on your development needs: 
+
+
+* configure your application to use GOV.UK One Login’s integration environment – there’s further guidance on [integrating with GOV.UK One Login’s integration environment](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/)
+* mock out your calls to the endpoints to provide responses without having to call external systems
+
+
+## Build your mocks
+
+
+### Build mock for `/authorize` endpoint
+
+
+You should build a mock for the `/authorize` endpoint using: 
+
+
+* the request to the `/authorize` endpoint, depending on whether you’re making a [request for authentication only](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-request-for-authentication) or a [request for authentication and identity](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-request-for-authentication-and-identity)
+* the [error handling for `/authorize` response](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#error-handling-for-make-a-request-to-the-authorize-endpoint)
+
+
+### Build mock for `/token` endpoint
+
+
+You should build a mock for the `/token` endpoint using: 
+
+
+* the [`/token` endpoint request](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-post-request-to-the-token-endpoint)
+* the [error handling for `/token` response](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#error-handling-for-make-a-token-request)
+
+
+### Build mock for `/userinfo` endpoint
+
+
+You should build a mock for the `/userinfo` endpoint using: 
+
+
+* the [`/userinfo` endpoint request](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#retrieve-user-information)
+* the [error handling for `/userinfo` response](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#error-handling-for-retrieve-user-information)
+
+### Build mock for `/logout` endpoint
+
+
+You should build a mock for the `/logout` endpoint using: 
+
+
+* the [`/logout` endpoint request](/integrate-with-integration-environment/managing-your-users-sessions/#log-your-user-out-of-gov-uk-one-login)
+
+### Build mock for the discovery endpoint
+
+
+You should build a mock for the [discovery endpoint](https://oidc.integration.account.gov.uk/.well-known/openid-configuration), also known as `./well-known/openid-configuration`.
+
+<%= partial "partials/links" %>
+
+
