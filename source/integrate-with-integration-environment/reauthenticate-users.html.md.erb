@@ -1,0 +1,42 @@
+---
+title: Reauthenticate users
+weight: 8
+last_reviewed_on: 2024-06-15
+review_in: 6 months
+---
+
+# Reauthenticate users
+
+A relying party (RP) can reauthenticate a user who has an active session with them.
+
+The current implementation of reauthentication can only be used by an RP to ensure that the user who started the journey is still the same person. 
+
+It cannot be used to ensure that a user who may or may not have an active One Login session is forced to re-enter their username and password.
+
+Reauthentication is supported only for JWT-secured OAuth 2.0 authorisation requests (JARs).
+
+## Implementation
+
+To reauthenticate a user the RP must have:
+
+* an existing user session
+* an ID token from GOV.UK One Login
+
+An RP must then use the following table to input values into the required parameters (along with the standard parameters) as part of an authorisation request:
+
+| Parameter name  | Required or optional | Expected value  |
+|-----------------|----------------------|-----------------|
+| `prompt`        | Required             | `login`         |
+| `id_token_hint` | Required<br/>(for reauthentication scenario)    | ID token received by RP from GOV.UK One Login<br><br>Note: If ID token is populated along with prompt=login, then the system will reauthenticate         |
+
+As part of the reauthentication process, GOV.UK One Login will take the users through the reauthentication journey. The level of protection will be the same as the original authentication, which is read from the ID token passed in as part of the request. After a successful authentication and token exchanges, a refreshed ID token will be issued by GOV.UK One Login.
+
+After a successful reauthentication, GOV.UK One Login will redirect a user back to the RP with an authorisation code (similar to the normal sign-in journey). The RP must then:
+request the ID token
+validate the ID token for the latest timestamp and match the subject ID to  make sure it is the same subject ID
+
+## Troubleshooting 
+
+If an ID token has expired then GOV.UK One Login will return an error code.
+
+<%= partial "partials/links" %>
