@@ -49,8 +49,8 @@ GOV.UK One Login does not provide specific recommendations about automated testi
 
 
 However, if you choose to do automated testing, you might need to: 
-    
-* embed the integration environment’s basic authentication in a URL
+
+* enter the integration environment’s basic authentication in a URL, for example `https://username:password@signin.integration.account.gov.uk`
 * generate a one-time code using a scripting language
 
 
@@ -58,9 +58,9 @@ However, if you choose to do automated testing, you might need to:
 
 
 The integration environment web user journey will present a basic authentication challenge to protect the environment from accidental use. This will prompt you to log in and might disrupt your automated tests. 
-    
-    
-You can use a URL with the integration environment’s basic authentication embedded within it when you make a request to the `/authorize` endpoint: `https://username:password@signin.integration.account.gov.uk/authorize`.
+
+
+You visit the URL `https://username:password@signin.integration.account.gov.uk` before you make a request to the `/authorize` endpoint. By including the basic authentication credentials, you'll automatically bypass the login prompt.    
 
 You’ll have received the integration environment’s login details when you registered your service to use GOV.UK One Login.
 
