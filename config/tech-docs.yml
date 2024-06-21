@@ -12,7 +12,7 @@ phase: Beta
 
 # Links to show on right-hand-side of header
 header_links:
-  GitHub: https://github.com/govuk-one-login/authentication-tech-docs
+  GitHub: https://github.com/govuk-one-login/tech-docs
   Support: https://docs.sign-in.service.gov.uk/support/
 
 # Links to show in the page footer
@@ -37,7 +37,7 @@ prevent_indexing: true
 
 # Contribution banner
 show_contribution_banner: true
-github_repo: govuk-one-login/authentication-tech-docs # used to generate links in the contribution banner
+github_repo: govuk-one-login/tech-docs # used to generate links in the contribution banner
 github_branch: main
 
 owner_slack_workspace: gds

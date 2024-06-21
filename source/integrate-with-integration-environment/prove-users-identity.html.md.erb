@@ -1,7 +1,7 @@
 ---
 title: Prove your user's identity
 weight: 5.6
-last_reviewed_on: 2024-01-17
+last_reviewed_on: 2024-04-15
 review_in: 6 months
 ---
 
@@ -181,11 +181,11 @@ user are contained in the `credentialSubject` JSON object.
    in [the `id_token` from your token request](../authenticate-your-user/#understand-your-id-token).
 1. Check the current time is before the time in the `exp` claim.
 
-### Check your user’s identity credential matches the level of confidence needed
+### Check your user’s level of authentication protection matches the requested level
 
-You must check the `vot` claim in the JWT matches or exceeds the level of confidence you need to let your user access
-your service. You may receive a lower level of confidence than you requested. For example, if you asked for medium
-confidence (`P2`), you may receive an identity credential containing low confidence (`P1` in the `vot` claim).
+You must look for the `vot` (Vector of Trust) claim in the ID token and make sure the level of protection matches or exceeds the level a user needs to access your service. The `vot` claim will only contain the credential trust level, not the level of confidence, even if you make an identity request.
+Additionally, if you ask for medium confidence (`P2`) you must also request a protection level of `Cl.Cm`. This means logging in with two-factor authenticaion. If you do not do this, you'll receive the error: `invalid_request - Request vtr not valid`.
+
 
 ### Process your user’s identity credential
 
@@ -257,10 +257,10 @@ When you use this claim and there’s an issue with the evidence your user provi
 
 1. You’ll receive an authorisation code in the `redirect_uri` instead of an `access_denied` error.
 1. Use this authorisation code to get an ID token and an access token.
-1. When you make a request to the `/userinfo` endpoint using the access token, the response may contain only authentication data, and an array of one or more `returnCode` values, for example `[{"code": "B"},{"code": "C"}]`.
-1. For security reasons, you’ll need to contact GOV.UK One Login on [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) for more detailed information on what each return code means.  
+1. When you make a request to the `/userinfo` endpoint using the access token, the response may contain only authentication data, and an array of one or more `returnCode` values, which will each be a letter.
+1. For security reasons, you’ll need to contact GOV.UK One Login on [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) for more detailed information on what issue each `returnCode` value stands for.  
 
-You may receive a return code even if a user’s identity verification is successful. Contact GOV.UK One Login on [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) for more detailed information on what each return code means.  
+Currently, there are 11 `returnCode` values which GOV.UK One Login could return if there’s an issue with the evidence your user provided to prove their identity. You may receive a return code even if a user’s identity verification is successful, for example, if a user is a politically exposed person. Contact GOV.UK One Login on [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) for more detailed information on what each return code means.  
 
 | Property         | Definition                                                                                                                                                                                                                            |
 |------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -299,6 +299,6 @@ Insurance Number, if they submitted it while proving their identity.
 |------------------|-------------------------------------------|
 | `personalNumber` | The National Insurance number of the user |
 
-Continue to [log your users out of GOV.UK One Login][integrate.log-users-out].
+Continue to [managing your users' sessions](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/managing-your-users-sessions/#managing-your-users-39-sessions).
 
 <%= partial "partials/links" %>

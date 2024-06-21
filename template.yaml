@@ -231,7 +231,7 @@ Resources:
         - Key: Service
           Value: ci/cd
         - Key: Source
-          Value: govuk-one-login/authentication-tech-docs/template.yaml
+          Value: govuk-one-login/tech-docs/template.yaml
 
   TaskExecutionRole:
     Type: AWS::IAM::Role
@@ -265,7 +265,7 @@ Resources:
         - Key: Service
           Value: ci/cd
         - Key: Source
-          Value: govuk-one-login/authentication-tech-docs/template.yaml
+          Value: govuk-one-login/tech-docs/template.yaml
 
 
   # Application Load balancing
@@ -299,7 +299,7 @@ Resources:
         - Key: Service
           Value: ci/cd
         - Key: Source
-          Value: govuk-one-login/authentication-tech-docs/template.yaml
+          Value: govuk-one-login/tech-docs/template.yaml
 
   ApplicationLoadBalancerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -326,7 +326,7 @@ Resources:
         - Key: Service
           Value: ci/cd
         - Key: Source
-          Value: govuk-one-login/authentication-tech-docs/template.yaml
+          Value: govuk-one-login/tech-docs/template.yaml
 
   ApplicationLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
@@ -377,7 +377,7 @@ Resources:
         - Key: Service
           Value: ci/cd
         - Key: Source
-          Value: govuk-one-login/authentication-tech-docs/template.yaml
+          Value: govuk-one-login/tech-docs/template.yaml
 
   ApplicationLoadBalancerSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress

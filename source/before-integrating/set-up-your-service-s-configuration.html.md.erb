@@ -44,7 +44,7 @@ The GOV.UK One Login team will send you a confirmation email once they have regi
 By default, GOV.UK One Login will sign the `id_token` JSON Web Token (JWT) using the `ES256` algorithm but some third party tooling does not support `ES256`. If your service needs an alternative algorithm, we can sign your `id_token` JWT using the `RS256` algorithm. Let us know if you need this when you register your service.
 
 #### Request logout notifications
-You can also receive user logout notifications from GOV.UK One Login. To use this, send the GOV.UK One Login team a `back_channel_logout_uri` specifying the URL you want GOV.UK One Login to send notifications to when a user who was signed into your service using GOV.UK One Login has logged out. There’s further [guidance on responding to logout notifications from GOV.UK One Login](/integrate-with-integration-environment/log-your-users-out/#responding-to-logout-notifications-from-gov-uk-one-login).
+You can also receive user logout notifications from GOV.UK One Login. To use this, send the GOV.UK One Login team a `back_channel_logout_uri` specifying the URL you want GOV.UK One Login to send notifications to when a user who was signed into your service using GOV.UK One Login has logged out. There’s further [guidance on requesting logout notifications from GOV.UK One Login](/integrate-with-integration-environment/managing-your-users-sessions/#request-logout-notifications-from-gov-uk-one-login).
 
 
 

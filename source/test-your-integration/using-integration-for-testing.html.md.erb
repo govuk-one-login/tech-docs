@@ -1,0 +1,223 @@
+---
+title: Using the integration environment for end-to-end testing
+weight: 4
+last_reviewed_on: 2024-05-22
+review_in: 6 months
+---
+
+# Using the integration environment for end-to-end testing
+
+
+You can use our integration environment to test your end-to-end user journeys. 
+
+
+This page describes:
+
+
+* what to do [before you begin testing](/test-your-integration/using-integration-for-testing/#before-you-begin)
+* how to [navigate automated testing](/test-your-integration/using-integration-for-testing/#navigating-automated-testing)
+* how to [conduct end-to-end tests against the integration environment](/test-your-integration/using-integration-for-testing/#conducting-end-to-end-user-testing-against-the-integration-environment)
+* how to [navigate internal performance testing of your service](/test-your-integration/using-integration-for-testing/#navigating-internal-performance-testing-of-your-service)
+
+
+<%= warning_text('You must not conduct any security testing, penetration testing, performance testing, or IT health checks of the GDS estate. You must also not use personal identifiable information (PII) – GOV.UK One Login will provide example data.') %>
+
+
+You should focus on end-to-end testing the critical paths, for example testing a successful identity journey. There's further guidance on how to [conduct end-to-end tests against the integration environment](/test-your-integration/using-integration-for-testing/#conducting-end-to-end-user-testing-against-the-integration-environment).
+
+
+We will notify you for any changes made to the GOV.UK One Login API.
+
+
+We will not notify you for changes that are internal to the GOV.UK One Login journey, for example, if the wording on a button changes.
+
+## Before you begin
+
+
+Before you can test on our integration environment, you must:
+
+
+* have [registered your service to use GOV.UK One Login](https://docs.sign-in.service.gov.uk/before-integrating/set-up-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login)
+* have built an application to work with GOV.UK One Login
+* use the integration environment’s login details when prompted to log in – you’ll have received these when you registered your service to use GOV.UK One Login
+
+
+## Navigating automated testing 
+
+
+GOV.UK One Login does not provide specific recommendations about automated testing. This is because we are making frequent updates to the code and user flows that may break your tests. 
+
+
+However, if you choose to do automated testing, you might need to: 
+
+* enter the integration environment’s basic authentication in a URL, for example `https://username:password@signin.integration.account.gov.uk`
+* generate a one-time code using a scripting language
+
+
+### Embed the integration environment’s basic authentication in a URL
+
+
+The integration environment web user journey will present a basic authentication challenge to protect the environment from accidental use. This will prompt you to log in and might disrupt your automated tests. 
+
+
+You visit the URL `https://username:password@signin.integration.account.gov.uk` before you make a request to the `/authorize` endpoint. By including the basic authentication credentials, you'll automatically bypass the login prompt.    
+
+You’ll have received the integration environment’s login details when you registered your service to use GOV.UK One Login.
+
+### Generate a one-time code using a scripting language
+
+
+When conducting automated testing, the multi-factor authentication may block your automated tests. You can generate a one-time code using a scripting language to help your automated tests run as expected. 
+
+
+1. Go to your service start page. 
+1. Select **Start**. 
+1. Select **Create a GOV.UK One Login**.
+1. Follow the instructions to create an account using the test user data. You should use an email address which you have access to so you can receive the two-factor authentication code – if using Gmail, you can add ‘+1’ onto the end of your email address to create additional accounts, if needed. For example, `janedoe+1234@example.com`. If you are using another email provider, you might not be able to access this feature. 
+1. Enter the 6-digit security code sent to your email – it will have a subject line similar to ‘Your security code for your GOV.UK One Login’.
+1. Create a password. 
+1. Select **Authenticator app for smartphone, tablet or computer**. 
+1. Select the **I cannot scan the QR code** dropdown.
+1. Make a note of the secret key which appears in the dropdown – some authenticator apps call the secret key a ‘code’.
+1. Use this secret key to generate a one-time code using a scripting language within your test – there’s an [example of how to generate a one-time code using TypeScript](https://github.com/govuk-one-login/rp-reference/blob/main/tools/totp/totp.ts) in our GitHub repo. 
+
+## Conducting end-to-end user testing against the integration environment
+### Test successful user journeys
+
+
+Before you can test successful authentication or identity proving journeys, you need to: 
+
+
+1. Check you can connect to the integration environment.
+1. [Contact GOV.UK One Login to access test user data](mailto:govuk-one-login@digital.cabinet-office.gov.uk) – you’ll use this to test your journeys.
+
+
+#### Test a successful authentication journey
+
+
+You should test if you can authenticate users successfully. This scenario uses a web-based journey to create a GOV.UK One Login. 
+
+
+1. Go to your service start page. 
+1. Select **Start**. 
+1. Select **Create a GOV.UK One Login**.
+1. Follow the instructions to create an account using the test user data. You should use an email address which you have access to so you can receive the two-factor authentication code – if using Gmail, you can add ‘+1’ onto the end of your email address to create additional accounts, if needed. For example, `janedoe+1234@example.com`. If you are using another email provider, you might not be able to access this feature. 
+1. Enter the 6-digit security code sent to your email – it will have a subject line similar to ‘Your security code for your GOV.UK One Login’.
+1. Create a password.
+1. Select how you want to receive your security codes. 
+1. Select **Continue**. 
+
+#### Test a successful identity proving journey 
+
+
+If your service provides identity proving functionality, you should test if you can prove your users’ identities successfully. This scenario uses a web-based journey to create a GOV.UK One Login. 
+
+
+1. Go to your service start page. 
+1. Select **Start**. 
+1. Select **Create a GOV.UK One Login**.
+1. Follow the instructions to create an account using the test user data. You should use an email address which you have access to so you can receive the two-factor authentication code – if using Gmail, you can add ‘+1’ onto the end of your email address to create additional accounts, if needed. For example, `janedoe+1234@example.com`. If you are using another email provider, you might not be able to access this feature. 
+1. Enter the 6-digit security code sent to your email – it will have a subject line similar to ‘Your security code for your GOV.UK One Login’.
+1. Create a password.
+1. Select how you want to receive your security codes. 
+1. Select **Continue**. 
+1. Select **Continue** when asked about proving your identity with GOV.UK One Login.
+1. Select **Yes**, then **Continue** when asked if you have a photo ID.
+1. Select **Yes, I am on a computer or tablet**, then **Continue**.
+1. Select **I don’t have either of these** when asked if you have a smartphone.
+1. Select **UK photocard driving licence** or **UK passport** when asked if you want to use your UK photocard driving licence or UK passport to prove your identity, then **Continue**. 
+1. Fill in the document details from the test user data profiles, then **Continue**.
+1. Enter the postcode from the test user data profiles. 
+1. Select **Find address**.
+1. Find the correct address from the dropdown list and select **Choose address**.
+1. Enter the correct year from the test user data profiles into **When did you start living here**, then **Continue**.
+1. Select **I confirm my details are correct** then **Continue**.
+1. Select **Continue**, and answer the security question from the test user data profiles (this will be in the knowledge-based verification question section in the test user data profiles document). You must answer 3 correctly and can only get a maximum of 1 wrong. 
+1. Select **Continue**. 
+
+### Test unsuccessful user journeys  
+
+
+You should test if your service recognises failed authentication or identity proving journeys. Before you can test these, you need to:  
+
+
+1. Check you can connect to the integration environment.
+1. [Contact GOV.UK One Login to access test user data](mailto:govuk-one-login@digital.cabinet-office.gov.uk) – you’ll use this to test your journeys.
+
+
+To test a failed journey, you need to input incorrect data. For example, inputting an incorrect date of birth, or document number.
+
+#### Test a failed identity proving journey
+
+
+If your service provides identity proving functionality, you should test a failed identity proving journey. 
+
+
+Your test outcome will vary depending on whether you use the return code claim or not. 
+
+
+##### Test a failed identity proving journey without the return code claim 
+
+
+1. Go to your service start page. 
+1. Select **Start**. 
+1. Select **Create a GOV.UK One Login**.
+1. Follow the instructions to create an account using the test user data. You should use an email address which you have access to so you can receive the two-factor authentication code – if using Gmail, you can add ‘+1’ onto the end of your email address to create additional accounts, if needed. For example, `janedoe+1234@example.com`. If you are using another email provider, you might not be able to access this feature.
+1. Enter the 6-digit security code sent to your email – it will have a subject line similar to ‘Your security code for your GOV.UK One Login’.
+1. Create a password.
+1. Select how you want to receive your security codes, then **Continue**. 
+1. Select **Continue** when asked about proving your identity with GOV.UK One Login.
+1. Select **Yes**, then **Continue** when asked if you have a photo ID.
+1. Select **Yes, I am on a computer or tablet**, then **Continue**.
+1. Select **I don’t have either of these** when asked if you have a smartphone.
+1. Select **UK photocard driving licence** or **UK passport** when asked if you want to use your UK photocard driving licence or UK passport to prove your identity, then **Continue**. 
+1. Fill in the document details from the test user data profiles but input incorrect data – for example, an incorrect date of birth, or document number, then **Continue**.
+1. When you see the error message ‘Sorry, you’ll need to prove your identity another way’, select **Prove your identity another way**.
+1. Select **Continue** and you’ll receive an OAuth ‘Access Denied’ error to your `redirect_uri`.
+
+##### Test a failed identity proving journey using the return code claim 
+
+
+If you’re using the [return code claim](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/prove-users-identity/#understand-your-user-s-return-code-claim), you should test different ways of how an identity proving journey might fail. Your integration should receive the expected return code back, and handle it appropriately.
+
+
+For example, submitting an incorrect document number will return an error which explains it was not possible to confirm a user’s identity.
+
+
+1. Go to your service start page. 
+1. Select **Start**. 
+1. Select **Create a GOV.UK One Login**.
+1. Follow the instructions to create an account using the test user data. You should use an email address which you have access to so you can receive the two-factor authentication code – if using Gmail, you can add ‘+1’ onto the end of your email address to create additional accounts, if needed. For example, `janedoe+1234@example.com`. If you are using another email provider, you might not be able to access this feature.
+1. Enter the 6-digit security code sent to your email – it will have a subject line similar to ‘Your security code for your GOV.UK One Login’.
+1. Create a password.
+1. Select how you want to receive your security codes, then **Continue**. 
+1. Select **Continue** when asked about proving your identity with GOV.UK One Login.
+1. Select **Yes**, then **Continue** when asked if you have a photo ID.
+1. Select **Yes, I am on a computer or tablet**, then **Continue**.
+1. Select **I don’t have either of these** when asked if you have a smartphone.
+1. Select **UK photocard driving licence** or **UK passport** when asked if you want to use your UK photocard driving licence or UK passport to prove your identity, then **Continue**. 
+1. Fill in the document details from the test user data profiles but input incorrect data – for example, an incorrect date of birth, or document number, then **Continue**.
+1. When you see the error message ‘Sorry, you’ll need to prove your identity another way’, select **Prove your identity another way**.
+1. Select **Continue** and you’ll receive a `returnCode` in your response from `/userinfo` – there’s further [guidance on return codes](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/prove-users-identity/#understand-your-user-s-return-code-claim). 
+
+## Navigating internal performance testing of your service 
+
+
+For performance testing, you should ​​focus on the processing and successful handling of the agreed request and response volumes back into your service.
+
+
+You are responsible for conducting performance testing against your own system. You should [build mocks to test your system](/test-your-integration/build-mocks/) as GOV.UK One Login does not provide environments for this. 
+
+
+You must not performance test any GOV.UK One Login environment.
+
+
+GOV.UK One Login is responsible for performance testing the agreed volumes of requests into the GOV.UK One Login service.
+
+
+## Avoid penetration testing 
+
+
+You must not do any penetration ‘pen’ testing against GOV.UK One Login’s environment. 
+
+<%= partial "partials/links" %>
