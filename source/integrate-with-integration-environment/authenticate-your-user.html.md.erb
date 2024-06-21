@@ -193,15 +193,17 @@ If your request included the `state` parameter, the URI will also include this p
 
 ### Error handling for ‘Make a request to the `/authorize` endpoint’
 
+You must check the HTTP return code from   the `/authorize` request.
+
 #### HTTP 502 Bad Gateway
 If you receive `{"message": "Internal server error"}` with an HTTP 502 (Bad Gateway) in response to your response `GET` request to the `/authorize` endpoint you should check the [parameters are correct][integrate.replace-example-message].
 
 Common reasons for the error include:
 
-* the `client_id` parameter does not match your the client configuration
-* the `redirect_uri` parameter does not match one of the uris configured in your client configuration, this is a particularly common cause of this error and it is important that the match is exact
+* the `client_id` parameter does not match your client configuration
+* the `redirect_uri` parameter does not match one of the uris configured in your client configuration, <%= warning_text('this is a common cause of the error and it is important that the match is exact as described by <a href="https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest">OpenID Connect Core 1.0</a>') %>
 * the `response_type` parameter is not set to `code`
-* the `scope` parameter is incorrect
+* `openid` is missing from the `scope` parameter. If `openid` is present but other incorrect scopes are also present then the `invalid_scope` is returned with an HTTP 302 instead. 
 
 #### HTTP 302 Found  
 To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
