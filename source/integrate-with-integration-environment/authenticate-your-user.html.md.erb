@@ -203,7 +203,7 @@ Common reasons for the error include:
 * the `client_id` parameter does not match your client configuration
 * the `redirect_uri` parameter does not match one of the URIs configured in your client configuration, <%= warning_text('this is a common cause of the error and it is important that the match is exact and includes the protocol (`https://` or `http`) as described by <a href="https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest">OpenID Connect Core 1.0</a>') %>
 * the `response_type` parameter is not set to `code`
-* `openid` is missing from the `scope` parameter. If `openid` is present but other incorrect scopes are also present then the `invalid_scope` is returned with an HTTP 302 instead. 
+* `openid` is missing from the `scope` parameter. If `openid` is requested but other incorrect scopes are also requested the error `invalid_scope` is returned with an HTTP 302 instead. 
 
 #### HTTP 302 Found  
 To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
