@@ -201,7 +201,7 @@ If you receive `{"message": "Internal server error"}` with an HTTP 502 (Bad Gate
 Common reasons for the error include:
 
 * the `client_id` parameter does not match your client configuration
-* the `redirect_uri` parameter does not match one of the uris configured in your client configuration, <%= warning_text('this is a common cause of the error and it is important that the match is exact and includes the protocol (`https://` or `http`) as described by <a href="https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest">OpenID Connect Core 1.0</a>') %>
+* the `redirect_uri` parameter does not match one of the URIs configured in your client configuration, <%= warning_text('this is a common cause of the error and it is important that the match is exact and includes the protocol (`https://` or `http`) as described by <a href="https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest">OpenID Connect Core 1.0</a>') %>
 * the `response_type` parameter is not set to `code`
 * `openid` is missing from the `scope` parameter. If `openid` is present but other incorrect scopes are also present then the `invalid_scope` is returned with an HTTP 302 instead. 
 
