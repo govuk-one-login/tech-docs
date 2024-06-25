@@ -196,7 +196,7 @@ If your request included the `state` parameter, the URI will also include this p
 You must check the HTTP return code from   the `/authorize` request.
 
 #### HTTP 502 Bad Gateway
-If you receive `{"message": "Internal server error"}` with an HTTP 502 (Bad Gateway) in response to your response `GET` request to the `/authorize` endpoint you should check the [parameters are correct][integrate.replace-example-message].
+If your `GET` request to the `/authorize` endpoint produces this error: `{"message": "Internal server error"}` with an HTTP 502 (Bad Gateway), you should check the [parameters are correct][integrate.replace-example-message].
 
 Common reasons for the error include:
 
