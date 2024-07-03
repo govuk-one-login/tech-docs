@@ -197,7 +197,9 @@ You must check the HTTP return code from   the `/authorize` request.
 
 #### HTTP 502 Bad Gateway
 
-If your `GET` request to the `/authorize` endpoint produces this error: `{"message": "Internal server error"}` with `HTTP 502 (Bad Gateway)`, you should [check you have included the correct parameters][integrate.replace-example-message].
+If your `GET` request to the `/authorize` endpoint produces a `{"message": "Internal server error"}` with `HTTP 502 (Bad Gateway)`, it might be because the parameters are not included correctly. 
+
+You should [check you have included the correct parameters][integrate.replace-example-message], especially the `client_id`, `redirect_uri`, `response_type` and `scope` parameters.
 
 #### HTTP 302 Found  
 To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
