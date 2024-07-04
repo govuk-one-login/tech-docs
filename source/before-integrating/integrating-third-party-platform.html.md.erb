@@ -50,7 +50,7 @@ To test if your installation has been successful, run `openssl version`.
 
 1. Generate the client secret by running `openssl rand 40 | openssl base64 -A -out CLIENT_SECRET.txt`.
 1. Generate the salt by running `openssl rand 64 | openssl base64 -A -out SALT.txt`.
-1. Store the plaintext client secret (`CLIENT_SECRET.txt`) in your preferred vault following your internal standards for handling sensitive data and following the [NCSC cloud security guidance on protecting secrets](https://www.ncsc.gov.uk/collection/cloud/using-cloud-services-securely/using-a-cloud-platform-securely). 
+1. Store the plaintext client secret (`CLIENT_SECRET.txt`) in your preferred vault following your internal standards for handling sensitive data and following the [NCSC cloud security guidance on protecting secrets](https://www.ncsc.gov.uk/collection/cloud/using-cloud-services-securely/using-a-cloud-platform-securely#section_11). 
 1. Store the plaintext salt (`SALT.txt`) on your local machine as you’ll need this later.
 
 You’ll configure this plaintext secret into your application so it is available at runtime.
