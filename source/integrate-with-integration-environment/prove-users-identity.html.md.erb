@@ -1,7 +1,7 @@
 ---
 title: Prove your user's identity
 weight: 5.6
-last_reviewed_on: 2024-04-15
+last_reviewed_on: 2024-07-09
 review_in: 6 months
 ---
 
@@ -71,11 +71,6 @@ Content-Type: application/json
       "documentNumber": "1223456",
       "icaoIssuerCode": "GBR",
       "expiryDate": "2032-02-02"
-    }
-  ],
-  "https://vocab.account.gov.uk/v1/socialSecurityRecord": [
-    {
-      "personalNumber": "QQ123456C"
     }
   ]
 }
@@ -289,15 +284,6 @@ Content-Type: application/json
   ]
 }
 ```
-
-
-## Understand your user's National Insurance number claim
-The <code>https://vocab.account.gov.uk/v1/socialSecurityRecord</code> claim contains the details of your user’s National
-Insurance Number, if they submitted it while proving their identity.
-
-| Property         | Definition                                |
-|------------------|-------------------------------------------|
-| `personalNumber` | The National Insurance number of the user |
 
 Continue to [managing your users' sessions](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/managing-your-users-sessions/#managing-your-users-39-sessions).
 
