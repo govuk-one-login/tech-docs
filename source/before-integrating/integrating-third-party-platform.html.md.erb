@@ -1,0 +1,83 @@
+---
+title: Integrating third-party platforms with GOV.UK One Login
+weight: 1
+last_reviewed_on: 2024-07-04
+review_in: 6 months
+---
+
+
+# Integrating third-party platforms with GOV.UK One Login
+
+If you use a third-party platform (Software as a Service such as Salesforce or Microsoft Power Platform, or an identity provider such as Amazon Cognito or ForgeRock) to integrate with GOV.UK One Login, you might experience issues or specific limitations during integration.
+
+Contact GOV.UK One Login at govuk-one-login@digital.cabinet-office.gov.uk ([govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) will open a link to your mail client) if you’re using a third-party platform to integrate with GOV.UK One Login. 
+
+GOV.UK One Login will update this page with information on integrating with third-party platforms.
+
+## Set up client secret using `client_secret_post` 
+
+You should only use `client_secret_post` as the token authentication method if: 
+
+* you only require authentication – `client_secret_post` is not supported for identity proving
+* your third-party platform cannot support `private_key_jwt`
+
+Contact GOV.UK One Login at govuk-one-login@digital.cabinet-office.gov.uk ([govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) will open a link to your mail client) if you need to use `client_secret_post`. 
+
+You’ll use OpenSSL to generate a client secret and share the hashed version of the secret with the GOV.UK One Login onboarding team.
+
+If using `client_secret_post`, whenever you make a request to the `/token` endpoint you’ll need to use the existing parameters and also add the following parameters to the token request: 
+
+* `client_id` 
+* `client_secret`
+
+### Install OpenSSL 
+
+To install OpenSSL, the command will change depending on your operating system. 
+
+For macOS:
+
+1. Follow the documentation to install [Homebrew](https://brew.sh/). 
+1. Run `brew install openssl`.
+	
+For Windows: 
+
+1. Follow the documentation to install [Chocolatey](https://chocolatey.org/install). 
+1. Run `choco install openssl`.
+
+To test if your installation has been successful, run `openssl version`. 
+
+### Generate the client secret and the salt using OpenSSL
+
+1. Generate the client secret by running `openssl rand 40 | openssl base64 -A -out CLIENT_SECRET.txt`.
+1. Generate the salt by running `openssl rand 64 | openssl base64 -A -out SALT.txt`.
+1. Store the plaintext client secret (`CLIENT_SECRET.txt`) in your preferred vault following your internal standards for handling sensitive data and following the [NCSC cloud security guidance on protecting secrets](https://www.ncsc.gov.uk/collection/cloud/using-cloud-services-securely/using-a-cloud-platform-securely#section_11). 
+1. Store the plaintext salt (`SALT.txt`) on your local machine as you’ll need this later.
+
+You’ll configure this plaintext secret into your application so it is available at runtime.
+
+### Hash your client secret
+
+You need to hash your client secret. What tooling you use to do this is up to you. 
+
+Check the following parameters are in place: 
+    
+* iterations: 2
+* memory: 15360
+* parallelism: 1
+* hash length: 16
+* type: Argon2id
+* output format: encoded hash
+
+### Email the Argon2id formatted string to GOV.UK One Login
+
+1. Open a new email and leave the email subject blank. 
+1. Send an email to govuk-one-login@digital.cabinet-office.gov.uk ([govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) will open a link to your mail client), pasting the Argon2id encoded hash into the email body. 
+
+It’s important there is no identifying information a malicious attacker could use. Make sure the email body contains only the hashed secret. Do not include:
+
+* an email subject
+* any attachments
+* your client ID
+* any reference for what this string is or what it is used for
+
+If your email includes any additional information apart from the hashed secret, GOV.UK One Login will not use the secret and you’ll have to create a new one. 

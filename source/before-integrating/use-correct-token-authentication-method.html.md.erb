@@ -1,0 +1,16 @@
+---
+title: Use the correct token authentication method
+weight: 1
+last_reviewed_on: 2024-07-04
+review_in: 6 months
+---
+
+
+# Use the correct token authentication method
+
+The platform you use to integrate with GOV.UK One Login will affect which token authentication method you need to use. 
+
+Most services will use `private_key_jwt`. However,  if you’re using a third-party platform which does not support `private_key_jwt`, you may be granted an exception to use `client_secret_post`.
+
+You can [read more guidance on third-party platforms](/before-integrating/integrating-third-party-platform/) to learn about which ones do not support `private_key_jwt`. 
+

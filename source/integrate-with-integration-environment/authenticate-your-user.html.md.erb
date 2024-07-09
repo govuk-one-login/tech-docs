@@ -228,7 +228,7 @@ Location: https://YOUR_REDIRECT_URI?error=invalid_request
 
 You need to exchange your [authorisation code][integrate.generate-auth-code] for tokens. You'll use these tokens to make a call to the `/userinfo` endpoint.
 
-To exchange your authorisation code for tokens, you'll need to make a `POST` request to the `/token` endpoint using the client authentication method `private_key_jwt`.
+To exchange your authorisation code for tokens, you'll need to make a `POST` request to the `/token` endpoint using the client authentication method `private_key_jwt` or `client_secret_post` (only available for certain third-party platforms). There’s further guidance on [using the correct token authentication method](/before-integrating/use-correct-token-authentication-method/). 
 
 Before you can make a `POST` request, you need to:
 
