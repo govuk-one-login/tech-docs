@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # pin@v2
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v2
       - name: Install Ruby
         uses: ruby/setup-ruby@161cd54b698f1fb3ea539faab2e036d409550e3c # pin@v1
         with:
