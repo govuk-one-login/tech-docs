@@ -11,4 +11,4 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # pin@v4
       - name: Ensure SHA pinned actions
-        uses: zgosalvez/github-actions-ensure-sha-pinned-actions@40e45e738b3cad2729f599d8afc6ed02184e1dbd # pin@v3
+        uses: zgosalvez/github-actions-ensure-sha-pinned-actions@b88cd0aad2c36a63e42c71f81cb1958fed95ac87 # pin@v3
