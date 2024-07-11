@@ -278,12 +278,10 @@ Resources:
       SecurityGroups:
         - !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
       Subnets:
-        - subnet-045dd4d5c1dd1b35d #hard coded as not exposed by VPC (FirewallSubnetB)
-        - subnet-0f5b4d93d9fd6aab0 #hard coded as not exposed by VPC (FirewallSubnetA)
-        #- Fn::ImportValue:
-        #    !Sub "${VpcStackName}-FirewallSubnetIdA"
-        #- Fn::ImportValue:
-        #    !Sub "${VpcStackName}-FirewallSubnetIdB"
+        - Fn::ImportValue:
+            !Sub "${VpcStackName}-FirewallSubnetIdA"
+        - Fn::ImportValue:
+            !Sub "${VpcStackName}-FirewallSubnetIdB"
       Type: application
 
       LoadBalancerAttributes:
