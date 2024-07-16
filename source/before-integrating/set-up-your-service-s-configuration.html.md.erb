@@ -34,7 +34,9 @@ Send an email to [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-on
 * your service’s contact email addresses - this can be a group email or multiple separate email addresses or a combination of both
 * the scopes you selected when you [chose which user attributes your service can request][integrate.choose-request-scope]
 * the claims you selected when you [chose which user attributes your service can request][integrate.choose-user-attributes]
-* the public key you generated - only send the contents of the 'public_key.pem' file and do not include the RSA headers (the words in caps above and below the key)
+* the public key you generated - only send the contents of the 'public_key.pem' file and do not include the RSA headers (the words in caps above and below the key)<br>
+OR<br>
+the [JWKS](https://auth0.com/docs/secure/tokens/json-web-tokens/json-web-key-sets) endpoint to which you will public one or more public keys.
 * the URL you’d like your users redirected to if they log out of your service - if you do not specify one, your users will be redirected to the default GOV.UK sign out page
 * your [sector identifier][integrate.choose-sector-id]
 
