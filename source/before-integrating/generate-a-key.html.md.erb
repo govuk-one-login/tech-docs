@@ -33,4 +33,13 @@ You have now generated your key pair, which will appear on your machine as 2 fil
 
 Once you have generated your key pair, you can [choose which user attributes your service can request][integrate.choose-user-attributes].
 
+## Publishing your public key(s) via a JWKS endpoint
+
+As an alternative to using a single fixed key pair, you may have multiple and publish the set of one or more public keys at an endpoint in the form of a [JWKS](https://auth0.com/docs/secure/tokens/json-web-tokens/json-web-key-sets). This will enable you to do key rotations without having to directly contact us to make a configurtion update, avoiding potential downtime. In this case you must provide the URL that GOV.UK One Login is to call to `GET` the JWKS.
+
+Some considerations:
+
+* We may cache the return value from this endpoint for up to 24 hours. Therefore if you need to retract a public key due to a leak of your private key you should contact us for support and not simply remove the public key from your endpoint.
+* If the endpoint does not respond with to a `GET` request with a `HTTP 200 (OK)` withing 5 seconds One Login may consider this to be an error, rendering the service inaccessable.
+
 <%= partial "partials/links" %>
