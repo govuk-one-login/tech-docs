@@ -86,8 +86,7 @@ The following are core identity attributes:
 
 <%= warning_text("If the <code>https://vocab.account.gov.uk/v1/coreIdentityJWT</code> property is not present, then GOV.UK One Login was not able to prove your user's identity.") %>
 
-Our support team will give you the public key you must use to validate this JWT. We recommend
-you [use a certified JWT/JWS implementation](https://openid.net/developers/jwt/).
+You’ll need a public key to validate this JWT. You can download a Decentralized Identifiers (DID) document containing the current JSON Web Key (JWK) public key – there’s further [guidance on validating the core identity claim JWT using a public key](/integrate-with-integration-environment/prove-users-identity/#validate-the-core-identity-claim-jwt-using-a-public-key).
 
 The JWT contains the following claims:
 
@@ -163,6 +162,83 @@ The JWT contains the following claims:
 
 The `vc` claim in the JWT is a [verifiable credential (VC)](https://www.w3.org/TR/vc-data-model/). Claims about your
 user are contained in the `credentialSubject` JSON object.
+
+### Validate the core identity claim JWT using a public key
+
+To validate the core identity claim JWT, you must use a public key. GOV.UK One Login publishes the public keys in a [Decentralized Identifier (DID) document](https://www.w3.org/TR/did-core/). 
+
+<%= warning_text('GOV.UK One Login regularly rotates its public keys. You must <a href="/integrate-with-integration-environment/prove-users-identity/#understand-the-core-identity-signing-key-rotations">read the guidance on understanding GOV.UK One Login’s key rotation</a> to make sure your application continues to work as expected.') %>
+
+This is an example of a web DID document published by GOV.UK One Login:
+
+```json
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/jwk/v1"
+  ],
+  "id": "did:web:identity.account.gov.uk",
+  "assertionMethod": [
+    {
+      "id": "b7863b6926193d93b48808cbabcbc8a414d0080f81c8779c0a54491551a35816",
+      "type": "JsonWebKey",
+      "controller": "did:web:identity.account.gov.uk",
+      "publicKeyJwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "QrP65yghuglwPkEl11oMaabr4WqAMjuvztBYb7T4Ipo",
+        "y": "CSQNybYbCZLl-Xr1OA3pcxjC6qZrG7JPqwXgo-9fHLM"
+      }
+    }
+  ]
+}
+```
+
+#### Use the `kid` (key ID) to see which public key signed the JWT
+
+When validating a JWT, the JWT header will include the `kid` (key ID). This will be either `did:web:identity.integration.account.gov.uk#{UNIQUE_KEY_IDENTIFIER}` for the integration environment, or `did:web:identity.account.gov.uk#{UNIQUE_KEY_IDENTIFIER}` for the production environment. 
+
+GOV.UK One Login uses a simplified version of the DID resolution algorithm from the [did:web Method Specification](https://w3c-ccg.github.io/did-method-web/#read-resolve). Third-party libraries may have features which ‘resolves’ the DID – this means turning the `kid` into the URL for the DID document and then downloading the DID. However, you must not use a third-party library’s DID resolution. This could make your application vulnerable to trusting an invalid identity.
+
+You should only trust the DID documents located at:
+
+* integration – [https://identity.integration.account.gov.uk/.well-known/did.json](https://identity.integration.account.gov.uk/.well-known/did.json)
+* production – [https://identity.account.gov.uk/.well-known/did.json](https://identity.account.gov.uk/.well-known/did.json)  
+
+GOV.UK One Login will always publish the DID documents on the URLs above and will never change the publication URLs without notifying you. 
+
+Follow the steps below to use the `kid` to determine which public key from the DID document was used to sign the JWT. This is important because GOV.UK One Login may have rotated its public keys and using the incorrect key will break your integration. 
+
+1. Split the `kid` from the JWT header into two parts: the controller ID (before the `#`) and the unique key ID (after the `#`). For example, in the `kid` `did:web:identity.integration.account.gov.uk#c9f8da1c87525bb41653583c2d05274e85805ab7d0abc58376c7128129daa936`, the controller ID is `did:web:identity.integration.account.gov.uk` and the unique key ID is `c9f8da1c87525bb41653583c2d05274e85805ab7d0abc58376c7128129daa936`.
+1. Download the DID document from the DID endpoint you need: 
+  * Integration: [https://identity.integration.account.gov.uk/.well-known/did.json](https://identity.integration.account.gov.uk/.well-known/did.json) 
+  * Production: [https://identity.account.gov.uk/.well-known/did.json](https://identity.account.gov.uk/.well-known/did.json). 
+1. Make sure the controller ID matches the `id` in the DID document.
+1. Find the object in `assertionMethods` which has an `id` field matching the unique key ID from the `kid` in the DID document. If there are multiple keys in the DID document, GOV.UK One Login is in the process of rotating its keys. If there’s a key without a matching `id`, do not trust the identity and contact GOV.UK One Login to report an incident.
+1. Use the `publicKeyJwk` object of the key you want to use to verify the signature. 
+
+#### Cache the DID document 
+
+You should cache the returned DID document and re-use it instead of downloading the DID document for every signature you need to verify. The DID document will not change often and caching it reduces latency for your service.
+
+The `Cache-Control` HTTP header field in the DID endpoint contains a suggested caching period. This caching period is how long GOV.UK One Login expects the DID document to remain valid. 
+
+For example, a header with the value `Cache-Control: max-age=3600, private…` would mean you cache the DID document for the `max-age` of 1 hour (3600 seconds = 1 hour). `private` stops any other caches or proxies from caching the DID document.
+
+Occasionally, you may not be able to refresh the cache from GOV.UK One Login’s URL, for example if there’s a temporary outage. If this happens, you should continue to trust the cached version until you’re able to refresh the cache.
+
+Occasionally, you may not be able to refresh the cache from GOV.UK One Login’s URL, for example if there’s a temporary outage. If this happens, you should continue to trust the cached version until you’re able to refresh the cache.
+
+For more details on the `Cache-Control` header, see [RFC 9111: HTTP Caching](https://www.rfc-editor.org/rfc/rfc9111#field.cache-control). 
+
+#### Understand the core identity signing key rotations
+
+GOV.UK One Login will regularly rotate its keys and may need to rotate keys at short notice. For example, we may rotate a key if it is compromised. New public keys will appear in the `assertionMethod` array of the DID document before any rotation.
+
+Use the `Cache-Control` headers and [guidance on caching the DID document](/integrate-with-integration-environment/prove-users-identity/#cache-the-did-document) to regularly poll the DID endpoint to detect new versions and make sure you’re using the latest key.
+
+Once GOV.UK One Login has removed the old public key from the DID document, it will no longer be valid. You should no longer trust verifiable credentials signed with that key.
+
 
 ### Validate your user’s identity credential
 
