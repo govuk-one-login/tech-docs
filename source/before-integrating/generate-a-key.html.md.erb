@@ -41,5 +41,6 @@ Some considerations:
 
 * We may cache the return value from this endpoint for up to 24 hours. Therefore if you need to retract a public key due to a leak of your private key you should contact us for support and not simply remove the public key from your endpoint.
 * If the endpoint does not respond with to a `GET` request with a `HTTP 200 (OK)` withing 5 seconds One Login may consider this to be an error, rendering the service inaccessable.
+* If you use a JWKS endpoint, you must include a unique `kid` parameter in each key (`JWK`) entry. The `kid` parameter for the key used to sign a `JWS` must then be included in its header.
 
 <%= partial "partials/links" %>
