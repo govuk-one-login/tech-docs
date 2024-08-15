@@ -49,7 +49,9 @@ It may take a few minutes to build the docker container, particularly if it is y
 ```
 
 ## Making changes to a diagram
-Edit the draw.io files in the `source/images/originals` folder by installing and using the draw.io desktop app.
+Diagrams are content, so once you've made a change you should request a review from the technical writing team.
+
+You can edit the draw.io files in the `source/images/originals` folder by installing and using the draw.io desktop app.
 
 Use one draw.io file per diagram.
 
