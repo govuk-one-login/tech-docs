@@ -24,10 +24,10 @@ You can make these changes yourself and then request a tech writer review on the
 The Orchestration team is responsible for the maintenance and operational health of the tech docs platform. You should consult them for approval of any changes in that space.
 
 Examples include:
-changes to GitHub action workflows
-changes to the AWS deployment or build infrastructure
-dependency updates
-Ruby updates that do not change the content
+* changes to GitHub action workflows
+* changes to the AWS deployment or build infrastructure
+* dependency updates
+* Ruby updates that do not change the content
 
 ## Preview your documentation changes
 
