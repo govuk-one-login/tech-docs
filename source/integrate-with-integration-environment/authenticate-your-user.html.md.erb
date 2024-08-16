@@ -52,8 +52,8 @@ Host: oidc.integration.account.gov.uk
 
 If you need to authenticate your user and check their identity, you should send 2 separate requests: one for authentication and one for identity. 
 
-1. [Send a request to the `/authorize` endpoint to authenticate your user][integrate.make-authorization-request] specifying the Vector of Trust (vtr) parameter as ["Cl.Cm"].
-1. Send a request for identity to the `/authorize` endpoint specifying the Vector of Trust parameter `vtr` as ["Cl.Cm.P2"].
+1. [Send a request to the `/authorize` endpoint to authenticate your user][integrate.make-authorization-request] specifying the Vector of Trust (`vtr`) parameter as `Cl.Cm`.
+1. Send a request for identity to the `/authorize` endpoint specifying the `vtr` as `Cl.Cm.P2`.
 
 By using 2 separate requests: 
 
