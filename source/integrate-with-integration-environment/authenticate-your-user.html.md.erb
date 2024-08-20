@@ -255,7 +255,7 @@ To create a JWT assertion, you need to create a JWT which contains certain requi
 |---------|-------------------------|----------------|
 | `aud`   | Required                | `aud` stands for 'audience'. This identifies GOV.UK One Login’s authorisation server as an intended audience. This value should be the URL: https://oidc.integration.account.gov.uk/token. |
 | `iss`   | Required                | `iss` stands for 'issuer'. This claim should contain your `client_id` you got when you [registered your service to use GOV.UK One Login][integrate.register-your-service]. |
-| `sub`   | Required                | `sub` stands for 'subject'. This claim should contain your `client_id` you got when you [registered your service to use GOV.UK One Login][integrate.register-your-service]. |
+| `sub`   | Required                | `sub` stands for 'subject'. This claim should contain your `client_id` you got when you [registered your service to use GOV.UK One Login][integrate.register-your-service]. There’s further guidance on how to use this value in the [response to the `/userinfo` endpoint](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#receive-response-for-retrieve-user-information).|
 | `exp`   | Required                | `exp` stands for 'expiration time'. This is the expiration time for this token, which must be an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch].  This is the time after which you must not accept the JWT. We recommend an expiration after 5 minutes. <br>The current date and time must be before the expiration date and time listed in the `exp` claim. |
 | `jti`   | Required                | `jti` stands for ‘JWT ID’. In this claim, you should include a unique identifier for the token. <br>This unique identifier will prevent the token being reused as your application must only use these tokens once. |
 | `iat`   | Recommended             | `iat` stands for ‘issued at’. This identifies the time at which your application created the JWT. You can use this claim to understand the age of the JWT.<br>This must appear as an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch]. |
@@ -435,6 +435,15 @@ Content-Type: application/json
 ```
 
 If you included a [level of identity confidence][integrate.choose-level-of-confidence] when you made a request to the `/userinfo` endpoint, you’ll also see identity attributes in the response. You can read more about [how to prove your user's identity](../prove-users-identity/).
+
+| Claim returned | Description  |
+| :---- | :---- |
+| `sub` | The subject identifier (`sub`) is the unique ID for a user. This will not change unless your user deletes their GOV.UK One Login and sets it up again. <br><br> Do not use the `sub` as the primary identifier for your user. <br><br> Instead, generate your own unique value for your user within your service and map this against the GOV.UK One Login `sub`.  <br><br> Mapping the `sub` makes account recovery easier. For example, if a user deletes their GOV.UK One Login, you can re-map the user’s new `sub` to your service without creating a new primary identifier for your user. |
+| `email` | The email address your user entered when they registered their GOV.UK One Login. <br><br> Do not:<br><ul><li> use `email` as the primary identifier for your user (the `email` claim can change or an end user can lose access to it which makes it unreliable as a unique identifier)  </li><li>ask your user to create a GOV.UK One Login with a specific email address, for example, a university email – if you need this, you’ll need to build additional functionality to verify it yourself </li><li>ask your user to change the email address they use for their GOV.UK One Login |
+| `email_verified`  | This means the email was verified using a one-time code when the user created their account. This is always `true`. |
+| `phone\_number` | This is the phone number your user entered when they registered their GOV.UK One Login. This will not appear if the user used an authenticator app for their two-factor authentication.  |
+| `phone\_number\_verified` | This will be returned as:<br><ul> </li><li>`true` when the user has selected the text message option for receiving a security code </li><li>`false` when the user has selected the authenticator app option for receiving a security code  |
+
 
 ### Error handling for ‘Retrieve user information’
 
