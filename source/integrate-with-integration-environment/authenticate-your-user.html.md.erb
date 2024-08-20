@@ -378,7 +378,7 @@ Now you’ve understood what’s in your ID token, you’ll need to validate it.
 1. Check the current time is before the time in the `exp` claim.
 1. Check the current time is after the time in the `iat` claim.
 1. If you set a `nonce` value in the request to the `/authorize` endpoint, check this matches the `nonce` value in the ID token.
-1. The `vot` claim must contain the Credential Trust Level you asked for in the request to the `/authorize` endpoint. The `vot` claim will only contain the credential trust level, not the level of confidence, even if you make an identity request. For example, if you set the `vtr` parameter to `Cl.Cm.P2`, you must ensure the `vot` claim is equal to `Cl.Cm`.
+1. The `vot` claim must contain the credential trust level you asked for in the request to the `/authorize` endpoint. The `vot` claim will only contain the credential trust level, not the level of confidence, even if you make an identity request. For example, if you set the `vtr` parameter to `Cl.Cm.P2`, you must ensure the `vot` claim is equal to `Cl.Cm`.
 
 ### Error handling for ‘Make a token request’
 
