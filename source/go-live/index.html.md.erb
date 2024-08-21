@@ -1,14 +1,100 @@
 ---
-title: Go live with GOV.UK One Login
+title: Configure your service for production
 weight: 3.5
-last_reviewed_on: 2022-01-18
+last_reviewed_on: 2024-08-21
 review_in: 6 months
 ---
 
-# Go live with GOV.UK One Login
+# Configure your service for production
 
-Before your service can go live, you must have [integrated with GOV.UK One Login's integration environment][integrate.integrate].
+Before you can configure your service for production, you must [integrate with GOV.UK One Login's integration environment][integrate.integrate].
 
-To go live, get in touch with your Engagement Manager and they will guide you through the process. If you do not have an Engagement Manager, [complete the form to register your interest](https://www.sign-in.service.gov.uk/register) and we'll support you with integrating to the production environment.
+The process for configuring your service for production is: 
+
+1. Contact your Engagement Manager – if you do not have an Engagement Manager, [complete the form to register your interest](https://www.sign-in.service.gov.uk/register).
+1. Confirm with your Engagement Manager that you need to configure your service in production. Make sure you send the client ID of the client you’ve been testing in your integration configuration.
+1. The GOV.UK One Login team will send you a draft configuration in JSON format including the new client ID for your production service. 
+1. Fill in the JSON configuration by replacing the placeholder values with your service's configuration. There’s further [guidance on filling in your JSON configuration](/go-live/#fill-in-your-json-configuration). 
+1. Send your modified JSON configuration back to GOV.UK One Login by email. 
+1. The GOV.UK One Login team will check your production configuration and contact you if we need more information.
+1. Configure the new client ID into your own application code and deploy to your production environment. 
+1. Test your application works in production. This could be a limited test with a small number of users or a limited private beta.
+
+## Fill in your JSON configuration
+
+Use this table to help you fill in your JSON configuration.
+
+| Field | Notes |
+| :------ | :---- |
+| `BackChannelLogoutUri` | If you want to receive logout notifications from GOV.UK One Login, specify the production URI of the endpoint you want GOV.UK One Login to call.  <br><br>This must be a production-grade URI with domains without reference to `http://` and `localhost`. <br><br>There’s further guidance on [requesting logout notifications from GOV.UK One Login](/integrate-with-integration-environment/managing-your-users-sessions/#request-logout-notifications-from-gov-uk-one-login).  |
+| `ClientID` | GOV.UK One Login will fill in `ClientID` with your production client ID.  You do not need to do anything. |
+| `Claims` | If you’re doing identity verification, you’ll need to specify which claims your service requires.  You may choose one or more of the following:<br><ul> </li><li>[https://vocab.account.gov.uk/v1/passport](https://vocab.account.gov.uk/v1/passport) </li><li>[https://vocab.account.gov.uk/v1/drivingPermit](https://vocab.account.gov.uk/v1/drivingPermit) </li><li>[https://vocab.account.gov.uk/v1/coreIdentityJWT](https://vocab.account.gov.uk/v1/coreIdentityJWT) </li><li>[https://vocab.account.gov.uk/v1/address](https://vocab.account.gov.uk/v1/address) </li><li>[https://vocab.account.gov.uk/v1/returnCode](https://vocab.account.gov.uk/v1/returnCode)  |
+| `ClientName` | Choose your client name.  The client name will appear in the user interface when GOV.UK One Login redirects your user back to your service so choose something your users would recognise. <br><br>There’s further [guidance on naming your service](https://www.gov.uk/service-manual/design/naming-your-service). |
+| `ClientType` | Leave this field as `web`.  |
+| `ConsentRequired` | Leave this field as `false`.  |
+| `Contacts` | Enter your service’s technical contact email addresses – this can be a group email or multiple separate email addresses, or a combination of both. |
+| `CookieConsentShared` | Leave this field as `false`.  |
+| `IdentityVerificationSupported` | If you’re using identity verification, this should be `true`.  <br><br>If you only need authentication, this should be `false`. |
+| `IdTokenSigningAlgorithm` | This will be `ES256` or `RS256`. You can find the one you’re using in your application’s code.  |
+| `LandingPageUrl`  | `LandingPageUrl` is only required if you’re making identity requests. <br><br>GOV.UK One Login supports a single `LandingPageUrl` after a user returns from an offline journey. Specify the production URL your user will be redirected to after they visit the Post Office. This link will allow them to continue their sign up process for your service. <br><br>These must be production-grade URLs without reference to `http://` and `localhost`. |
+| `OneLoginService` | Leave this field as `false`.  |
+| `PostLogoutRedirectUrIs` | If you want to redirect your users after they log out, input one or more production URLs. These will be where you redirect your users to after you have logged them out. <br><br>These must be production-grade URLs without reference to `http://` and `localhost`. <br><br>There’s further guidance on [logging your user out of GOV.UK One Login](/integrate-with-integration-environment/managing-your-users-sessions/#log-your-user-out-of-gov-uk-one-login).   |
+| `PublicKey` | `PublicKey` is only required if you’re doing identity verification and using the `private_key_jwt` token authentication method.  <br><br>Enter the contents of your public key Privacy Enhanced Mail (PEM) file (or whichever file was created when you created your key pair). <br><br>There’s further [guidance on generating a key pair](/before-integrating/generate-a-key/).  |
+| `IsInternalService` | Leave this field as `false`.  |
+| `JarValidationRequired` | GOV.UK One Login will fill in this field.  |
+| `RedirectUrls` | Enter one or more of your service’s production redirect URLs. These must be production-grade URLs without reference to `http://` and `localhost`. |
+| `Scopes` | Enter the scopes your service requires. You must include the `openid` scope. <br><br>You may choose one or more of the following:<br><ul> </li><li>email </li><li>phone </ul><br><br>There’s further [guidance on choosing which user attributes your service can request](/before-integrating/choose-which-user-attributes-your-service-can-request/#choose-which-scopes-your-service-can-request).  |
+| `SectorIdentifierUri` | Specify your service's sector identifier.  <br><br>You must not change the sector identifier once your service has started to sign up or migrate users. Doing this will change the subject identifiers GOV.UK One Login creates for each individual user. <br><br>There’s further [guidance on choosing your sector identifier](/before-integrating/choose-your-sector-identifier/). <br><br>If your service has more than one `redirect_uri`, you must set the sector identifier in line with the [OpenID Connect Core 1.0 specification](https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg).  |
+| `ServiceType` | Leave this field as `MANDATORY`.  |
+| `SubjectType` | Leave this field as `pairwise`. |
+| `TestClient` | Leave this field as `false`.  |
+| `TokenAuthMethod` | Specify the token authentication method your service is using. This will be `private_key_jwt` or `client_secret_post`. <br><br>There’s further [guidance on using the correct token authentication method for your service](/before-integrating/use-correct-token-authentication-method/).   |
+
+This is an example production JSON for identity using `private_key_jwt`:
+
+```
+
+{
+ “BackChannelLogoutUri”: “{BACKCHANNEL_LOGOUT_URI}”,
+ "ClientID": "{CLIENT_ID}",
+ "Claims": [
+  "https://vocab.account.gov.uk/v1/coreIdentityJWT",
+  "https://vocab.account.gov.uk/v1/address",
+  "https://vocab.account.gov.uk/v1/passport",
+  "https://vocab.account.gov.uk/v1/drivingPermit"
+ ],
+ "ClientName": "{CLIENT_NAME}",
+ "ClientType": "web",
+ "ConsentRequired": false,
+ "Contacts": [
+  "{CONTACT_EMAIL}"
+ ],
+ "CookieConsentShared": false,
+ "IdentityVerificationSupported": true,
+ "IdTokenSigningAlgorithm": "ES256",
+ "OneLoginService": false,
+ "PostLogoutRedirectUrls": [
+  "{POST_LOGOUT_URL}"
+ ],
+ "PublicKey": "{PUBLIC_KEY}",
+ "RedirectUrls": [
+  "{REDIRECT_URI}"
+ ],
+ "Scopes": [
+  "openid",
+  "email",
+  "phone"
+ ],
+ "SectorIdentifierUri": "{SECTOR_IDENTIFIER_URI}",
+ "ServiceType": "MANDATORY",
+ "SubjectType": "pairwise",
+ "TestClient": false,
+ "TestClientEmailAllowlist": [
+ ],
+ "TokenAuthMethod": "private_key_jwt"
+}
+
+```
+
 
 <%= partial "partials/links" %>
