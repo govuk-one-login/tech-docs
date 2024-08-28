@@ -35,6 +35,11 @@ max_toc_heading_level: 3
 # Prevent robots from indexing (e.g. whilst in development)
 prevent_indexing: true
 
+# redirection of old addresses to new pages
+redirects:
+  /go-live: /configure-for-production
+
+
 # Contribution banner
 show_contribution_banner: true
 github_repo: govuk-one-login/tech-docs # used to generate links in the contribution banner
