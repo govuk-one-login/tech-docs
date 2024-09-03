@@ -33,7 +33,7 @@ collapsible_nav: true
 max_toc_heading_level: 3
 
 # Prevent robots from indexing (e.g. whilst in development)
-prevent_indexing: true
+prevent_indexing: false
 
 # redirection of old addresses to new pages
 redirects:
