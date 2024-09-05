@@ -1,7 +1,7 @@
 ---
 title: Reauthenticate users
 weight: 8
-last_reviewed_on: 2024-06-15
+last_reviewed_on: 2024-09-5
 review_in: 6 months
 ---
 
@@ -9,9 +9,9 @@ review_in: 6 months
 
 A relying party (RP) can reauthenticate a user who has an active session with them.
 
-The current implementation of reauthentication can only be used by an RP to ensure that the user who started the journey is still the same person. 
+The current implementation of reauthentication can only be used by an RP to make sure that the user who started the journey is still the same person. 
 
-It cannot be used to ensure that a user who may or may not have an active One Login session is forced to re-enter their username and password.
+It cannot be used to make sure that a user who may or may not have an active One Login session is forced to re-enter their username and password.
 
 Reauthentication is supported only for JWT-secured OAuth 2.0 authorisation requests (JARs).
 
@@ -29,12 +29,20 @@ An RP must then use the following table to input values into the required parame
 | `prompt`        | Required             | `login`         |
 | `id_token_hint` | Required<br/>(for reauthentication scenario)    | ID token received by RP from GOV.UK One Login<br><br>Note: If ID token is populated along with prompt=login, then the system will reauthenticate         |
 
-As part of the reauthentication process, GOV.UK One Login will take the users through the reauthentication journey. The level of protection will be the same as the original authentication, which is read from the ID token passed in as part of the request. After a successful authentication and token exchanges, a refreshed ID token will be issued by GOV.UK One Login.
+As part of the reauthentication process, GOV.UK One Login will take the users through the reauthentication journey. The level of protection will be the same as the original authentication, which is read from the ID token passed as part of the request. After a successful authentication and token exchanges, a refreshed ID token will be issued by GOV.UK One Login.
 
 After a successful reauthentication, GOV.UK One Login will redirect a user back to the RP with an authorisation code (similar to the normal sign-in journey). The RP must then:
 
 * request the ID token
 * validate the ID token for the latest timestamp and match the subject ID to  make sure it is the same subject ID
+
+
+## Error handling
+
+If a user does not provide correct credentials as part of the re-authentication journey then GOV.UK One Login will send the login_required error to the RP. The RP must handle this error but for security it is recommended that the user is logged off if this error occurs.
+
+Re-initiating the re-authentication journey that failed with the login_required error is highly likely to fail unless the user goes through the sign in journey. The sign-in journey can be undertaken within the user’s existing journey. If they choose this option they must make sure that the subject ID is the same as the originally signed in user. 
+
 
 ## Troubleshooting 
 
