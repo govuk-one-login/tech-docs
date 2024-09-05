@@ -9,6 +9,6 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # pin@v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
       - name: Ensure SHA pinned actions
-        uses: zgosalvez/github-actions-ensure-sha-pinned-actions@ba37328d4ea95eaf8b3bd6c6cef308f709a5f2ec # pin@v3
+        uses: zgosalvez/github-actions-ensure-sha-pinned-actions@3c16e895bb662b4d7e284f032cbe8835a57773cc # pin@v3

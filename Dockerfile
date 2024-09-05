@@ -1,4 +1,4 @@
-FROM ruby:3.2.3-bullseye
+FROM ruby:3.3.1-bullseye
 
 EXPOSE 4567:4567
 EXPOSE 35729:35729

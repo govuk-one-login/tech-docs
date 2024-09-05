@@ -1,9 +1,33 @@
 # GOV.UK One Login technical documentation
 
-This documentation is for government services that want to integrate with GOV.UK One Login to:
+This repo contains documentation to help technologists at government departments onboard to GOV.UK One Login. It’s published using the Technical Documentation Template.
 
-* authenticate their users
-* verify their users' identity  
+## Making content changes
+The GOV.UK One Login technical writing team owns this documentation and has responsibility for approving content changes. It’s written to be user-centred and meet GDS content standards, which means following:
+
+* [GOV.UK guidance on planning, writing and managing content](https://www.gov.uk/guidance/content-design/writing-for-gov-uk)
+* the [GOV.UK style guide](https://www.gov.uk/guidance/style-guide/a-to-z-of-gov-uk-style)
+* the [GOV.UK technical style guide](https://www.gov.uk/guidance/style-guide/technical-content-a-to-z)
+* other clear writing principles
+
+If you work on GOV.UK One Login, you should contact the tech writing team for help with content changes unless it’s small and does not affect user behaviour.
+
+Small content changes include:
+* adding clarifications to improve understanding
+* correcting code samples
+* fixing broken links or typos
+
+You can make these changes yourself and then request a tech writer review on the pull request. If you’re not sure whether a change is small, contact us on our [#di-technical-writing](https://gds.slack.com/archives/C02DHELL5HA) Slack channel.
+
+## Making technical changes
+
+The Orchestration team is responsible for the maintenance and operational health of the tech docs platform. You should consult them for approval of any changes in that space.
+
+Examples include:
+* changes to GitHub action workflows
+* changes to the AWS deployment or build infrastructure
+* dependency updates
+* Ruby updates that do not change the content
 
 ## Preview your documentation changes
 
@@ -24,28 +48,10 @@ It may take a few minutes to build the docker container, particularly if it is y
 == Inspect your site configuration at "http://localhost:4567/__middleman", "http://127.0.0.1:4567/__middleman"/usr/local/bundle/gems/tilt-2.0.11/lib/tilt/redcarpet.
 ```
 
-## Making changes to content
-
-To add or change content, edit the markdown in the `.html.md.erb` files in the `source` folder.
-
-Although a single page of HTML is generated, the markdown is spread across multiple files to make it easier to manage. 
-
-A new markdown file is not automatically included in the generated output. If you add a new markdown file at the location `source/agile/scrum.md`, the following snippet in `source/index.html.md.erb` will include it in the generated output.
-
-`<%= partial 'documentation/scrum' %>`
-
-Including files manually like this enables you to specify the position they appear on the page.
-
-The sections in the documentation are controlled by the use of markdown headers, not the file structure.
-
-Images to be included in the docs are kept in `source/images`
-
-In order to configure some aspects of layout, like the header, edit `config/tech-docs.yml`.
-
-If you move pages around and URLs change, make sure you set up redirects from the old URLs to the new URLs.
-
 ## Making changes to a diagram
-Edit the draw.io files in the `source/images/originals` folder by installing and using the draw.io desktop app.
+Diagrams are content, so once you've made a change you should request a review from the technical writing team.
+
+You can edit the draw.io files in the `source/images/originals` folder by installing and using the draw.io desktop app.
 
 Use one draw.io file per diagram.
 
@@ -63,7 +69,7 @@ Follow these steps:
 2. Save the draw.io file to the `source/images/originals` folder.
 3. Publish the diagram as a [scalable vector graphic (SVG)](https://www.w3.org/Graphics/SVG/).
 4. Save the SVG file to the `source/images` folder.
- 
+
 ### Useful commands
 Update a diagram:
 ```
