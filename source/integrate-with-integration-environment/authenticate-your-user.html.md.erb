@@ -9,13 +9,15 @@ review_in: 6 months
 
 To get an access token which will allow you to access basic user information, you’ll need to integrate with [OAuth’s Authorization Code Flow](https://openid.net/specs/openid-connect-core-1_0.html).
 
-## Use the discovery endpoint
+## Use the integration discovery endpoint
 
-You can use the [discovery endpoint][external.oidc-discovery] (viewed at `https://oidc.integration.account.gov.uk/.well-known/openid-configuration`) to get information needed to interact with GOV.UK One Login, for example:
+You can use the [integration discovery endpoint][external.oidc-discovery] (viewed at `https://oidc.integration.account.gov.uk/.well-known/openid-configuration`) to get information needed to interact with GOV.UK One Login, for example:
 
 * issuer name
 * information about the keys
 * supported scopes, which will contain the user attributes your service can request
+
+When you configure your service for production, you can [use the production discovery endpoint](/configure-for-production/#use-the-production-discovery-endpoint).
 
 ## Make a request to the `/authorize` endpoint
 
