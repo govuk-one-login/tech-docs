@@ -34,8 +34,10 @@ You have now created your key pair, which will appear on your machine as 2 files
 ## Share your public key with GOV.UK One Login
 
 Once you’ve created your key pair, share your public key with GOV.UK One Login. You have 2 options to do this:
-* [share a fixed public key][integrate.share-a-fixed-public-key] directly
-* [share your public keys using a JSON Web Key Set (JWKS) endpoint][integrate.share-public-keys-JWKS-endpoint]
+
+* [share a fixed public key][integrate.share-a-fixed-public-key] directly. If you use a fixed public key and start signing with a new key before GOV.UK One Login updates your service’s configuration, users will not be able to access your service with GOV.UK One Login.
+
+* (recommended) [share your public key(s) using a JSON Web Key Set (JWKS) endpoint][integrate.share-public-keys-JWKS-endpoint]
 
 If you use a fixed public key and start signing with a new key before GOV.UK One Login updates your service’s configuration, users will not be able to access your service with GOV.UK One Login.  
 
