@@ -55,7 +55,7 @@ This means your endpoint must:
 
 * use HTTPS
 * be publicly accessible 
-* return a `HTTP 200 (OK)` within 5 seconds of a `GET`
+* return a `HTTP 200 (OK)` within 5 seconds of a GET request
 * return an RSA signing key in JWKS format
 * return a unique `kid` parameter in each key (`JWK`) entry
 * include the `kid` parameter for the key used to sign a `JWS` in its header
