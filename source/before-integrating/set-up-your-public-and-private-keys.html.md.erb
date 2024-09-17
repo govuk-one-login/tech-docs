@@ -40,7 +40,7 @@ Once you’ve created your key pair, share your public key with GOV.UK One Login
 * (recommended) [share your public key(s) using a JSON Web Key Set (JWKS) endpoint][integrate.share-public-keys-JWKS-endpoint]
 
 
-To prevent this, we recommend using a JWKS endpoint to share your public keys instead. A JWKS endpoint is a read-only URL that returns JWKSs as JSON objects so you can share multiple public keys. If you do this, you can rotate your keys without contacting us for a configuration change. You can update the JWKS endpoint to contain both the old and new keys, then immediately start signing with the new key. 
+We recommend using a JWKS endpoint to share your public key(s). A JWKS endpoint is a read-only URL that returns JWKSs as JSON objects so you can share multiple public keys. If you do this, you can rotate your keys without contacting GOV.UK One Login for a configuration change. You can update the JWKS endpoint to contain both the old and new keys, then immediately start signing with the new key. 
 This means users can still access your service with GOV.UK One Login.
 
 ### Share a fixed public key 
