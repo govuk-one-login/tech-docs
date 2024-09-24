@@ -128,7 +128,7 @@ Once you’ve received a `POST` request to your `back_channel_logout_uri`, you m
 1. Check the JWT `alg` header matches the value for the key you are using. 
 1. Use the key to validate the signature on the logout token according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515).
 1. Check the value of `iss` (issuer) matches the Issuer Identifier specified in GOV.UK One Login’s [discovery endpoint](https://oidc.integration.account.gov.uk/.well-known/openid-configuration).
-1. Check the `aud` (audience) claim is the same client ID you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service].
+1. Check the `aud` (audience) claim is the same client ID you received when you [registered your service to use GOV.UK One Login](https://docs.sign-in.service.gov.uk/before-integrating/set-up-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login).
 1. Check the `iat` (issued at) claim is in the past.
 1. Check the `exp` (expiry) claim is in the future.
 1. Check the logout token contains a `sub` (subject identifier) claim, otherwise known as the unique ID of a user.
