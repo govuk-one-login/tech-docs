@@ -231,7 +231,14 @@ For more details on the `Cache-Control` header, see [RFC 9111: HTTP Caching](htt
 
 #### Understand the core identity signing key rotations
 
-GOV.UK One Login will regularly rotate its keys and may need to rotate keys at short notice. For example, we may rotate a key if it is compromised. New public keys will appear in the `assertionMethod` array of the DID document before any rotation.
+GOV.UK One Login will regularly rotate its keys and may need to rotate keys at short notice. For example, we may rotate a key if it is compromised.
+
+The environments will start rotating the keys as follows:
+
+- In integration - weekly from 29 October 2024 to enable you to test your service integration
+- In production - every 6 months starting from 30 January 2025
+
+New public keys will appear in the `assertionMethod` array of the DID document before any rotation.
 
 Use the `Cache-Control` headers and [guidance on caching the DID document](/integrate-with-integration-environment/prove-users-identity/#cache-the-did-document) to regularly poll the DID endpoint to detect new versions and make sure you’re using the latest key.
 
