@@ -14,7 +14,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v2
       - name: Install Ruby
-        uses: ruby/setup-ruby@a6e6f86333f0a2523ece813039b8b4be04560854 # pin@v1
+        uses: ruby/setup-ruby@f26937343756480a8cb3ae1f623b9c8d89ed6984 # pin@v1
         with:
           bundler-cache: true
       - name: Build
