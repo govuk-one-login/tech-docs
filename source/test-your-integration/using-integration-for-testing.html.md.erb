@@ -211,7 +211,12 @@ For performance testing, you should ​​focus on the processing and successful
 You are responsible for conducting performance testing against your own system. You should [build mocks to test your system](/test-your-integration/build-mocks/) as GOV.UK One Login does not provide environments for this. 
 
 
-You must not performance test any GOV.UK One Login environment.
+You must not: 
+
+* performance test any GOV.UK One Login environment
+* use any GOV.UK One Login environment to do performance testing of your service
+
+If GOV.UK One Login detects an unusual amount of requests from the same IP address, you may see errors. In extreme cases, GOV.UK One Login may block your IP address. 
 
 
 GOV.UK One Login is responsible for performance testing the agreed volumes of requests into the GOV.UK One Login service.
