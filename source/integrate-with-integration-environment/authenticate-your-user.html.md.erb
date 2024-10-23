@@ -327,7 +327,6 @@ You can use the following table to understand the response for ‘Make a token r
 | `access_token`  | The access token value is an opaque access token which you can use with the `/userinfo` endpoint to return a user's profile. |
 | `token_type`    | The token type value. GOV.UK One Login only supports the [bearer token][external.bearer-token]. |
 | `expires_in`    | The length of time the token is valid for. This is displayed in seconds. |
-| `scope`         | You can read more about scopes in [choosing which user attributes your service can request][integrate.choose-user-attributes]. |
 | `id_token`      | A signed JWT that contains basic attributes about the user. <br><br>By default, GOV.UK One Login signs this JWT using the `ES256` algorithm.<br><br>If your service cannot support the `ES256` algorithm (for example, some third-party tooling does not support `ES256`), GOV.UK One Login can sign the JWT using the `RS256` algorithm. You’ll have specified whether your service can support `ES256` when you [registered your service to use GOV.UK One Login][integrate.register-your-service].<br><br>The public key used to verify this JWT is available from the `jwks_uri` parameter found in the [discovery endpoint][external.oidc-discovery]. |
 
 ### Understand your ID token
