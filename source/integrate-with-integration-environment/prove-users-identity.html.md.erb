@@ -84,7 +84,7 @@ The following are core identity attributes:
 * your user’s date of birth
 * the level of identity confidence GOV.UK One Login has reached
 
-The core identity is only valid for 30 minutes, starting from issue. Do not store the `coreIdentityJWT` either in its raw encoded or decoded forms.
+The core identity is valid for 30 minutes, starting when it is issued. Do not store the `coreIdentityJWT` in its raw encoded or decoded forms.
 
 If your service persists the data inside the core identity, you should extract the name and date of birth and store those. 
 
