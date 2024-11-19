@@ -84,6 +84,10 @@ The following are core identity attributes:
 * your user’s date of birth
 * the level of identity confidence GOV.UK One Login has reached
 
+The core identity is valid for 30 minutes, starting when it is issued. Do not store the `coreIdentityJWT` in its raw encoded or decoded forms.
+
+If your service persists the data inside the core identity, you should extract the name and date of birth and store those. 
+
 <%= warning_text("If the <code>https://vocab.account.gov.uk/v1/coreIdentityJWT</code> property is not present, then GOV.UK One Login was not able to prove your user's identity.") %>
 
 You’ll need a public key to validate this JWT. You can download a Decentralized Identifiers (DID) document containing the current JSON Web Key (JWK) public key – there’s further [guidance on validating the core identity claim JWT using a public key](/integrate-with-integration-environment/prove-users-identity/#validate-the-core-identity-claim-jwt-using-a-public-key).
@@ -231,7 +235,12 @@ For more details on the `Cache-Control` header, see [RFC 9111: HTTP Caching](htt
 
 #### Understand the core identity signing key rotations
 
-GOV.UK One Login will regularly rotate its keys and may need to rotate keys at short notice. For example, we may rotate a key if it is compromised. New public keys will appear in the `assertionMethod` array of the DID document before any rotation.
+GOV.UK One Login will rotate its keys for the: 
+
+* integration environment - weekly from 29 October 2024 so you can test your integration
+* production environment - every 6 months starting from 30 January 2025
+
+GOV.UK One Login may need to rotate keys at short notice, for example if a key is compromised. New public keys will appear in the `assertionMethod` array of the DID document before any rotation.
 
 Use the `Cache-Control` headers and [guidance on caching the DID document](/integrate-with-integration-environment/prove-users-identity/#cache-the-did-document) to regularly poll the DID endpoint to detect new versions and make sure you’re using the latest key.
 
