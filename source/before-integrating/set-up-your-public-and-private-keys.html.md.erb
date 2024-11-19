@@ -1,0 +1,88 @@
+---
+title: Set up your public and private keys
+weight: 5.01
+last_reviewed_on: 2024-08-22
+review_in: 6 months
+---
+
+# Set up your public and private keys
+
+GOV.UK One Login uses public key cryptography to authenticate services, so you’ll need to create a key pair (a public key and a corresponding private key). Then you’ll need to [share your public key with GOV.UK One Login][integrate.share-public-key] when registering your service.
+
+You’ll also need to use your private key when:
+
+* you’re registering your service to use GOV.UK One Login environments, such as integration or production
+* you request the token using the private key authentication mechanism on the `/token` endpoint
+
+## Create a key pair 
+
+You can create a key pair using [OpenSSL](https://www.openssl.org/). After you’ve installed OpenSSL, run the following on your command line to create your key pair:
+
+```
+openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
+
+openssl rsa -pubout -in private_key.pem -out public_key.pem
+```
+
+You have now created your key pair, which will appear on your machine as 2 files:
+
+* `public_key.pem` - this is your public key, which you should share with GOV.UK One Login
+* `private_key.pem` - this is your private key, which you should store securely and not share
+
+<%= warning_text('Once you’ve generated your private key, you must store the key in a secure location, such as a file vault. You must not share your private key.') %>
+
+## Share your public key with GOV.UK One Login
+
+Once you’ve created your key pair, share your public key with GOV.UK One Login. You have 2 options to do this:
+
+* [share a fixed public key][integrate.share-a-fixed-public-key] directly - if you use a fixed public key and start signing with a new key before GOV.UK One Login updates your service’s configuration, users will not be able to access your service with GOV.UK One Login
+
+* (recommended) [share your public key(s) using a JSON Web Key Set (JWKS) endpoint][integrate.share-public-keys-JWKS-endpoint]
+
+
+We recommend using a JWKS endpoint to share your public keys. A JWKS endpoint is a read-only URL that returns JWKSs as JSON objects so you can share multiple public keys. If you do this, you can rotate your keys without contacting GOV.UK One Login for a configuration change. You can update the JWKS endpoint to contain both the old and new keys, then immediately start signing with the new key. 
+This means users can still access your service with GOV.UK One Login.
+
+### Share a fixed public key 
+If you’re using a fixed public key, send the public key you created to GOV.UK One Login. You can check what to send when you [contact the GOV.UK One Login team to register your service][integrate.register-your-service].
+
+
+### Share your public keys using a JWKS endpoint
+
+If you're using a JWKS endpoint, you'll need to make sure it works with GOV.UK One Login. 
+
+This means your endpoint must:
+
+* use HTTPS
+* be publicly accessible 
+* return a `HTTP 200 (OK)` within 5 seconds of a GET request
+* return an RSA signing key in JWKS format
+* return a unique `kid` parameter in each key (`JWK`) entry
+* include the `kid` parameter for the key used to sign a `JWS` in its header
+
+Your JWKS endpoint should give a JSON response similar to the following example: 
+
+```
+{
+  "keys": [
+    {
+      "kty": "RSA",
+      "e": "AQAB",
+      "use": "sig",
+      "kid": "f58a6bef-0d22-444b-b4d3-507a54e9892f",
+      "n": "pSx43eUV2hZ3AJKYNFHxOsILQ_tUNpfPVELCy3js3FsTp5Mcbpb8mu-arekTCq0Mx5-uqRhJKuT1eGf5DIsb69P__Eyi787Q2o5CdbDwB4iUlEffgx_KuOWUm_4YEuVSjnxfS_hB9h_38zQ6WtD1NnCbcMk4RT2MRvCSiIr9OhjKn9AExH7aaDY7nPm0uVybMkNf5hzBBJWsblBGLmFqnw-qHIEGJaC0M2yZEfXJDbdeZx-IYEYMi3QrR_y4yWzQP2RC8QDU84-uj5mAy5vn06RSdAHNXdiuUX3dIFlerri8gSXo5dPps-gU7igauHnX6mP0HBDtnoNKcM1gpXrnKw"
+    }
+  ]
+}
+```
+
+Once you have shared a JWKS endpoint URL, you can [choose which user attributes your service can request][integrate.choose-user-attributes].
+
+#### Revoking a public key on your JWKS endpoint
+
+Contact GOV.UK One Login if you need to immediately revoke a public key on your JWKS endpoint. 
+
+GOV.UK One Login caches keys for up to 24 hours, so do not remove a compromised key from your JWKS endpoint without also telling GOV.UK One Login.
+
+<%= partial "partials/links" %>
+
