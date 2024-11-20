@@ -39,7 +39,7 @@ Before you can test on our integration environment, you must:
 
 * have [registered your service to use GOV.UK One Login][integrate.register-your-service]
 * have built an application to work with GOV.UK One Login
-* have accessed the [example responses from the GOV.UK One Login API](https://github.com/govuk-one-login/rp-reference/tree/main/example-data)
+* have accessed the [example responses from the GOV.UK One Login API](https://github.com/govuk-one-login/onboarding-examples/tree/main/example-data)
 * have contacted GOV.UK One Login to access the fictional users and their knowledge-based verification (KBV) answers to help you test your journeys
 * use the integration environment’s login details when prompted to log in – you’ll have received these when you registered your service to use GOV.UK One Login
 
@@ -81,7 +81,7 @@ When conducting automated testing, the multi-factor authentication may block you
 1. Select **Authenticator app for smartphone, tablet or computer**. 
 1. Select the **I cannot scan the QR code** dropdown.
 1. Make a note of the secret key which appears in the dropdown – some authenticator apps call the secret key a ‘code’.
-1. Use this secret key to generate a one-time code using a scripting language within your test – there’s an [example of how to generate a one-time code using TypeScript](https://github.com/govuk-one-login/rp-reference/blob/main/tools/totp/totp.ts) in our GitHub repo. 
+1. Use this secret key to generate a one-time code using a scripting language within your test – there’s an [example of how to generate a one-time code using TypeScript](https://github.com/govuk-one-login/onboarding-examples/blob/main/tools/totp/totp.ts) in our GitHub repo. 
 
 ## Conducting end-to-end user testing against the integration environment
 ### Test successful user journeys
