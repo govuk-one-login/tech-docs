@@ -433,7 +433,7 @@ Content-Type: application/json
   "sub": "urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=",
   "email": "test@example.com",
   "email_verified": true,
-  "phone_number": "01406946277",
+  "phone_number": "+441406946277",
   "phone_number_verified": true
 }
 ```
@@ -445,7 +445,7 @@ If you included a [level of identity confidence][integrate.choose-level-of-confi
 | `sub` | The subject identifier (`sub`) is the unique ID for a user. This will not change unless your user deletes their GOV.UK One Login and sets it up again. <br><br> Do not use the `sub` as the primary identifier for your user. <br><br> Instead, generate your own unique value for your user within your service and map this against the GOV.UK One Login `sub`.  <br><br> Mapping the `sub` makes account recovery easier. For example, if a user deletes their GOV.UK One Login, you can re-map the user’s new `sub` to your service without creating a new primary identifier for your user. |
 | `email` | The email address your user entered when they registered their GOV.UK One Login. <br><br> Do not:<br><ul><li> use `email` as the primary identifier for your user (the `email` claim can change or an end user can lose access to it which makes it unreliable as a unique identifier)  </li><li>ask your user to create a GOV.UK One Login with a specific email address, for example, a university email – if you need this, you’ll need to build additional functionality to verify it yourself </li><li>ask your user to change the email address they use for their GOV.UK One Login |
 | `email_verified`  | This means the email was verified using a one-time code when the user created their account. This is always `true`. |
-| `phone_number` | This is the phone number your user entered when they registered their GOV.UK One Login. This will not appear if the user used an authenticator app for their two-factor authentication.  |
+| `phone_number` | This is the phone number your user entered when they registered their GOV.UK One Login. This will not appear if the user used an authenticator app for their two-factor authentication. <br> </br> <br> </br> This will return in the E.164 format with no spaces for both UK and international phone numbers: `+{country-code}Number`.  |
 | `phone_number_verified` | This will be returned as:<br><ul> </li><li>`true` when the user has selected the text message option for receiving a security code </li><li>`false` when the user has selected the authenticator app option for receiving a security code  |
 
 
