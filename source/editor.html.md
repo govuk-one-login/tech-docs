@@ -14,9 +14,6 @@ hide_in_navigation: true
 
 <body>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <script>
-    CMS.registerPreviewStyle("manifest.css");
-  </script>
 </body>
 
 </html>

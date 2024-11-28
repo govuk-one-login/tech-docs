@@ -1,0 +1,65 @@
+---
+publish_mode: editorial_workflow
+site_url: https://docs.sign-in.service.gov.uk/
+backend:
+  name: github
+  repo: govuk-one-login/tech-docs
+  branch: main
+media_folder: "/source/images"
+public_folder: "/source/public"
+collections:
+  - name: before-integrating
+    label: Before Integrating
+    folder: source/before-integrating
+    extension: .md.erb
+    format: yaml-frontmatter
+    fields:
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Weight', name: 'weight', widget: 'string' }
+      - { label: 'Last Review Date', name: 'last_reviewed_on', widget: 'string' }
+      - { label: 'Next Review Period', name: 'review_in', widget: 'string' }
+      - { label: 'Body', name: 'body', widget: 'markdown' }
+  - name: configure-for-production
+    label: Configuration for Production
+    folder: source/configure-for-production
+    extension: .md.erb
+    format: yaml-frontmatter
+    fields:
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Weight', name: 'weight', widget: 'string' }
+      - { label: 'Last Review Date', name: 'last_reviewed_on', widget: 'string' }
+      - { label: 'Next Review Period', name: 'review_in', widget: 'string' }
+      - { label: 'Body', name: 'body', widget: 'markdown' }
+  - name: integrate-with-integration-environment
+    label: Integrate with Integration environment
+    folder: source/integrate-with-integration-environment
+    extension: .md.erb
+    format: yaml-frontmatter
+    fields:
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Weight', name: 'weight', widget: 'string' }
+      - { label: 'Last Review Date', name: 'last_reviewed_on', widget: 'string' }
+      - { label: 'Next Review Period', name: 'review_in', widget: 'string' }
+      - { label: 'Body', name: 'body', widget: 'markdown' }
+  - name: test-your-integration
+    label: Test your integration
+    folder: source/test-your-integration
+    extension: .md.erb
+    format: yaml-frontmatter
+    fields:
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Weight', name: 'weight', widget: 'string' }
+      - { label: 'Last Review Date', name: 'last_reviewed_on', widget: 'string' }
+      - { label: 'Next Review Period', name: 'review_in', widget: 'string' }
+      - { label: 'Body', name: 'body', widget: 'markdown' }
+  - name: pages
+    label: Pages
+    folder: source/
+    extension: .md.erb
+    format: yaml-frontmatter
+    fields:
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Weight', name: 'weight', widget: 'string' }
+      - { label: 'Last Review Date', name: 'last_reviewed_on', widget: 'string' }
+      - { label: 'Next Review Period', name: 'review_in', widget: 'string' }
+      - { label: 'Body', name: 'body', widget: 'markdown' }
