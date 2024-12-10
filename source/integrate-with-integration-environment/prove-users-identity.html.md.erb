@@ -296,7 +296,7 @@ Each JSON object in the list may contain any of the following properties:
 | `addressLocality`                | Maps to `POST_TOWN` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                          |
 | `postalCode`                     | Maps to `POST_CODE` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                          |
 | `addressCountry`                 | Two-letter [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).                                                                                                                                                                                                                               |
-
+| `addressRegion`                  | The region in which the locality is, and which is in the country, provided as text. For example, California, or another appropriate first-level Administrative division. This maps to [schema:addressRegion](https://schema.org/addressRegion)                                                                                |
 
 Do not assume address properties always map to the same line of an address. For example, <code>addressLocality</code>
 may map to a different line of an address, depending on whether other properties are present (in this case, <code>
