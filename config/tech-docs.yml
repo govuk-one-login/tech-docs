@@ -12,6 +12,8 @@ phase: Beta
 
 # Links to show on right-hand-side of header
 header_links:
+  GOV.UK One Login: /
+  Shared Signals Exchange Platform - Outbound: /shared-signals-exchange-platform-outbound
   GitHub: https://github.com/govuk-one-login/tech-docs
   Support: https://docs.sign-in.service.gov.uk/support/
 
