@@ -1,0 +1,79 @@
+<mxfile host="Electron" modified="2025-01-14T09:37:11.324Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="w4a70tLLCWHjbUQhlmfi" version="22.1.2" type="device">
+  <diagram name="Page-1" id="R-6NQ3W9K4ybIqGOvxf1">
+    <mxGraphModel dx="1026" dy="743" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-1" value="Your service" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeWidth=2;fontSize=28;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="298" height="174.01" as="geometry" />
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-2" value="&lt;font style=&quot;font-size: 28px;&quot;&gt;GOV.UK One Login&lt;br&gt;(OpenID provider)&lt;br&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeWidth=2;fontSize=28;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="531" y="42.00999999999999" width="314" height="174.01" as="geometry" />
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-3" value="Identity proofing and&amp;nbsp;&lt;div&gt;verification (optional)&amp;nbsp;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeWidth=2;fontSize=28;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1038" y="42.00999999999999" width="330" height="174.01" as="geometry" />
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-4" value="" style="endArrow=open;html=1;rounded=0;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endFill=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="338" y="93.01070175438588" as="sourcePoint" />
+            <mxPoint x="531" y="94.14499999999998" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-5" value="&lt;font size=&quot;1&quot; color=&quot;#ffffff&quot;&gt;&lt;b style=&quot;font-size: 27px;&quot;&gt;1&lt;/b&gt;&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="411" y="73.00999999999999" width="38" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-6" value="" style="endArrow=none;html=1;rounded=0;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endFill=0;startArrow=classic;startFill=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="337" y="174.01070175438588" as="sourcePoint" />
+            <mxPoint x="530" y="175.14499999999998" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-7" value="" style="endArrow=open;html=1;rounded=0;strokeWidth=2;endFill=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="849" y="94.00999999999999" as="sourcePoint" />
+            <mxPoint x="1036" y="94.00999999999999" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-8" value="&lt;font color=&quot;#ffffff&quot;&gt;&lt;span style=&quot;font-size: 27px;&quot;&gt;&lt;b&gt;2&lt;/b&gt;&lt;/span&gt;&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="918" y="73.00999999999999" width="38" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-9" value="" style="endArrow=none;html=1;rounded=0;strokeWidth=2;entryX=0;entryY=0.75;entryDx=0;entryDy=0;endFill=0;startArrow=classic;startFill=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="849" y="173.01" as="sourcePoint" />
+            <mxPoint x="1038" y="172.5174999999997" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-10" value="&lt;font size=&quot;1&quot; color=&quot;#ffffff&quot;&gt;&lt;b style=&quot;font-size: 27px;&quot;&gt;3&lt;/b&gt;&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="918" y="153.01" width="38" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-11" value="&lt;font color=&quot;#ffffff&quot;&gt;&lt;span style=&quot;font-size: 27px;&quot;&gt;&lt;b&gt;4&lt;/b&gt;&lt;/span&gt;&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="411" y="157.01" width="38" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-12" value="" style="endArrow=open;html=1;rounded=0;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endFill=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;dashed=1;dashPattern=8 8;" edge="1" parent="1" source="p_9-2nxAp_79dKsTKLkN-2" target="p_9-2nxAp_79dKsTKLkN-14">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="580" y="470.0007017543859" as="sourcePoint" />
+            <mxPoint x="773" y="471.135" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-14" value="&lt;font style=&quot;font-size: 28px;&quot;&gt;GOV.UK One Login&lt;br&gt;Transmitter&lt;br&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeWidth=2;fontSize=28;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="531" y="440" width="314" height="174.01" as="geometry" />
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-15" value="&lt;font size=&quot;1&quot; color=&quot;#ffffff&quot;&gt;&lt;b style=&quot;font-size: 27px;&quot;&gt;User Activity&lt;/b&gt;&lt;/font&gt;" style="whiteSpace=wrap;html=1;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="595" y="301" width="200" height="38" as="geometry" />
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-16" value="Your service&lt;div&gt;Receiver A&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeWidth=2;fontSize=28;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="440" width="298" height="174.01" as="geometry" />
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-17" value="" style="endArrow=none;html=1;rounded=0;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endFill=0;startArrow=classic;startFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="p_9-2nxAp_79dKsTKLkN-16" target="p_9-2nxAp_79dKsTKLkN-14">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="347" y="184.01070175438588" as="sourcePoint" />
+            <mxPoint x="540" y="185.14499999999998" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-18" value="&lt;font size=&quot;1&quot; color=&quot;#ffffff&quot;&gt;&lt;b style=&quot;font-size: 27px;&quot;&gt;POST&lt;/b&gt;&lt;/font&gt;" style="whiteSpace=wrap;html=1;fillColor=#000000;fontFamily=Courier New;" vertex="1" parent="1">
+          <mxGeometry x="380" y="480" width="110" height="35" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

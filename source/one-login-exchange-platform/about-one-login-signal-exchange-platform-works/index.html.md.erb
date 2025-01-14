@@ -1,0 +1,32 @@
+---
+title: How the One Login Signal Exchange Platform works
+weight: 1.5
+last_reviewed_on: 2024-04-10
+review_in: 6 months
+hide_in_navigation: false
+layout: shared_signals_outbound
+---
+
+# How the One Login Exchange platform
+
+When a user is redirected from your service to GOV.UK One Login, GOV.UK One Login will record the users activity during the users interaction with GOV.UK One Login. As the user interacts with GOV.UK One Login, certain activities will trigger different signals which may send programatically to your receiver.
+
+The sending of events happens asynchronously and independant to the GOV.UK One Login authentication flow.
+
+<%= image_tag "signal-exhange-overview.svg", { :alt => '' } %>
+
+
+## What kind of events can you receive
+
+GOB>UK Signals exchange platform uses [Shared Signals Events Framework](https://openid.net/specs/openid-sse-framework-1_0.html) (SSE) to send user related activity. Events that are supported by GOV.UK One Login are
+
+* Specific to users interacting with GOV.UK One Login with your service
+* Events related to the user but not to an interaction with your service.
+
+
+<%= warning_text('You cannot receive events about users interacting with GOV.UK One Login with different government services') %>
+
+Find out what to consider before you [integrate your service with GOV.UK One Login][ssfOut.before-you-integrate].
+
+<%= partial "partials/links" %>
+
