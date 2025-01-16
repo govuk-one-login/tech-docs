@@ -37,9 +37,8 @@ The expected response should look like the following
 There are certain assumptions that we make about your endpoint. These are
 
 * Validity of `access_token`
-    * GOV.UK must be able to request a new token without invalidating previously issued tokens as a result of calling the `/token` endpoint
+    * GOV.UK must be able to request a new token without invalidating previously issued tokens
     * The token must be valid for a minimum of 1 hour
-    * GOV.UK One Login Signal Exchange Platform may request a 
 * Throughput
     * The `/token` endpoint will need to be able to support a high throughput[link to throughput section]
 

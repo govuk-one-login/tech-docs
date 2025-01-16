@@ -1,6 +1,6 @@
 ---
 title: Receiver service
-weight: 3
+weight: 4
 last_reviewed_on: 2024-04-10
 review_in: 6 months
 hide_in_navigation: false
@@ -18,8 +18,9 @@ curl --request POST \
   --url https://your.service.gov.uk/oauth/token \
   --header 'accept: application/json' \
   --header 'authorization: Bearer ACCESS_TOKEN' \
-  --header 'content-type: application/json' \
+  --header 'content-type: application/secevent+jwt' \
   --data PAYLOAD
 ```
+The payload is a [Security Event Token][external.security-event-token]
 
 <%= partial "partials/links" %>
