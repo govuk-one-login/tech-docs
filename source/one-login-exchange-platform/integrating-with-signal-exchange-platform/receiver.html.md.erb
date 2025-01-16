@@ -1,0 +1,25 @@
+---
+title: Receiver service
+weight: 3
+last_reviewed_on: 2024-04-10
+review_in: 6 months
+hide_in_navigation: false
+layout: shared_signals_outbound
+---
+
+# Receiver Endpoint
+
+The receiver endpoint where GOV.UK One Login Transmitter will send signals realated to user activity. 
+
+The transmitter will make the following request 
+
+```bash
+curl --request POST \
+  --url https://your.service.gov.uk/oauth/token \
+  --header 'accept: application/json' \
+  --header 'authorization: Bearer ACCESS_TOKEN' \
+  --header 'content-type: application/json' \
+  --data PAYLOAD
+```
+
+<%= partial "partials/links" %>
