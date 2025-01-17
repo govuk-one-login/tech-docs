@@ -13,13 +13,13 @@ Before you integrate with the GOV.UK One Login Signals exchange platform, you mu
 
 * A value to be used as part of the [audience](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.3) claim in the [Security Event Token][external.security-event-token] (SET)
 * What signals you would like to receive
-* Your [expected throughput][ssfOut.receiver-throughput] of users attempting to use GOV.UK One Login.
+* Your [expected throughput][ssfOut.event-delivery] of users attempting to use GOV.UK One Login.
 * A support process in case we need to contact you in regards to any errors  
 
 You must also setup
 
-* An OAuth2 service that supports the [Client Credential Grant][external.oauth-client-credentials-flow]  
-* A receiver service that can receive signals sent by the GOV.UK One Login Transmitter.
+* An [OAuth2 service][ssfOut.oauth2] that supports the [Client Credential Grant][external.oauth-client-credentials-flow]  
+* A [receiver service][ssfOut.receiver] that can receive signals sent by the GOV.UK One Login Transmitter.
 
 You should also
 
