@@ -1,5 +1,5 @@
 ---
-title: Receiver service
+title: Receiver Endpoint
 weight: 4
 last_reviewed_on: 2024-04-10
 review_in: 6 months
@@ -9,9 +9,9 @@ layout: shared_signals_outbound
 
 # Receiver Endpoint
 
-The receiver endpoint where GOV.UK One Login Transmitter will send signals realated to user activity. 
+The receiver endpoint is where the GOV.UK One Login Transmitter will send signals realated to user activity. 
 
-The transmitter will make the following request 
+The transmitter will make the following request when attempting to send the signal
 
 ```bash
 curl --request POST \
@@ -19,8 +19,59 @@ curl --request POST \
   --header 'accept: application/json' \
   --header 'authorization: Bearer ACCESS_TOKEN' \
   --header 'content-type: application/secevent+jwt' \
-  --data PAYLOAD
+  --data SIGNAL
 ```
-The payload is a [Security Event Token][external.security-event-token]
+
+The payload is a [Security Event Token][external.security-event-token] (SET) which builds upon the JSON Web Token (JWT) [format][external.jwt-rfc] and can be decoded as a regular JWT. You must return a `HTTP 202 (Accepted)` within 5 seconds of the `POST` request. Any other responses will be treated as an error and will be attempted to be [delivered again][ssfOut.event-delivery]
+
+## Signature Verfication
+
+As part of the SET, there is a signature that should be used to verify the authenticity of the payload.
+
+1. Validate that the JWT `kid` claim exists in the JWKS (JSON web key set) returned by the `/jwks` endpoint.
+1. Check the JWT `alg` header matches the value for the key you are using. 
+1. Use the key to validate the signature on the logout token according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515).
+1. Check the value of `iss` (issuer) matches `https://ssf.account.gov.uk/`
+1. Check the `aud` (audience) claim is the same client ID you received when you [registered your service to use GOV.UK One Login Signal Exchange Platform][ssfOut.before-you-integrate].
+1. Check the `iat` (issued at) claim is in the past.
+
+
+Below are the JWKS endpoints for our 
+
+- [Integration][external.ssfOut-jwks-endpoint-int] Environment
+- [Production][external.ssfOut-jwks-endpoint-prod] Environment
+
+As we may send SETs at a [high throughput][ssfOut.event-delivery], you must implement caching of the JWKS endpoint. The cache must
+
+* Refresh regularly 
+* Refresh if the value in the `kid` claim does not exist in your cache
+
+## Event Delivery
+
+A single user interaction with GOV.UK One Login may generate several events therfore it is important that you configure your receiver endpoint be setup to support a high throughput. We recommend that your receiver endpoint is setup to support a minimum of 100 signals per second. 
+
+The GOV.UK One Login Signal Exchange Platform will work with you identify the expected delivery rate of signals based on a number of factors. These factors include
+
+* Your expected throughput of users attempting to use GOV.UK One Login
+* Events that you have subscribed to
+* If you are strictly an Auth only service or if you are using Identity Proofing and Verification Service
+
+<%= warning_text('You must not conduct any security testing, penetration testing, performance testing, or IT health checks of the GDS estate. You must also not use personal identifiable information (PII) – GOV.UK One Login will provide example data.') %>
+
+### Transmitter Assumptions
+
+You should also assume that the GOV.UK One Login Transmitter *may* deliver:
+
+* events out of order
+* duplicate events
+
+### Transmitter Error Handling
+
+If the transmitter receives a non `HTTP 202 (Accepted)`, then it is considered an error. The transmitter may attempt redelivery every 30 seconds upto 5 times. After the 5th attempt, the failed signals may be kept for upto 14 days before they are discarded. The failed signals can be redelivered upon request.
+
+Once you have setup your transmitter, you may test the integration by either
+
+* setting up a [health check][link to verification endpoint]
+* testing in the GOV.UK One Login integration evironment[link to testing in integration]
 
 <%= partial "partials/links" %>
