@@ -1,7 +1,7 @@
 ---
 title: Reauthenticating users
-weight: 8
-last_reviewed_on: 2024-09-5
+weight: 6
+last_reviewed_on: 2025-01-20
 review_in: 6 months
 ---
 
@@ -19,13 +19,11 @@ Re-authentication requests are supported only for JWT-secured OAuth 2.0 authoris
 
 
 To re-authenticate a user, you must have:
-an existing user session on your system
-an ID token from GOV.UK One Login
+* an existing user session on your system
+* an ID token from GOV.UK One Login
 
 
-You must then use the following table to input values into the required parameters (along with the standard parameters) as part of an authorisation request:
-
-
+You must then use the following table to input values into the required parameters (along with the standard parameters) as part of an [authorisation request](/authenticate-your-user/#make-a-request-to-the-authorize-endpoint):
 
 
 | Parameter name | Mandatory Y/N | Expected value |
@@ -36,8 +34,8 @@ You must then use the following table to input values into the required paramete
 
 
 GOV.UK One Login will then take the users through the re-authentication journey. After a successful authentication and token exchanges, a refreshed ID token will be issued to the user by GOV.UK One Login and will redirect a user back to your system with an authorisation code. You must then:
-request the ID token
-validate the ID token for the latest timestamp and match the subject ID to  make sure it is the same subject ID
+* request the ID token
+* validate the ID token for the latest timestamp and match the subject ID to  make sure it is the same subject ID
 
 
 
@@ -68,6 +66,6 @@ Error: invalid_request
 Error description: Unable to validate id_token_hint
 
 
-
+<%= partial "partials/links" %>
 
 
