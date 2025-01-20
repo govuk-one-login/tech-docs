@@ -11,11 +11,11 @@ layout: shared_signals_outbound
 
 The receiver endpoint is where the GOV.UK One Login Transmitter will send signals realated to user activity. 
 
-The transmitter will make the following request when attempting to send the signal
+After obtaining an `ACCESS_TOKEN` from the [OAuth Token Endpoint][ssfOut.oauth2], the transmitter will make the following request when attempting to send the signal
 
 ```bash
 curl --request POST \
-  --url https://your.service.gov.uk/oauth/token \
+  --url https://your.service.gov.uk/receiver \
   --header 'accept: application/json' \
   --header 'authorization: Bearer ACCESS_TOKEN' \
   --header 'content-type: application/secevent+jwt' \
@@ -67,11 +67,11 @@ You should also assume that the GOV.UK One Login Transmitter *may* deliver:
 
 ### Transmitter Error Handling
 
-If the transmitter receives a non `HTTP 202 (Accepted)`, then it is considered an error. The transmitter may attempt redelivery every 30 seconds upto 5 times. After the 5th attempt, the failed signals may be kept for upto 14 days before they are discarded. The failed signals can be redelivered upon request.
+If the transmitter receives any response other than `HTTP 202 (Accepted)`, then it is considered an error. The transmitter may attempt redelivery every 30 seconds upto 5 times. After the 5th attempt, the failed signals may be kept for upto 14 days before they are discarded. The failed signals can be redelivered upon request.
 
 Once you have setup your transmitter, you may test the integration by either
 
-* setting up a [health check][link to verification endpoint]
+* setting up a [health check][ssfOut.health]
 * testing in the GOV.UK One Login integration evironment[link to testing in integration]
 
 <%= partial "partials/links" %>
