@@ -24,6 +24,7 @@ curl --request POST \
   --header 'content-type: application/json' \
   --data PAYLOAD
 ```
+
 Where `PAYLOAD` is the following JSON converted to a JSON string:
 
 ```json
@@ -31,6 +32,12 @@ Where `PAYLOAD` is the following JSON converted to a JSON string:
   "state": "abc123"
 }
 ```
+
+Below are the verfication endpoints for our 
+
+- [Integration][external.ssfOut-verify-endpoint-int] Environment
+- [Production][external.ssfOut-verify-endpoint-prod] Environment
+
 
 Once the request is made, the value of `state` will be included in the verification signal to your receiver endpoint. The value of `state` must be 
 
