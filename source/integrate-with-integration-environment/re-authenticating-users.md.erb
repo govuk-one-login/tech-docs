@@ -44,7 +44,7 @@ validate the ID token for the latest timestamp and match the subject ID to  make
 
 
 
-### Error handling
+## Error handling
 
 
 If a user does not provide correct credentials as part of the re-authentication journey then GOV.UK One Login will send the login_required error to your system. You must handle this error but for security the user should be logged off if this error occurs. There are retries allowed for each credential. If a user exceeds the maximum retries allowed for each in a previous session before the retry count expires then GOV.UK One Login logs the user out.
