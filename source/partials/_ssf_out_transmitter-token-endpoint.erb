@@ -1,0 +1,25 @@
+```bash
+curl --request POST \
+  --url TOKEN ENDPOINT \
+  --header 'content-type: application/x-www-form-urlencoded' \
+  --data client_id=CLIENT_ID \
+  --data client_secret=CLIENT_SECRET \
+  --data grant_type=client_credentials
+```
+Where 
+
+* `CLIENT_ID`: The `CLIENT_ID` supplied to you [before you integrate][ssfOut.before-you-integrate]
+* `CLIENT_SECRET`: The `CLIENT_SECRET` supplied to you [before you integrate][ssfOut.before-you-integrate]
+* `ENDPOINT`: The token endpoint of Transmitter API. Below are the token endpoints for out
+  * [Integration Environment][external.ssfOut-token-endpoint-int]
+  * [Production Environment][external.ssfOut-token-endpoint-prod]
+
+The expected response should look like the following
+
+```json
+{
+  "access_token": "ACCESS_TOKEN",
+  "token_type": "bearer",
+  "expires_in": 14400
+}
+```
