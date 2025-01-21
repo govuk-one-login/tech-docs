@@ -42,7 +42,7 @@ You have 3 different options to create an example service, depending on your nee
  
 1. On the command line, run `git clone https://github.com/govuk-one-login/onboarding-examples && cd onboarding-examples/clients/nodejs`. This will get the example Typescript code and set your working directory.
 1. On the command line, run `docker compose up`.
-1. Open [http://localhost:8080](http://localhost:8080). 
+1. Open `http://localhost:8080`. 
 1. Select **Make a request for authentication**. 
 1. If you want to run an identity journey, select **Make a request for authentication and identity**. 
 1. Select the **Sign out** link in the top header.
@@ -54,7 +54,7 @@ You have 3 different options to create an example service, depending on your nee
 1. Run `npm run simulator:start` to start the simulator in a Docker container.
 1. Check the simulator is working by running `npm run simulator:config`. You should see the simulator configuration appear. 
 1. Run `npm ci && npm run dev:sim` to build and run the example.
-1. View the example service by going to [http://localhost:8080](http://localhost:8080) in your browser.
+1. View the example service by going to `http://localhost:8080` in your browser.
 1. Select **Start by logging in**.
 1. You should see the response from the `/userinfo` and `/token` endpoints: ID and access tokens and user attributes. 
 1. If you want to run an identity journey, select **Verify** again and you should see a successful identity response including the `coreIdentityJWT`, `returnCode` (empty), `address` claims. 
@@ -96,7 +96,7 @@ Before you start, make sure you have a:
 #### Start the example application and follow the journey
 
 1. Run `npm ci && npm run dev:int` – this installs the dependencies and runs the application. 
-1. View the example service by going to [http://localhost:8080](http://localhost:8080) in your browser.
+1. View the example service by going to `http://localhost:8080` in your browser.
 1. Select **Start by logging in**.
     * if you see a prompt asking for a username and password, you can find the credentials by scrolling down to the bottom of your service's homepage on the GOV.UK One Login Admin tool
 1. Follow the on-screen instructions to create a GOV.UK One Login. 
