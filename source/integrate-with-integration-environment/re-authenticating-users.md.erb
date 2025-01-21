@@ -11,7 +11,7 @@ A user may need re-authenticating if they have an active authenticated session w
 
 Re-authentication requests are supported only for JWT-secured OAuth 2.0 authorisation requests (JARs).
 
-## Setup
+## Setting up re-authentication
 
 To re-authenticate a user, you must have:
 
@@ -28,13 +28,13 @@ GOV.UK One Login will then take the users through the re-authentication journey.
 * request the ID token
 * validate the ID token for the latest timestamp and match the subject ID to  make sure it is the same subject ID
 
-## Error handling
+## What to do if re-authenticating fails
 
 If a user does not provide correct credentials as part of the re-authentication journey then GOV.UK One Login will send the login_required error to your system. You must handle this error but for security the user should be logged off if this error occurs. There are retries allowed for each credential. If a user exceeds the maximum retries allowed for each in a previous session before the retry count expires then GOV.UK One Login logs the user out.
 
 Re-initiating the re-authentication journey that failed with the login_required error will fail until the user goes through a sign in journey with two-factor authentication. The sign-in journey can be undertaken within the user’s existing journey. If they choose this option they must make sure that the subject ID is the same as the originally signed in user.
 
-## Troubleshooting
+## Error codes you might receive
 
 If an ID token is invalid then GOV.UK One Login will return an error code. For example :
 
