@@ -21,20 +21,22 @@ To re-authenticate a user, you must have:
 You must then use the following table to input values into the required parameters (along with the standard parameters) as part of an authorisation request:
 
 | Parameter name | Mandatory Y/N | Expected value |
+|----------------|---------------|----------------|
 | prompt         | Y             | `login`        |
 | id_token_hint  | Y             | ID token received from GOV.UK One Login. Note that if ID token is populated along with prompt=login, then the system will re-authenticate |
 
-GOV.UK One Login will then take the users through the re-authentication journey. After a successful authentication and token exchanges, a refreshed ID token will be issued to the user by GOV.UK One Login and will redirect a user back to your system with an authorisation code. You must then:
+GOV.UK One Login will then take users through the re-authentication journey. After a successful authentication and token exchanges, a refreshed ID token will be issued to the user by GOV.UK One Login and will redirect a user back to your system with an authorisation code. You must then:
+
 * request the ID token
-* validate the ID token for the latest timestamp and match the subject ID to  make sure it is the same subject ID
+* validate the ID token for the latest timestamp and match the subject ID to make sure it is the same subject ID
 
 ## What to do if re-authenticating fails
 
-If a user does not provide correct credentials as part of the re-authentication journey then GOV.UK One Login will send the login_required error to your system. You must handle this error but for security the user should be logged off if this error occurs. There are retries allowed for each credential. If a user exceeds the maximum retries allowed for each in a previous session before the retry count expires then GOV.UK One Login logs the user out.
+If a user does not give the correct credentials as part of the re-authentication journey then GOV.UK One Login will send the login_required error to your system. You must handle this error but for security the user should be logged off if this error occurs. There are retries allowed for each credential. If a user exceeds the maximum retries allowed for each in a previous session before the retry count expires, then GOV.UK One Login logs the user out.
 
-Re-initiating the re-authentication journey that failed with the login_required error will fail until the user goes through a sign in journey with two-factor authentication. The sign-in journey can be undertaken within the user’s existing journey. If they choose this option they must make sure that the subject ID is the same as the originally signed in user.
+Re-starting the re-authentication journey that failed with the login_required error will fail until the user goes through a sign in journey with two-factor authentication. The sign-in journey can be undertaken within the user’s existing journey. If they choose this option they must make sure that the subject ID is the same as the originally signed in user.
 
-## Error codes you might receive
+## Example error codes
 
 If an ID token is invalid then GOV.UK One Login will return an error code. For example :
 
