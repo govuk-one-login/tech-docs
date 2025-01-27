@@ -367,7 +367,7 @@ You can use the following table to understand the ID token’s claims.
 | `nonce` | The `nonce` value your application provided when you made the request to the `/authorize` endpoint. |
 | `vtm`   | `vtm` stands for 'vector trust mark'. This is an HTTPS URL which lists the range of values GOV.UK One Login accepts and provides.  |
 | `sid`   | `sid` stands for ‘session identifier’. This uniquely identifies the user's journey within GOV.UK One Login. |
-| `auth_time` | `auth_time` is the time at which your user last authenticated, which will be an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch]. |
+| `auth_time` | `auth_time` is the time at which your user last authenticated. This will be an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch]. |
 
 Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
