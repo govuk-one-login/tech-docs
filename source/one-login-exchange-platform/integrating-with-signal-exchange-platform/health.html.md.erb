@@ -9,7 +9,7 @@ layout: shared_signals_outbound
 
 # Perform a Health sheck
 
-The health check uses the [Verification Endpoint][external.ssfOut-verfication-endpoint] as a way to confirm the connection between the GOV.UK One Login Transmitter and your receiver as well as test your [receiver][ssfOut.receiver].
+The health check uses the [Verification Endpoint][external.ssfOut-verfication-endpoint] as a way to confirm the connection between the GOV.UK One Login Transmitter and your receiver as well as a way to test your [receiver][ssfOut.receiver].
 
 In order to send a health check, you must first authenticate against the GOV.UK One Login Transmitter OAuth token endpoint:
 
@@ -21,11 +21,11 @@ Once you've obtained an `ACCESS_TOKEN` you can then send a `POST` request to the
 curl --request POST \
   --url VERIFIFCATION_ENDPOINT \
   --header 'Authorization: Bearer ACCESS_TOKEN' \
-  --header 'content-type: application/json' \
+  --header 'Content-Type: application/json' \
   --data PAYLOAD
 ```
 
-Where `PAYLOAD` is the following JSON converted to a JSON string:
+Where the **optional** `PAYLOAD` field is the following JSON object converted to a JSON string:
 
 ```json
 {
@@ -39,7 +39,7 @@ Below are the verfication endpoints for our
 - [Production][external.ssfOut-verify-endpoint-prod] Environment
 
 
-Once the request is made, the value of `state` will be included in the verification signal to your receiver endpoint. The value of `state` must be 
+Once the request is made, the value of `state` will be included in the verification signal to your receiver endpoint if supplied. The value of `state` must be 
 
 * Any alphanumeric character
 * Maximum length of 64 characters

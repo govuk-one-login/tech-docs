@@ -1,0 +1,35 @@
+---
+title: View Your configuration
+weight: 4
+last_reviewed_on: 2024-04-10
+review_in: 6 months
+hide_in_navigation: false
+layout: shared_signals_outbound
+---
+
+# View Your configuration
+
+The GOV.UK One Login Signals Exchange Platform Transmitter API uses the [Stream endpoint Endpoint][external.ssfOut-stream-read-endpoint] as a way to view the configuration of the integration.
+
+In order to view your configuration, you must first authenticate against the GOV.UK One Login Transmitter OAuth token endpoint:
+
+<%= partial "partials/ssf_out_transmitter-token-endpoint" %>
+
+Once you've obtained an `ACCESS_TOKEN`, you can make the following request to view your configuration 
+
+```bash
+curl --request POST \
+  --url STREAM_ENDPOINT \
+  --header 'Authorization: Bearer ACCESS_TOKEN' \
+  --header 'Content-Type: application/json' \
+```
+
+Below are the stream endpoints for our 
+
+- [Integration][external.ssfOut-stream-endpoint-int] Environment
+- [Production][external.ssfOut-stream-endpoint-prod] Environment
+
+Once you have managed to view your configuration, you can then begin testing in the GOV.UK One Login [integration evironment][link to testing in integration]
+
+
+<%= partial "partials/links" %>

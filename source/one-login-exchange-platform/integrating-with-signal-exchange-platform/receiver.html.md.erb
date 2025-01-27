@@ -9,20 +9,20 @@ layout: shared_signals_outbound
 
 # Receiver Endpoint
 
-The receiver endpoint is where the GOV.UK One Login Transmitter will send signals realated to user activity. 
+The receiver endpoint is where the GOV.UK One Login Transmitter will send signals related to user activity. 
 
 After obtaining an `ACCESS_TOKEN` from the [OAuth Token Endpoint][ssfOut.oauth2], the transmitter will make the following request when attempting to send the signal
 
 ```bash
 curl --request POST \
   --url https://your.service.gov.uk/receiver \
-  --header 'accept: application/json' \
-  --header 'authorization: Bearer ACCESS_TOKEN' \
-  --header 'content-type: application/secevent+jwt' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: Bearer ACCESS_TOKEN' \
+  --header 'Content-Type: application/secevent+jwt' \
   --data SIGNAL
 ```
 
-The payload is a [Security Event Token][external.security-event-token] (SET) which builds upon the JSON Web Token (JWT) [format][external.jwt-rfc] and can be decoded as a regular JWT. You must return a `HTTP 202 (Accepted)` within 5 seconds of the `POST` request. Any other responses will be treated as an error and will be attempted to be [delivered again][ssfOut.event-delivery]
+The `SIGNAL` is a [Security Event Token][external.security-event-token] (SET) which builds upon the JSON Web Token (JWT) [format][external.jwt-rfc] and can be decoded as a regular JWT. You must return a `HTTP 202 (Accepted)` within 5 seconds of the `POST` request. Any other responses will be treated as an error and will be attempted to be [delivered again][ssfOut.event-delivery]
 
 ## Signature Verfication
 
@@ -50,11 +50,11 @@ As we may send SETs at a [high throughput][ssfOut.event-delivery], you must impl
 
 A single user interaction with GOV.UK One Login may generate several events therfore it is important that you configure your receiver endpoint be setup to support a high throughput. We recommend that your receiver endpoint is setup to support a minimum of 100 signals per second. 
 
-The GOV.UK One Login Signal Exchange Platform will work with you identify the expected delivery rate of signals based on a number of factors. These factors include
+The GOV.UK One Login Signal Exchange Platform will work with you identify the expected delivery rate of signals based on a number of factors, as well as implement rate limiting to prevent your infrastructure from being overwhelmed with signals. These factors include
 
 * Your expected throughput of users attempting to use GOV.UK One Login
 * Events that you have subscribed to
-* If you are strictly an Auth only service or if you are using Identity Proofing and Verification Service
+* If you are strictly an Auth only service or if you are a Identity Proofing and Verification Service
 
 <%= warning_text('You must not conduct any security testing, penetration testing, performance testing, or IT health checks of the GDS estate. You must also not use personal identifiable information (PII) – GOV.UK One Login will provide example data.') %>
 
@@ -65,9 +65,11 @@ You should also assume that the GOV.UK One Login Transmitter *may* deliver:
 * events out of order
 * duplicate events
 
+GOV.UK One Login Transmitter will make a best effort attempt to ensure that events are delivered in order and that there is no duplicate.
+
 ### Transmitter Error Handling
 
-If the transmitter receives any response other than `HTTP 202 (Accepted)`, then it is considered an error. The transmitter may attempt redelivery every 30 seconds upto 5 times. After the 5th attempt, the failed signals may be kept for upto 14 days before they are discarded. The failed signals can be redelivered upon request.
+If the transmitter receives any response other than `HTTP 202 (Accepted)`, then it is considered an error. The transmitter may attempt redelivery every 30 seconds upto 5 times. After the 5th attempt, the failed signals may be kept for upto 14 days before they are discarded. The failed signals may be redelivered upon request.
 
 Once you have setup your transmitter, you may test the integration by either
 

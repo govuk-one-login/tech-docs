@@ -9,7 +9,7 @@ layout: shared_signals_outbound
 
 # How the GOV.UK One Login Signal Exchange platform Works 
 
-When a user is redirected from your service to GOV.UK One Login, One Login will record the users activity during the users interaction with GOV.UK One Login. As the user interacts with One Login, certain activities will trigger different signals which the GOV.UK One Login Transmitter may send programatically to your receiver using a `POST` request.
+When a user is redirected from your service to GOV.UK One Login, One Login will record the users activity during their interaction with GOV.UK One Login. As the user interacts with One Login, certain activities will trigger different signals which the GOV.UK One Login Transmitter may send programatically to your receiver using a `POST` request.
 
 The signals will be sent asynchronously and independant to the One Login authentication flow.
 
@@ -17,7 +17,7 @@ The signals will be sent asynchronously and independant to the One Login authent
 
 ## What kind of events can you receive
 
-GOV.UK Signals exchange platform uses [Shared Signals Events Framework][external.ssf-framework] (SSE) to send user related activity. Events that are supported by GOV.UK One Login are
+GOV.UK One Login Signals Exchange Platform uses the [Shared Signals Events Framework][external.ssf-framework] (SSE) to send user related activity. Events that are supported by the platform are
 
 * Specific to users interacting with GOV.UK One Login with your service
 * Events related to the user but not to an interaction with your service.
