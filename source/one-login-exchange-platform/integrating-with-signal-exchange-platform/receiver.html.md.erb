@@ -11,7 +11,7 @@ layout: shared_signals_outbound
 
 The receiver endpoint is where the GOV.UK One Login Transmitter will send signals related to user activity. 
 
-After obtaining an `ACCESS_TOKEN` from the [OAuth Token Endpoint][ssfOut.oauth2], the transmitter will make the following request when attempting to send the signal
+After obtaining an `ACCESS_TOKEN` from the [OAuth Token Endpoint][ssfOut.oauth2], the transmitter will make the following request when attempting to send the signal:
 
 ```bash
 curl --request POST \
@@ -22,59 +22,59 @@ curl --request POST \
   --data SIGNAL
 ```
 
-The `SIGNAL` is a [Security Event Token][external.security-event-token] (SET) which builds upon the [JSON Web Token (JWT)][external.jwt-rfc] format and can be decoded as a regular JWT. You must return a `HTTP 202 (Accepted)` within 10 seconds of the `POST` request. Any other responses will be treated as an error and will be attempted to be [delivered again][ssfOut.event-delivery]
+`SIGNAL` is a [Security Event Token][external.security-event-token] (SET) which builds upon the [JSON Web Token (JWT)][external.jwt-rfc] format and can be decoded as a regular JWT. You must return a `HTTP 202 (Accepted)` within 10 seconds of the `POST` request. Any other responses will be treated as an error and will be attempted to be [delivered again][ssfOut.event-delivery].
 
 ## Signature Verfication
 
-As part of the SET, there is a signature that should be used to verify the authenticity of the payload.
+As part of the SET, there is a signature that should be used to verify the authenticity of the payload:
 
 1. Validate that the SET `kid` claim exists in the JWKS (JSON web key set) returned by the `/jwks` endpoint.
 1. Check the JWT `alg` header matches the value for the key you are using. 
 1. Use the key to validate the signature on the logout token according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515).
-1. Check the value of `iss` (issuer) matches `https://ssf.account.gov.uk/`
+1. Check the value of `iss` (issuer) matches `https://ssf.account.gov.uk/`.
 1. Check the `aud` (audience) claim is the same client ID you received when you [registered your service to use GOV.UK One Login Signal Exchange Platform][ssfOut.before-you-integrate].
 1. Check the `iat` (issued at) claim is in the past.
 
 
-Below are the JWKS endpoints for our 
+Below are the JWKS endpoints for our: 
 
-- [Integration][external.ssfOut-jwks-endpoint-int] Environment
-- [Production][external.ssfOut-jwks-endpoint-prod] Environment
+- [Integration][external.ssfOut-jwks-endpoint-int] Environment.
+- [Production][external.ssfOut-jwks-endpoint-prod] Environment.
 
-As we may send SETs at a [high throughput][ssfOut.event-delivery], you must implement caching of the JWKS endpoint. The cache must
+As we may send SETs at a [high throughput][ssfOut.event-delivery], you must implement caching of the JWKS endpoint. The cache must:
 
-* Refresh regularly 
-* Refresh if the value in the `kid` claim does not exist in your cache
+* Refresh regularly. 
+* Refresh if the value in the `kid` claim does not exist in your cache.
 
 ## Event Delivery
 
-A single user interaction with GOV.UK One Login may generate several events therfore it is important that you configure your receiver endpoint be setup to support a high throughput. We recommend that your receiver endpoint is setup to support a minimum of 100 signals per second. 
+A single user interaction with GOV.UK One Login may generate several signals therfore it is important that you configure your receiver endpoint be setup to support a high throughput. We recommend that your receiver endpoint is setup to support a minimum of 100 signals per second. 
 
-The GOV.UK One Login Signal Exchange Platform will work with you identify the expected delivery rate of signals based on a number of factors, as well as implement rate limiting to prevent your infrastructure from being overwhelmed with signals. These factors include
+The GOV.UK One Login Signal Exchange Platform will work with you identify the expected delivery rate of signals based on a number of factors, as well as implement rate limiting to prevent your infrastructure from being overwhelmed with signals. These factors include:
 
-* Your expected throughput of users attempting to use GOV.UK One Login
-* Events that you have subscribed to
-* If you are strictly an Auth only service or if you are a Identity Proofing and Verification Service
+* Your expected throughput of users attempting to use GOV.UK One Login.
+* Events that you have subscribed to.
+* If you are strictly an Auth only service or if you are a Identity Proofing and Verification Service.
 
 <%= partial "partials/testing-warning" %>
 
 
 ### Transmitter Assumptions
 
-You should also assume that the GOV.UK One Login Transmitter *may* deliver:
+You should also assume that the GOV.UK One Login Transmitter may deliver:
 
-* events out of order
-* duplicate events
+* Signals out of order.
+* Duplicate signals.
 
-GOV.UK One Login Transmitter will make a best effort attempt to ensure that events are delivered in order and that there is no duplication.
+GOV.UK One Login Transmitter will make a best effort attempt to ensure that signals are delivered in order and that there is no duplication.
 
 ### Transmitter Error Handling
 
 If the transmitter receives any response other than `HTTP 202 (Accepted)`, then it is considered an error. The transmitter may attempt redelivery every 30 seconds upto 5 times. After the 5th attempt, the failed signals may be kept for upto 14 days before they are discarded. The failed signals may be redelivered upon request.
 
-Once you have setup your transmitter, you may test the integration by either
+Once you have setup your transmitter, you may test the integration by either:
 
-* setting up a [health check][ssfOut.health]
-* testing in the GOV.UK One Login integration evironment[link to testing in integration]
+* Setting up a [health check][ssfOut.health].
+* Testing in the GOV.UK One Login [integration evironment][ssfOut.integration-testing].
 
 <%= partial "partials/links" %>

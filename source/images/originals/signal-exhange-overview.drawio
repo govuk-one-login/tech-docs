@@ -61,7 +61,7 @@
         <mxCell id="p_9-2nxAp_79dKsTKLkN-15" value="&lt;font size=&quot;1&quot; color=&quot;#ffffff&quot;&gt;&lt;b style=&quot;font-size: 27px;&quot;&gt;User Activity&lt;/b&gt;&lt;/font&gt;" style="whiteSpace=wrap;html=1;fillColor=#000000;" vertex="1" parent="1">
           <mxGeometry x="595" y="301" width="200" height="38" as="geometry" />
         </mxCell>
-        <mxCell id="p_9-2nxAp_79dKsTKLkN-16" value="Your service&lt;div&gt;Receiver A&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeWidth=2;fontSize=28;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="p_9-2nxAp_79dKsTKLkN-16" value="Your service&lt;div&gt;Receiver&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeWidth=2;fontSize=28;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="40" y="440" width="298" height="174.01" as="geometry" />
         </mxCell>
         <mxCell id="p_9-2nxAp_79dKsTKLkN-17" value="" style="endArrow=none;html=1;rounded=0;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endFill=0;startArrow=classic;startFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="p_9-2nxAp_79dKsTKLkN-16" target="p_9-2nxAp_79dKsTKLkN-14">

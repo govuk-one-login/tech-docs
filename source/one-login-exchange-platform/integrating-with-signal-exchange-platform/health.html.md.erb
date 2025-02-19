@@ -25,7 +25,7 @@ curl --request POST \
   --data PAYLOAD
 ```
 
-Where the **optional** `PAYLOAD` field is the following JSON object converted to a JSON string:
+Where the optional `PAYLOAD` field is the following JSON object converted to a JSON string:
 
 ```json
 {
@@ -33,17 +33,17 @@ Where the **optional** `PAYLOAD` field is the following JSON object converted to
 }
 ```
 
-Below are the verfication endpoints for our 
+Below are the verfication endpoints for our: 
 
-- [Integration][external.ssfOut-verify-endpoint-int] Environment
-- [Production][external.ssfOut-verify-endpoint-prod] Environment
+- [Integration][external.ssfOut-verify-endpoint-int] Environment.
+- [Production][external.ssfOut-verify-endpoint-prod] Environment.
 
 
-Once the request is made, the value of `state` will be included in the verification signal to your receiver endpoint if supplied. The value of `state` must be 
+Once the request is made, the value of `state` will be included in the verification signal to your receiver endpoint if supplied. The value of `state` must be: 
 
-* Any alphanumeric character
-* Maximum length of 64 characters
+* Any alphanumeric character.
+* Maximum length of 64 characters.
 
-You can also [view your configuration][ssfOut.configuration]
+You can also [view your configuration][ssfOut.configuration].
 
 <%= partial "partials/links" %>
