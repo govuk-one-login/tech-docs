@@ -46,14 +46,14 @@ As we may send SETs at a [high throughput][ssfOut.event-delivery], you must impl
 * Refresh regularly. 
 * Refresh if the value in the `kid` claim does not exist in your cache.
 
-## Event Delivery
+## Signal Delivery
 
 A single user interaction with GOV.UK One Login may generate several signals therfore it is important that you configure your receiver endpoint be setup to support a high throughput. We recommend that your receiver endpoint is setup to support a minimum of 100 signals per second. 
 
 The GOV.UK One Login Signal Exchange Platform will work with you identify the expected delivery rate of signals based on a number of factors, as well as implement rate limiting to prevent your infrastructure from being overwhelmed with signals. These factors include:
 
 * Your expected throughput of users attempting to use GOV.UK One Login.
-* Events that you have subscribed to.
+* The Signals that you have subscribed to.
 * If you are strictly an Auth only service or if you are a Identity Proofing and Verification Service.
 
 <%= partial "partials/testing-warning" %>
