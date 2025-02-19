@@ -22,7 +22,7 @@ curl --request POST \
   --data SIGNAL
 ```
 
-`SIGNAL` is a [Security Event Token][external.security-event-token] (SET) which builds upon the [JSON Web Token (JWT)][external.jwt-rfc] format and can be decoded as a regular JWT. You must return a `HTTP 202 (Accepted)` within 10 seconds of the `POST` request. Any other responses will be treated as an error and will be attempted to be [delivered again][ssfOut.event-delivery].
+`SIGNAL` is a [Security Event Token][external.security-event-token] (SET) which builds upon the [JSON Web Token (JWT)][external.jwt-rfc] format and can be decoded as a regular JWT. You must return a `HTTP 202 (Accepted)` within 10 seconds of the `POST` request. Any other responses will be treated as an error and will be attempted to be [delivered again][ssfOut.signal-delivery].
 
 ## Signature Verfication
 
@@ -41,7 +41,7 @@ Below are the JWKS endpoints for our:
 - [Integration][external.ssfOut-jwks-endpoint-int] Environment.
 - [Production][external.ssfOut-jwks-endpoint-prod] Environment.
 
-As we may send SETs at a [high throughput][ssfOut.event-delivery], you must implement caching of the JWKS endpoint. The cache must:
+As we may send SETs at a [high throughput][ssfOut.signal-delivery], you must implement caching of the JWKS endpoint. The cache must:
 
 * Refresh regularly. 
 * Refresh if the value in the `kid` claim does not exist in your cache.

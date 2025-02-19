@@ -40,7 +40,7 @@ There are certain assumptions that we make about your endpoint. These are:
     * GOV.UK One Login Transmitter must be able to request a new token without invalidating previously issued tokens.
     * The token must be valid for a minimum of 1 hour.
 * Throughput:
-    * The `/token` endpoint will need to be able to support a [high throughput][ssfOut.event-delivery].
+    * The `/token` endpoint will need to be able to support a [high throughput][ssfOut.signal-delivery].
 
 The token endpoint should then be used authenticate against the [receiver endpoint][ssfOut.receiver] which you must set up next.
 <%= partial "partials/links" %>
