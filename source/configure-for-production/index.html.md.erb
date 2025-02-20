@@ -8,14 +8,12 @@ review_in: 6 months
 
 # Configure your service for production
 
-<%= warning_text('You must complete this process at least two weeks before you start using the production environment in private or public beta.') %>
+<%= warning_text('You must configure your service for production at least 2 weeks before you start using the production environment in private beta or public beta.') %>
 
 Before you can configure your service for production, you must [integrate with GOV.UK One Login's integration environment][integrate.integrate].
 
-The process for configuring your service for production is: 
-
-1. Confirm with your Engagement Manager that you need to configure your service in production – if you do not have an Engagement Manager, [complete the form to register your interest](https://www.sign-in.service.gov.uk/register).
-1. You only need to send your Engagement Manager the client ID of the client you’ve been testing in your integration configuration. The GOV.UK One Login team will send you a draft configuration in JSON format including the new client ID for your production service. 
+1. Tell your Engagement Manager that you need to configure your service in production – if you do not have an Engagement Manager, [complete the form to register your interest](https://www.sign-in.service.gov.uk/register).
+1. You only need to send your Engagement Manager the service name and client ID of the client you’ve been testing in your integration configuration. The GOV.UK One Login team will send you a draft configuration in JSON format including the new client ID for your production service. 
 1. Update the JSON configuration by replacing the placeholder values with your service's configuration. There’s [guidance on understanding the JSON configuration](/configure-for-production/#use-the-table-to-understand-the-json-configuration). 
 1. Send your modified JSON configuration back to GOV.UK One Login by email. The GOV.UK One Login team will check your production configuration and contact you if we need more information.
 1. Configure the new client ID into your own application code and deploy to your production environment. 
