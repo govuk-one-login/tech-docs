@@ -1,7 +1,7 @@
 ---
 title: Quick start
 weight: 1.6
-last_reviewed_on: 2025-01-21
+last_reviewed_on: 2025-02-26
 review_in: 6 months
 ---
 
@@ -83,7 +83,7 @@ Before you start, make sure you have a:
     * a redirect URI: `http://localhost:8080/oidc/authorization-code/callback`
     * a public key (copy the static public key you created earlier from the `./public_key.pem` file, excluding the headers)
     * scopes: `openid`, `email`, `phone`
-    * a post logout redirect URI: `http://localhost:8080/oidc/logged-out`
+    * a post logout redirect URI: `http://localhost:8080/signed-out`
     * there's further [guidance on registering and managing your service](/before-integrating/register-and-manage-your-service/#register-and-manage-your-service) if you want to include additional fields
 
 #### Configure the example application 
