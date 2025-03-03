@@ -72,7 +72,7 @@ GOV.UK One Login Transmitter will make a best effort attempt to ensure that sign
 
 If the transmitter receives any response other than `HTTP 202 (Accepted)`, then it is considered an error. The transmitter may attempt redelivery every 30 seconds upto 5 times. After the 5th attempt, the failed signals may be kept for upto 14 days before they are discarded. The failed signals may be redelivered upon request.
 
-Once you have setup your transmitter, you may test the integration by either:
+Once you have set up your transmitter, you may test the integration by either:
 
 * Setting up a [health check][ssfOut.health].
 * Testing in the GOV.UK One Login [integration evironment][ssfOut.integration-testing].
