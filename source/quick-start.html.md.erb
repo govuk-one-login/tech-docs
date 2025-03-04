@@ -1,7 +1,7 @@
 ---
 title: Quick start
 weight: 1.6
-last_reviewed_on: 2025-01-21
+last_reviewed_on: 2025-02-26
 review_in: 6 months
 ---
 
@@ -55,7 +55,7 @@ You have 3 different options to create an example service, depending on your nee
 1. Check the simulator is working by running `npm run simulator:config`. You should see the simulator configuration appear. 
 1. Run `npm ci && npm run dev:sim` to build and run the example.
 1. View the example service by going to `http://localhost:8080` in your browser.
-1. Select **Start by logging in**.
+1. Select **Start by logging in**. You may want to use your browser's developer tools to view the web traffic, including the request to the `/authorize` endpoint and its response.
 1. You should see the response from the `/userinfo` and `/token` endpoints: ID and access tokens and user attributes. 
 1. If you want to run an identity journey, select **Verify** again and you should see a successful identity response including the `coreIdentityJWT`, `returnCode` (empty), `address` claims. 
 1. Select **Sign out** in the top header.
@@ -83,7 +83,7 @@ Before you start, make sure you have a:
     * a redirect URI: `http://localhost:8080/oidc/authorization-code/callback`
     * a public key (copy the static public key you created earlier from the `./public_key.pem` file, excluding the headers)
     * scopes: `openid`, `email`, `phone`
-    * a post logout redirect URI: `http://localhost:8080/oidc/logged-out`
+    * a post logout redirect URI: `http://localhost:8080/signed-out`
     * there's further [guidance on registering and managing your service](/before-integrating/register-and-manage-your-service/#register-and-manage-your-service) if you want to include additional fields
 
 #### Configure the example application 
@@ -97,8 +97,7 @@ Before you start, make sure you have a:
 
 1. Run `npm ci && npm run dev:int` – this installs the dependencies and runs the application. 
 1. View the example service by going to `http://localhost:8080` in your browser.
-1. Select **Start by logging in**.
-    * if you see a prompt asking for a username and password, you can find the credentials by scrolling down to the bottom of your service's homepage on the GOV.UK One Login Admin tool
+1. Select **Start by logging in**. You may want to use your browser's developer tools to view the web traffic, including the request to the `/authorize` endpoint and its response.
 1. Follow the on-screen instructions to create a GOV.UK One Login. 
 1. You should see the response from the `/userinfo` and `/token` endpoints: ID and access tokens and user attributes. 
 
