@@ -15,6 +15,15 @@ GOV.UK One Login’s session timeout duration is 1 hour. The 1 hour timeout star
 
 <%= warning_text('All services should build functionality to log a user out. However, if your session timeout duration is less than 1 hour, you must build functionality for your users to log themselves out of your service and GOV.UK One Login.') %>
 
+## ## Re-authenticating your users
+
+
+You may want to issue your user with a sign-in challenge when they are already signed in to verify their credentials.
+
+Re-authentication requests are supported only for JWT-secured OAuth 2.0 authorisation requests (JARs).
+
+If a user does not provide correct credentials as part of the re-authentication journey then GOV.UK One Login will send the [login_required error](/integrate-with-integration-environment/authenticate-your-user.html.) to your system. You must handle this error but for security the user should be logged off if this error occurs. There are retries allowed for each credential. If a user exceeds the maximum retries allowed for each in a previous session before the retry count expires then GOV.UK One Login logs the user out.
+
 ## Managing user sessions if your service session is less than 1 hour
 
 We advise that your service has either the same or a longer session expiry than GOV.UK One Login.
