@@ -39,8 +39,8 @@ The simulator does not currently support all GOV.UK One Login features. Use this
 | Runs locally                                      | Yes                                                                                                                                                                          | No                                                                                                                                                                                                                                         |
 | Supports permit missing nonce                     | No                                                                                                                                                                           | Yes                                                                                                                                                                                                                                        |
 | Configure with the GOV.UK self service admin tool | No. There's further guidance about [configuring the GOV.UK One Login simulator](/gov-uk-one-login-simulator/#configure-the-gov-uk-one-login-simulator) for more information. | Yes                                                                                                                                                                                                                                        |
-| Can test error messages                           | Yes                                                                                                                                                                          | No                                                                                                                                                                                                                                         |
 | Supports performance testing                      | Yes - in [`interactive_mode`](/gov-uk-one-login-simulator/#configure-the-gov-uk-one-login-simulator) only.                                                                   | No                                                                                                                                                                                                                                         |
+| Can test error messages                           | Yes                                                                                                                                                                          | No                                                                                                                                                                                                                                         |
 | Can test the web journey                          | Yes                                                                                                                                                                          | Yes                                                                                                                                                                                                                                        |
 | Can test the mobile journey                       | No                                                                                                                                                                           | No                                                                                                                                                                                                                                         |
 | Can test the landing page URL                     | No                                                                                                                                                                           | No                                                                                                                                                                                                                                         |
@@ -92,7 +92,7 @@ If you do not already have it, [install Docker Desktop](https://www.docker.com/p
 
 You'll need to adjust your configuration to use the simulator as a replacement for the GOV.UK One Login OpenID provider, instead of `oidc.account.gov.uk` or `oidc.integration.account.gov.uk`. 
 
-### Change the default port
+### Change the GOV.UK One Login simulator’s default port
 
 The GOV.UK One Login simulator runs on `http://localhost:3000` by default. 
 
@@ -351,8 +351,12 @@ There are [examples of how to send the simulator requests on GitHub](https://git
 
 Parameters provided as environment variables which are parsed as an array should be set as a comma-separated string, for example `SCOPES=openid,email`.
 
-If you input invalid configuration fields, the simulator may not use them, or return an error, or it may lead to unexpected results.
-    
+If you input invalid configuration fields, the simulator might:
+
+* not use them
+* return an error
+* return unexpected results
+
 #### Reset GOV.UK One Login simulator back to its default settings
 
 To reset the GOV.UK One Login simulator configuration back to its default settings, you need to stop the container in Docker and restart it.
@@ -404,14 +408,14 @@ This table describes the different fields for the response configuration:
 | Environment variable    | Config request field                | Description                                                                                                                                                                                 | Valid values                                                      |
 | ----------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | N/A                     | `coreIdentityVerifiableCredentials` | A core identity verifiable credential.                                                                                                                                                      | JSON object                                                       |
-| N/A                     | `drivingPermitDetails`              | A set of driving licence details the simulator returns to the RP.                                                                                                                           | JSON array                                                        |
+| N/A                     | `drivingPermitDetails`              | A set of driving licence details the simulator returns to the user.                                                                                                                           | JSON array                                                        |
 | `EMAIL`                 | `email`                             | The returned email address.                                                                                                                                                                 | Any string                                                        |
 | `EMAIL_VERIFIED`        | `emailVerified`                     | Whether or not the email address has been verified.                                                                                                                                         | Boolean                                                           |
 | N/A                     | `maxLoCAchieved`                    | The maximum level of confidence the user achieved.                                                                                                                                          | Any string                                                        |
-| N/A                     | `passportDetails`                   | A set of passport details the simulator returns to the RP.                                                                                                                                  | JSON array                                                        |
+| N/A                     | `passportDetails`                   | A set of passport details the simulator returns to the user.                                                                                                                                  | JSON array                                                        |
 | `PHONE_NUMBER`          | `phoneNumber`                       | The returned phone number.                                                                                                                                                                  | Any string                                                        |
 | `PHONE_NUMBER_VERIFIED` | `phoneNumberVerified`               | Whether or not the phone number has been verified.                                                                                                                                          | Boolean                                                           |
-| N/A                     | `postalAddressDetails`              | A set of address details the simulator returns to the RP.                                                                                                                                   | JSON array                                                        |
+| N/A                     | `postalAddressDetails`              | A set of address details the simulator returns to the user.                                                                                                                                   | JSON array                                                        |
 | N/A                     | `returnCodes`                       | A set of codes returned if the return code claim is included in the client configuration and `/authorize` request. Otherwise an `ACCESS_DENIED` error will return when this is configured.  | JSON array with the following structure `[{"code": "anyString"}]` |
 | `SUB`                   | `sub`                               | The returned pairwise subject identifier.                                                                                                                                                   | Any string                                                        |
 
@@ -476,7 +480,7 @@ These are errors in the issued core identity JWT returned by the GOV.UK One Logi
 | `INVALID_AUD`        | Core identity has an invalid audience.                                                                           |
 | `INVALID_ISS`        | Core identity has an invalid issuer.                                                                             |
 | `INVALID_SIGNATURE`  | The signature of the token is invalid.                                                                           |
-| `TOKEN_EXPIRED`      | The expiry date of the token has passed.                                                                         |
+| `TOKEN_EXPIRED`      | The expiry date of the token is in the past.                                                                     |
 
 To remove an error configuration, you can either unset the environment variables, or you can make a `POST` request to the `/config` endpoint without the `errorConfiguration` field in the body.
 
