@@ -274,16 +274,26 @@ The identity credential contains the following claims as properties of `credenti
 | `birthDate` | A list of [ISO 8601 date][external.ISO-8601-date] strings. There may be multiple dates of birth, for example, if there’s evidence an incorrect date of birth was previously recorded for your user. The date of birth GOV.UK One Login has highest confidence in will be the first item in the list.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ## Understand your user’s address claim
-The `https://vocab.account.gov.uk/v1/address` claim contains all addresses your user has declared, including previous
-addresses.
+
+The `https://vocab.account.gov.uk/v1/address` claim contains all addresses your user has entered, including previous
+addresses. GOV.UK One Login checks the address format and performs some checks, depending on the address's location and user's journey. 
+
+GOV.UK One Login collects at least 3 months' worth of addresses.
+
+GOV.UK One Login supports the following characters in the address claim: 
+
+* digits: `0-9`
+* letters: `A-Z` and `a-z`
+* special characters: `'` (apostrophe), `.` (period), `,` (comma), `\` (backslash), `/` (forward slash), `*` (asterisk), and `-` (hyphen)
+* space: ` `
 
 Each JSON object in the list may contain any of the following properties:
 
 | Property                         | Definition                                                                                                                                                                                                                                                                                                                    |
 |----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `validFrom`                      | [ISO 8601 date][external.ISO-8601-date] strings representing the date your user moved into the address.<br>If the month is unknown for `validFrom`, GOV.UK One Login will show that as `01`. GOV.UK One Login will also show an unknown day of the month as `01`.                                                             |
-| `validUntil`                     | [ISO 8601 date][external.ISO-8601-date] strings representing the date your user moved from the address. This property is not included for your user’s current address.<br>If the month is unknown for `validUntil`, GOV.UK One Login will show that as `01`. GOV.UK One Login will also show an unknown day of month as `01`. |
-| `uprn`                           | GOV.UK One Login will provide a [Unique Property Reference Number (UPRN)](https://www.gov.uk/government/publications/open-standards-for-government/identifying-property-and-street-information) for UK addresses, unless your user has manually corrected their address.                                                      |
+| `validFrom`                      | [ISO 8601 date][external.ISO-8601-date] strings representing the date your user moved into the address.<br></br> <br></br>GOV.UK One Login only collects the year from the user. The month and day will always default to `01`. For example, if the user moved in 2024, the `validFrom` date would be `2024-01-01`.                                                         |
+| `validUntil`                     | [ISO 8601 date][external.ISO-8601-date] strings representing the date your user moved from the address. This property is not included for your user’s current address.<br></br> <br></br>GOV.UK One Login only collects the year from the user. The month and day will always default to `01`. For example, if the user moved in 2024, the `validUntil` date would be `2024-01-01`.  <br></br> <br></br>  If a user tells us an address is their current address, then `validUntil` will be not be returned. |
+| `uprn`                           | GOV.UK One Login will provide a [Unique Property Reference Number (UPRN)](https://www.gov.uk/government/publications/open-standards-for-government/identifying-property-and-street-information) for UK addresses only. <br></br> <br></br> If a user has edited their address, the UPRN field will automatically clear.                                                    |
 | `organisationName`               | Maps to `ORGANISATION_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                  |
 | `departmentName`                 | Maps to `DEPARTMENT_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                    |
 | `subBuildingName`                | Maps to `SUB_BUILDING_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].<br><br>`subBuildingName` may accompany either `buildingName` or `buildingNumber`.                                                                                                |
@@ -293,14 +303,55 @@ Each JSON object in the list may contain any of the following properties:
 | `streetName`                     | Maps to `THOROUGHFARE_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                  |
 | `doubleDependentAddressLocality` | Maps to `DOUBLE_DEPENDENT_LOCALITY` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                          |
 | `dependentAddressLocality`       | Maps to `DEPENDENT_LOCALITY` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                 |
-| `addressLocality`                | Maps to `POST_TOWN` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                          |
+| `addressLocality`                | Maps to `POST_TOWN` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                 |
+| `addressRegion`                  | Maps to [schema:addressRegion](https://schema.org/addressRegion). Only returned for international addresses and will contain the region, provided as text. For example, California or another appropriate first-level Administrative division.                                                                                |
 | `postalCode`                     | Maps to `POST_CODE` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                          |
 | `addressCountry`                 | Two-letter [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).                                                                                                                                                                                                                               |
-| `addressRegion`                  | Maps to [schema:addressRegion](https://schema.org/addressRegion). Only returned for international addresses and will contain the region, provided as text. For example, California or another appropriate first-level Administrative division.                                                                                |
+
+
+<%= warning_text('The attributes might be returned in any order.') %>
 
 Do not assume address properties always map to the same line of an address. For example, <code>addressLocality</code>
 may map to a different line of an address, depending on whether other properties are present (in this case, <code>
 dependentAddressLocality</code> and <code>doubleDependentAddressLocality</code>).
+
+
+A sample UK (`GB`) address returned would look similar to this: 
+
+```
+{
+  uprn: "100021051133",
+  organisationName: "Acme Corporation",
+  departmentName: "Sales Department",
+  subBuildingName: "Unit 3B",
+  buildingNumber: "42",
+  buildingName: "Riverside House",
+  dependentStreetName: "Industrial Estate",
+  streetName: "River Lane",
+  doubleDependentAddressLocality: "Riverside",
+  dependentAddressLocality: "Newtown",
+  addressLocality: "Birmingham",
+  postalCode: "B12 8QT",
+  addressCountry: "GB"
+  "validFrom": "2000-01-01",
+}
+```
+
+A sample international address returned would look similar to this: 
+
+```
+{
+  "subBuildingName": "1", 
+  "buildingNumber": "27", 
+  "buildingName": "The Big Building",
+  "streetName": "Long Street",
+  "addressLocality": "Los Angeles",
+  "addressRegion": "California"
+  "postalCode": "90012",
+  "addressCountry": "US",
+  "validFrom": "2000-01-01",
+}
+```
 
 ## Understand your user's passport claim
 The <code>https://vocab.account.gov.uk/v1/passport</code> claim contains the details of your user’s passport, if they
