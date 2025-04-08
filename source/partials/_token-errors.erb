@@ -7,3 +7,4 @@
 | `invalid_grant`          | The authorisation code is invalid or expired. This is also the error which would return if the redirect URL given in the authorisation request does not match the URL provided in this access token request. |
 | `unauthorized_client`    | The application is successfully authenticated, but it's not registered to use the requested [grant type](https://oauth.net/2/grant-types/). |
 | `unsupported_grant_type` | The grant type is not supported by the server. |
+| `login_required`         | After a re-authentication request has been issued, a user is unable to authenticate themselves.<br> Reasons for this could be:<ul><li>the user has entered a different email address to the one stored</li><li>the user has entered the wrong password too many times</li><li>the user has entered the wrong one-time password (OTP) code too many times</li></ul><br> 
