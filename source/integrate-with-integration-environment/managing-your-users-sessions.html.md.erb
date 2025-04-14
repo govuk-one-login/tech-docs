@@ -20,7 +20,7 @@ GOV.UK One Login’s session timeout duration is 1 hour. The 1 hour timeout star
 You may want to make sure your user is required to sign in interactively even when they have an existing GOV.UK One Login session.
 
 
-Re-authentication requests using a populated ID token and prompt=login are supported only for JWT-secured OAuth 2.0 authorisation requests (JARs).
+Re-authentication requests using a populated ID token and `prompt=login` are supported only for JWT-secured OAuth 2.0 authorisation requests (JARs).
 
 
 There are retries allowed for each credential a user gets wrong. If a user exceeds the maximum retries allowed before the retry count expires then GOV.UK One Login logs the user out and will send the [login_required error] (/integrate-with-integration-environment/authenticate-your-user/### Error handling for ‘Make a token request’) to your service. You must handle this error and for security you must terminate the user's session in your service.
