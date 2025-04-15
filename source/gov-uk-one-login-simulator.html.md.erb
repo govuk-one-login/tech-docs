@@ -1,0 +1,506 @@
+---
+title: Test your service with the GOV.UK One Login simulator
+weight: 1.7
+last_reviewed_on: 2025-04-02
+review_in: 6 months
+---
+
+# Test your service with the GOV.UK One Login simulator
+
+If you’re a service developer you can use the GOV.UK One Login simulator to:
+
+* build your service with your choice of development environment and frameworks
+* test your service locally with a range of data, return codes and error scenarios
+
+If you’re a quality assurance tester you can use the GOV.UK One Login simulator to perform end to end testing of your service with your own pre-configured data.
+
+With the GOV.UK One Login simulator you can:
+
+* test and verify specific user information, such as names and email addresses
+* request specific error scenarios and write code to handle these
+* test responses for identity verification without going through the identity proving process
+
+You can run the simulator locally. It is distributed as a Docker image from the [GitHub container registry](https://github.com/govuk-one-login/simulator/pkgs/container/simulator/versions). 
+
+The GOV.UK One Login team runs daily acceptance tests against the live system, so you’ll always be using the most up-to-date API schemas. 
+
+<%= warning_text('The GOV.UK One Login simulator is not the real GOV.UK One Login. Before you go live you must <a href="https://docs.sign-in.service.gov.uk/test-your-integration/">test your application using the integration environment</a>.') %>
+
+## Compare GOV.UK One Login simulator and integration environments
+
+The simulator does not currently support all GOV.UK One Login features. Use this table to understand the difference between the GOV.UK One Login simulator and the integration environment.
+
+| Feature                                           | GOV.UK One Login Simulator                                                                                                                                                   | GOV.UK One Login Integration environment                                                                                                                                                                                                   |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Uses the GOV.UK One Login API                     | Yes                                                                                                                                                                          | Yes                                                                                                                                                                                                                                        |
+| Configurable response data                        | Yes                                                                                                                                                                          | No. You need to request fictional users and their knowledge-based verification (KBV) answers to help you test your journeys. [Email GOV.UK One Login](mailto:govuk-one-login@digital.cabinet-office.gov.uk) to access this test user data. |
+| Supports `client_secret_post`                     | No                                                                                                                                                                           | Yes                                                                                                                                                                                                                                        |
+| Runs on a publicly accessible endpoint            | No, unless you host it online.                                                                                                                                               | Yes                                                                                                                                                                                                                                        |
+| Runs locally                                      | Yes                                                                                                                                                                          | No                                                                                                                                                                                                                                         |
+| Supports permit missing nonce                     | No                                                                                                                                                                           | Yes                                                                                                                                                                                                                                        |
+| Configure with the GOV.UK self service admin tool | No. There's further guidance about [configuring the GOV.UK One Login simulator](/gov-uk-one-login-simulator/#configure-the-gov-uk-one-login-simulator) for more information. | Yes                                                                                                                                                                                                                                        |
+| Supports performance testing                      | Yes - in [`interactive_mode`](/gov-uk-one-login-simulator/#configure-the-gov-uk-one-login-simulator) only.                                                                   | No                                                                                                                                                                                                                                         |
+| Can test error messages                           | Yes                                                                                                                                                                          | No                                                                                                                                                                                                                                         |
+| Can test the web journey                          | Yes                                                                                                                                                                          | Yes                                                                                                                                                                                                                                        |
+| Can test the mobile journey                       | No                                                                                                                                                                           | No                                                                                                                                                                                                                                         |
+| Can test the landing page URL                     | No                                                                                                                                                                           | No                                                                                                                                                                                                                                         |
+
+## API endpoints
+
+The simulator exposes the following API endpoints:
+
+| Endpoint                            | Description                                                                                       |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `/`                                 | A simulator endpoint that confirms it is running by displaying `Express + TypeScript Server`.     |
+| `/.well-known/openid-configuration` | An OpenID configuration endpoint.                                                                 |
+| `/.well-known/jwks.json`            | A JSON Web Keys (JWKS) endpoint to publish the public keys that sign the ID token.                |
+| `/.well-known/did.json`             | A decentralised identifier (DID) endpoint to publish the public keys that sign the core identity. |
+| `/authorize`                        | An OpenID Connect (OIDC) endpoint to An OpenID Connect (OIDC) endpoint to [authenticate the user](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-authorize-endpoint). |
+| `/config`                           | A simulator configuration endpoint for modifying and requesting the current configuration using `POST` and `GET`. |
+| `/logout`                           | An OIDC endpoint to [log the user out](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/managing-your-users-sessions/#log-your-user-out-of-gov-uk-one-login). |
+| `/token`                            | An OIDC endpoint to [exchange the authorisation code for tokens](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-token-request). |
+| `/trustmark`                        | A OIDC trustmark document listing vectors of trust implemented by GOV.UK One Login. |
+| `/userinfo`                         | An OIDC endpoint to [retrieve user information](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#retrieve-user-information). |
+
+## Run the GOV.UK One Login simulator in Docker without configuration
+
+If you do not already have it, [install Docker Desktop](https://www.docker.com/products/docker-desktop/) (version 4.34.0 or higher).
+
+### Run the GOV.UK One Login simulator locally with Docker Desktop
+
+1. In Docker Desktop, select the **Settings** symbol (cog) in the top right corner.
+1. In Docker Desktop, select **Resources**, then **Network** from the left hand menu.
+1. In Docker Desktop, select **Enable host networking**, then select **Apply & restart**.
+1. On the command line, run `docker run --rm --detach --publish 3000:3000 --name simulator ghcr.io/govuk-one-login/simulator:latest`.
+
+## Run the GOV.UK One Login simulator from source code without configuration
+
+1. If you do not already have it, [install git](https://github.com/git-guides/install-git).
+1. If you do not already have it, [install nvm](https://github.com/nvm-sh/nvm).
+
+### Run the GOV.UK One Login simulator locally
+
+1. Run `git clone https://github.com/govuk-one-login/simulator && cd simulator`. This will get the simulator Typescript code and set your working directory.
+1. Run `nvm install 22.11.0 && nvm use 22.11.0`. This makes sure you’re using the correct version of Node.js.
+1. Run `npm install && npm run build` to build the simulator.
+1. Run `npm run start` to run the simulator.
+1. Check the simulator is working by running `curl http://localhost:3000`. You should see the simulator configuration appear.
+
+You'll need to adjust your configuration to use the simulator as a replacement for the GOV.UK One Login OpenID provider, instead of `oidc.account.gov.uk` or `oidc.integration.account.gov.uk`. 
+
+### Change the GOV.UK One Login simulator’s default port
+
+The GOV.UK One Login simulator runs on `http://localhost:3000` by default. 
+
+You can run it on another port if needed. For example, to switch it to `localhost:3333` run:
+
+```
+docker run -e SIMULATOR_URL='http://localhost:3333' -e PORT=3333  --rm -ti -p 3333:3333 ghcr.io/govuk-one-login/simulator:latest
+```
+
+If you’re not using Docker you can run: 
+
+```
+PORT=3333 SIMULATOR_URL=http://localhost:3333 npm run start
+```
+
+## View the default configuration
+
+To check the default configuration of the simulator run:
+
+<details class="govuk-details">
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">
+      Show command
+    </span>
+  </summary>
+  <div class="govuk-details__text">
+  <pre><code>
+  $ curl localhost:3000/config | jq.
+  {
+    "clientConfiguration": {
+      "clientId": "HGIOgho9HIRhgoepdIOPFdIUWgewi0jw",
+      "publicKey": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmXXR3EsRvUMVhEJMtQ1w\nexJjfQ00Q0MQ7ARfShN53BnOQEPFnS/I8ntBddkKdE3q+vMTI72w6Fv3SsMM+ciR\n2LIHdEQfKgsLt6PGNcV1kG6GG/3nSW3psW8w65Q3fmy81P1748qezDrVfaGrF4PD\nXALzX1ph+nz8mpKmck6aY6LEUJ4B+TIfYzlKmmwFe3ri0spSW+J5wE9mmT3VkR2y\nSuHRYHQlxlF9dfX7ltOTsbgJFzN6TO01ZQDhY0iLwzdGwhSxO6R6N/ZINYHCKFPa\nQD+tdKsrw7QDIYnx0IiXFnkGnizl3UtqSmXAaceTvPM2Pz84x2JiwHrp2Sml6RYL\nCQIDAQAB\n-----END PUBLIC KEY-----\n",
+      "scopes": [
+        "openid",
+        "email",
+        "phone"
+      ],
+      "redirectUrls": [
+        "http://localhost:8080/oidc/authorization-code/callback"
+      ],
+      "postLogoutRedirectUrls": [
+        "http://localhost:8080/signed-out"
+      ],
+      "claims": [
+        "https://vocab.account.gov.uk/v1/coreIdentityJWT",
+        "https://vocab.account.gov.uk/v1/address",
+        "https://vocab.account.gov.uk/v1/returnCode"
+      ],
+      "identityVerificationSupported": true,
+      "idTokenSigningAlgorithm": "ES256",
+      "clientLoCs": [
+        "P0",
+        "P2"
+      ]
+    },
+    "errorConfiguration": {
+      "coreIdentityErrors": [],
+      "idTokenErrors": [],
+      "authoriseErrors": []
+    },
+    "responseConfiguration": {
+      "sub": "urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=",
+      "email": "test@example.com",
+      "emailVerified": true,
+      "phoneNumber": "07123456789",
+      "phoneNumberVerified": true,
+      "maxLoCAchieved": "P2",
+      "coreIdentityVerifiableCredentials": {
+        "type": [
+          "VerifiableCredential",
+          "IdentityCheckCredential"
+        ],
+        "credentialSubject": {
+          "name": [
+            {
+              "nameParts": [
+                {
+                  "value": "GEOFFREY",
+                  "type": "GivenName"
+                },
+                {
+                  "value": "HEARNSHAW",
+                  "type": "FamilyName"
+                }
+              ]
+            }
+          ],
+          "birthDate": [
+            {
+              "value": "1955-04-19"
+            }
+          ]
+        }
+      },
+      "passportDetails": null,
+      "drivingPermitDetails": null,
+      "postalAddressDetails": [
+        {
+          "addressCountry": "GB",
+          "buildingName": "",
+          "streetName": "FRAMPTON ROAD",
+          "postalCode": "GL1 5QB",
+          "buildingNumber": "26",
+          "addressLocality": "GLOUCESTER",
+          "validFrom": "2000-01-01",
+          "uprn": 100120472196,
+          "subBuildingName": ""
+        }
+      ],
+      "returnCodes": []
+    },
+    "simulatorUrl": "http://localhost:3000"
+  }
+  </code></pre>
+  </div>
+</details>
+<br>
+
+This table shows the default configuration values:
+ 
+| Field                                    | Default value                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `clientId`                               | `HGIOgho9HIRhgoepdIOPFdIUWgewi0jw`                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `publicKey`                              | <code>-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmXXR3EsRvUMVhEJMtQ1wexJjfQ00Q0MQ7ARfShN53BnOQEPFnS/I8ntBddkKdE3q+vMTI72w6Fv3SsMM+ciR2LIHdEQfKgsLt6PGNcV1kG6GG/3nSW3psW8w65Q3fmy81P1748qezDrVfaGrF4PDXALzX1ph+nz8mpKmck6aY6LEUJ4B+TIfYzlKmmwFe3ri0spSW+J5wE9mmT3VkR2ySuHRYHQlxlF9dfX7ltOTsbgJFzN6TO01ZQDhY0iLwzdGwhSxO6R6N/ZINYHCKFPaQD+tdKsrw7QDIYnx0IiXFnkGnizl3UtqSmXAaceTvPM2Pz84x2JiwHrp2Sml6RYLCQIDAQAB-----END PUBLIC KEY-----</code> |
+| `scopes`                                 | `["openid", "email", "phone"]`                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `redirectUrls`                           | `["http://localhost:8080/oidc/authorization-code/callback"]`                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `claims`                                 | `["https://vocab.account.gov.uk/v1/coreIdentityJWT","https://vocab.account.gov.uk/v1/address","https://vocab.account.gov.uk/v1/returnCode"]`                                                                                                                                                                                                                                                                                                                 |
+| `identityVerificationSupported`          | `true`                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `idTokenSigningAlgorithm`                | `ES256`                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `clientLoCs`                             | `["P0", "P2"]`                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `sub`                                    | `urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=`                                                                                                                                                                                                                                                                                                                                                                                           |
+| `email`                                  | `test@example.com`                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `emailVerified`                          | `true`                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `phoneNumber`                            | `07123456789`                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `phoneNumberVerified`                    | `true`                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `maxLoCAchieved`                         | `P2`                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `coreIdentityVerifiableCredentials`      | `{"type":["VerifiableCredential","IdentityCheckCredential"],"credentialSubject":{"name":[{"nameParts":[{"value":"GEOFFREY","type":"GivenName"},{"value":"HEARNSHAW","type":"FamilyName"}]}],"birthDate":[{"value":"1955-04-19"}]}}`                                                                                                                                                                                                                          |
+| `passportDetails`                        | `null`                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `drivingPermitDetails`                   | `null`                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `postalAddressDetails`                   | `{"postalAddressDetails":[{"addressCountry":"GB","buildingName":"","streetName":"FRAMPTON ROAD","postalCode":"GL1 5QB","buildingNumber":"26","addressLocality":"GLOUCESTER","validFrom":"2000-01-01","uprn":100120472196,"subBuildingName":""}]}`                                                                                                                                                                                                            |
+| `returnCodes`                            | `null`                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `simulatorUrl`                           | `http://localhost:3000`                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `postLogoutRedirectUrls`                 | `["http://localhost:8080/signed-out]`                                                                                                                                                                                                                                                                                                                                                                                                                        |
+
+The private key for the default public key is:
+
+<details class="govuk-details">
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">
+      Show private key
+    </span>
+  </summary>
+  <div class="govuk-details__text">
+    <code>
+-----BEGIN PRIVATE KEY-----
+MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCZddHcSxG9QxWE
+Qky1DXB7EmN9DTRDQxDsBF9KE3ncGc5AQ8WdL8jye0F12Qp0Ter68xMjvbDoW/dK
+wwz5yJHYsgd0RB8qCwu3o8Y1xXWQboYb/edJbemxbzDrlDd+bLzU/Xvjyp7MOtV9
+oasXg8NcAvNfWmH6fPyakqZyTppjosRQngH5Mh9jOUqabAV7euLSylJb4nnAT2aZ
+PdWRHbJK4dFgdCXGUX119fuW05OxuAkXM3pM7TVlAOFjSIvDN0bCFLE7pHo39kg1
+gcIoU9pAP610qyvDtAMhifHQiJcWeQaeLOXdS2pKZcBpx5O88zY/PzjHYmLAeunZ
+KaXpFgsJAgMBAAECggEAGtEkgb8ak/zPm0OsvOzizZb6jMVMbz6ei+f9sOezYVuf
+F8rgEyZhEsKoP0xUz9s352+n1hSVgB1mGwn30ASVPA1sUQyAd6vjec1kW0wszbcK
+t4SIsOPEtU2NenV1tyGQZBYB2t4zHtRfL2ubhunvLzqSxgR437mMuQRMkugagbOQ
+CRPhwslZECcZvmOh5HURkbE0L5F1uXckc+tf0hktgiI4LB+Eej9e4TkhHnv6B9pe
+yejfk/O+48O3sZ2emYgY6TSqcgwutj6UipROknyAorWUQ8vTaSewm6HO++cRH5a/
+D0JPoLX7uM8JcosIIiLE1p6qihjhPRe65Rvb7tSMOwKBgQDQBMHkETsQlb26vGhm
+9Fc29GQJFe0yTZVD/94U98hpfbOu22E3TslXzpsNoCR61zgZdM7dWQINi3AvonFS
+QJlDEYGNX0zYOqT1goI+3tBMpptnNzfgRN72bp748JiUyWLnjcWUNc2gwIEc2yET
+wR4Zxz6A7h1iA9+fM/rEE1ULHwKBgQC823VoUO7p13WvdrYrmM93Xc6Cv5nZFLZn
+bFjt4xwi096yJ2BTxARFhCBYaDD9vi4yzKjHih/1G53T6aaRbuLaNOSO58jHY1eh
+par1Xw+JjKwK7bnFGOY+mGAT9kz/agDQv+ELu6PpgiRW/Awiz9UW5OV0cquQIhRj
+60yn25PM1wKBgQCI2YhhLUDJUWnHbunUSY0S90bUf1tTy5yWZr9I1hY/6FWMhID5
+bNii7qYtGZzGP86FWMY68rKaDJDalaitrxfk+qBbTEX2vuYFKj3bdKReuQDlr3sQ
+DN8OCoqFRWtr/u0VXryMG7VSuzJ1tGeXYmYWGXEySvSDpf648u5XjkxViwKBgQCO
++9COJAhePuQ47jXKGC2q//ikARAnzIi1ENDbeoEI1UPbufgyM0vQndInXOsKkXxE
+tbJrMGY1mq0JjfKwVTWnYzhQAah/XPUxy0396/TFfR2cQJPPZ6Saa58CPg3ZqpXn
+df6adXwKBKAiwz0k9hks9ivK2C6QN10csT8eLx5djQKBgQCiVnIJ3JcjNXHlygCW
+eZG4zLcylZXusOv3VYBJKypBLVI74buoFfrvMcV/lQrI3Yo+6V95rNYGm+2MVxIc
+iZSejbyqjUjJBAH9GHkPsiA+w1vutdd2PuPKOV05TLmV5ZM06bmLHQjMCGMiWK0G
+8qVxFvr2NWRDB3otAjxVHR/ZQA==<br>
+-----END PRIVATE KEY-----
+</code>
+  </div>
+</details>
+<br>
+The GOV.UK One Login simulator is also set up with a default private/public key pair for client assertion. The private key for the default key pair is:
+
+<details class="govuk-details">
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">
+      Show private key
+    </span>
+  </summary>
+  <div class="govuk-details__text">
+  <code>
+  -----BEGIN PRIVATE KEY-----
+  MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCZddHcSxG9QxWE
+Qky1DXB7EmN9DTRDQxDsBF9KE3ncGc5AQ8WdL8jye0F12Qp0Ter68xMjvbDoW/dK
+wwz5yJHYsgd0RB8qCwu3o8Y1xXWQboYb/edJbemxbzDrlDd+bLzU/Xvjyp7MOtV9
+oasXg8NcAvNfWmH6fPyakqZyTppjosRQngH5Mh9jOUqabAV7euLSylJb4nnAT2aZ
+PdWRHbJK4dFgdCXGUX119fuW05OxuAkXM3pM7TVlAOFjSIvDN0bCFLE7pHo39kg1
+gcIoU9pAP610qyvDtAMhifHQiJcWeQaeLOXdS2pKZcBpx5O88zY/PzjHYmLAeunZ
+KaXpFgsJAgMBAAECggEAGtEkgb8ak/zPm0OsvOzizZb6jMVMbz6ei+f9sOezYVuf
+F8rgEyZhEsKoP0xUz9s352+n1hSVgB1mGwn30ASVPA1sUQyAd6vjec1kW0wszbcK
+t4SIsOPEtU2NenV1tyGQZBYB2t4zHtRfL2ubhunvLzqSxgR437mMuQRMkugagbOQ
+CRPhwslZECcZvmOh5HURkbE0L5F1uXckc+tf0hktgiI4LB+Eej9e4TkhHnv6B9pe
+yejfk/O+48O3sZ2emYgY6TSqcgwutj6UipROknyAorWUQ8vTaSewm6HO++cRH5a/
+D0JPoLX7uM8JcosIIiLE1p6qihjhPRe65Rvb7tSMOwKBgQDQBMHkETsQlb26vGhm
+9Fc29GQJFe0yTZVD/94U98hpfbOu22E3TslXzpsNoCR61zgZdM7dWQINi3AvonFS
+QJlDEYGNX0zYOqT1goI+3tBMpptnNzfgRN72bp748JiUyWLnjcWUNc2gwIEc2yET
+wR4Zxz6A7h1iA9+fM/rEE1ULHwKBgQC823VoUO7p13WvdrYrmM93Xc6Cv5nZFLZn
+bFjt4xwi096yJ2BTxARFhCBYaDD9vi4yzKjHih/1G53T6aaRbuLaNOSO58jHY1eh
+par1Xw+JjKwK7bnFGOY+mGAT9kz/agDQv+ELu6PpgiRW/Awiz9UW5OV0cquQIhRj
+60yn25PM1wKBgQCI2YhhLUDJUWnHbunUSY0S90bUf1tTy5yWZr9I1hY/6FWMhID5
+bNii7qYtGZzGP86FWMY68rKaDJDalaitrxfk+qBbTEX2vuYFKj3bdKReuQDlr3sQ
+DN8OCoqFRWtr/u0VXryMG7VSuzJ1tGeXYmYWGXEySvSDpf648u5XjkxViwKBgQCO
++9COJAhePuQ47jXKGC2q//ikARAnzIi1ENDbeoEI1UPbufgyM0vQndInXOsKkXxE
+tbJrMGY1mq0JjfKwVTWnYzhQAah/XPUxy0396/TFfR2cQJPPZ6Saa58CPg3ZqpXn
+df6adXwKBKAiwz0k9hks9ivK2C6QN10csT8eLx5djQKBgQCiVnIJ3JcjNXHlygCW
+eZG4zLcylZXusOv3VYBJKypBLVI74buoFfrvMcV/lQrI3Yo+6V95rNYGm+2MVxIc
+iZSejbyqjUjJBAH9GHkPsiA+w1vutdd2PuPKOV05TLmV5ZM06bmLHQjMCGMiWK0G
+8qVxFvr2NWRDB3otAjxVHR/ZQA==<br>
+-----END PRIVATE KEY-----
+</code>
+</details>
+<br>
+
+## Change the default configuration
+
+You can change the client configuration or use a different key to sign your client assertion. You do this by setting environment variables when running the simulator or send a `POST` request to the `/config` endpoint in the format:
+
+    ```
+    {
+        "clientConfiguration": {
+            "redirectUrls": ["http://localhost:8080/callback"],
+            "idTokenSigningAlgorithm": "RS256",
+            "publicKey": "TEST_PUBLIC_KEY"
+        }
+    }
+    ```
+
+## Configure the GOV.UK One Login simulator
+
+### Set up client, response and error configuration
+
+There are 3 ways you can set up the client, response and error configuration for the GOV.UK One Login simulator:
+
+1. Use environment variables – these work best if you have a static configuration which should not change frequently.
+1. Make a `POST` request to the `/config` endpoint to update the configuration – this works best for a configuration which you are likely to update frequently.
+    * a `POST` request to the `/config` endpoint will overwrite any fields set as environment variables while the Docker container is running.
+1. Set the environment variable `INTERACTIVE_MODE` to `true` - this is best if you want to [return multiple response configurations](https://github.com/govuk-one-login/simulator/blob/main/docs/interactive-mode.md).
+
+
+There are [examples of how to send the simulator requests on GitHub](https://github.com/govuk-one-login/onboarding-examples/tree/main/data/simulator-configuration).
+
+Parameters provided as environment variables which are parsed as an array should be set as a comma-separated string, for example `SCOPES=openid,email`.
+
+If you input invalid configuration fields, the simulator might:
+
+* not use them
+* return an error
+* return unexpected results
+
+#### Reset GOV.UK One Login simulator back to its default settings
+
+To reset the GOV.UK One Login simulator configuration back to its default settings, you need to stop the container in Docker and restart it.
+
+If you’re not using Docker you can stop the GOV.UK One Login simulator by running `ctrl+C` on the command line and restarting the GOV.UK One Login simulator.  
+
+#### Configure the client
+
+When updating the client configuration using the `/config` endpoint, you must use the following JSON structure in the request body:
+
+```
+{
+  "clientConfiguration": {
+    "clientId": "ClientId",
+    "scopes": ["openid", "phone", "email"],
+    ...other fields
+  },
+}
+```
+   
+This table describes the different fields for the client configuration:
+  
+| Environment variable              | Config request field            | Description                                                                         | Valid values                                                                                                                                                                                                                                                                          |
+| --------------------------------- | ------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `CLAIMS`                          | `claims`                        | The claims you configured the client to request.                                    | <ul><li>`https://vocab.account.gov.uk/v1/passport`</li><li>`https://vocab.account.gov.uk/v1/address`</li><li>`https://vocab.account.gov.uk/v1/drivingPermit`</li><li>`https://vocab.account.gov.uk/v1/coreIdentityJWT`</li><li>`https://vocab.account.gov.uk/v1/returnCode`</li></ul> | 
+| `CLIENT_ID`                       | `clientId`                      | The public identifier for a client.                                                 | Any string                                                                                                                                                                                                                                                                            |
+| `CLIENT_LOCS`                     | `clientLoCs`                    | The levels of confidence values which the client can request.                       | `P0`, `P1`, `P2`                                                                                                                                                                                                                                                                      |
+| `IDENTITY_VERIFICATION_SUPPORTED` | `identityVerificationSupported` | Whether or not the client has identity verification enabled.                        | Boolean                                                                                                                                                                                                                                                                               |
+| `ID_TOKEN_SIGNING_ALGORITHM`      | `idTokenSigningAlgorithm`       | The algorithm which you should sign the ID token with.                              | `ES256` or `RS256`                                                                                                                                                                                                                                                                    |
+| `PUBLIC_KEY`                      | `publicKey`                     | The public key the simulator will use to validate the `client_assertion` signature. | PEM-encoded public key                                                                                                                                                                                                                                                                |
+| `REDIRECT_URLS`                   | `redirectUrls`                  | The redirect URLs, which your users will be redirected to.                          | Any valid URLs                                                                                                                                                                                                                                                                        |
+| `SCOPES`                          | `scopes`                        | The scopes you've configured the client to request.                                 | <ul><li>`openid`</li><li>`email`</li><li>`phone`</li></ul>                                                                                                                                                                                                                            |
+
+#### Configure the response
+
+When updating the response configuration using the `/config` endpoint, you must use the following JSON structure in the request body:
+
+```
+{
+  "responseConfiguration": {
+    "sub": "someSubjectIdentifier",
+    "email": "anExampleEmail@example.com" ,
+    ...other fields
+  },
+}
+```
+This table describes the different fields for the response configuration:
+
+| Environment variable    | Config request field                | Description                                                                                                                                                                                 | Valid values                                                      |
+| ----------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| N/A                     | `coreIdentityVerifiableCredentials` | A core identity verifiable credential.                                                                                                                                                      | JSON object                                                       |
+| N/A                     | `drivingPermitDetails`              | A set of driving licence details the simulator returns to the user.                                                                                                                           | JSON array                                                        |
+| `EMAIL`                 | `email`                             | The returned email address.                                                                                                                                                                 | Any string                                                        |
+| `EMAIL_VERIFIED`        | `emailVerified`                     | Whether or not the email address has been verified.                                                                                                                                         | Boolean                                                           |
+| N/A                     | `maxLoCAchieved`                    | The maximum level of confidence the user achieved.                                                                                                                                          | Any string                                                        |
+| N/A                     | `passportDetails`                   | A set of passport details the simulator returns to the user.                                                                                                                                  | JSON array                                                        |
+| `PHONE_NUMBER`          | `phoneNumber`                       | The returned phone number.                                                                                                                                                                  | Any string                                                        |
+| `PHONE_NUMBER_VERIFIED` | `phoneNumberVerified`               | Whether or not the phone number has been verified.                                                                                                                                          | Boolean                                                           |
+| N/A                     | `postalAddressDetails`              | A set of address details the simulator returns to the user.                                                                                                                                   | JSON array                                                        |
+| N/A                     | `returnCodes`                       | A set of codes returned if the return code claim is included in the client configuration and `/authorize` request. Otherwise an `ACCESS_DENIED` error will return when this is configured.  | JSON array with the following structure `[{"code": "anyString"}]` |
+| `SUB`                   | `sub`                               | The returned pairwise subject identifier.                                                                                                                                                   | Any string                                                        |
+
+If the valid values are JSON objects or JSON arrays, no further validation is done on the provided response configuration unless outlined. You can see example data in the [GOV.UK One Login onboarding README](https://github.com/govuk-one-login/onboarding-examples/tree/main/data).
+
+#### Configure the errors
+
+You can set up the simulator to return specific error scenarios at the `/authorize` endpoint as well as in the core identity JSON Web Token (JWT) and the ID token.  
+
+There are no defaults configured for the error configuration, so you must provide these if you want the simulator to return an error.
+
+You can set multiple error states, which you can pass as a comma-separated string to these environment variables: 
+
+* `CORE_IDENTITY_ERRORS`
+* `ID_TOKEN_ERRORS`
+* `AUTHORISE_ERRORS`
+
+Alternatively, you can set multiple error states using the `/config` endpoint with the following syntax:
+
+```
+{
+  "errorConfiguration": {
+    "coreIdentityErrors": ["INVALID_ALG_HEADER"],
+    "idTokenErrors": ["INVALID_ISS"],
+    "authoriseErrors": ["ACCESS_DENIED"]
+  }
+}
+```
+The simulator will ignore any invalid values for the error configuration.
+
+##### `/authorize` endpoint errors configurable on the GOV.UK One Login simulator
+
+These are errors returned by the GOV.UK One Login simulator at the point in which a user hits the `/authorize` endpoint.
+
+| Error type    | Detail                                                                                                                                                                                      |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+`ACCESS_DENIED` | See [Authenticate your user](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#http-302-found) for more information on this error message. |
+
+##### ID token errors configurable on the GOV.UK One Login simulator
+
+These are errors in the issued ID token returned by the GOV.UK One Login simulator.
+
+| Error type            | Detail                                                                                                                              |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `INCORRECT_VOT`       | The vector of trust (`vot`) returned in the token does not match the vector of trust requested (`vtr`) in the `/authorize `request. |
+| `INVALID_ALG_HEADER`  | The `alg` in the header does not match the algorithm returned from the `/jwks` endpoint.                                            |
+| `INVALID_AUD`         | ID token has an invalid audience.                                                                                                   |
+| `INVALID_ISS`         | ID token has an invalid issuer.                                                                                                     |
+| `INVALID_SIGNATURE`   | The signature of the token is invalid.                                                                                              |
+| `NONCE_NOT_MATCHING`  | The `nonce` in the token does not match the `nonce` supplied in the `/authorize` request.                                           |
+| `TOKEN_EXPIRED`       | The expiry date of the token is in the past.                                                                                        |
+| `TOKEN_NOT_VALID_YET` | The `iat` claim of the token is in the future.                                                                                      |
+
+##### Core identity errors configurable on the GOV.UK One Login simulator
+
+These are errors in the issued core identity JWT returned by the GOV.UK One Login simulator.
+
+| Core identity errors | Detail                                                                                                           |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `INCORRECT_SUB`      | The `sub` does not match the`sub` in the `id_token`. Sub is the 'subject identifier' or the unique ID of a user. |
+| `INVALID_ALG_HEADER` | The `alg` in the header is not `ES256`.                                                                          |
+| `INVALID_AUD`        | Core identity has an invalid audience.                                                                           |
+| `INVALID_ISS`        | Core identity has an invalid issuer.                                                                             |
+| `INVALID_SIGNATURE`  | The signature of the token is invalid.                                                                           |
+| `TOKEN_EXPIRED`      | The expiry date of the token is in the past.                                                                     |
+
+To remove an error configuration, you can either unset the environment variables, or you can make a `POST` request to the `/config` endpoint without the `errorConfiguration` field in the body.
+
+If you update your configuration using the `/config` endpoint you must include the `errorConfiguration` field if you want to maintain the errors you’ve configured.
+
+### Configure simulator base URL 
+
+If you want to deploy the simulator using a host name or port other than `localhost` and `3000`, you can configure the base URL where the simulator is hosted. You can also update the URL using the `/config` endpoint with the following request body field:
+
+```
+{
+  "simulatorUrl": "https://example.com:3333"
+}
+```
+
+Modifying the simulator URL will affect other endpoints and any validation that includes these endpoints. For example, the token endpoint will become `${SIMULATOR_URL}/token`, so you need to update the expected audience of the client assertion to reflect this.
+
+## Support and feedback
+
+[Raise a GitHub Issue with the GOV.UK One Login simulator](https://github.com/govuk-one-login/simulator/issues) if you:
+
+* discover a bug or an error
+* struggle with any aspect of using the simulator 
+* would like to suggest improvements 
+
+If you have more general feedback or questions, you can get in touch with the team on our cross-government [GOV.UK One Login tech support Slack channel](https://ukgovernmentdigital.slack.com/archives/C02K303R44R).
+
