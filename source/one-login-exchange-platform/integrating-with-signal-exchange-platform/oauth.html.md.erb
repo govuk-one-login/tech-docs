@@ -9,9 +9,9 @@ layout: shared_signals_outbound
 
 # OAuth Token Endpoint
 
-GOV.UK One Login Signal Exchange Platform uses the [OAuth2 Client Credentials Grant][external.oauth-client-credentials-flow] to authenticate between One Login and your receiver when sending signals.
+The GOV.UK One Login Signal Exchange uses the [OAuth2 Client Credentials Grant][external.oauth-client-credentials-flow] to authenticate between GOV.UK One Login Signal Exchange transmitter and your receiver when sending signals.
 
-GOV.UK One Login Transmitter will initiate the client credentials flow by making this API request:  
+The GOV.UK One Login Transmitter will initiate the client credentials flow by making this API request:  
 
 ```bash
 curl --request POST \
@@ -37,10 +37,10 @@ The expected response should look like the following:
 There are certain assumptions that we make about your endpoint. These are:
 
 * Validity of `access_token`:
-    * GOV.UK One Login Transmitter must be able to request a new token without invalidating previously issued tokens.
+    * GOV.UK One Login Signal Exchange Transmitter must be able to request a new token without invalidating previously issued tokens.
     * The token must be valid for a minimum of 1 hour.
 * Throughput:
     * The `/token` endpoint will need to be able to support a [high throughput][ssfOut.signal-delivery].
 
-The token endpoint should then be used authenticate against the [receiver endpoint][ssfOut.receiver] which you must set up next.
+The token endpoint will then be used authenticate against the [receiver endpoint][ssfOut.receiver] which you must set up next.
 <%= partial "partials/links" %>
