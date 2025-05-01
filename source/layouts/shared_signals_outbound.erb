@@ -1,7 +1,7 @@
-<% ssfOut_resources = sitemap.resources.find { |resource| resource.path == "one-login-exchange-platform/index.html" }.children %>
+<% ssfOut_resources = sitemap.resources.find { |resource| resource.path == "govuk-one-login-signal-exchange/index.html" }.children %>
 
 <% content_for :sidebar do %>
-  <a href='/one-login-exchange-platform' class="toc__back-link govuk-link">&lsaquo; One Login Signal Exchange Platform</a>
+  <a href='/govuk-one-login-signal-exchange' class="toc__back-link govuk-link">&lsaquo; GOV.UK One Login Signal Exchange</a>
   <%= render_page_tree ssfOut_resources, current_page, config, nil %>
 <% end %>
 
