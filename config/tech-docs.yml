@@ -13,7 +13,7 @@ phase: Beta
 # Links to show on right-hand-side of header
 header_links:
   GOV.UK One Login: /
-  One Login Signal Exchange: /govuk-one-login-signal-exchange
+  GOV.UK One Login Signal Exchange: /govuk-one-login-signal-exchange
   GitHub: https://github.com/govuk-one-login/tech-docs
   Support: https://docs.sign-in.service.gov.uk/support/
 
