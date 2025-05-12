@@ -506,15 +506,15 @@ With `INTERACTIVE_MODE` enabled, after you make the `/authorize` request you’l
 
 You must submit the `sub` field when filling in the form. All other fields are optional. 
 
-By default, the form is pre-populated with the same [response configuration the GOV.UK One Login simulator is configured with](https://github.com/govuk-one-login/simulator/blob/main/docs/configuration.md#response-configuration). You can overwrite each field with the expected values for the response configuration fields. 
+By default, the form is pre-populated with the same [response configuration the GOV.UK One Login simulator is configured with](https://github.com/govuk-one-login/simulator/blob/main/docs/configuration.md). You can overwrite each field with the expected values for the response configuration fields. 
 
 The form will show all possible configurable fields, even if the `/authorize` request you’re submitting does not include the [scope or claims](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#replace-the-placeholder-values-in-your-example) required for the simulator to return them. 
 
 For example, your `/authorize` request might not include the `https://vocab.account.gov.uk/v1/passport` claim, but the form will still include this field. However, the GOV.UK One Login simulator will only return the scopes or claims you include in your `/authorize` request.
 
-Any response configuration form fields that you do not submit will use the [pre-configured response fields](https://github.com/govuk-one-login/simulator/blob/main/docs/configuration.md#response-configuration).
+Any response configuration form fields that you do not submit will use the [pre-configured response fields](https://github.com/govuk-one-login/simulator/blob/main/docs/configuration.md).
 
-All values you submit through the form are [validated to the same level as values submitted to the ‘/config’ endpoint](https://github.com/govuk-one-login/simulator/blob/main/docs/configuration.md#response-configuration).
+All values you submit through the form are [validated to the same level as values submitted to the ‘/config’ endpoint](https://github.com/govuk-one-login/simulator/blob/main/docs/configuration.md).
 
 You can find example JSON for identity claims in the [technical documentation](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/prove-users-identity/#prove-your-user-39-s-identity) or in the [onboarding examples](https://github.com/govuk-one-login/onboarding-examples).
 
