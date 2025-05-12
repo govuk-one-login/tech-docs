@@ -39,7 +39,7 @@ The simulator does not currently support all GOV.UK One Login features. Use this
 | Runs locally                                      | Yes                                                                                                                                                                          | No                                                                                                                                                                                                                                         |
 | Supports permit missing nonce                     | No                                                                                                                                                                           | Yes                                                                                                                                                                                                                                        |
 | Configure with the GOV.UK self service admin tool | No. There's further guidance about [configuring the GOV.UK One Login simulator](/gov-uk-one-login-simulator/#configure-the-gov-uk-one-login-simulator) for more information. | Yes                                                                                                                                                                                                                                        |
-| Supports performance testing                      | Yes - in [`interactive_mode`](/gov-uk-one-login-simulator/#configure-the-gov-uk-one-login-simulator) only.                                                                   | No                                                                                                                                                                                                                                         |
+| Supports performance testing                      | Yes - in [`interactive_mode`](/gov-uk-one-login-simulator/#returning-multiple-response-configurations) only.                                                                   | No                                                                                                                                                                                                                                         |
 | Can test error messages                           | Yes                                                                                                                                                                          | No                                                                                                                                                                                                                                         |
 | Can test the web journey                          | Yes                                                                                                                                                                          | Yes                                                                                                                                                                                                                                        |
 | Can test the mobile journey                       | No                                                                                                                                                                           | No                                                                                                                                                                                                                                         |
@@ -340,7 +340,7 @@ There are 3 ways you can set up the client, response and error configuration for
 1. Use environment variables – these work best if you have a static configuration which should not change frequently.
 1. Make a `POST` request to the `/config` endpoint to update the configuration – this works best for a configuration which you are likely to update frequently.
     * a `POST` request to the `/config` endpoint will overwrite any fields set as environment variables while the Docker container is running.
-1. Set the environment variable `INTERACTIVE_MODE` to `true` - this is best if you want to [return multiple response configurations](https://github.com/govuk-one-login/simulator/blob/main/docs/interactive-mode.md).
+1. Set the environment variable `INTERACTIVE_MODE` to `true` - this is best if you want to [return multiple response configurations](/gov-uk-one-login-simulator/#returning-multiple-response-configurations).
 
 
 There are [examples of how to send the simulator requests on GitHub](https://github.com/govuk-one-login/onboarding-examples/tree/main/data/simulator-configuration).
@@ -493,6 +493,50 @@ If you want to deploy the simulator using a host name or port other than `localh
 ```
 
 Modifying the simulator URL will affect other endpoints and any validation that includes these endpoints. For example, the token endpoint will become `${SIMULATOR_URL}/token`, so you need to update the expected audience of the client assertion to reflect this.
+
+## Returning multiple response configurations
+
+You can set the GOV.UK One Login simulator to return multiple response configurations. This can help you to test how your system handles different responses from GOV.UK One Login. 
+
+For example, you can fill in one response with passport and address data, but for  another request you could swap the passport data for driving license data. 
+
+To do this, set the environment variable `INTERACTIVE_MODE` to `true`. 
+
+With `INTERACTIVE_MODE` enabled, after you make the `/authorize` request you’ll see a form where you can add the expected response configuration.
+
+You must submit the `sub` field when filling in the form. All other fields are optional. 
+
+By default, the form is pre-populated with the same [response configuration the GOV.UK One Login simulator is configured with](https://github.com/govuk-one-login/simulator/blob/main/docs/configuration.md). You can overwrite each field with the expected values for the response configuration fields. 
+
+The form will show all possible configurable fields, even if the `/authorize` request you’re submitting does not include the [scope or claims](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#replace-the-placeholder-values-in-your-example) required for the simulator to return them. 
+
+For example, your `/authorize` request might not include the `https://vocab.account.gov.uk/v1/passport` claim, but the form will still include this field. However, the GOV.UK One Login simulator will only return the scopes or claims you include in your `/authorize` request.
+
+Any response configuration form fields that you do not submit will use the [pre-configured response fields](https://github.com/govuk-one-login/simulator/blob/main/docs/configuration.md).
+
+All values you submit through the form are [validated to the same level as values submitted to the ‘/config’ endpoint](https://github.com/govuk-one-login/simulator/blob/main/docs/configuration.md).
+
+You can find example JSON for identity claims in the [technical documentation](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/prove-users-identity/#prove-your-user-39-s-identity) or in the [onboarding examples](https://github.com/govuk-one-login/onboarding-examples).
+
+Once you’ve entered the fields you’d like to test the responses for, select **Continue**. You will then be redirected to the `redirect_uri` from your `/authorize` request.
+
+When your service exchanges the `issued access_token` at the `/userinfo` endpoint, the simulator will return the response configuration you submitted in the form.
+
+If you submit an invalid field, you may see the following error response:
+
+```
+{
+  "error": "invalid_request",
+  "invalid_fields": [
+    {
+      "field": "a field name",
+      "msg": "an error message"
+    }
+  ]
+}
+```
+
+In this response, `field` tells you which of your submitted fields is invalid. If you see this error, check the data in the specified field. If you continue to see this error message contact the GOV.UK One Login team for support.
 
 ## Support and feedback
 
