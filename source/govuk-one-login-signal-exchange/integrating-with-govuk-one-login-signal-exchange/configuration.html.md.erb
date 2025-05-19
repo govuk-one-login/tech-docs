@@ -18,7 +18,7 @@ In order to view your configuration, you must first authenticate against the GOV
 Once you've obtained an `ACCESS_TOKEN`, you can make the following request to view your configuration: 
 
 ```bash
-curl --request POST \
+curl --request GET \
   --url STREAM_ENDPOINT \
   --header 'Authorization: Bearer ACCESS_TOKEN' \
   --header 'Content-Type: application/json' \
