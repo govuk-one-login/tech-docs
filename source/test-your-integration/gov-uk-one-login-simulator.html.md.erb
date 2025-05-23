@@ -321,7 +321,7 @@ There are 3 ways you can set up the client, response and error configuration for
 1. Use environment variables – these work best if you have a static configuration which should not change frequently.
 1. Make a `POST` request to the `/config` endpoint to update the configuration – this works best for a configuration which you are likely to update frequently.
     * a `POST` request to the `/config` endpoint will overwrite any fields set as environment variables while the Docker container is running.
-1. Set the environment variable `INTERACTIVE_MODE` to `true` - this is best if you want to [return multiple response configurations](/gov-uk-one-login-simulator/#returning-multiple-response-configurations).
+1. Set the environment variable `INTERACTIVE_MODE` to `true` - this is best if you want to [return multiple response configurations](/test-your-integration/gov-uk-one-login-simulator/#returning-multiple-response-configurations).
 
 
 There are [examples of how to send the simulator requests on GitHub](https://github.com/govuk-one-login/onboarding-examples/tree/main/data/simulator-configuration).
