@@ -9,7 +9,7 @@ layout: shared_signals_outbound
 
 # Receiver Endpoint
 
-The receiver endpoint is where the GOV.UK One Login Signal Exchange Transmitter will send signals related to user activity. 
+The receiver endpoint is where the GOV.UK One Login Signal Exchange Transmitter will send signals related to user activity and should be built as per [RFC 8935](https://www.rfc-editor.org/rfc/rfc8935.html) . 
 
 After obtaining an `ACCESS_TOKEN` from the [OAuth Token Endpoint][ssfOut.oauth2], the transmitter will make the following request when attempting to send the signal:
 
