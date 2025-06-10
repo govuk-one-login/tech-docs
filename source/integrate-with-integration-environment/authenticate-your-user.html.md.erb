@@ -300,7 +300,7 @@ OiIiLCJqdGkiOiIifQ.r1Ylfhhy6VNSlhlhW1N89F3WfIGuko2rvSRWO4yK1BI
 | `client_assertion`      | Required                | You’ll include the JWT assertion you created in the payload when you make the `POST` request to the `/token` endpoint.                                     |
 | `client_assertion_type` | Required                | When you’re using `private_key_jwt`, you must set the value to `urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.                                   |
 | `code`                  | Required                | The code you received when you [generated an authorisation code][integrate.generate-auth-code].                                                                                        |
-| `code_verifier`         | Optional                | This parameter should only be included if your original `/authorize` request includes the `code_challenge` and `code_challenge_method` parameters.                                                                                        |
+| `code_verifier`         | Optional                | You should only include this parameter if your original `/authorize` request includes the `code_challenge` and `code_challenge_method` parameters.                                                                                        |
 
 ### Receive response for ‘Make a token request’
 
