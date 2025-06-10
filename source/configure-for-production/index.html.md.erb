@@ -47,7 +47,7 @@ Before you can configure your service for production, you must [integrate with G
 | `SubjectType` | Leave this field as `pairwise`. |
 | `TestClient` | Leave this field as `false`.  |
 | `TokenAuthMethod` | Specify the token authentication method your service is using. This will be `private_key_jwt` or `client_secret_post`. <br><br>There’s further [guidance on using the correct token authentication method for your service](/before-integrating/use-correct-token-authentication-method/).   |
-| `PKCEEnforced` | Specify whether your service must provide the parameters required for PKCE in the [authorize](/integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-authorize-endpoint) and [token](/integrate-with-integration-environment/authenticate-your-user/#make-a-token-request) requests. <br><br>You can read more about PKCE in [RFC 7636](https://datatracker.ietf.org/doc/html/rfc7636).   |
+| `PKCEEnforced` | Specify whether your service must provide the parameters required for Proof Key for Code Exchange (PKCE) protocol in the [authorize](/integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-authorize-endpoint) and [token](/integrate-with-integration-environment/authenticate-your-user/#make-a-token-request) requests. <br><br>You can [read more about PKCE in RFC 7636](https://datatracker.ietf.org/doc/html/rfc7636).   |
 
 
 ## Use the production discovery endpoint
