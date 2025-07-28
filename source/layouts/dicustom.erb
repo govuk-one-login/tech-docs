@@ -11,6 +11,7 @@
 
     <link rel="canonical" href="<%= meta_tags.canonical_url %>">
     <% if Brand.blue?(app) %>
+      <% path_prefix = PathBuilder.prefix(app) %>
       <link rel="icon" sizes="48x48" href="<%= path_prefix %>assets/govuk/assets/rebrand/images/favicon.ico">
       <link rel="icon" sizes="any" href="<%= path_prefix %>assets/govuk/assets/rebrand/images/favicon.svg" type="image/svg+xml">
       <link rel="mask-icon" href="<%= path_prefix %>assets/govuk/assets/rebrand/images/govuk-icon-mask.svg" color="#0b0c0c">
