@@ -46,15 +46,21 @@ As we may send SETs at a [high throughput][ssfOut.signal-delivery], you must imp
 * Refresh regularly. 
 * Refresh if the value in the `kid` claim does not exist in your cache.
 
+## Payload validation
+
+As the SET is a JWT, the body will the the signal itself. After the body has been decoded, we recommend validating the payload. The GOV.UK One Login Signal Exchange team can provide JSON schema's to help with payload validation. 
+
 ## Signal Delivery
 
-A single user interaction with GOV.UK One Login may generate several signals therefore during the development of your receiver, you need to ensure that your solution can support a large volume of signals. The GOV.UK One Login Signal Exchange team will work with you to identify the expected delivery rate of signals based on a number of factors, as well as implement rate limiting to prevent your infrastructure from being overwhelmed with signals. These factors may include:
+A single user interaction with GOV.UK One Login may generate several signals therefore during the development of your receiver, you need to ensure that your solution can support a large volume of signals. 
+
+The GOV.UK One Login Signal Exchange team will work with you to identify the expected delivery rate of signals based on a number of factors, as well as implement rate limiting to prevent your infrastructure from being overwhelmed with signals. These factors may include:
 
 * Your expected throughput of users attempting to use your service.
 * The signal(s) that you have subscribed to.
 * If you are strictly an Auth only service or if you are an Identity Proofing and Verification Service.
 
-We recommend that your receiver is initially setup to support minimum of 100 signals per second.
+We recommend that your receiver is **initially** setup to support minimum of 10 signals per second until a more accurate number can be determined based on the factors above.
 
 <%= partial "partials/testing-warning" %>
 
