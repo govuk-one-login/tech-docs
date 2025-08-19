@@ -1,7 +1,7 @@
 ---
 title: Test your integration with GOV.UK One Login
 weight: 3.0
-last_reviewed_on: 2024-09-17
+last_reviewed_on: 2024-06-12
 review_in: 6 months
 ---
 
@@ -9,13 +9,28 @@ review_in: 6 months
 
 Once you’ve [integrated your service with Authorization Code Flow][integrate.authenticate], you can test your integration with GOV.UK One Login.
 
-To make sure your integration is working as you expect it to, you should create sample users to test:
+You have 2 options for testing: 
 
-* registering a new user
-* logging in an existing user
-* test you receive the expected scopes you selected when you [chose which user attributes your service can request][integrate.choose-user-attributes], for example email and phone number
-* logging a user out
+- the [GOV.UK One Login simulator](/test-your-integration/gov-uk-one-login-simulator/), which lets you test and verify specific user information and error codes
+- using the [GOV.UK One Login integration environment](/test-your-integration/using-integration-for-testing/), which lets you test end to end user journeys
 
-After you have completed these steps, you are ready to configure your service for production.
+## Compare GOV.UK One Login simulator and integration environments
+
+The GOV.UK One Login simulator does not currently support all GOV.UK One Login features. Use this table to understand the difference between the GOV.UK One Login simulator and the integration environment.
+
+| Feature                                           | GOV.UK One Login simulator                                                                                                                                                   | GOV.UK One Login Integration environment                                                                                                                                                                                                   |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Uses the GOV.UK One Login API                     | Yes                                                                                                                                                                          | Yes                                                                                                                                                                                                                                        |
+| Configurable response data                        | Yes                                                                                                                                                                          | No. You need to request fictional users and their knowledge-based verification (KBV) answers to help you test your journeys. [Email GOV.UK One Login](mailto:govuk-one-login@digital.cabinet-office.gov.uk) to access this test user data. |
+| Supports `client_secret_post`                     | No                                                                                                                                                                           | Yes                                                                                                                                                                                                                                        |
+| Runs on a publicly accessible endpoint            | No, unless you host it online.                                                                                                                                               | Yes                                                                                                                                                                                                                                        |
+| Runs locally                                      | Yes                                                                                                                                                                          | No                                                                                                                                                                                                                                         |
+| Supports permit missing nonce                     | No                                                                                                                                                                           | Yes                                                                                                                                                                                                                                        |
+| Configure with the GOV.UK self service admin tool | No. There's further guidance about [configuring the GOV.UK One Login simulator](/test-your-integration/gov-uk-one-login-simulator/#configure-the-gov-uk-one-login-simulator) for more information. | Yes                                                                                                                                                                                                                                        |
+| Supports performance testing                      | Yes - in [`interactive_mode`](/test-your-integration/gov-uk-one-login-simulator/#returning-multiple-response-configurations) only.                                                                 | No                                                                                                                                                                                                                                         |
+| Can test error messages                           | Yes                                                                                                                                                                          | No                                                                                                                                                                                                                                         |
+| Can test the web journey                          | Yes                                                                                                                                                                          | Yes                                                                                                                                                                                                                                        |
+| Can test the mobile journey                       | No                                                                                                                                                                           | No                                                                                                                                                                                                                                         |
+| Can test the landing page URL                     | No                                                                                                                                                                           | No                                                                                                                                                                                                                                         |
 
 <%= partial "partials/links" %>

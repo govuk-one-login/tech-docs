@@ -1,7 +1,7 @@
 ---
 title: Authenticate your user
 weight: 5.5
-last_reviewed_on: 2024-07-09
+last_reviewed_on: 2025-02-12
 review_in: 6 months
 ---
 
@@ -94,7 +94,8 @@ After you’ve made a request for authentication and identity, you should then c
     "https://vocab.account.gov.uk/v1/coreIdentityJWT": null,
     "https://vocab.account.gov.uk/v1/address": null,
     "https://vocab.account.gov.uk/v1/passport": null,
-    "https://vocab.account.gov.uk/v1/drivingPermit": null
+    "https://vocab.account.gov.uk/v1/drivingPermit": null,
+    "https://vocab.account.gov.uk/v1/returnCode": null 
   }
 }
 ```
@@ -176,6 +177,8 @@ Use the guidance in the following table to replace placeholder values in your ex
 | `vtr`           | Optional             | The `vtr` parameter represents ‘Vectors of Trust’ where you request authentication and, optionally, identity proving. For example, if you want the medium level of authentication and medium identity confidence, request `vtr=[“Cl.Cm.P2”]`. <br><br>You selected your Vector of Trust when you [chose the level of authentication][integrate.choose-level-of-auth] and [the level of identity confidence][integrate.choose-level-of-confidence] for your service.<br><br>You can read more about how to combine the vectors for authentication level and identity confidence in [Section 3 of RFC 8485](https://datatracker.ietf.org/doc/html/rfc8485#section-3.1). If you need identity proving, you must request `Cl.Cm` (the medium level of authentication).<br><br>If you do not specify the `vtr` parameter, your service will automatically log your users in at the medium level of authentication (`Cl.Cm`). This means you will not receive identity attributes in your response. |
 | `claims`        | Optional             | To get the identity attributes your service needs, you should specify these in the `claims` parameter using the `/userinfo` endpoint. The `/userinfo` endpoint returns a JSON object listing the requested claims.<br><br>You can read more about [choosing which user attributes your service can request][integrate.choose-user-attributes].<br><br>You can [read more about the structure of the claims request in OpenID Connect section 5.5](https://openid.net/specs/openid-connect-core-1_0.html#ClaimsParameter). |
 | `max_age`       | Optional             | `max_age` is only available to services not on the GOV.UK domain and those handling particularly sensitive data. When the `max_age` parameter is included in your request, your user will be forced to re-authenticate if the time in seconds since authentication is greater than `max_age`. `max_age` must be set to zero or a positive integer. <br><br>You'll need to [contact GOV.UK One Login support](https://www.sign-in.service.gov.uk/support) to request to use `max_age`. |
+| `code_challenge`| Optional             | `code_challenge` is part of the Proof Key for Code Exchange (PKCE) protocol and helps protect against 'Authorization Code' interception attacks on authorisation requests. Your service generates the `code_challenge` by transforming a `code_verifier` using a `code_challenge_method`. This parameter is required if your [client configuration enforces PKCE](/configure-for-production/#use-the-table-to-understand-the-json-configuration). <br><br>You can [read more about PKCE in RFC 7636](https://datatracker.ietf.org/doc/html/rfc7636).   |
+| `code_challenge_method`| Optional      |`code_challenge_method` specifies which [transformation method](https://datatracker.ietf.org/doc/html/rfc7636#section-4.2) your service used to generate the `code_challenge`. If your request includes `code_challenge` you must include this field. This parameter is required if your [client configuration enforces PKCE](/configure-for-production/#use-the-table-to-understand-the-json-configuration)<br><br>GOV.UK One Login only supports the `code_challenge_method` `S256`.|
 
 
 ### Generate an authorisation code
@@ -297,6 +300,7 @@ OiIiLCJqdGkiOiIifQ.r1Ylfhhy6VNSlhlhW1N89F3WfIGuko2rvSRWO4yK1BI
 | `client_assertion`      | Required                | You’ll include the JWT assertion you created in the payload when you make the `POST` request to the `/token` endpoint.                                     |
 | `client_assertion_type` | Required                | When you’re using `private_key_jwt`, you must set the value to `urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.                                   |
 | `code`                  | Required                | The code you received when you [generated an authorisation code][integrate.generate-auth-code].                                                                                        |
+| `code_verifier`         | Optional                | You should only include this parameter if your original `/authorize` request includes the `code_challenge` and `code_challenge_method` parameters.                                                                                        |
 
 ### Receive response for ‘Make a token request’
 
@@ -439,6 +443,7 @@ If you included a [level of identity confidence][integrate.choose-level-of-confi
 | `email_verified`  | This means the email was verified using a one-time code when the user created their account. This is always `true`. |
 | `phone_number` | This is the phone number your user entered when they registered their GOV.UK One Login. This will not appear if the user used an authenticator app for their two-factor authentication. <br> </br> <br> </br> This will return in the E.164 format with no spaces for both UK and international phone numbers: `+{country-code}Number`.  |
 | `phone_number_verified` | This will be returned as:<br><ul> </li><li>`true` when the user has selected the text message option for receiving a security code </li><li>`false` when the user has selected the authenticator app option for receiving a security code  |
+| `walletSubjectId` | This will be returned in the format: <br>`urn:fdc:wallet.account.gov.uk:2024:3c_jJtXcLttICSNrkW7M1vO2_w-SMDm2nrHsZpWQQ9` <br><br>where the part after `urn:fdc:` is [Base 64 Encoding with URL and Filename Safe Alphabet](https://datatracker.ietf.org/doc/html/rfc4648#section-5) of the output from a SHA256 hash function. <br><br>`walletSubjectId` is a pairwise identifier that GOV.UK Wallet uses when it issues a credential. By comparing the returned value with the value GOV.UK Wallet submits when requesting a credential, you can be sure that the user logged into your service and GOV.UK Wallet are the same user. <br><br>You must include this scope if you plan to [onboard with GOV.UK Wallet](https://docs.wallet.service.gov.uk/before-integrating.html#onboard-with-gov-uk-one-login) after you have onboarded with GOV.UK One Login.     |
 
 
 ### Error handling for ‘Retrieve user information’

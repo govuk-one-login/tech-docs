@@ -32,6 +32,8 @@ after_build do |builder|
             "https://shared-signals-transmitter.transaction.account.gov.uk/stream",
             "https://auth.ssf-transmitter.transaction.integration.account.gov.uk/oauth2/token",
             "https://auth.shared-signals-transmitter.transaction.account.gov.uk/oauth2/token",
+            # ICAO site is being migrated so the doc is temporarily unavailable but the resulting page points the user to an alternative
+            "https://www.icao.int/publications/Documents/9303_p3_cons_en.pdf" 
         ],
         :swap_urls => { config[:tech_docs][:host] => "" },
         typhoeus: {

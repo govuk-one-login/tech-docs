@@ -1,7 +1,7 @@
 ---
 title: Using the integration environment for end-to-end testing
 weight: 4
-last_reviewed_on: 2024-05-22
+last_reviewed_on: 2025-02-17
 review_in: 6 months
 ---
 
@@ -39,7 +39,6 @@ Before you can test on our integration environment, you must:
 * have built an application to work with GOV.UK One Login
 * have accessed the [example responses from the GOV.UK One Login API](https://github.com/govuk-one-login/onboarding-examples/tree/main/data)
 * have contacted GOV.UK One Login to access the fictional users and their knowledge-based verification (KBV) answers to help you test your journeys
-* use the integration environment’s login details when prompted to log in – you’ll have received these when you registered your service to use GOV.UK One Login
 
 
 ## Navigating automated testing 
@@ -48,21 +47,8 @@ Before you can test on our integration environment, you must:
 GOV.UK One Login does not provide specific recommendations about automated testing. This is because we are making frequent updates to the code and user flows that may break your tests. 
 
 
-However, if you choose to do automated testing, you might need to: 
+However, if you choose to do automated testing, you might need to generate a one-time code using a scripting language. 
 
-* enter the integration environment’s basic authentication in a URL, for example `https://username:password@signin.integration.account.gov.uk`
-* generate a one-time code using a scripting language
-
-
-### Embed the integration environment’s basic authentication in a URL
-
-
-The integration environment web user journey will present a basic authentication challenge to protect the environment from accidental use. This will prompt you to log in and might disrupt your automated tests. 
-
-
-You visit the URL `https://username:password@signin.integration.account.gov.uk` before you make a request to the `/authorize` endpoint. By including the basic authentication credentials, you'll automatically bypass the login prompt.    
-
-You’ll have received the integration environment’s login details when you registered your service to use GOV.UK One Login.
 
 ### Generate a one-time code using a scripting language
 
@@ -206,7 +192,7 @@ For example, submitting an incorrect document number will return an error which 
 For performance testing, you should ​​focus on the processing and successful handling of the agreed request and response volumes back into your service.
 
 
-You are responsible for conducting performance testing against your own system. You should [build mocks to test your system](/test-your-integration/build-mocks/) as GOV.UK One Login does not provide environments for this. 
+You are responsible for conducting performance testing against your own system. You should [use the GOV.UK One Login simulator to test your system](/test-your-integration/gov-uk-one-login-simulator/) as GOV.UK One Login does not provide environments for this. 
 
 
 You must not: 

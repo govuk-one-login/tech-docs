@@ -1,7 +1,7 @@
 ---
 title: Prove your user's identity
 weight: 5.6
-last_reviewed_on: 2024-07-09
+last_reviewed_on: 2025-02-12
 review_in: 6 months
 ---
 
@@ -274,16 +274,26 @@ The identity credential contains the following claims as properties of `credenti
 | `birthDate` | A list of [ISO 8601 date][external.ISO-8601-date] strings. There may be multiple dates of birth, for example, if there’s evidence an incorrect date of birth was previously recorded for your user. The date of birth GOV.UK One Login has highest confidence in will be the first item in the list.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ## Understand your user’s address claim
-The `https://vocab.account.gov.uk/v1/address` claim contains all addresses your user has declared, including previous
-addresses.
+
+The `https://vocab.account.gov.uk/v1/address` claim contains all addresses your user has entered, including previous
+addresses. GOV.UK One Login checks the address format and performs some checks, depending on the address's location and user's journey. 
+
+GOV.UK One Login collects at least 3 months' worth of addresses.
+
+GOV.UK One Login supports the following characters in the address claim: 
+
+* digits: `0-9`
+* letters: `A-Z` and `a-z`
+* special characters: `'` (apostrophe), `.` (period), `,` (comma), `\` (backslash), `/` (forward slash), `*` (asterisk), and `-` (hyphen)
+* space: ` `
 
 Each JSON object in the list may contain any of the following properties:
 
 | Property                         | Definition                                                                                                                                                                                                                                                                                                                    |
 |----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `validFrom`                      | [ISO 8601 date][external.ISO-8601-date] strings representing the date your user moved into the address.<br>If the month is unknown for `validFrom`, GOV.UK One Login will show that as `01`. GOV.UK One Login will also show an unknown day of the month as `01`.                                                             |
-| `validUntil`                     | [ISO 8601 date][external.ISO-8601-date] strings representing the date your user moved from the address. This property is not included for your user’s current address.<br>If the month is unknown for `validUntil`, GOV.UK One Login will show that as `01`. GOV.UK One Login will also show an unknown day of month as `01`. |
-| `uprn`                           | GOV.UK One Login will provide a [Unique Property Reference Number (UPRN)](https://www.gov.uk/government/publications/open-standards-for-government/identifying-property-and-street-information) for UK addresses, unless your user has manually corrected their address.                                                      |
+| `validFrom`                      | [ISO 8601 date][external.ISO-8601-date] strings representing the date your user moved into the address.<br></br> <br></br>GOV.UK One Login only collects the year from the user. The month and day will always default to `01`. For example, if the user moved in 2024, the `validFrom` date would be `2024-01-01`.                                                         |
+| `validUntil`                     | [ISO 8601 date][external.ISO-8601-date] strings representing the date your user moved from the address. This property is not included for your user’s current address.<br></br> <br></br>GOV.UK One Login only collects the year from the user. The month and day will always default to `01`. For example, if the user moved in 2024, the `validUntil` date would be `2024-01-01`.  <br></br> <br></br>  If a user tells us an address is their current address, then `validUntil` will be not be returned. |
+| `uprn`                           | GOV.UK One Login will provide a [Unique Property Reference Number (UPRN)](https://www.gov.uk/government/publications/open-standards-for-government/identifying-property-and-street-information) for UK addresses only. <br></br> <br></br> If a user has edited their address, the UPRN field will automatically clear.                                                    |
 | `organisationName`               | Maps to `ORGANISATION_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                  |
 | `departmentName`                 | Maps to `DEPARTMENT_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                    |
 | `subBuildingName`                | Maps to `SUB_BUILDING_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].<br><br>`subBuildingName` may accompany either `buildingName` or `buildingNumber`.                                                                                                |
@@ -293,14 +303,55 @@ Each JSON object in the list may contain any of the following properties:
 | `streetName`                     | Maps to `THOROUGHFARE_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                  |
 | `doubleDependentAddressLocality` | Maps to `DOUBLE_DEPENDENT_LOCALITY` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                          |
 | `dependentAddressLocality`       | Maps to `DEPENDENT_LOCALITY` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                 |
-| `addressLocality`                | Maps to `POST_TOWN` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                          |
+| `addressLocality`                | Maps to `POST_TOWN` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                 |
+| `addressRegion`                  | Maps to [schema:addressRegion](https://schema.org/addressRegion). Only returned for international addresses and will contain the region, provided as text. For example, California or another appropriate first-level Administrative division.                                                                                |
 | `postalCode`                     | Maps to `POST_CODE` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                          |
 | `addressCountry`                 | Two-letter [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).                                                                                                                                                                                                                               |
-| `addressRegion`                  | Maps to [schema:addressRegion](https://schema.org/addressRegion). Only returned for international addresses and will contain the region, provided as text. For example, California or another appropriate first-level Administrative division.                                                                                |
+
+
+<%= warning_text('The attributes might be returned in any order.') %>
 
 Do not assume address properties always map to the same line of an address. For example, <code>addressLocality</code>
 may map to a different line of an address, depending on whether other properties are present (in this case, <code>
 dependentAddressLocality</code> and <code>doubleDependentAddressLocality</code>).
+
+
+A sample UK (`GB`) address returned would look similar to this: 
+
+```
+{
+  uprn: "100021051133",
+  organisationName: "Acme Corporation",
+  departmentName: "Sales Department",
+  subBuildingName: "Unit 3B",
+  buildingNumber: "42",
+  buildingName: "Riverside House",
+  dependentStreetName: "Industrial Estate",
+  streetName: "River Lane",
+  doubleDependentAddressLocality: "Riverside",
+  dependentAddressLocality: "Newtown",
+  addressLocality: "Birmingham",
+  postalCode: "B12 8QT",
+  addressCountry: "GB"
+  "validFrom": "2000-01-01",
+}
+```
+
+A sample international address returned would look similar to this: 
+
+```
+{
+  "subBuildingName": "1", 
+  "buildingNumber": "27", 
+  "buildingName": "The Big Building",
+  "streetName": "Long Street",
+  "addressLocality": "Los Angeles",
+  "addressRegion": "California"
+  "postalCode": "90012",
+  "addressCountry": "US",
+  "validFrom": "2000-01-01",
+}
+```
 
 ## Understand your user's passport claim
 The <code>https://vocab.account.gov.uk/v1/passport</code> claim contains the details of your user’s passport, if they
@@ -326,9 +377,14 @@ licence, if they submitted one when proving their identity.
 
 ## Understand your user’s return code claim
 
-The `https://vocab.account.gov.uk/v1/returnCode` claim gives information about any issues with the evidence your user provided to prove their identity. For example, if GOV.UK One Login was not able to prove your user’s identity. 
+<%= warning_text('We recommend requesting the return code claim to make your error handling more clear. ') %>
 
-To use this claim, you must let us know when [registering your service with GOV.UK One Login][integrate.register-your-service].
+To use the `returnCode` claim, you'll need to: 
+
+1. Enable the `returnCode` claim when you register your service.
+1. Include `https://vocab.account.gov.uk/v1/returnCode` when you [make a request for authentication and identity](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-request-for-authentication-and-identity). 
+
+The `https://vocab.account.gov.uk/v1/returnCode` claim gives information about any issues with the evidence your user provided to prove their identity. For example, if GOV.UK One Login was not able to prove your user’s identity. 
 
 When you use this claim and there’s an issue with the evidence your user provided to prove their identity:
 
@@ -337,7 +393,7 @@ When you use this claim and there’s an issue with the evidence your user provi
 1. When you make a request to the `/userinfo` endpoint using the access token, the response may contain only authentication data, and an array of one or more `returnCode` values, which will each be a letter.
 1. For security reasons, you’ll need to contact GOV.UK One Login on [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) for more detailed information on what issue each `returnCode` value stands for.  
 
-Currently, there are 11 `returnCode` values which GOV.UK One Login could return if there’s an issue with the evidence your user provided to prove their identity. You may receive a return code even if a user’s identity verification is successful, for example, if a user is a politically exposed person. Contact GOV.UK One Login on [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) for more detailed information on what each return code means.  
+Currently, there are 9 `returnCode` values which GOV.UK One Login could return if there’s an issue with the evidence your user provided to prove their identity. You may receive a return code even if a user’s identity verification is successful, for example, if a user is a politically exposed person. Contact GOV.UK One Login on [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) for more detailed information on what each return code means.  
 
 | Property         | Definition                                                                                                                                                                                                                            |
 |------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
