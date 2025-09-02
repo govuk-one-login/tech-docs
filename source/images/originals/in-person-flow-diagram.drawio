@@ -1,0 +1,222 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" scale="1" border="0" version="28.0.6">
+  <diagram id="NS8uv-DDfNsAUPx5a54r" name="F2F">
+    <mxGraphModel dx="2832" dy="1912" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-2" value=" Landing page " style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;fontSize=28;strokeWidth=3;fillColor=#1D70B8;strokeColor=#6c8ebf;fontColor=#FFFFFF;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="96" y="56" width="203" height="1542" as="geometry" />
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-3" value="Redirect page" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;fontSize=28;strokeWidth=3;fillColor=#1D70B8;strokeColor=#6c8ebf;fontColor=#FFFFFF;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="443" y="54" width="226" height="1554" as="geometry" />
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-4" value=" In-person return page " style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;fontSize=28;strokeWidth=3;fillColor=#1D70B8;strokeColor=#6c8ebf;fontColor=#FFFFFF;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="807" y="56" width="322" height="1542" as="geometry" />
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-5" value="GOV.UK One Login" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;fontSize=28;strokeWidth=3;fillColor=#1D70B8;strokeColor=#6c8ebf;fontColor=#FFFFFF;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="1336" y="56" width="285" height="1544" as="geometry" />
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-6" value="" style="curved=1;endArrow=block;rounded=0;fontSize=28;strokeWidth=3;labelBackgroundColor=none;html=1;fontColor=light-dark(#000000,#000000);strokeColor=#000000;" parent="1" edge="1">
+          <mxGeometry x="1" y="200" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="275" y="243" />
+              <mxPoint x="275" y="273" />
+            </Array>
+            <mxPoint x="196.27777777777828" y="243" as="sourcePoint" />
+            <mxPoint x="196.27777777777828" y="273" as="targetPoint" />
+            <mxPoint x="-164" y="-84" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HJY-Aq2zCEMFMYeBLB3X-2" value="&lt;span style=&quot;font-size: 28px;&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;2. Store that the user is on&lt;/font&gt;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-size: 28px;&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;&amp;nbsp;in-&lt;span&gt;person&lt;/span&gt; return journey&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;convertToSvg=0;" parent="ewJf5vmDdQDQY0AKk8fY-6" vertex="1" connectable="0">
+          <mxGeometry x="-0.3734" relative="1" as="geometry">
+            <mxPoint x="-58" y="-37" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-7" value="&lt;span&gt;3. Make a request to /authorize endpoint with vector of trust (vtr) Cl.Cm&lt;/span&gt;" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;fontSize=28;strokeWidth=3;fillColor=none;labelBackgroundColor=none;html=1;convertToSvg=0;fontColor=#000000;strokeColor=#000000;" parent="1" edge="1" target="ewJf5vmDdQDQY0AKk8fY-5" source="ewJf5vmDdQDQY0AKk8fY-2">
+          <mxGeometry x="0.0369" y="11" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="860" y="323" />
+            </Array>
+            <mxPoint x="208" y="323" as="sourcePoint" />
+            <mxPoint x="1452" y="323" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-9" value="5. Redirects your user to your redirect_uri" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;fontSize=28;strokeWidth=3;dashed=1;labelBackgroundColor=none;fontColor=#000000;strokeColor=#000000;" parent="1" edge="1" target="ewJf5vmDdQDQY0AKk8fY-3" source="ewJf5vmDdQDQY0AKk8fY-5">
+          <mxGeometry x="0.0128" y="-11" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="554" />
+            </Array>
+            <mxPoint x="1444" y="554" as="sourcePoint" />
+            <mxPoint x="571" y="554" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-10" value="6. Make a request to /token endpoint" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;fontSize=28;strokeWidth=3;labelBorderColor=none;labelBackgroundColor=none;fontColor=#000000;strokeColor=#000000;" parent="1" edge="1" target="ewJf5vmDdQDQY0AKk8fY-5" source="ewJf5vmDdQDQY0AKk8fY-3">
+          <mxGeometry x="-0.0193" y="11" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1007" y="622" />
+            </Array>
+            <mxPoint x="566" y="622" as="sourcePoint" />
+            <mxPoint x="1454" y="622" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-11" value="7. Receive an access_token and id_token" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;fontSize=28;strokeWidth=3;dashed=1;labelBackgroundColor=none;fontColor=#000000;strokeColor=#000000;" parent="1" edge="1" target="ewJf5vmDdQDQY0AKk8fY-3" source="ewJf5vmDdQDQY0AKk8fY-5">
+          <mxGeometry x="0.0128" y="-12" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="690" />
+            </Array>
+            <mxPoint x="1458" y="690" as="sourcePoint" />
+            <mxPoint x="567" y="690" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-12" value="8. Make a request to the /userinfo endpoint to retrieve user information" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=horizontal;curved=0;rounded=0;endArrow=block;fontSize=28;strokeWidth=3;fontStyle=0;labelBackgroundColor=none;fontColor=#000000;strokeColor=#000000;" parent="1" edge="1" target="ewJf5vmDdQDQY0AKk8fY-5" source="ewJf5vmDdQDQY0AKk8fY-3">
+          <mxGeometry x="-0.0193" y="14" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1007" y="758" />
+            </Array>
+            <mxPoint x="567" y="758" as="sourcePoint" />
+            <mxPoint x="1455" y="758" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-13" value="9. Receive user attributes for example sub, email, phone" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;fontSize=28;strokeWidth=3;dashed=1;labelBackgroundColor=none;fontColor=#000000;strokeColor=#000000;" parent="1" edge="1" target="ewJf5vmDdQDQY0AKk8fY-3" source="ewJf5vmDdQDQY0AKk8fY-5">
+          <mxGeometry x="0.0128" y="-13" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="826" />
+            </Array>
+            <mxPoint x="1460" y="826" as="sourcePoint" />
+            <mxPoint x="578" y="824" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-15" value="11. Show the user the in-person check return screen" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;fontSize=28;strokeWidth=3;labelBackgroundColor=none;fontColor=#000000;strokeColor=#000000;" parent="1" edge="1" target="ewJf5vmDdQDQY0AKk8fY-4" source="ewJf5vmDdQDQY0AKk8fY-3">
+          <mxGeometry x="-0.0242" y="13" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="750" y="1013" />
+            </Array>
+            <mxPoint x="580" y="1013" as="sourcePoint" />
+            <mxPoint x="959" y="1013" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-16" value="12. Make a request to /authorize endpoint with vtr Cl.Cm.P2" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;fontSize=28;strokeWidth=3;labelBackgroundColor=none;fontColor=#000000;strokeColor=#000000;" parent="1" edge="1">
+          <mxGeometry x="0.0521" y="13" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1239" y="1079" />
+            </Array>
+            <mxPoint x="968.5" y="1079" as="sourcePoint" />
+            <mxPoint x="1477" y="1079" as="targetPoint" />
+            <mxPoint x="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-18" value="14. Redirects your user to your redirect_uri" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;fontSize=28;strokeWidth=3;dashed=1;labelBackgroundColor=none;strokeColor=#000000;fontColor=#000000;" parent="1" edge="1">
+          <mxGeometry x="0.0128" y="-11" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="1260" />
+            </Array>
+            <mxPoint x="1477.000000000001" y="1260" as="sourcePoint" />
+            <mxPoint x="554.7777777777774" y="1260" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-19" value="15. Make a request to /token endpoint" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;fontSize=28;strokeWidth=3;labelBackgroundColor=none;fontColor=#000000;strokeColor=#000000;" parent="1" edge="1">
+          <mxGeometry x="-0.0193" y="10" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1007" y="1328" />
+            </Array>
+            <mxPoint x="554.7777777777774" y="1328" as="sourcePoint" />
+            <mxPoint x="1477.000000000001" y="1328" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-20" value="16. Receive an access_token and id_token" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;fontSize=28;strokeWidth=3;dashed=1;labelBackgroundColor=none;strokeColor=#000000;fontColor=#000000;" parent="1" edge="1">
+          <mxGeometry x="0.0128" y="-9" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="1396" />
+            </Array>
+            <mxPoint x="1477.000000000001" y="1396" as="sourcePoint" />
+            <mxPoint x="554.7777777777774" y="1396" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-21" value="17. Make a request to the /userinfo endpoint to retrieve user information" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;fontSize=28;strokeWidth=3;labelBackgroundColor=none;fontColor=#000000;strokeColor=#000000;" parent="1" edge="1">
+          <mxGeometry x="-0.0193" y="12" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1007" y="1464" />
+            </Array>
+            <mxPoint x="554.7777777777774" y="1464" as="sourcePoint" />
+            <mxPoint x="1477.000000000001" y="1464" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-22" value="18. Receive results of identity check and user attributes,&#xa; for example sub, email, phone, coreIdentityJWT, returnCode" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;fontSize=28;strokeWidth=3;labelBackgroundColor=none;strokeColor=#000000;fontColor=#000000;" parent="1" edge="1">
+          <mxGeometry x="0.0084" y="-18" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1010" y="1600" />
+            </Array>
+            <mxPoint x="1477.000000000001" y="1600" as="sourcePoint" />
+            <mxPoint x="554.7777777777774" y="1600" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-23" value="1. User with existing session&amp;nbsp;&lt;br&gt;lands on LandingPageUrl" style="fillColor=none;strokeColor=none;fontSize=28;fontColor=#000000;labelBackgroundColor=none;html=1;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="-8" y="-108" width="368" height="144" as="geometry" />
+        </mxCell>
+        <mxCell id="ewJf5vmDdQDQY0AKk8fY-24" value="19. Return user to where they &#xa;started their original identity check" style="fillColor=none;strokeColor=none;fontSize=28;align=left;fontColor=#000000;" parent="1" vertex="1">
+          <mxGeometry x="-2" y="1591" width="497" height="111" as="geometry" />
+        </mxCell>
+        <mxCell id="iZHxu3rszUxAy0GFM28c-5" value="" style="curved=1;endArrow=block;rounded=0;fontSize=28;strokeWidth=3;strokeColor=#000000;" parent="1" edge="1">
+          <mxGeometry x="1" y="200" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1550.7222222222217" y="451" />
+              <mxPoint x="1550.7222222222217" y="481" />
+            </Array>
+            <mxPoint x="1479" y="449" as="sourcePoint" />
+            <mxPoint x="1479" y="481" as="targetPoint" />
+            <mxPoint x="-164" y="-84" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HJY-Aq2zCEMFMYeBLB3X-3" value="&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;&lt;span style=&quot;font-size: 28px;&quot;&gt;4. User automatically reuses their&lt;/span&gt;&lt;br style=&quot;padding: 0px; margin: 0px; font-size: 28px;&quot;&gt;&lt;span style=&quot;font-size: 28px;&quot;&gt;existing GOV.UK One Login session&lt;/span&gt;&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;" parent="iZHxu3rszUxAy0GFM28c-5" vertex="1" connectable="0">
+          <mxGeometry x="-0.3278" y="-7" relative="1" as="geometry">
+            <mxPoint x="-56" y="-51" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iZHxu3rszUxAy0GFM28c-6" value="" style="curved=1;endArrow=block;rounded=0;fontSize=28;strokeWidth=3;labelBackgroundColor=none;strokeColor=#000000;" parent="1" edge="1" target="ewJf5vmDdQDQY0AKk8fY-3">
+          <mxGeometry x="1" y="200" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="644.7222222222217" y="918" />
+              <mxPoint x="644.7222222222217" y="948" />
+            </Array>
+            <mxPoint x="556.2777777777783" y="918" as="sourcePoint" />
+            <mxPoint x="566" y="948" as="targetPoint" />
+            <mxPoint x="-164" y="-84" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HJY-Aq2zCEMFMYeBLB3X-1" value="&lt;span style=&quot;font-size: 28px;&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;10. Confirm user is on in-person return journey&lt;/font&gt;&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;" parent="iZHxu3rszUxAy0GFM28c-6" vertex="1" connectable="0">
+          <mxGeometry x="-0.2928" y="-7" relative="1" as="geometry">
+            <mxPoint x="-67" y="-34" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1d6sEjmxc0wWdjjiqkaa-1" value="" style="curved=1;endArrow=block;rounded=0;fontSize=28;strokeWidth=3;labelBackgroundColor=none;strokeColor=#000000;" parent="1" edge="1">
+          <mxGeometry x="1" y="200" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1559.7222222222217" y="1192" />
+              <mxPoint x="1559.7222222222217" y="1222" />
+            </Array>
+            <mxPoint x="1481" y="1192" as="sourcePoint" />
+            <mxPoint x="1481" y="1222" as="targetPoint" />
+            <mxPoint x="-164" y="-84" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HJY-Aq2zCEMFMYeBLB3X-4" value="&lt;span style=&quot;font-size: 28px;&quot;&gt;13. User checks their identity details&lt;/span&gt;&lt;br style=&quot;padding: 0px; margin: 0px; font-size: 28px;&quot;&gt;&lt;span style=&quot;font-size: 28px;&quot;&gt;and confirms they are correct&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontColor=#000000;" parent="1d6sEjmxc0wWdjjiqkaa-1" vertex="1" connectable="0">
+          <mxGeometry x="-0.3171" y="-5" relative="1" as="geometry">
+            <mxPoint x="-61" y="-49" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
