@@ -1,0 +1,66 @@
+---
+title: Help your users after their in-person identity checks
+weight: 5.7
+last_reviewed_on: 2025-09-04
+review_in: 6 months
+---
+
+   # Helping your users after their in-person identity checks
+
+<%= warning_text('If you need identity verification, we strongly recommended that you create a landing page / <code>LandingPageUrl</code> to support your users after their in-person identity checks. This is also known as the face-to-face journey. There is further <a href="https://github.com/govuk-one-login/onboarding-examples/tree/main/tools/f2f-test">guidance on creating and testing a landing page</a>. If you do not provide a landing page, your user will not be returned to your service after they have completed their in-person identity checks. If your service is authentication-only, you do not need to do this.') %>
+
+
+    In some scenarios, your user may have to prove their identity ‘face-to-face’, for example after using the Post Office or if they have a European driving licence.
+    
+    1. Trained identity staff process the user’s documents and take their photo to compare the user’s claimed identity to their documentation. 
+    1. The identity staff do not tell the user the result of their identity check immediately. Instead, your user will receive an email with the subject **Sign in to view the result of your identity check**, which can take up to 24 hours to arrive.
+    1. The user selects the link in the email's body (this contains an identifier which links them to your service), signs in to GOV.UK One Login and is automatically redirected to your service's landing page. 
+    
+    Your user has 16 days to complete their in-person identity check, starting from when they initiate the journey. The in-person journey is only complete when your user visits GOV.UK One Login after a success or failure of the in-person check. Your user can do this by using their unique email link or trying to access your service or another service connected to GOV.UK One Login. 
+    
+    If the user does not complete the in-person identity check within 16 days, they will not be able to complete it at this time. The user will then have to repeat the identity check process.
+    
+    Currently, the only way to cancel an in-person identity check is for the user to contact GOV.UK One Login directly.
+    
+    ## Understand what your landing page needs to do 
+    
+    This landing page will:
+    
+    * authenticate a user in your service 
+    * help your user to see the status of their recent identity check 
+    * continue your user's sign-up process for your service 
+    
+    Before you start, you must have followed the recommendation to [split out authentication and identity requests](/integrate-with-integration-environment/authenticate-your-user/#make-a-request-for-authentication-and-identity). 
+    
+    We recommend your user returns to the point where they left to do the in-person check rather than starting over again. You can do this if you stored the user's `sub` when the user initially authenticated with your service.
+    
+    <%= image_tag "in-person-flow-diagram.drawio.svg", { :alt => '' } %>
+    
+    1. Your user, having used their unique link from the **Sign in to view the result of your identity check** email, logged in to GOV.UK One Login and viewed their identity check status, has selected to return to your service, and lands on the `LandingPageUrl` that you gave when you [configured your service for production](/configure-for-production/). 
+    1. This is where the in-person journey differs from a normal GOV.UK One Login flow. Your service's landing page needs to store that this user is on an in-person return journey. How you do this will depend on how you [manage your users' sessions](/integrate-with-integration-environment/managing-your-users-sessions/#managing-your-users-39-sessions). Your user should only end up on this page if they have selected the email link from the in-person journey.
+    1. Your service makes an authentication request to the `/authorize` endpoint with the vector of trust (vtr) `Cl.Cm` (a medium level of authentication). There’s further [guidance on making an authentication request](/integrate-with-integration-environment/authenticate-your-user/#make-a-request-for-authentication). 
+    1. Your user automatically reuses their existing GOV.UK One Login session because they have already logged in from the email link. The user will not need to re-enter their username and password. 
+    1. GOV.UK One Login redirects your user to your `redirect_uri`.
+    1. Your service makes a [token request](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-token-request) to the `/token` endpoint.
+    1. Your service receives an [ID token and access token](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#receive-response-for-make-a-token-request) in the response.
+    1. Your service makes a request to the `/userinfo` endpoint to retrieve user information.
+    1. Your service receives a response containing the user attributes `sub`, `email` and `phone`.
+    1. Your service confirms that your user is on an in-person return journey (you'll have stored that this user is on an in-person return journey in step 2). 
+    1. This is where the in-person journey differs from a normal GOV.UK One Login flow. Your service shows the user the 'in-person check return screen' which prompts the user to continue their journey for retrieving the result of their identity check. This will be the first page your service shows the user. 
+    1. Your service makes a request for both authentication and identity to the `/authorize` endpoint with the vector of trust `Cl.Cm.P2` (medium authentication and medium level of identity confidence). There’s further [guidance on making an authentication and identity request](/integrate-with-integration-environment/authenticate-your-user/#make-a-request-for-authentication-and-identity). 
+    1. Your user checks the identity details GOV.UK One Login has stored for them and confirms they are correct.
+    1. GOV.UK One Login redirects your user to your `redirect_uri`.
+    Your service makes a [token request](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-token-request) to the `/token` endpoint.
+    1. Your service receives an [ID token and access token](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#receive-response-for-make-a-token-request) in the response.
+    1. Your service makes a request to the `/userinfo` endpoint to retrieve user information.
+    1. Your service receives a response containing user attributes (`sub`, `email`, `phone` and whichever claims your service requested, for example `coreIdentityJWT`) and the results of the identity check.
+    1. Your service returns your user to where they started their original identity check. 
+    
+    
+    ## Test your `LandingPageUrl` 
+    
+    You cannot directly test the in-person ‘face-to-face’ journey. This is because your user will access your service’s `LandingPageUrl` from their unique link in the **Sign in to view the result of your identity check** email.
+    
+    However, you can [use the f2f-test tool to test a simulated return from the face-to-face journey](https://github.com/govuk-one-login/onboarding-examples/blob/main/tools/f2f-test/README.md).  
+    
+    <%= partial "partials/links" %>
