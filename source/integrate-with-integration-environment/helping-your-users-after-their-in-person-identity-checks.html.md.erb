@@ -33,7 +33,7 @@ Before you start, you must have followed the recommendation to [split out authen
     
 We recommend your user returns to the point where they left to do the in-person check rather than starting over again. You can do this if you stored the user's `sub` when the user initially authenticated with your service.
     
-%= image_tag "in-person-flow-diagram.drawio.svg", { :alt => '' } %>
+<%= image_tag "in-person-flow-diagram.drawio.svg", { :alt => '' } %>
     
 1. Your user, having used their unique link from the **Sign in to view the result of your identity check** email, logged in to GOV.UK One Login and viewed their identity check status, has selected to return to your service, and lands on the `LandingPageUrl` that you gave when you [configured your service for production](/configure-for-production/). 
 1. This is where the in-person journey differs from a normal GOV.UK One Login flow. Your service's landing page needs to store that this user is on an in-person return journey. How you do this will depend on how you [manage your users' sessions](/integrate-with-integration-environment/managing-your-users-sessions/#managing-your-users-39-sessions). Your user should only end up on this page if they have selected the email link from the in-person journey.
