@@ -25,7 +25,15 @@ after_build do |builder|
             "https://www.royalmail.com/find-a-postcode", # Avoid intermittent 403 errors from the post office that kills the pipeline
             "https://ico.org.uk/for-organisations/guide-to-data-protection/guide-to-the-general-data-protection-regulation-gdpr/data-protection-impact-assessments-dpias/", # Avoid flagging checker because of CloudFlare security on site
             "https://w3c-ccg.github.io/did-method-web/#read-resolve", # Link works in browser but HTML is, technically, correct the #read-resolve anchor is not present in the HTML but auto-magically added when the page is rendered
-            "https://www.icao.int/publications/Documents/9303_p3_cons_en.pdf" # ICAO site is being migrated so the doc is temporarily unavailable but the resulting page points the user to an alternative
+            # external links that we are expecting a 4xx for 
+            "https://ssf-transmitter.transaction.integration.account.gov.uk/verify",
+            "https://shared-signals-transmitter.transaction.account.gov.uk/verify",
+            "https://ssf-transmitter.transaction.integration.account.gov.uk/stream",
+            "https://shared-signals-transmitter.transaction.account.gov.uk/stream",
+            "https://auth.ssf-transmitter.transaction.integration.account.gov.uk/oauth2/token",
+            "https://auth.shared-signals-transmitter.transaction.account.gov.uk/oauth2/token",
+            # ICAO site is being migrated so the doc is temporarily unavailable but the resulting page points the user to an alternative
+            "https://www.icao.int/publications/Documents/9303_p3_cons_en.pdf" 
         ],
         :swap_urls => { config[:tech_docs][:host] => "" },
         typhoeus: {
