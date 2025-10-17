@@ -371,7 +371,7 @@ Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
 To validate the ID token, you must use a public key. GOV.UK One Login publishes the public keys in a [JWKS document](LINK). 
 
-<%= warning_text('GOV.UK One Login will regularly rotate its public keys. You must <a href="LINK TO H4 BELOW">read the guidance on understanding GOV.UK One Login’s key rotation</a> to make sure your application continues to work as expected.') %>
+<%= warning_text('GOV.UK One Login will regularly rotate its public keys. You must <a href="use.the.kid">read the guidance on understanding GOV.UK One Login’s key rotation</a> to make sure your application continues to work as expected.') %>
 
 This is an example of a JWKS document published by GOV.UK One Login:
 
@@ -423,7 +423,7 @@ Follow the steps below to use the `kid` to find out which public key from the JW
 1. You must [validate that the JWT `alg` header matches](https://datatracker.ietf.org/doc/html/rfc8725#section-3.1) what was returned from the `jwks_uri`.
 1. Use the key to verify the signature of the ID token. 
 
-<%= warning_text('If the `kid` in the JWT header does not match a `kid` in the JWKS document, you must not trust that ID token. You should contact GOV.UK One Login through the Live Service Hub to report an incident. Your team will have been enrolled in the Live Service Hub as part of the service transition process.’) %>
+<%= warning_text('If the `kid` in the JWT header does not match a `kid` in the JWKS document, you must not trust that ID token. You should contact GOV.UK One Login through the Live Service Hub to report an incident. Your team will have been enrolled in the Live Service Hub as part of the service transition process.') %>
 
 
 #### Caching the JWKS document 
@@ -445,7 +445,7 @@ In some scenarios we may rotate keys at short notice.
 
 New public keys will appear in the `keys` array of the JWKS document before any rotation.
 
-Use the `Cache-Control` headers and [guidance on caching the JWKS document](ENTER LINK HERE) to regularly poll the JWKS endpoint to detect new versions and make sure you’re using the latest key available.
+Use the `Cache-Control` headers and [guidance on caching the JWKS document] to regularly poll the JWKS endpoint to detect new versions and make sure you’re using the latest key available.
 
 Once GOV.UK One Login has removed the old public key from the JWKS document, it will no longer be valid. You should no longer trust ID tokens signed with that key.
 
