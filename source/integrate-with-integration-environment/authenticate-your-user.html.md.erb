@@ -418,7 +418,7 @@ Follow the steps below to use the `kid` to find out which public key from the JW
 
 1. Download the JWKS document from the JWKS endpoint. This endpoint can be found as the `jwks_uri` value on the discovery endpoint: 
   * Integration environment: [https://oidc.integration.account.gov.uk/.well-known/openid-configuration]([https://oidc.integration.account.gov.uk/.well-known/openid-configuration]) 
-  * Production environment: [https://oidc.account.gov.uk/.well-known/openid-configuration](https://oidc.account.gov.uk/.well-known/openid-configuration]).
+  * Production environment: [https://oidc.account.gov.uk/.well-known/openid-configuration]([https://oidc.account.gov.uk/.well-known/openid-configuration]).
 1. Find the object in `keys` which has a `kid` field matching the `kid` from the JWT header in the ID token. 
 1. You must [validate that the JWT `alg` header matches](https://datatracker.ietf.org/doc/html/rfc8725#section-3.1) what was returned from the `jwks_uri`.
 1. Use the key to verify the signature of the ID token. 
