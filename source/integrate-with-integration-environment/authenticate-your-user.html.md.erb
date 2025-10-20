@@ -371,7 +371,7 @@ Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
 To validate the ID token, you must use a public key. GOV.UK One Login publishes the public keys in a [JWKS document](LINK). 
 
-<%= warning_text('GOV.UK One Login will regularly rotate its public keys. You must <a href="use.the.kid">read the guidance on understanding GOV.UK One Login’s key rotation</a> to make sure your application continues to work as expected.') %>
+<%= warning_text('GOV.UK One Login will regularly rotate its public keys. You must [read the guidance on understanding GOV.UK One Login’s key rotation](/integrate-with-integration-environment/authenticate-your-user/#Use-the-kid-to-see-which-public-key-signed-the-ID-token) to make sure your application continues to work as expected.') %>
 
 This is an example of a JWKS document published by GOV.UK One Login:
 
