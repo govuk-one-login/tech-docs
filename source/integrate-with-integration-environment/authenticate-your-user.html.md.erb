@@ -458,7 +458,7 @@ Once GOV.UK One Login has removed the old public key from the JWKS document, it 
 1. If you’re using a library, check whether your library has support for validating ID tokens.
 1. The value of `iss` must exactly match the Issuer Identifier as specified in GOV.UK One Login’s [discovery endpoint][external.oidc-discovery].
 1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service].
-1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Your application must use the keys described in [Validate the ID token using a public key](authenticate.validate.using.public.key).
+1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Your application must use the keys described in [Validate the ID token using a public key](/integrate-with-integration-environment/authenticate-your-user/#validate-the-ID-token-using-a-public-key).
 1. Check the current time is before the time in the `exp` claim.
 1. Check the current time is after the time in the `iat` claim.
 1. If you set a `nonce` value in the request to the `/authorize` endpoint, check this matches the `nonce` value in the ID token.
