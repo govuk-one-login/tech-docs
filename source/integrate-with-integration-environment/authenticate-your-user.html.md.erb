@@ -371,7 +371,7 @@ Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
 To validate the ID token, you must use a public key. GOV.UK One Login publishes the public keys in a [JWKS document](LINK). 
 
-<%= warning_text('GOV.UK One Login will regularly rotate its public keys. You must <a href="https://github.com/govuk-one-login/integrate-with-integration-environment/authenticate-your-user/#Use-the-kid-to-see-which-public-key-signed-the-ID-token" read the guidance on understanding GOV.UK One Login’s key rotation<a>to make sure your application continues to work as expected.') %>
+<%= warning_text('GOV.UK One Login will regularly rotate its public keys. You must <a href="/integrate-with-integration-environment/authenticate-your-user/#use-the-kid-key-id-to-see-which-public-key-signed-the-id-token" read the guidance on understanding GOV.UK One Login’s key rotation </a>to make sure your application continues to work as expected.') %>
 
 This is an example of a JWKS document published by GOV.UK One Login:
 
@@ -417,8 +417,8 @@ When validating an ID token, the JWT header will include the `kid`.
 Follow the steps below to use the `kid` to find out which public key from the JWKS document was used to sign the JWT. This is important because GOV.UK One Login may have rotated its public keys and using the incorrect key will break your integration. 
 
 1. Download the JWKS document from the JWKS endpoint. This endpoint can be found as the `jwks_uri` value on the discovery endpoint: 
-  * Integration environment: [https://oidc.integration.account.gov.uk/.well-known/openid-configuration]([https://oidc.integration.account.gov.uk/.well-known/openid-configuration]) 
-  * Production environment: [https://oidc.account.gov.uk/.well-known/openid-configuration]([https://oidc.account.gov.uk/.well-known/openid-configuration]).
+  * Integration environment: [https://oidc.integration.account.gov.uk/.well-known/openid-configuration](https://oidc.integration.account.gov.uk/.well-known/openid-configuration) 
+  * Production environment: [https://oidc.account.gov.uk/.well-known/openid-configuration](https://oidc.account.gov.uk/.well-known/openid-configuration).
 1. Find the object in `keys` which has a `kid` field matching the `kid` from the JWT header in the ID token. 
 1. You must [validate that the JWT `alg` header matches](https://datatracker.ietf.org/doc/html/rfc8725#section-3.1) what was returned from the `jwks_uri`.
 1. Use the key to verify the signature of the ID token. 
@@ -458,7 +458,7 @@ Once GOV.UK One Login has removed the old public key from the JWKS document, it 
 1. If you’re using a library, check whether your library has support for validating ID tokens.
 1. The value of `iss` must exactly match the Issuer Identifier as specified in GOV.UK One Login’s [discovery endpoint][external.oidc-discovery].
 1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service].
-1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Your application must use the keys described in [Validate the ID token using a public key](/integrate-with-integration-environment/authenticate-your-user/#validate-the-ID-token-using-a-public-key).
+1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Your application must use the keys described in [Validate the ID token using a public key](/integrate-with-integration-environment/authenticate-your-user/#validate-the-id-token-using-a-public-key).
 1. Check the current time is before the time in the `exp` claim.
 1. Check the current time is after the time in the `iat` claim.
 1. If you set a `nonce` value in the request to the `/authorize` endpoint, check this matches the `nonce` value in the ID token.
