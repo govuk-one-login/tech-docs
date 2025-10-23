@@ -282,6 +282,7 @@ Now you have generated your JWT assertion, you’re ready to make a `POST` reque
 POST /token HTTP/1.1
 Host: oidc.integration.account.gov.uk
 Content-Type: application/x-www-form-urlencoded
+User-Agent: my-platform/version (https://my-service-url.gov.uk)
 
 grant_type=authorization_code
 &code=SplxlOBeZQQYbYS6WxSbIA
@@ -292,6 +293,7 @@ OiIiLCJqdGkiOiIifQ.r1Ylfhhy6VNSlhlhW1N89F3WfIGuko2rvSRWO4yK1BI
 ```
 
 <%= warning_text('This code example uses formatting that makes it easier to read. If you copy the example, you must make sure the request is:<ul><li>a continuous line of text separating each parameter with an ampersand (&)</li><li>not split across multiple lines</li><li>without any additional separators such as newline, commas or tabs</li></ul>') %>
+<%= warning_text('GOV.UK One Login requires the <a href="/before-integrating/set-user-agent-header/"><code>User-Agent</code> header</a> to be populated. If it absent or empty, your service will receive a 403 error') %>
 
 | Parameter               | Required or recommended | Description                                                                                                                                            |
 |-------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -500,7 +502,10 @@ An example request to the `/userinfo` endpoint would look similar to this exampl
 GET /userinfo HTTP/1.1
 Host: oidc.integration.account.gov.uk
 Authorization: Bearer <access_token>
+User-Agent: my-platform/version (https://my-service-url.gov.uk)
 ```
+
+<%= warning_text('GOV.UK One Login requires the <a href="/before-integrating/set-user-agent-header/"><code>User-Agent</code> header</a> to be populated. If it absent or empty, your service will receive a 403 error') %>
 
 ### Receive response for ‘Retrieve user information’
 
