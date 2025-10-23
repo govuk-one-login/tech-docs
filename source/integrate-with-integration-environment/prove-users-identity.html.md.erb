@@ -207,7 +207,16 @@ GOV.UK One Login uses a simplified version of the DID resolution algorithm from 
 You should only trust the DID documents located at:
 
 * integration – [https://identity.integration.account.gov.uk/.well-known/did.json](https://identity.integration.account.gov.uk/.well-known/did.json)
-* production – [https://identity.account.gov.uk/.well-known/did.json](https://identity.account.gov.uk/.well-known/did.json)  
+* production – [https://identity.account.gov.uk/.well-known/did.json](https://identity.account.gov.uk/.well-known/did.json)
+
+To retrieve the DID document, you should make HTTP request to the appropriate endpoint, for example:
+
+```
+GET /.well-known/did.json HTTP/1.1
+Host: identity.integration.account.gov.uk
+User-Agent: my-platform/version (https://my-service-url.gov.uk)
+```
+<%= warning_text('GOV.UK One Login requires the <a href="/before-integrating/set-user-agent-header/"><code>User-Agent</code> header</a> to be populated. If it absent or empty, your service will receive a 403 error') %>
 
 GOV.UK One Login will always publish the DID documents on the URLs above and will never change the publication URLs without notifying you. 
 
@@ -216,7 +225,7 @@ Follow the steps below to use the `kid` to determine which public key from the D
 1. Split the `kid` from the JWT header into two parts: the controller ID (before the `#`) and the unique key ID (after the `#`). For example, in the `kid` `did:web:identity.integration.account.gov.uk#c9f8da1c87525bb41653583c2d05274e85805ab7d0abc58376c7128129daa936`, the controller ID is `did:web:identity.integration.account.gov.uk` and the unique key ID is `c9f8da1c87525bb41653583c2d05274e85805ab7d0abc58376c7128129daa936`.
 1. Download the DID document from the DID endpoint you need: 
   * Integration: [https://identity.integration.account.gov.uk/.well-known/did.json](https://identity.integration.account.gov.uk/.well-known/did.json) 
-  * Production: [https://identity.account.gov.uk/.well-known/did.json](https://identity.account.gov.uk/.well-known/did.json). 
+  * Production: [https://identity.account.gov.uk/.well-known/did.json](https://identity.account.gov.uk/.well-known/did.json).
 1. Make sure the controller ID matches the `id` in the DID document.
 1. Find the object in `assertionMethods` which has an `id` field matching the `kid` from the JWT header. If there are multiple keys in the DID document, GOV.UK One Login is in the process of rotating its keys. If there’s a key without a matching `id`, do not trust the identity and contact GOV.UK One Login to report an incident.
 1. Use the `publicKeyJwk` object of the key you want to use to verify the signature. 
