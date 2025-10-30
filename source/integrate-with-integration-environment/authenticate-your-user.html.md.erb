@@ -432,7 +432,7 @@ Follow the steps below to use the `kid` to find out which public key from the JW
 
 You should cache the returned JWKS document and reuse it instead of downloading the JWKS document for every signature you need to verify. The JWKS document will not regularly change and caching it reduces latency for your service.
 
-The `Cache-Control` HTTP header field in the JWKS endpoint contains a suggested caching period. This caching period is the time period that GOV.UK One Login expects the JWKS document to remain valid. 
+The `Cache-Control` HTTP header field in the JWKS endpoint contains a suggested caching period in seconds. This caching period is the time period that GOV.UK One Login expects the JWKS document to remain valid. 
 
 For example, a header with the value `Cache-Control: max-age=86400` would mean you cache the JWKS document for the `max-age` of 1 day (86400 seconds).
 
