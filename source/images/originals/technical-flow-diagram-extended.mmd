@@ -24,8 +24,8 @@ config:
   Note over S,OL: Exchange authorisation code for an <br/>access token and ID token
   S->>S: Create and sign<br/>assertion <br/>with private key
   S->>OL: POST /token (including authorisation code and assertion)
-  OL->>S: GET JWKS document
-  S-->>OL: JWKS document containing the public key
+  OL->>S: Fetches public key:<br/>GET JWKS endpoint
+  S-->>OL: Return public key as JWKS document
   OL->>OL: Verify token request
   OL-->>S: ID Token and access token
   S->>OL: Fetch public keys<br/>GET /.well-known/jwks.json
