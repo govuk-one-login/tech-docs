@@ -369,9 +369,9 @@ You can use the following table to understand the ID token’s claims.
 
 Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
-### Validate the ID token using a public key
+### Validate the signature of the ID token using a public key
 
-To validate the ID token, you must use a public key. GOV.UK One Login publishes the public keys in a [JWKS document](https://datatracker.ietf.org/doc/html/rfc7517). 
+To validate the signature of the ID token, you must use a public key. GOV.UK One Login publishes the public keys in a [JWKS document](https://datatracker.ietf.org/doc/html/rfc7517). 
 
 <%= warning_text('GOV.UK One Login will regularly rotate its public keys. You must <a href="/integrate-with-integration-environment/authenticate-your-user/#use-the-kid-key-id-to-see-which-public-key-signed-the-id-token"> read the guidance on understanding GOV.UK One Login’s key rotation </a> to make sure your application continues to work as expected.') %>
 
@@ -463,7 +463,7 @@ Once GOV.UK One Login has removed the old public key from the JWKS document, it 
 1. If you’re using a library, check whether your library has support for validating ID tokens.
 1. The value of `iss` must exactly match the Issuer Identifier as specified in GOV.UK One Login’s [discovery endpoint][external.oidc-discovery].
 1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service].
-1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Your application must use the keys described in [Validate the ID token using a public key](/integrate-with-integration-environment/authenticate-your-user/#validate-the-id-token-using-a-public-key).
+1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Your application must [validate the signature of the ID token using a public key](/integrate-with-integration-environment/authenticate-your-user/#validate-the-id-token-using-a-public-key).
 1. Check the current time is before the time in the `exp` claim.
 1. Check the current time is after the time in the `iat` claim.
 1. If you set a `nonce` value in the request to the `/authorize` endpoint, check this matches the `nonce` value in the ID token.
