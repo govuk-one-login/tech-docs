@@ -369,6 +369,92 @@ You can use the following table to understand the ID token’s claims.
 
 Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
+### Validate the signature of the ID token using a public key
+
+To validate the signature of the ID token, you must use a public key. GOV.UK One Login publishes the public keys in a [JWKS document](https://datatracker.ietf.org/doc/html/rfc7517). 
+
+<%= warning_text('GOV.UK One Login will regularly rotate its public keys. You must <a href="/integrate-with-integration-environment/authenticate-your-user/#use-the-kid-key-id-to-see-which-public-key-signed-the-id-token"> read the guidance on understanding GOV.UK One Login’s key rotation </a> to make sure your application continues to work as expected.') %>
+
+This is an example of a JWKS document published by GOV.UK One Login:
+
+```json
+{
+  "keys": [
+    {
+      "kty": "EC",
+      "use": "sig",
+      "crv": "P-256",
+      "kid": "644af598b780f54106ca0f3c017341bc230c4f8373f35f32e18e3e40cc7acff6",
+      "x": "5URVCgH4HQgkg37kiipfOGjyVft0R5CdjFJahRoJjEw",
+      "y": "QzrvsnDy3oY1yuz55voaAq9B1M5tfhgW3FBjh_n_F0U",
+      "alg": "ES256"
+    },
+    {
+      "kty": "EC",
+      "use": "sig",
+      "crv": "P-256",
+      "kid": "e1f5699d068448882e7866b49d24431b2f21bf1a8f3c2b2dde8f4066f0506f1b",
+      "x": "BJnIZvnzJ9D_YRu5YL8a3CXjBaa5AxlX1xSeWDLAn9k",
+      "y": "x4FU3lRtkeDukSWVJmDuw2nHVFVIZ8_69n4bJ6ik4bQ",
+      "alg": "ES256"
+    },
+    {
+      "kty": "RSA",
+      "e": "AQAB",
+      "use": "sig",
+      "kid": "76e79bfc350137593e5bd992b202e248fc97e7a20988a5d4fbe9a0273e54844e",
+      "alg": "RS256",
+      "n": "lGac-hw2cW5_amtNiDI-Nq2dEXt1x0nwOEIEFd8NwtYz7ha1GzNwO2LyFEoOvqIAcG0NFCAxgjkKD5QwcsThGijvMOLG3dPRMjhyB2S4bCmlkwLpW8vY4sJjc4bItdfuBtUxDA0SWqepr5h95RAsg9UP1LToJecJJR_duMzN-Nutu9qwbpIJph8tFjOFp_T37bVFk4vYkWfX-d4-TOImOOD75G0kgYoAJLS2SRovQAkbJwC1bdn_N8yw7RL9WIqZCwzqMqANdo3dEgSb04XD_CUzL0Y2zU3onewH9PhaMfb11JhsuijH3zRA0dwignDHp7pBw8uMxYSqhoeVO6V0jz8vYo27LyySR1ZLMg13bPNrtMnEC-LlRtZpxkcDLm7bkO-mPjYLrhGpDy7fSdr-6b2rsHzE_YerkZA_RgX_Qv-dZueX5tq2VRZu66QJAgdprZrUx34QBitSAvHL4zcI_Qn2aNl93DR-bT8lrkwB6UBz7EghmQivrwK84BjPircDWdivT4GcEzRdP0ed6PmpAmerHaalyWpLUNoIgVXLa_Px07SweNzyb13QFbiEaJ8p1UFT05KzIRxO8p18g7gWpH8-6jfkZtTOtJJKseNRSyKHgUK5eO9kgvy9sRXmmflV6pl4AMOEwMf4gZpbKtnLh4NETdGg5oSXEuTiF2MjmXE"
+    }
+  ]
+}
+
+```
+
+
+#### Use the `kid` (key ID) to see which public key signed the ID token
+
+When validating an ID token, the JWT header will include the `kid`.
+
+Follow the steps below to use the `kid` to find out which public key from the JWKS document was used to sign the JWT. This is important because GOV.UK One Login may have rotated its public keys and using the incorrect key will break your integration. 
+
+1. Download the JWKS document from the JWKS endpoint. This endpoint can be found as the `jwks_uri` value on the discovery endpoint: 
+  * Integration environment: [https://oidc.integration.account.gov.uk/.well-known/openid-configuration](https://oidc.integration.account.gov.uk/.well-known/openid-configuration) 
+  * Production environment: [https://oidc.account.gov.uk/.well-known/openid-configuration](https://oidc.account.gov.uk/.well-known/openid-configuration).
+1. Find the object in `keys` which has a `kid` field matching the `kid` from the JWT header in the ID token. 
+1. You must [validate that the JWT `alg` header matches](https://datatracker.ietf.org/doc/html/rfc8725#section-3.1) what was returned from the `jwks_uri`.
+1. Use the key to verify the signature of the ID token. 
+
+
+<%= warning_text('If the `kid` in the JWT header does not match a `kid` in the JWKS document, you must not trust that ID token. You should contact GOV.UK One Login through the <a href="https://www.sign-in.service.gov.uk/contact-us">contact us form</a>, including the name of your service and client ID.') %>
+
+#### Caching the JWKS document 
+
+You should cache the returned JWKS document and reuse it instead of downloading the JWKS document for every signature you need to verify. The JWKS document will not regularly change and caching it reduces latency for your service.
+
+The `Cache-Control` HTTP header field in the JWKS endpoint contains a suggested caching period in seconds. This caching period is the time period that GOV.UK One Login expects the JWKS document to remain valid. 
+
+For example, a header with the value `Cache-Control: max-age=86400` would mean you cache the JWKS document for the `max-age` of 1 day (86400 seconds).
+
+You may not be able to refresh the cache from GOV.UK One Login’s JWKS endpoint if there's a temporary outage. If this happens, you should continue to trust the cached version until you’re able to refresh the cache.
+
+For more details on the `Cache-Control` header, see [RFC 9111: HTTP Caching](https://www.rfc-editor.org/rfc/rfc9111#field.cache-control). 
+
+#### Understanding the ID token signing key rotations
+
+GOV.UK One Login will rotate the keys as follows:
+
+- In the integration environment -  in Jan 2026 and Feb 2026 to let you test your integration.
+- In the production environment - every 6 months starting from Mar 2026. 
+- In some scenarios we may rotate keys at short notice.
+
+New public keys will appear in the `keys` array of the JWKS document before any rotation.
+
+Use the `Cache-Control` headers and [guidance on caching the JWKS document](/integrate-with-integration-environment/authenticate-your-user/#caching-the-jwks-document) to regularly poll the JWKS endpoint to detect new versions and make sure you’re using the latest key available.
+
+Once GOV.UK One Login has removed the old public key from the JWKS document, it will no longer be valid. Do not trust ID tokens signed with that key.
+
+
 #### Validate your ID token
 
   <%= warning_text('You must perform all of the validation described below, or your integration may not be secure') %>
@@ -377,12 +463,12 @@ Now you’ve understood what’s in your ID token, you’ll need to validate it.
 1. If you’re using a library, check whether your library has support for validating ID tokens.
 1. The value of `iss` must exactly match the Issuer Identifier as specified in GOV.UK One Login’s [discovery endpoint][external.oidc-discovery].
 1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service].
-1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). You must first [validate that the JWT `alg` header matches](https://datatracker.ietf.org/doc/html/rfc8725#section-3.1) what was returned from the `jwks_uri`. Then you can use the value of the JWT `alg` header parameter to validate the ID token. Your application must use the keys provided by the [discovery endpoint][external.oidc-discovery].
+1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Your application must [validate the signature of the ID token using a public key](/integrate-with-integration-environment/authenticate-your-user/#validate-the-signature-of-the-id-token-using-a-public-key).
 1. Check the current time is before the time in the `exp` claim.
 1. Check the current time is after the time in the `iat` claim.
 1. If you set a `nonce` value in the request to the `/authorize` endpoint, check this matches the `nonce` value in the ID token.
 1. The `vot` claim must contain the credential trust level you asked for in the request to the `/authorize` endpoint. The `vot` claim will only contain the credential trust level, not the level of confidence, even if you make an identity request. For example, if you set the `vtr` parameter to `Cl.Cm.P2`, you must ensure the `vot` claim is equal to `Cl.Cm`.
-1. If you included `max_age` in the request to the `/authorize` endpoint, you must validate that `auth_time` is greater than or equal to the current time subtract the value of `max_age`. If false, you should reject the ID token and redirect the user to re-authenticate, by sending a new authorisation request including `max_age`.
+1. If you included `max_age` in the request to the `/authorize` endpoint, you must validate that `auth_time` is greater than or equal to the current time minus the value of `max_age`. If false, you should reject the ID token and redirect the user to re-authenticate by sending a new request to the `/authorize` endpoint including `max_age`.
 
 ### Error handling for ‘Make a token request’
 
