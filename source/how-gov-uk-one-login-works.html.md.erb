@@ -60,6 +60,16 @@ It shows how keys are used to sign and verify requests and tokens, ensuring secu
 
 You do not need to perform this step for every request, the result should be cached.
 
+You should cache the returned discovery document and reuse it instead of downloading the document for every request. The document will not regularly change and caching it reduces latency for your service.
+
+The Cache-Control HTTP header field in the `/.well-known/openid-configuration` endpoint contains a suggested caching period in seconds. This caching period is the time period that GOV.UK One Login expects the JWKS document to remain valid.
+
+For example, a header with the value Cache-Control: max-age=86400 would mean you cache the document for the max-age of 1 day (86400 seconds).
+
+You may not be able to refresh the cache from GOV.UK One Login’s discovery endpoint if there’s a temporary outage. If this happens, you should continue to trust the cached version until you’re able to refresh the cache.
+
+For more details on the Cache-Control header, see [RFC 9111: HTTP Caching](https://www.rfc-editor.org/rfc/rfc9111#field.cache-control).
+
 <ol>
 <li>Your service sends a <code>GET</code> request to GOV.UK One Login's well-known <a href="/integrate-with-integration-environment/authenticate-your-user/#use-the-integration-discovery-endpoint">discovery endpoint</a> (<code>/.well-known/openid-configuration</code>).</li>
 <li>GOV.UK One Login returns the <a href="/integrate-with-integration-environment/authenticate-your-user/#use-the-integration-discovery-endpoint">discovery document</a> as JSON, containing essential endpoints and configuration details.</li>
