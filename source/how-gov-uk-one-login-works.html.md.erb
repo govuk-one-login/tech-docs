@@ -96,15 +96,15 @@ For more details on the Cache-Control header, see [RFC 9111: HTTP Caching](https
 <li>Your service returns the public key as a JWKS document.</li>
 <li>GOV.UK One Login verifies the token request using the public key.</li>
 <li>GOV.UK One Login returns the <a href="/integrate-with-integration-environment/authenticate-your-user/#receive-response-for-make-a-token-request">ID token and access token</a> to your service.</li>
-<li>Your service fetches public keys from GOV.UK One Login by sending a <code>GET</code> request to the standard OIDC JWKS endpoint using the url from the <code>jwks_uri</code> object in discovery document.</li>
+<li>Your service uses the cached copy of the public keys from GOV.UK One Login by sending a <code>GET</code> request to the standard OIDC JWKS endpoint using the url from the <code>jwks_uri</code> object in discovery document.</li>
 <li>GOV.UK One Login returns a JWKS document as containing the public key.</li>
-<li>Your Service <a href="/integrate-with-integration-environment/authenticate-your-user/#validate-your-id-token">validates the ID token signature</a> with the public key obtained from GOV.UK One Login.</li>
+<li>Your Service <a href="/integrate-with-integration-environment/authenticate-your-user/#validate-your-id-token">validates signature of the core identity claim JWT</a> using the public key from the DID document that matches the <code>kid</code> soecified int eh core identity claim JWT header.</li>
 </ol>
 
 ### Retrieve userinfo
 
 <ol start="19">
-<li>Your service sends a <code>GET</code> request to the <a href="/integrate-with-integration-environment/authenticate-your-user/#retrieve-user-information"><code>/userinfo</code></a> endpoint, including the Access Token.</li>
+<li>Your service sends a <code>GET</code> request, including the Access Token to the <a href="/integrate-with-integration-environment/authenticate-your-user/#retrieve-user-information"><code>/userinfo</code></a> endpoint, .</li>
 <li>GOV.UK One Login returns the <a href="/integrate-with-integration-environment/authenticate-your-user/#receive-response-for-retrieve-user-information">userinfo</a> (including a <a href="/integrate-with-integration-environment/prove-users-identity/#understand-your-user-s-core-identity-claim">core identity claim</a> if requested).</li>
 <li>Your service fetches public keys from GOV.UK One Login by sending a <code>GET</code> request to the DID document endpoint (<code>/.well-known/did.json</code>).</li>
 <li>GOV.UK One Login returns public keys in a DID document.</li>
