@@ -1,7 +1,7 @@
 ---
 title: How GOV.UK One Login works 
 weight: 1.5
-last_reviewed_on: 2025-10-31
+last_reviewed_on: 2025-11-10
 review_in: 6 months
 ---
 
@@ -16,39 +16,6 @@ GOV.UK One Login uses 2 different environments:
 * an integration environment, which contains sample user data (for example, date of birth, address) which you can use to test your service’s integration with GOV.UK One Login
 * a production environment, which is the live environment for real users to access and use your service’s integration with GOV.UK One Login
 
-## Understand the flow GOV.UK One Login uses
-
-<%= image_tag "top-level-technical-diagram.svg", { :alt => '' } %>
-
-1. Your service asks the user to sign in or create an account.
-1. If your service needs confidence your user is who they say they are, GOV.UK One Login will request proof of identity.
-1. GOV.UK One Login collects evidence of the user’s identity.
-1. GOV.UK One Login provides information about your user.
-
-You can read [guidance about cookies on GOV.UK One Login](https://signin.account.gov.uk/cookies) if you want to learn more about cookies.
-
-To understand the high level technical flow see [Understand the technical flow GOV.UK One Login uses](#understand-the-technical-flow-gov-uk-one-login-uses).
-
-For a more detailed UML sequence diagram of the GOV.UK One Login OIDC flow, see [GOV.UK One Login OIDC Authorization Code Flow](#gov-uk-one-login-oidc-flow).
-
-
-## Understand the technical flow GOV.UK One Login uses
-
-<%= image_tag "technical-flow-diagram.svg", { :alt => '' } %>
-
-1. Your service makes an [authorisation request][integrate.make-authorize-request] to the `/authorize` endpoint.
-1. The user logs in (or creates an account if they do not have one) and proves their identity if your service needs them to. GOV.UK One Login lets your user know how their data will be shared with your service.
-1. GOV.UK One Login returns an [authorisation code][integrate.generate-auth-code] to your service.
-1. Your service makes a [token request][integrate.make-token-request] to the `/token` endpoint and includes the authorisation code in the request.
-1. Your service receives an [ID token and access token][integrate.receive-tokens] in the response.
-1. Your service makes a request to the `/userinfo` endpoint to [retrieve user information][integrate.retrieve-user-info]. You can read more about [choosing which user attributes your service can request][integrate.choose-user-attributes].
-1. Your service receives a [response containing user attributes][integrate.user-info-response].
-1. Your service makes a [log out request][integrate.make-logout-request] to the `/logout` endpoint.
-1. Your service receives an `HTTP 302` response redirecting the user to the `post_logout_redirect_uri`.
-
-Find out [what to consider before you integrate your service with GOV.UK One Login][integrate.before-integrating].
-
-
 ## GOV.UK One Login OIDC Authorization Code Flow 
 The diagram shows how your service interacts with GOV.UK One Login to authenticate a user and retrieve their information following the OpenID Connect (OIDC) protocol.
 
@@ -58,22 +25,12 @@ It shows how keys are used to sign and verify requests and tokens, ensuring secu
 
 ### Retrieve OIDC metadata
 
-You do not need to perform this step for every request, the result should be cached.
-
-You should cache the returned discovery document and reuse it instead of downloading the document for every request. The document will not regularly change and caching it reduces latency for your service.
-
-The Cache-Control HTTP header field in the `/.well-known/openid-configuration` endpoint contains a suggested caching period in seconds. This caching period is the time period that GOV.UK One Login expects the JWKS document to remain valid.
-
-For example, a header with the value Cache-Control: max-age=86400 would mean you cache the document for the max-age of 1 day (86400 seconds).
-
-You may not be able to refresh the cache from GOV.UK One Login’s discovery endpoint if there’s a temporary outage. If this happens, you should continue to trust the cached version until you’re able to refresh the cache.
-
-For more details on the Cache-Control header, see [RFC 9111: HTTP Caching](https://www.rfc-editor.org/rfc/rfc9111#field.cache-control).
-
 <ol>
 <li>Your service sends a <code>GET</code> request to GOV.UK One Login's well-known <a href="/integrate-with-integration-environment/authenticate-your-user/#use-the-integration-discovery-endpoint">discovery endpoint</a> (<code>/.well-known/openid-configuration</code>).</li>
 <li>GOV.UK One Login returns the <a href="/integrate-with-integration-environment/authenticate-your-user/#use-the-integration-discovery-endpoint">discovery document</a> as JSON, containing essential endpoints and configuration details.</li>
 </ol>
+
+You should <a href="/integrate-with-integration-environment/authenticate-your-user/#cache-the-discovery-document">"Cache the discovery document"</a>. 
 
 ### Authorise
 
