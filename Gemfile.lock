@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    Ascii85 (1.1.0)
+    Ascii85 (2.0.1)
     activesupport (7.0.8.7)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
@@ -9,16 +9,18 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
-    afm (0.2.2)
-    async (2.11.0)
-      console (~> 1.25, >= 1.25.2)
+    afm (1.0.0)
+    async (2.34.0)
+      console (~> 1.29)
       fiber-annotation
-      io-event (~> 1.5, >= 1.5.1)
-      timers (~> 4.1)
+      io-event (~> 1.11)
+      metrics (~> 0.12)
+      traces (~> 0.18)
     autoprefixer-rails (10.4.21.0)
       execjs (~> 2)
     backports (3.25.2)
     base64 (0.3.0)
+    benchmark (0.5.0)
     bigdecimal (3.3.1)
     chronic (0.10.2)
     chunky_png (1.4.0)
@@ -40,7 +42,7 @@ GEM
     compass-import-once (1.0.5)
       sass (>= 3.2, < 3.5)
     concurrent-ruby (1.3.4)
-    console (1.25.2)
+    console (1.34.2)
       fiber-annotation
       fiber-local (~> 1.1)
       json
@@ -51,8 +53,9 @@ GEM
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0)
     erubis (2.7.0)
-    ethon (0.16.0)
+    ethon (0.18.0)
       ffi (>= 1.15.0)
+      logger
     eventmachine (1.2.7)
     execjs (2.10.0)
     fast_blank (1.0.1)
@@ -61,7 +64,7 @@ GEM
     fiber-annotation (0.2.0)
     fiber-local (1.1.0)
       fiber-storage
-    fiber-storage (0.1.0)
+    fiber-storage (1.0.1)
     google-protobuf (4.32.1)
       bigdecimal
       rake (>= 13)
@@ -94,9 +97,10 @@ GEM
       concurrent-ruby (~> 1.0)
     hashery (2.1.2)
     hashie (3.6.0)
-    html-proofer (5.0.9)
+    html-proofer (5.1.1)
       addressable (~> 2.3)
       async (~> 2.1)
+      benchmark (~> 0.5)
       nokogiri (~> 1.13)
       pdf-reader (~> 2.11)
       rainbow (~> 3.0)
@@ -106,8 +110,8 @@ GEM
     http_parser.rb (0.8.0)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
-    io-event (1.5.1)
-    json (2.7.2)
+    io-event (1.14.2)
+    json (2.16.0)
     kramdown (2.5.1)
       rexml (>= 3.3.9)
     listen (3.9.0)
@@ -115,6 +119,7 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.7.0)
     memoist (0.16.2)
+    metrics (0.15.0)
     middleman (4.5.1)
       coffee-script (~> 2.2)
       haml (>= 4.0.5)
@@ -184,9 +189,9 @@ GEM
     padrino-support (0.15.3)
     parallel (1.27.0)
     parslet (2.0.0)
-    pdf-reader (2.12.0)
-      Ascii85 (~> 1.0)
-      afm (~> 0.2.1)
+    pdf-reader (2.15.0)
+      Ascii85 (>= 1.0, < 3.0, != 2.0.0)
+      afm (>= 0.2.1, < 2)
       hashery (~> 2.0)
       ruby-rc4
       ttfunk
@@ -222,9 +227,9 @@ GEM
       execjs (>= 0.3.0, < 3)
     thor (1.2.2)
     tilt (2.0.11)
-    timers (4.3.5)
     toml (0.3.0)
       parslet (>= 1.8.0, < 3.0.0)
+    traces (0.18.2)
     ttfunk (1.8.0)
       bigdecimal (~> 3.1)
     typhoeus (1.4.1)
@@ -235,7 +240,7 @@ GEM
       execjs (>= 0.3.0, < 3)
     webrick (1.9.1)
     yell (2.2.2)
-    zeitwerk (2.6.13)
+    zeitwerk (2.7.3)
 
 PLATFORMS
   ruby
