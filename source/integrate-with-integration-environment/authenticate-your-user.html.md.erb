@@ -442,11 +442,18 @@ For more details on the `Cache-Control` header, see [RFC 9111: HTTP Caching](htt
 
 #### Understanding the ID token signing key rotations
 
-GOV.UK One Login will rotate the keys as follows:
+The ID token signing keys will rotate as follows to enable you to test your integration and make any required changes if required:
 
-- In the integration environment -  in Jan 2026 and Feb 2026 to let you test your integration.
-- In the production environment - every 6 months starting from Mar 2026. 
-- In some scenarios we may rotate keys at short notice.
+In integration
+
+- The week commencing **26 Jan 2026**
+- The week commencing **23 Feb 2026**
+
+In production
+
+- Every 6 months starting from the week commencing **30 Mar 2026**
+
+In some scenarios we may rotate keys at short notice.
 
 New public keys will appear in the `keys` array of the JWKS document before any rotation.
 
