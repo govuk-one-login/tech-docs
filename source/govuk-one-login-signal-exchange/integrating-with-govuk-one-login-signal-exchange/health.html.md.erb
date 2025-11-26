@@ -1,0 +1,52 @@
+---
+title: Perform a Health Check
+weight: 5
+last_reviewed_on: 2025-02-19
+review_in: 6 months
+hide_in_navigation: false
+layout: shared_signals_outbound
+---
+
+# Perform a Health check
+
+The health check uses the [Verification Endpoint][external.ssfOut-verfication-endpoint] as a way to confirm the connection between the GOV.UK One Login Transmitter and your receiver as well as a way to test your [receiver][ssfOut.receiver].
+
+In order to send a health check, you must first authenticate against the GOV.UK One Login Transmitter OAuth token endpoint:
+
+<%= partial "partials/ssf_out_transmitter-token-endpoint" %>
+
+Once you've obtained an `ACCESS_TOKEN` you can then send a `POST` request to the verification endpoint: 
+
+```bash
+curl --request POST \
+  --url VERIFICATION_ENDPOINT \
+  --header 'Authorization: Bearer ACCESS_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data PAYLOAD
+```
+
+Where the optional `PAYLOAD` field is the following JSON object converted to a JSON string:
+
+```json
+{
+  "state": "abc123"
+}
+```
+
+Below are the verfication endpoints for our: 
+
+- [Integration][external.ssfOut-verify-endpoint-int] Environment.
+- [Production][external.ssfOut-verify-endpoint-prod] Environment.
+
+
+Once the request is made, the value of `state` will be included in the verification signal to your receiver endpoint if supplied. The value of `state` must be: 
+
+* Any alphanumeric character.
+* Maximum length of 64 characters.
+* Only special character allowed is `-`
+
+You should send a health check on a recurring schedule at a sensible rate, usually every 5-10 minutes. If you do not receive a verfification signal or the signal does not contain the expected the state value, please get in touch with GOV.UK One Login support team and we can investigate further.
+
+You can also [view your configuration][ssfOut.configuration].
+
+<%= partial "partials/links" %>
