@@ -48,7 +48,7 @@ It may take a few minutes to build the docker container, particularly if it is y
 == Inspect your site configuration at "http://localhost:4567/__middleman", "http://127.0.0.1:4567/__middleman"/usr/local/bundle/gems/tilt-2.0.11/lib/tilt/redcarpet.
 ```
 
-## Making changes to the diagrams 
+## Making changes to diagrams 
 
 Diagrams are content, so once you've made a change you should request a review from the technical writing team.
 
