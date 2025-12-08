@@ -75,7 +75,7 @@ npm install -g @mermaid-js/mermaid-cli
 
 ### Editing and publishing a mermaid diagram
 Follow these steps:
-1. Create and modify a diagram `.mmd` file in your source editor
+1. Create and modify a diagram `.mmd` file in your source editor.
 2. Save the `.mmd`  file to the `source/images/originals` folder.
 3. Publish the diagram as a [scalable vector graphic (SVG)](https://www.w3.org/Graphics/SVG/).
 4. Save the SVG file to the `source/images` folder.
