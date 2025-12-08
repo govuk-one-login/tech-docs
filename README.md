@@ -67,7 +67,7 @@ Use one `.mmd` file per diagram.
 
 ### Installing the mermaid command line interface
 
-Run the following command to use the mermaid command line interface.
+Run the following command in your terminal to use the mermaid command line interface.
 
 ```
 npm install -g @mermaid-js/mermaid-cli
