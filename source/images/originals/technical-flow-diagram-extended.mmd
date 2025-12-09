@@ -9,26 +9,28 @@ config:
 ---
 ﻿﻿sequenceDiagram
   autonumber
+  participant UA as User agent
   participant S as Your service
-  participant U as User agent
   participant OL as GOV.UK One Login
   Note over S,OL: Retrieve OIDC metadata
   S->>+OL: GET /.well-known/openid-configuration
   OL-->>-S: Return discovery document as JSON 
-  Note over S,OL: Authorise
+  Note over UA,OL: Authorise
   S->>S: Create request JWT and <br/>sign with private key
-  S->>+OL: GET /authorize (including request parameter)
+  S->>UA: Initiate authentication redirect
+  UA->>+OL: GET /authorize (including request parameter)
   OL->>S: Fetch public keys:<br/>GET JWKS endpoint
   S-->>OL: Return public keys as JWKS document
   OL->>OL: Validate authorize request
   OL->>OL: The user logs in or creates an account<br/>and optionally proves their identity
-  OL-->>-S: HTTP 302 redirect (including authorisation code)
+  OL-->>-UA: HTTP 302 redirect (including authorisation code)
+  UA->>S: Redirect with authorization code
   Note over S,OL: Exchange authorisation code for an <br/>access token and ID token
   S->>S: Create request JWT and <br/>sign with private key
   S->>OL: POST /token (including authorisation code and assertion)
   OL->>S: Fetch public keys:<br/>GET JWKS endpoint
   S-->>OL: Return public keys as JWKS document
-  OL->>OL: Verify token request
+  OL->>OL: Validate token request
   OL-->>S: Return ID token and access token
   S->>OL: Fetch public keys<br/>GET /.well-known/jwks.json
   OL-->>S: Return public keys as JWKS document 
