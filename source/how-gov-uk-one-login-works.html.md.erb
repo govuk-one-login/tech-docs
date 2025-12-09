@@ -26,8 +26,8 @@ It shows how keys are used to sign and verify requests and tokens to make sure t
 ### Retrieve OIDC metadata
 
 <ol>
-<li>Your service sends a <code>GET</code> request to GOV.UK One Login <code>/.well-known/openid-configuration</code> to fetch the discovery document that contains the metadata describing One Login's behaviour as an OIDC provider</li>.<
-<li>GOV.UK One Login returns the metadata describing GOV.UK One Login's behaviour as an OIDC provider as a <a href="https://openid.net/specs/openid-connect-discovery-1_0.html">discovery document</a>.</li>
+<li>Your service sends a <code>GET</code> request to GOV.UK One Login <code>/.well-known/openid-configuration</code> to fetch the discovery document that contains the metadata describing One Login's behaviour as an OIDC provider</li>.
+<li>GOV.UK One Login returns the metadata describing GOV.UK One Logins behaviour as an OIDC provider as a <a href="https://openid.net/specs/openid-connect-discovery-1_0.html">discovery document</a>.</li>
 </ol>
 
 You should <a href="/integrate-with-integration-environment/authenticate-your-user/#cache-the-discovery-document">"Cache the discovery document"</a>. 
@@ -36,9 +36,9 @@ You should <a href="/integrate-with-integration-environment/authenticate-your-us
 
 <ol start="3">
 <li>Your service <a href="/integrate-with-integration-environment/authenticate-your-user/#secure-your-authorisation-request-parameters-with-jwt">creates and signs a request</a> with its private key.</li>
-<li>Your service sends a <code>GET</code> request to the <a href="/integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-authorize-endpoint"><code>/authorize</code></a> endpoint, including the signed request parameter.</li>
-<li>GOV.UK One Login fetches the public key for the service from the JWKS endpoint registered for your service.</li>
-<li>GOV.UK One Login returns the public key as a JWKS document.</li>
+<li>Your service sends a <code>GET</code> request to your <code>/.well-known/jwks.json</code> endpoint to fetch your public keys, which verify the signature on the request JWT passed in your authorize request. GOV.UK One Login caches these keys for 24 hours. </li>
+<li>GOV.UK One Login fetches the public key for service from your JWKS endpoint registered for your service.</li>
+<li>GOV.UK One Login returns the public key as a <a href="https://datatracker.ietf.org/doc/html/rfc7517#section-5">JWKS document</a>.</li>
 <li>GOV.UK One Login validates the authorize request. This includes validating the request JWT signature using the public key from the JWKS that matches the <code>kid</code> specified in the request JWT header.</li>
 <li>The user logs in or creates an account and optionally proves their identity through GOV.UK One Login.</li>
 <li>GOV.UK One Login sends an <code>HTTP 302</code> redirect back to your service's redirect URI, including an <a href="/integrate-with-integration-environment/authenticate-your-user/#generate-an-authorisation-code">authorisation code</a>.</li>
@@ -49,12 +49,14 @@ You should <a href="/integrate-with-integration-environment/authenticate-your-us
 <ol start="10">
 <li>Your service <a href="/integrate-with-integration-environment/authenticate-your-user/#create-a-jwt-assertion">creates a JWT assertion</a> and signis it with its private key.</li>
 <li>Your service sends a <code>POST</code> request to the <a href="/integrate-with-integration-environment/authenticate-your-user/#make-a-token-request"><code>/token</code></a> endpoint, including the <a href="/integrate-with-integration-environment/authenticate-your-user/#generate-an-authorisation-code">authorisation code</a> and <a href="/integrate-with-integration-environment/authenticate-your-user/#create-a-jwt-assertion">assertion</a>.</li>
-<li>GOV.UK One Login fetches the public key for your service from the JWKS endpoint.</li>
-<li>Your service returns the public key as a JWKS document.</li>
-<li>GOV.UK One Login verifies the token request using the public key.</li>
-<li>GOV.UK One Login returns the <a href="/integrate-with-integration-environment/authenticate-your-user/#receive-response-for-make-a-token-request">ID token and access token</a> to your service.</li>
+<li>GGOV.UK One Login sends a GET request to your <code>/.well-known/jwks.json endpoint</code> to fetch your public keys, which verify the signature on the request JWT passed in your authorize request. GOV.UK One Login caches these keys for 24 hours.</li>
+<li>our service returns its public keys as a <a href="https://datatracker.ietf.org/doc/html/rfc7517#section-5">JSON Web Key Set</a>.</li>
+<li>GOV.UK One Login validates the token request. This includes validating the assertion JWT signature using the public key from the JWKS the matches the kid specified in the assertion JWT header.</li>
+<li>GOV.UK One Login returns an ID token and an access token to your service.
+
+</li>
 <li>Your service uses the cached copy of the public keys from GOV.UK One Login by sending a <code>GET</code> request to the standard OIDC JWKS endpoint using the url from the <code>jwks_uri</code> object in discovery document.</li>
-<li>GOV.UK One Login returns a JWKS document as containing the public key.</li>
+<li>GOV.UK One Login returns its public keys as a <a href="https://datatracker.ietf.org/doc/html/rfc7517#section-5">JSON Web Key Set</a>.</li>
 <li>Your Service <a href="/integrate-with-integration-environment/authenticate-your-user/#validate-your-id-token">validates signature of the core identity claim JWT</a> using the public key from the DID document that matches the <code>kid</code> soecified int eh core identity claim JWT header.</li>
 </ol>
 
@@ -63,7 +65,7 @@ You should <a href="/integrate-with-integration-environment/authenticate-your-us
 <ol start="19">
 <li>Your service sends a <code>GET</code> request, including the Access Token to the <a href="/integrate-with-integration-environment/authenticate-your-user/#retrieve-user-information"><code>/userinfo</code></a> endpoint, .</li>
 <li>GOV.UK One Login returns the <a href="/integrate-with-integration-environment/authenticate-your-user/#receive-response-for-retrieve-user-information">userinfo</a> (including a <a href="/integrate-with-integration-environment/prove-users-identity/#understand-your-user-s-core-identity-claim">core identity claim</a> if requested).</li>
-<li>Your service fetches public keys from GOV.UK One Login by sending a <code>GET</code> request to the DID document endpoint (<code>/.well-known/did.json</code>).</li>
+<li>Your service sends a <code>GET</code> request to the GOV.UK One Login <code>/.well-known/did.json</code> to fetch its public keys, which verify the signature on the core identity claim JWT issued by GOV.UK One Login.</li>
 <li>GOV.UK One Login returns public keys in a DID document.</li>
 <li>Your service <a href="/integrate-with-integration-environment/prove-users-identity/#validate-the-core-identity-claim-jwt-using-a-public-key">validates the signature of the core identity claim</a> with the public key from the DID document with the matching <code>kid</code>.</li>
 </ol>
