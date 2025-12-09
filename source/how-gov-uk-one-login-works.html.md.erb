@@ -13,7 +13,7 @@ GOV.UK One Login follows the Service Manual for [designing for different browser
 
 GOV.UK One Login uses 2 different environments:
 
-* an integration environment, which contains sample user data (for example, date of birth, address) which you can use to test your service’s integration with GOV.UK One Login
+* an integration environment, which contains sample user data (for example, date of birth, address) which you can use to test your service&apos;s integration with GOV.UK One Login
 * a production environment, which is the live environment for real users to access and use your service’s integration with GOV.UK One Login
 
 ## GOV.UK One Login OIDC Authorization Code Flow 
@@ -37,7 +37,7 @@ You should <a href="/integrate-with-integration-environment/authenticate-your-us
 <ol start="3">
 <li>Your service <a href="/integrate-with-integration-environment/authenticate-your-user/#secure-your-authorisation-request-parameters-with-jwt">creates and signs a request</a> with its private key.</li>
 <li>Your service sends a <code>GET</code> request to your <code>/.well-known/jwks.json</code> endpoint to fetch your public keys, which verify the signature on the request JWT passed in your authorize request. GOV.UK One Login caches these keys for 24 hours. </li>
-<li>GOV.UK One Login fetches the public key for service from your JWKS endpoint registered for your service.</li>
+<li>GOV.UK One Login fetches the public keys from your JWKS endpoint registered for your service.</li>
 <li>GOV.UK One Login returns the public key as a <a href="https://datatracker.ietf.org/doc/html/rfc7517#section-5">JWKS document</a>.</li>
 <li>GOV.UK One Login validates the authorize request. This includes validating the request JWT signature using the public key from the JWKS that matches the <code>kid</code> specified in the request JWT header.</li>
 <li>The user logs in or creates an account and optionally proves their identity through GOV.UK One Login.</li>
