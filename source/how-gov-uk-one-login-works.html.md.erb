@@ -1,13 +1,14 @@
 ---
 title: How GOV.UK One Login works 
 weight: 1.5
-last_reviewed_on: 2025-12-09
+last_reviewed_on: 2025-12-11
 review_in: 6 months
 ---
 
 # How GOV.UK One Login works
 
-GOV.UK One Login is an [OpenID Connect (OIDC)](https://openid.net/connect/)-compliant service that helps you authenticate your users who are using services they’ve logged into with their GOV.UK One Login.
+GOV.UK One Login is an [OpenID Connect (OIDC)](https://openid.net/connect/)-compliant service that helps you that helps you authenticate users logging into your service.
+
 
 GOV.UK One Login follows the Service Manual for [designing for different browsers and devices](https://www.gov.uk/service-manual/technology/designing-for-different-browsers-and-devices).
 
@@ -26,8 +27,8 @@ It shows how keys are used to sign and verify requests and tokens to make sure t
 ### Retrieve OIDC metadata
 
 <ol>
-<li>Your service sends a <code>GET</code> request to GOV.UK One Login <code>/.well-known/openid-configuration</code> to fetch the discovery document that contains the metadata describing One Login's behaviour as an OIDC provider</li>.
-<li>GOV.UK One Login returns the metadata describing GOV.UK One Logins behaviour as an OIDC provider as a <a href="https://openid.net/specs/openid-connect-discovery-1_0.html">discovery document</a>.</li>
+<li>Your service sends a <code>GET</code> request to GOV.UK One Login <code>/.well-known/openid-configuration</code> to fetch the discovery document that contains the metadata describing One Login&apos;s behaviour as an OIDC provider</li>.
+<li>GOV.UK One Login returns a <a href="https://openid.net/specs/openid-connect-discovery-1_0.html">discovery document</a> describing GOV.UK One Login&apos;s behaviour as an OIDC provider.</li>
 </ol>
 
 You should <a href="/integrate-with-integration-environment/authenticate-your-user/#cache-the-discovery-document">"Cache the discovery document"</a>. 
@@ -65,7 +66,7 @@ You should <a href="/integrate-with-integration-environment/authenticate-your-us
 ### Retrieve userinfo
 
 <ol start="21">
-<li>Your service sends a <code>GET</code> request, including the access token to the <a href="/integrate-with-integration-environment/authenticate-your-user/#retrieve-user-information"><code>/userinfo</code></a> endpoint, .</li>
+<li>Your service sends a <code>GET</code> request to the <a href="/integrate-with-integration-environment/authenticate-your-user/#retrieve-user-information"><code>/userinfo</code></a> endpoint, including the access token received in response to the <a href="/integrate-with-integration-environment/authenticate-your-user/#make-a-token-request"><code>POST /token</code></a> request.</li>
 <li>GOV.UK One Login returns the <a href="/integrate-with-integration-environment/authenticate-your-user/#receive-response-for-retrieve-user-information">userinfo</a> (including a <a href="/integrate-with-integration-environment/prove-users-identity/#understand-your-user-s-core-identity-claim">core identity claim</a> if requested).</li>
 <li>Your service sends a <code>GET</code> request to the GOV.UK One Login <code>/.well-known/did.json</code> to fetch its public keys, which verify the signature on the core identity claim JWT issued by GOV.UK One Login.</li>
 <li>GOV.UK One Login returns public keys in a DID document.</li>

@@ -24,7 +24,7 @@ config:
   OL->>OL: Validate authorize request
   OL->>OL: The user logs in or creates an account<br/>and optionally proves their identity
   OL-->>-UA: HTTP 302 redirect (including authorisation code)
-  UA->>S: Redirect with authorization code
+  UA->>S: Redirect with authorisation code
   Note over S,OL: Exchange authorisation code for an <br/>access token and ID token
   S->>S: Create request JWT and <br/>sign with private key
   S->>OL: POST /token (including authorisation code and assertion)
