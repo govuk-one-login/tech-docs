@@ -7,7 +7,7 @@ review_in: 6 months
 
 # How GOV.UK One Login works
 
-GOV.UK One Login is an [OpenID Connect (OIDC)](https://openid.net/connect/)-compliant service that helps you that helps you authenticate users logging into your service.
+GOV.UK One Login is an [OpenID Connect (OIDC)](https://openid.net/connect/)-compliant service that helps you authenticate users logging into your service.
 
 
 GOV.UK One Login follows the Service Manual for [designing for different browsers and devices](https://www.gov.uk/service-manual/technology/designing-for-different-browsers-and-devices).
@@ -18,7 +18,7 @@ GOV.UK One Login uses 2 different environments:
 * a production environment, which is the live environment for real users to access and use your service’s integration with GOV.UK One Login
 
 ## GOV.UK One Login OIDC Authorization Code Flow 
-The diagram shows how your service interacts with GOV.UK One Login to authenticate a user and retrieve their information following the OpenID Connect (OIDC) protocol.
+The diagram shows how your service interacts with GOV.UK One Login to authenticate a user and retrieve their information following the OIDC protocol.
 
 It shows how keys are used to sign and verify requests and tokens to make sure there is a secure communication between your service and GOV.UK One Login.
 
@@ -52,7 +52,7 @@ You should <a href="/integrate-with-integration-environment/authenticate-your-us
 <ol start="12">
 <li>Your service <a href="/integrate-with-integration-environment/authenticate-your-user/#create-a-jwt-assertion">creates a JWT assertion</a> and signs it with its private key.</li>
 <li>Your service sends a <code>POST</code> request to the <a href="/integrate-with-integration-environment/authenticate-your-user/#make-a-token-request"><code>/token</code></a> endpoint, including the <a href="/integrate-with-integration-environment/authenticate-your-user/#generate-an-authorisation-code">authorisation code</a> and <a href="/integrate-with-integration-environment/authenticate-your-user/#create-a-jwt-assertion">assertion</a>.</li>
-<li>GOV.UK One Login sends a GET request to your <code>/.well-known/jwks.json endpoint</code> to fetch your public keys, which verify the signature on the request JWT passed in your authorize request. GOV.UK One Login caches these keys for 24 hours.</li>
+<li>GOV.UK One Login sends a <code>GET</code> request to your <code>/.well-known/jwks.json endpoint</code> to fetch your public keys, which verify the signature on the request JWT passed in your authorize request. GOV.UK One Login caches these keys for 24 hours.</li>
 <li>Your service returns the public keys as a <a href="https://datatracker.ietf.org/doc/html/rfc7517#section-5">JWKS document</a>. GOV.UK One Login caches these keys for 24 hours.</li>
 <li>GOV.UK One Login validates the token request. This includes validating the assertion JWT signature using the public key from the JWKS the matches the <code>kid</code> specified in the assertion JWT header.</li>
 <li>GOV.UK One Login returns an ID token and an access token to your service.
