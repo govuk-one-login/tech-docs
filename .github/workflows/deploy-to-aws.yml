@@ -31,7 +31,7 @@ jobs:
         run: bundle exec middleman build
 
       - name: Upload to ECR and tag
-        uses: govuk-one-login/devplatform-upload-action-ecr@224346cd422f5bdfb6b68d0f8e189e55354b2804 # pin@1.4.0
+        uses: govuk-one-login/devplatform-upload-action-ecr@f82c8774a6390f200b15112b3cbb9faf3442173c # pin@1.5.0
         with:
           role-to-assume-arn: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           container-sign-kms-key-arn: ${{ secrets.CONTAINER_SIGN_KMS_KEY }}
