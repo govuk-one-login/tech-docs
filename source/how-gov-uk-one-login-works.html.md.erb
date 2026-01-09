@@ -57,7 +57,7 @@ You should <a href="/integrate-with-integration-environment/authenticate-your-us
 <li>Your service sends a <code>POST</code> request to the <a href="/integrate-with-integration-environment/authenticate-your-user/#make-a-token-request"><code>/token</code></a> endpoint, including the <a href="/integrate-with-integration-environment/authenticate-your-user/#generate-an-authorisation-code">authorisation code</a> and <a href="/integrate-with-integration-environment/authenticate-your-user/#create-a-jwt-assertion">assertion</a>.</li>
 <li>GOV.UK One Login sends a <code>GET</code> request to your <code>/.well-known/jwks.json endpoint</code> to fetch your public keys, which verify the signature on the request JWT passed in your authorize request.</li>
 <li>Your service returns the public keys as a <a href="https://datatracker.ietf.org/doc/html/rfc7517#section-5">JWKS document</a>. GOV.UK One Login caches these keys for 24 hours.</li>
-<li>GOV.UK One Login validates the token request. This includes validating the assertion JWT signature using the public key from the JWKS the matches the <code>kid</code> specified in the assertion JWT header.</li>
+<li>GOV.UK One Login validates the token request. This includes validating the assertion JWT signature using the public key from the JWKS that matches the <code>kid</code> specified in the assertion JWT header.</li>
 <li>GOV.UK One Login returns an ID token and an access token to your service.
 
 </li>
