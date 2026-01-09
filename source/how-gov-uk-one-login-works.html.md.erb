@@ -63,7 +63,7 @@ You should <a href="/integrate-with-integration-environment/authenticate-your-us
 </li>
 <li>Your service fetches the public keys from the GOV.UK One Login JWKS endpoint. The url for the endpoint is specified in the the <code>jwks_uri</code> object in the discovery document retrieved from the GOV.UK One Login <code>/.well-known/openid-configuration.</code></li>
 <li>GOV.UK One Login returns its public keys as a <a href="https://datatracker.ietf.org/doc/html/rfc7517#section-5">JSON Web Key Set</a>.</li>
-<li>Your service <a href="/integrate-with-integration-environment/authenticate-your-user/#validate-your-id-token">validates signature of the ID token</a> using the public key.</li>
+<li>Your service <a href="/integrate-with-integration-environment/authenticate-your-user/#validate-your-id-token">validates the signature of the ID token</a> using the public key.</li>
 </ol>
 
 ### Retrieve userinfo
