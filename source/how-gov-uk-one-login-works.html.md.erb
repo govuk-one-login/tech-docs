@@ -42,7 +42,7 @@ You should <a href="/integrate-with-integration-environment/authenticate-your-us
 <li>Your service creates a JWT containing the authorize request parameters and <a href="/integrate-with-integration-environment/authenticate-your-user/#secure-your-authorisation-request-parameters-with-jwt">signs a request</a> with its private key.</li>
 <li>Your service initiates an authentication redirect to GOV.UK One Login.</li>
 <li>The user agent  sends a <code>GET</code> request to the <code>/authorize</code> endpoint.</li>
-<li>GOV.UK One Login fetches the public keys from your JWKS endpoint registered for your service. It will only call your JWKS endpoint if it&apos;s cache does not contain a key relates to a <code>kid</code> in a received JWT.</li>
+<li>GOV.UK One Login fetches the public keys from your JWKS endpoint registered for your service. It will only call your JWKS endpoint if its cache does not contain a key that relates to a <code>kid</code> in a received JWT.</li>
 <li>Your service returns the public keys as a <a href="https://datatracker.ietf.org/doc/html/rfc7517#section-5">JWKS document</a>. GOV.UK One Login caches these keys for 24 hours.</li>
 <li>GOV.UK One Login validates the authorize request. This includes validating the request JWT signature using the public key from the JWKS that matches the <code>kid</code> specified in the request JWT header.</li>
 <li>The user logs in or creates an account and optionally proves their identity through GOV.UK One Login.</li>
