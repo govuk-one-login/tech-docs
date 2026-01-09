@@ -72,7 +72,7 @@ You should <a href="/integrate-with-integration-environment/authenticate-your-us
 <li>Your service sends a <code>GET</code> request to the <a href="/integrate-with-integration-environment/authenticate-your-user/#retrieve-user-information"><code>/userinfo</code></a> endpoint, including the access token received in response to the <a href="/integrate-with-integration-environment/authenticate-your-user/#make-a-token-request"><code>POST /token</code></a> request.</li>
 <li>GOV.UK One Login returns the <a href="/integrate-with-integration-environment/authenticate-your-user/#receive-response-for-retrieve-user-information">userinfo</a> (including a <a href="/integrate-with-integration-environment/prove-users-identity/#understand-your-user-s-core-identity-claim">core identity claim</a> if requested).</li>
 <li>Your service sends a <code>GET</code> request to the GOV.UK One Login <code>/.well-known/did.json</code> to fetch its public keys, which verify the signature on the core identity claim JWT issued by GOV.UK One Login.</li>
-<li>GOV.UK One Login returns public keys in a DID document.</li>
+<li>GOV.UK One Login returns its public keys in a DID document.</li>
 <li>Your service <a href="/integrate-with-integration-environment/prove-users-identity/#validate-the-core-identity-claim-jwt-using-a-public-key">validates the signature of the core identity claim</a> with the public key from the DID document with the matching <code>kid</code>.</li>
 </ol>
 
