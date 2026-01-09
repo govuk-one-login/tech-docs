@@ -56,7 +56,7 @@ We use two tools
 - [mermaid](`source/images/originals`) for UML sequence diagrams
 - draw.io for genaral purpose diagrams
 
-The originals of the diagrams reside in `source/images/originals`
+We keep the originals of the diagrams in `source/images/originals`
 
 
 ### Changing mermaid diagrams
