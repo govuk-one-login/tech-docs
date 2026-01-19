@@ -48,12 +48,51 @@ It may take a few minutes to build the docker container, particularly if it is y
 == Inspect your site configuration at "http://localhost:4567/__middleman", "http://127.0.0.1:4567/__middleman"/usr/local/bundle/gems/tilt-2.0.11/lib/tilt/redcarpet.
 ```
 
-## Making changes to a diagram
+## Making changes to diagrams 
+
 Diagrams are content, so once you've made a change you should request a review from the technical writing team.
 
-You can edit the draw.io files in the `source/images/originals` folder by installing and using the draw.io desktop app.
+We use two tools
+- [mermaid](`source/images/originals`) for UML sequence diagrams
+- draw.io for genaral purpose diagrams
 
-Use one draw.io file per diagram.
+We keep the originals of the diagrams in `source/images/originals`
+
+
+### Changing mermaid diagrams
+
+You can edit the mermaid `.mmd` files in the `source/images/originals` folder by installing and using the draw.io desktop app.
+
+Use one `.mmd` file per diagram.
+
+### Installing the mermaid command line interface
+
+Run the following command in your terminal to use the mermaid command line interface.
+
+```
+npm install -g @mermaid-js/mermaid-cli
+```
+
+### Editing and publishing a mermaid diagram
+Follow these steps:
+1. Create and modify a diagram `.mmd` file in your source editor.
+2. Save the `.mmd`  file to the `source/images/originals` folder.
+3. Publish the diagram as a [scalable vector graphic (SVG)](https://www.w3.org/Graphics/SVG/).
+4. Save the SVG file to the `source/images` folder.
+
+### Useful commands
+
+Generate SVG versions of the diagram and save to the `source/images/originals` folder:
+```
+mmdc -i technical-flow-diagram-extended.mmd -o ../technical-flow-diagram-extended.svg
+```
+
+
+### Changing draw.io diagrams
+
+You can edit the `.drawio` files in the `source/images/originals` folder by installing and using the draw.io desktop app.
+
+Use one `.drawio` file per diagram.
 
 ### Installing the draw.io desktop app
 Run the following commands to use the draw.io desktop app from the command line.
