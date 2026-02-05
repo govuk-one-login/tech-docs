@@ -31,6 +31,12 @@ after_build do |builder|
         :swap_urls => { config[:tech_docs][:host] => "" },
         # reduce concurrency to avoid overwhelming external servers
         hydra: { max_concurrency: 1 },
+        cache: {
+          timeframe: {
+            external: "30d",
+            internal: "30d",
+          }
+        },
         typhoeus: {
             # Some external links need to think you're in a browser to serve non-error codes
             headers: { "User-Agent" => "Mozilla/5.0 (Android 14; Mobile; LG-M255; rv:122.0) Gecko/122.0 Firefox/122.0" }

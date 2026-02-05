@@ -17,5 +17,11 @@ jobs:
         uses: ruby/setup-ruby@a2bbe5b1b236842c1cb7dd11e8e3b51e0a616acc # pin@v1
         with:
           bundler-cache: true
+      - name: Cache HTMLProofer
+        id: cache-htmlproofer
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306
+        with:
+          path: tmp/.htmlproofer
+          key: ${{ runner.os }}-htmlproofer
       - name: Build
         run: bundle exec middleman build --verbose
