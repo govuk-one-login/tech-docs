@@ -13,7 +13,7 @@ page "/*", :layout => "dicustom_layout"
 
 after_build do |builder|
   begin
-    HTMLProofer.check_directory(config[:build_dir],
+    proofer = HTMLProofer.check_directory(config[:build_dir],
       { :assume_extension => true,
         :allow_hash_href => true,
         :ignore_files => [
@@ -35,7 +35,24 @@ after_build do |builder|
             # Some external links need to think you're in a browser to serve non-error codes
             headers: { "User-Agent" => "Mozilla/5.0 (Android 14; Mobile; LG-M255; rv:122.0) Gecko/122.0 Firefox/122.0" }
         }
-    }).run
+    })
+    # The snippet below starts a linear backoff delay once requesting the same URL more than once
+    # This is to try and prevent too many requests errors
+    base_url_regex = /^(https?:\/\/[^\/\s]+)/
+    base_url_counts = Hash.new(0);
+    proofer.before_request do |request|
+      base_url = request.url[base_url_regex]
+      if base_url
+        count = (base_url_counts[base_url] += 1)
+        if count > 1 
+          delay = 0.1
+          to_sleep = (count - 1) * delay
+          puts "Sleeping for #{(to_sleep).round(2)}s as #{base_url} has already been requested #{count} times"
+          sleep(to_sleep)
+        end
+      end
+    end
+    proofer.run
   rescue RuntimeError => e
     abort e.to_s
   end
