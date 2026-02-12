@@ -10,7 +10,7 @@ review_in: 6 months
 GOV.UK One Login uses public key cryptography to authenticate requests received from your services. You need to create a pair of cryptographic keys if your service either:
 
 * provides a request JSON Web Token (JWT) in its [`/authorize` requests](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#secure-your-authorisation-request-parameters-with-jwt)
-* sets `Private_key_jwt` [as the token AuthenticationMethod](ßhttps://docs.sign-in.service.gov.uk/before-integrating/register-and-manage-your-service/#register-and-manage-your-service)
+* sets `Private_key_jwt` [as the token AuthenticationMethod](https://docs.sign-in.service.gov.uk/before-integrating/register-and-manage-your-service/#register-and-manage-your-service)
 
 Your key pair will consist of a public key and its corresponding private key.
 
@@ -56,7 +56,7 @@ You need to share your public keys with GOV.UK One Login to use both the integra
 
 * [a JSON Web Key Set (JWKS) endpoint][integrate.share-public-keys-JWKS-endpoint] - **strongly recommended**
 
-* [a fixed public key][integrate.share-a-fixed-public-key] - not recommended for production
+* [a fixed public key][integrate.share-your-fixed-public-key] - not recommended for production
 
 We strongly recommend you share your public keys using a JWKS endpoint. 
 
