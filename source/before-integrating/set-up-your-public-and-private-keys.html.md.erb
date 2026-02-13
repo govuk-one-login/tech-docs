@@ -9,16 +9,16 @@ review_in: 6 months
 
 GOV.UK One Login uses public key cryptography to authenticate requests received from your services. You need to create a pair of cryptographic keys if your service either:
 
-* provides a request JSON Web Token (JWT) in its [`/authorize` requests](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#secure-your-authorisation-request-parameters-with-jwt)
-* sets `Private_key_jwt` [as the token AuthenticationMethod](https://docs.sign-in.service.gov.uk/before-integrating/register-and-manage-your-service/#register-and-manage-your-service)
+* provides a [request JSON Web Token (JWT)](integrate-with-integration-environment/authenticate-your-user/#secure-your-authorisation-request-parameters-with-jwt) in its `/authorize` requests
+* sets `Private_key_jwt` as the [Token Authentication method](before-integrating/register-and-manage-your-service/#register-and-manage-your-service:~:text=can%20request.-,Token%20Authentication%20method,-Specify%20the%20token)
 
-Your key pair will consist of a public key and its corresponding private key.
+Your key pair will consist of a private key and its corresponding public key.
 
 You need to share your public key with GOV.UK One Login so it can validate the signature on each JWT your service sends.
 
 ## Create a key pair 
 
-You can create a key pair using [OpenSSL](https://www.openssl.org/). 
+You can create a key pair using [OpenSSL](https://openssl-library.org/).
 
 Install OpenSSL, and create a key pair by running this command in your command line:
 
@@ -61,9 +61,9 @@ You need to share your public keys with GOV.UK One Login to use both the integra
 We strongly recommend you share your public keys using a JWKS endpoint. 
 
 A JWKS endpoint is a read-only URL that returns JWKSs in JSON format. It lets you share one or more keys simultaneously without affecting your service availability. You can also rotate your keys without needing to request GOV.UK One Login for a configuration change.
-You can read the normal description of JWKS in this [RFC](https://www.rfc-editor.org/rfc/rfc7517.html).
+You can read the formal description of JWKS in this [RFC](https://www.rfc-editor.org/rfc/rfc7517.html).
 
-Sharing a fixed public key is a quick way to get started and to test your integration. However it is not recommended in the production environment. 
+Sharing a fixed public key is a quick way to get started with GOV.UK One Login and to test your integration. However it is not recommended in the production environment.
 
 ### Share your public keys using a JWKS endpoint
 
@@ -95,13 +95,13 @@ Your JWKS endpoint should give a JSON response similar to the following example:
 
 ### Change how you share your public keys
 
-If your service currently shares static keys, you can change to sharing keys through a JWKS endpoint. This change does not need any downtime for your service. 
+If your service currently shares static keys, you can change to sharing keys through a JWKS endpoint. This change will not require any downtime for your service. 
 
 1. Begin in your test environment. 
 2. Deploy your publicly available JWKS endpoint to return your test environment public keys. These must include a `kid`.
 3. Update your code to include a `kid` in the JWT headers for both the:
-  * request JWT you provide in the `GET /authorize` request. See [secure your authorisation request](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#secure-your-authorisation-request-parameters-with-jwt) if you're using a JWT-secured OAuth 2.0 authorisation request (JAR).
-  * client_assertion JWT your provide in the `GET /token` request. See [create a JWT assertion](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#create-a-jwt-assertion) for more details on the process. 
+  * request JWT you provide in the `GET /authorize` request. See [secure your authorisation request](integrate-with-integration-environment/authenticate-your-user/#secure-your-authorisation-request-parameters-with-jwt) if you're using a JWT-secured OAuth 2.0 authorisation request (JAR).
+  * client_assertion JWT your provide in the `GET /token` request. See [create a JWT assertion](/integrate-with-integration-environment/authenticate-your-user/#create-a-jwt-assertion) for more details on the process. 
 4. Deploy the updated code for your service to your test environment. GOV.UK One Login will ignore the `kid` in the header, and will continue to use the `STATIC` key, until you complete the process by updating your configuration.
 
 Use the [GOV.UK One Login admin tool](https://www.gov.uk/) to update the configuration for your test service. This will also specify the use of your exposed test environment JWKS endpoint. 
