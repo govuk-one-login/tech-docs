@@ -101,7 +101,7 @@ If your service currently shares static keys, you can change to sharing keys thr
 2. Deploy your publicly available JWKS endpoint to return your test environment public keys. These must include a `kid`.
 3. Update your code to include a `kid` in the JWT headers for both the:
   * request JWT you provide in the `GET /authorize` request. See [secure your authorisation request][integrate.secure-authorisation-request]if you're using a JWT-secured OAuth 2.0 authorisation request (JAR).
-  * client_assertion JWT your provide in the `GET /token` request. See [create a JWT assertion](integrate.create-a-jwt-assertion) for more details on the process. 
+  * client_assertion JWT your provide in the `GET /token` request. See [create a JWT assertion][integrate.create-a-jwt-assertion] for more details on the process. 
 4. Deploy the updated code for your service to your test environment. GOV.UK One Login will ignore the `kid` in the header, and will continue to use the `STATIC` key, until you complete the process by updating your configuration.
 
 Use the [GOV.UK One Login admin tool](https://www.gov.uk/) to update the configuration for your test service. This will also specify the use of your exposed test environment JWKS endpoint. 
