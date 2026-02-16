@@ -9,8 +9,8 @@ review_in: 6 months
 
 GOV.UK One Login uses public key cryptography to authenticate requests received from your services. You need to create a pair of cryptographic keys if your service either:
 
-* provides a [request JSON Web Token (JWT)](integrate.secure-authorisation-request) in its `/authorize` requests
-* sets `Private_key_jwt` as the [Token Authentication method](integrate.token-authentication-method)
+* provides a [request JSON Web Token (JWT)][integrate.secure-authorisation-request] in its `/authorize` requests
+* sets `Private_key_jwt` as the [Token Authentication method][integrate.token-authentication-method]
 
 Your key pair will consist of a private key and its corresponding public key.
 
@@ -100,7 +100,7 @@ If your service currently shares static keys, you can change to sharing keys thr
 1. Begin in your test environment. 
 2. Deploy your publicly available JWKS endpoint to return your test environment public keys. These must include a `kid`.
 3. Update your code to include a `kid` in the JWT headers for both the:
-  * request JWT you provide in the `GET /authorize` request. See [secure your authorisation request](integrate.secure-authorisation-request)if you're using a JWT-secured OAuth 2.0 authorisation request (JAR).
+  * request JWT you provide in the `GET /authorize` request. See [secure your authorisation request][integrate.secure-authorisation-request]if you're using a JWT-secured OAuth 2.0 authorisation request (JAR).
   * client_assertion JWT your provide in the `GET /token` request. See [create a JWT assertion](integrate.create-a-jwt-assertion) for more details on the process. 
 4. Deploy the updated code for your service to your test environment. GOV.UK One Login will ignore the `kid` in the header, and will continue to use the `STATIC` key, until you complete the process by updating your configuration.
 
