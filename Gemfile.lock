@@ -205,7 +205,7 @@ GEM
       ttfunk
     public_suffix (7.0.2)
     racc (1.8.1)
-    rack (2.2.21)
+    rack (2.2.22)
     rack-livereload (0.3.17)
       rack
     rainbow (3.1.1)
