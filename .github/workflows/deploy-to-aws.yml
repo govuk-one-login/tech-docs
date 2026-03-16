@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - ips-2299
 
 defaults:
   run:

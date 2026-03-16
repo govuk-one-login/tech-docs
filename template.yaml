@@ -207,6 +207,7 @@ Resources:
       ContainerDefinitions:
         - Name: nginx
           Image: "CONTAINER-IMAGE-PLACEHOLDER"
+          ReadonlyRootFilesystem: true
           PortMappings:
             - ContainerPort: 80
               Protocol: tcp
