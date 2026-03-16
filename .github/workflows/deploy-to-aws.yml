@@ -1,5 +1,5 @@
 name: AWS build and deploy
-# trigger deploy
+# trigger deploy 2
 on:
   workflow_dispatch:
   push:
