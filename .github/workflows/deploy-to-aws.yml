@@ -1,5 +1,4 @@
 name: AWS build and deploy
-# trigger deploy 4
 on:
   workflow_dispatch:
   push:
