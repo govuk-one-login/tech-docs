@@ -208,6 +208,13 @@ Resources:
         - Name: nginx
           Image: "CONTAINER-IMAGE-PLACEHOLDER"
           ReadonlyRootFilesystem: true
+          MountPoints:
+            - SourceVolume: nginx-cache
+              ContainerPath: /var/cache/nginx
+            - SourceVolume: nginx-run
+              ContainerPath: /var/run
+            - SourceVolume: nginx-conf
+              ContainerPath: /etc/nginx/conf.d
           PortMappings:
             - ContainerPort: 80
               Protocol: tcp
@@ -219,6 +226,10 @@ Resources:
               awslogs-region: "eu-west-2"
               awslogs-create-group: "true"
               awslogs-stream-prefix: "ecs"
+      Volumes:
+        - Name: nginx-cache
+        - Name: nginx-run
+        - Name: nginx-conf
       Cpu: 256
       Memory: 512
       ExecutionRoleArn: !GetAtt TaskExecutionRole.Arn
