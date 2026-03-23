@@ -13,7 +13,7 @@ page "/*", :layout => "dicustom_layout"
 
 after_build do |builder|
   begin
-    HTMLProofer.check_directory(config[:build_dir],
+    proofer = HTMLProofer.check_directory(config[:build_dir],
       { :assume_extension => true,
         :allow_hash_href => true,
         :ignore_files => [
@@ -26,7 +26,9 @@ after_build do |builder|
             "https://ico.org.uk/for-organisations/guide-to-data-protection/guide-to-the-general-data-protection-regulation-gdpr/data-protection-impact-assessments-dpias/", # Avoid flagging checker because of CloudFlare security on site
             "https://w3c-ccg.github.io/did-method-web/#read-resolve", # Link works in browser but HTML is, technically, correct the #read-resolve anchor is not present in the HTML but auto-magically added when the page is rendered
             "https://www.icao.int/publications/Documents/9303_p3_cons_en.pdf", # ICAO site is being migrated so the doc is temporarily unavailable but the resulting page points the user to an alternative
-            /https\:\/\/www.sign-in.service.gov.uk/  # SSE / Product pages are currently experiencing issues, which causes this to timeout (requests take over 10 seconds)
+            /https\:\/\/www.sign-in.service.gov.uk/,  # SSE / Product pages are currently experiencing issues, which causes this to timeout (requests take over 10 seconds)
+            "https://apidocs.os.uk/docs/os-places-dpa-output", # They've broken their TLS cert so ignore for now
+            "https://github.com/govuk-one-login/simulator/blob/main/docs/configuration.md" # GitHub rate limits cause 429 errors
         ],
         :swap_urls => { config[:tech_docs][:host] => "" },
         # reduce concurrency to avoid overwhelming external servers
@@ -35,7 +37,25 @@ after_build do |builder|
             # Some external links need to think you're in a browser to serve non-error codes
             headers: { "User-Agent" => "Mozilla/5.0 (Android 14; Mobile; LG-M255; rv:122.0) Gecko/122.0 Firefox/122.0" }
         }
-    }).run
+    })
+    # The snippet below starts a linear backoff delay once requesting the same URL more than once
+    # This is to try and prevent too many requests errors
+    base_url_regex = /^(https?:\/\/[^\/\s]+)/
+    base_url_counts = Hash.new(0);
+    proofer.before_request do |request|
+      base_url = request.url[base_url_regex]
+      if base_url
+        request.options[:headers]["Accept"] = "text/html" if base_url.include?("abilitynet.org.uk")
+        count = (base_url_counts[base_url] += 1)
+        if count > 1 
+          delay = 0.1
+          to_sleep = (count - 1) * delay
+          puts "Sleeping for #{(to_sleep).round(2)}s as #{base_url} has already been requested #{count} times"
+          sleep(to_sleep)
+        end
+      end
+    end
+    proofer.run
   rescue RuntimeError => e
     abort e.to_s
   end

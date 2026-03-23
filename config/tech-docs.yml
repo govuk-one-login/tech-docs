@@ -4,7 +4,7 @@ host: https://docs.sign-in.service.gov.uk
 
 # Header-related options
 show_govuk_logo: true
-service_name: One Login
+service_name: One Login technical documentation 
 service_link: https://www.sign-in.service.gov.uk/
 
 # This documentation is for the Pilot scheme
