@@ -33,7 +33,7 @@ Content-Type: application/json
   "https://vocab.account.gov.uk/v1/coreIdentityJWT": <JWT>,
   "https://vocab.account.gov.uk/v1/address": [
     {
-      "uprn": "10022812929",
+      "uprn": 10022812929,
       "subBuildingName": "FLAT 5",
       "buildingName": "WEST LEA",
       "buildingNumber": "16",
@@ -47,7 +47,7 @@ Content-Type: application/json
       "validFrom": "2022-01-01"
     },
     {
-      "uprn": "10002345923",
+      "uprn": 10002345923,
       "buildingName": "SAWLEY MARINA",
       "streetName": "INGWORTH ROAD",
       "dependentAddressLocality": "LONG EATON",
@@ -327,28 +327,28 @@ dependentAddressLocality</code> and <code>doubleDependentAddressLocality</code>)
 
 A sample UK (`GB`) address returned would look similar to this: 
 
-```
+```json
 {
-  uprn: "100021051133",
-  organisationName: "Acme Corporation",
-  departmentName: "Sales Department",
-  subBuildingName: "Unit 3B",
-  buildingNumber: "42",
-  buildingName: "Riverside House",
-  dependentStreetName: "Industrial Estate",
-  streetName: "River Lane",
-  doubleDependentAddressLocality: "Riverside",
-  dependentAddressLocality: "Newtown",
-  addressLocality: "Birmingham",
-  postalCode: "B12 8QT",
-  addressCountry: "GB"
-  "validFrom": "2000-01-01",
+  "uprn": 100021051133,
+  "organisationName": "Acme Corporation",
+  "departmentName": "Sales Department",
+  "subBuildingName": "Unit 3B",
+  "buildingNumber": "42",
+  "buildingName": "Riverside House",
+  "dependentStreetName": "Industrial Estate",
+  "streetName": "River Lane",
+  "doubleDependentAddressLocality": "Riverside",
+  "dependentAddressLocality": "Newtown",
+  "addressLocality": "Birmingham",
+  "postalCode": "B12 8QT",
+  "addressCountry": "GB",
+  "validFrom": "2000-01-01"
 }
 ```
 
 A sample international address returned would look similar to this: 
 
-```
+```json
 {
   "subBuildingName": "1", 
   "buildingNumber": "27", 
@@ -358,7 +358,7 @@ A sample international address returned would look similar to this:
   "addressRegion": "California"
   "postalCode": "90012",
   "addressCountry": "US",
-  "validFrom": "2000-01-01",
+  "validFrom": "2000-01-01"
 }
 ```
 
