@@ -37,11 +37,11 @@ We recommend your user returns to the point where they left to do the in-person 
     
 1. Your user, having used their unique link from the **Sign in to view the result of your identity check** email, logged in to GOV.UK One Login and viewed their identity check status, has selected to return to your service, and lands on the `LandingPageUrl` that you gave when you [configured your service for production](/configure-for-production/). 
 1. This is where the in-person journey differs from a normal GOV.UK One Login flow. Your service's landing page needs to store that this user is on an in-person return journey. How you do this will depend on how you [manage your users' sessions](/integrate-with-integration-environment/managing-your-users-sessions/#managing-your-users-39-sessions). Your user should only end up on this page if they have selected the email link from the in-person journey.
-1. Your service makes an authentication request to the `/authorize` endpoint with the vector of trust (vtr) `Cl.Cm` (a medium level of authentication). There’s further [guidance on making an authentication request](/integrate-with-integration-environment/authenticate-your-user/#make-a-request-for-authentication). 
+1. Your service makes an authentication request to the `/authorize` endpoint with the vector of trust (vtr) `Cl.Cm` (a medium level of authentication). There’s further [guidance on making an authentication request](/integrate-with-integration-environment/authenticate-your-user/#make-a-get-request-to-the-authorize-endpoint). 
 1. Your user automatically reuses their existing GOV.UK One Login session because they have already logged in from the email link. The user will not need to re-enter their username and password. 
 1. GOV.UK One Login redirects your user to your `redirect_uri`.
-1. Your service makes a [token request](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-token-request) to the `/token` endpoint.
-1. Your service receives an [ID token and access token](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#receive-response-for-make-a-token-request) in the response.
+1. Your service makes a [token request](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-token-endpoint) to the `/token` endpoint.
+1. Your service receives an [ID token and access token](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#responses-from-the-token-endpoint) in the response.
 1. Your service makes a request to the `/userinfo` endpoint to retrieve user information.
 1. Your service receives a response containing the user attributes `sub`, `email` and `phone`.
 1. Your service confirms that your user is on an in-person return journey (you'll have stored that this user is on an in-person return journey in step 2). 
@@ -49,8 +49,8 @@ We recommend your user returns to the point where they left to do the in-person 
 1. Your service makes a request for both authentication and identity to the `/authorize` endpoint with the vector of trust `Cl.Cm.P2` (medium authentication and medium level of identity confidence). There’s further [guidance on making an authentication and identity request](/integrate-with-integration-environment/authenticate-your-user/#make-a-request-for-authentication-and-identity). 
 1. Your user checks the identity details GOV.UK One Login has stored for them and confirms they are correct.
 1. GOV.UK One Login redirects your user to your `redirect_uri`.
-Your service makes a [token request](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-token-request) to the `/token` endpoint.
-1. Your service receives an [ID token and access token](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#receive-response-for-make-a-token-request) in the response.
+Your service makes a [token request](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-token-endpoint) to the `/token` endpoint.
+1. Your service receives an [ID token and access token](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#responses-from-the-token-endpoint) in the response.
 1. Your service makes a request to the `/userinfo` endpoint to retrieve user information.
 1. Your service receives a response containing user attributes (`sub`, `email`, `phone` and whichever claims your service requested, for example `coreIdentityJWT`) and the results of the identity check.
 1. Your service returns your user to where they started their original identity check. 
