@@ -27,7 +27,8 @@ after_build do |builder|
             "https://w3c-ccg.github.io/did-method-web/#read-resolve", # Link works in browser but HTML is, technically, correct the #read-resolve anchor is not present in the HTML but auto-magically added when the page is rendered
             "https://www.icao.int/publications/Documents/9303_p3_cons_en.pdf", # ICAO site is being migrated so the doc is temporarily unavailable but the resulting page points the user to an alternative
             /https\:\/\/www.sign-in.service.gov.uk/,  # SSE / Product pages are currently experiencing issues, which causes this to timeout (requests take over 10 seconds)
-            "https://apidocs.os.uk/docs/os-places-dpa-output" # They've broken their TLS cert so ignore for now
+            "https://apidocs.os.uk/docs/os-places-dpa-output", # They've broken their TLS cert so ignore for now
+            "https://github.com/govuk-one-login/simulator/blob/main/docs/configuration.md" # GitHub rate limits cause 429 errors
         ],
         :swap_urls => { config[:tech_docs][:host] => "" },
         # reduce concurrency to avoid overwhelming external servers
@@ -44,6 +45,7 @@ after_build do |builder|
     proofer.before_request do |request|
       base_url = request.url[base_url_regex]
       if base_url
+        request.options[:headers]["Accept"] = "text/html" if base_url.include?("abilitynet.org.uk")
         count = (base_url_counts[base_url] += 1)
         if count > 1 
           delay = 0.1
