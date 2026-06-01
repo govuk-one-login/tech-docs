@@ -137,10 +137,10 @@ You can configure GOV.UK One Login to use a fixed public key to validate your JW
 
 1. Sign in to the [GOV.UK One Login admin tool](https://admin.sign-in.service.gov.uk/register/enter-email-address).
 2. Click your service name to view its configuration. 
-3. Go to **Client Authentication**.
-4. Select **Change** next to **Public key**.
-5. Select **STATIC** under **Select a Key Source**.
-6. Add the contents of the file for your private key. 
+3. Go to **Client authentication**.
+4. Select **Change** next to **Public Key**.
+5. Select **Static Key** under **Select a Key source**.
+6. Add the contents of the `public_key.pem` file for your public key. 
 7. Select **Confirm**.
 
 <%= partial "partials/links" %>
