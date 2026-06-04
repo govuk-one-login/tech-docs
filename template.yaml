@@ -535,9 +535,9 @@ Resources:
         - !GetAtt SpokeApplicationLoadBalancerSecurityGroup.GroupId
       Subnets:
         - Fn::ImportValue:
-            !Sub "${SpokeVpcStackName}-FirewallSubnetIdA"
+            !Sub "${SpokeVpcStackName}-PublicSubnetIdA"
         - Fn::ImportValue:
-            !Sub "${SpokeVpcStackName}-FirewallSubnetIdB"
+            !Sub "${SpokeVpcStackName}-PublicSubnetIdB"
       Type: application
       LoadBalancerAttributes:
         - Key: access_logs.s3.enabled
