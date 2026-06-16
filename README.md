@@ -1,3 +1,8 @@
+## Repository Status
+![AWS build and deploy](https://github.com/govuk-one-login/tech-docs/actions/workflows/deploy-to-aws.yml/badge.svg)
+
+
+
 # GOV.UK One Login technical documentation
 
 This repo contains documentation to help technologists at government departments onboard to GOV.UK One Login. It’s published using the Technical Documentation Template.
