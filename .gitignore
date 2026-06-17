@@ -26,3 +26,6 @@ vendor/
 
 # used by drawio
 *.bkp
+
+
+.kiro/
