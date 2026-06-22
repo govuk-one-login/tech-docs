@@ -11,7 +11,7 @@ You get a unique client ID when you register your service. You need this client 
 
 You should configure a client ID for each environment you have. For example, if you have staging, user acceptance testing, integration and production you should configure 4 client IDs. There's further [guidance on creating a configuration for each service you're integrating][integrate.client-id].
 
-Registering should take 5 minutes to complete. To register your service to use GOV.UK One Login, you need:
+Registering takes about 5 minutes to complete. To register your service to use GOV.UK One Login, you need:
 
 * a government email address
 * a mobile phone
@@ -33,13 +33,15 @@ Fields marked with an asterisk (*) are used internally by GOV.UK One Login. You 
 | Channel* | `Channel` | Internal use only. The value is always `web`. |
 | [Claims](#claims) | `Claims` | The claims your service requests from GOV.UK One Login. |
 | [Client ID](#client-id) | `ClientID` | Your unique client ID. You must configure this into your service. |
+| [Client LoCs](#client-locs) | `ClientLoCs` | The level of confidence your service requests. The value is a string such as `P0`, `P1` or `P2`. |
 | [Client name (Service name)](#client-name) | `ClientName` | The name of your service, visible to users in the sign in journey. |
+| [Client secret](#client-secret) | `ClientSecret` | The client secret used to validate `/token` requests. Only used if the token authentication method is `client_secret_post`. |
 | Client type* | `ClientType` | Internal use only. The value is always `web`. |
-| Client LoCs* | `ClientLoCs` | Internal use only. The value is a string such as `P0`. |
 | [Contacts](#contacts) | `Contacts` | Email addresses of your service's technical contacts. |
 | Cookie consent shared* | `CookieConsentShared` | Internal use only. The value is always `false`. |
 | [ID token signing algorithm](#id-token-signing-algorithm) | `IdTokenSigningAlgorithm` | Either `RS256` or `ES256`. Defaults to `ES256`. |
 | [Identity verification supported](#identity-verification-supported) | `IdentityVerificationSupported` | Whether your service uses identity verification. |
+| Is active* | `IsActive` | Internal use only. |
 | [JAR validation required](#jar-validation-required) | `JarValidationRequired` | Whether your service must send a signed JSON Web Token (JWT) authorisation request (JAR). |
 | [JWKS URL](#jwks-url) | `JwksUrl` | The URL of your JWKS endpoint. Needed if using JWKS to provide your public keys. |
 | [Landing page URL](#landing-page-url) | `LandingPageUrl` | The page users are redirected to after their in-person identity check. |
@@ -49,6 +51,7 @@ Fields marked with an asterisk (*) are used internally by GOV.UK One Login. You 
 | [PKCE enforced](#pkce-enforced) | `PKCEEnforced` | Whether your service must use Proof Key for Code Exchange (PKCE). |
 | [Post-logout URLs](#post-logout-urls) | `PostLogoutRedirectUrls` | URLs to redirect your users to after they log out. |
 | [Public key](#public-key) | `PublicKey` | Needed if using `private_key_jwt` or a signed authorisation request (JAR). |
+| [Public key source](#public-key-source) | `PublicKeySource` | How you share your public key with GOV.UK One Login. Either `STATIC` or `JWKS`. |
 | [Redirect URLs](#redirect-urls) | `RedirectUrls` | The URL GOV.UK One Login returns your user to after they complete their journey. |
 | [Scopes](#scopes) | `Scopes` | The scopes your service needs. You must include `openid`. |
 | [Sector identifier URI](#sector-identifier-uri) | `SectorIdentifierUri` | Your service's sector identifier. |
@@ -91,6 +94,12 @@ Your client ID is unique to your service and is created when you register. You m
 
 You cannot change your client ID. If you need a new one, you must register a new client.
 
+## Client LoCs
+
+Set this to the level of confidence your service needs. The value is a string such as `P0` or `P2`.
+
+There's further guidance on [choosing the level of identity confidence][integrate.choose-level-of-confidence].
+
 ## Client name
 
 Choose your client name.
@@ -98,6 +107,12 @@ Choose your client name.
 The client name appears in the user interface when GOV.UK One Login redirects your user back to your service so choose something your users would recognise.
 
 There's further [guidance on naming your service][external.service-manual-naming].
+
+## Client secret
+
+Your client secret is used to validate `/token` requests made using your client ID. You only need a client secret if your [token authentication method](#token-authentication-method) is set to `client_secret_post`.
+
+There's further guidance on [setting up a client secret using `client_secret_post`][integrate.third-party-client-secret].
 
 ## Contacts
 
@@ -118,6 +133,10 @@ Set this to `true` if your service uses GOV.UK One Login to prove your users' id
 Set this to `true` if your service must send a signed JSON Web Token (JWT) authorisation request (JAR) when making requests to the `/authorize` endpoint. Set this to `false` if your service does not use signed authorisation requests.
 
 If you set this to `true`, you must also provide a [public key](#public-key) so GOV.UK One Login can verify your signed requests.
+
+To get the security benefits from sending a request JAR, you should ask GOV.UK One Login to set this value to `true`.
+
+If you set this to `true`, GOV.UK One Login rejects `/authorize` requests that do not include a signed request JAR. There's further guidance on [securing your authorisation request parameters with JWT][integrate.secure-authorisation-request].
 
 ## JWKS URL
 
@@ -158,6 +177,12 @@ To provide your public keys via a JWKS endpoint (strongly recommended for produc
 To provide a static public key, set the **Key source** to Static key and enter the contents of your public key Privacy Enhanced Mail (PEM) file (or whichever file was created when you created your key pair).
 
 There's further guidance on [creating a key pair][integrate.generate-key-pair].
+
+## Public key source
+
+Set `PublicKeySource` to either `STATIC` or `JWKS`. This determines how you share your public key with GOV.UK One Login.
+
+You only need to set this if your [token authentication method](#token-authentication-method) is `private_key_jwt` or you are sending a signed authorisation request (JAR).
 
 ## Redirect URLs
 
