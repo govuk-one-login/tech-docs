@@ -35,7 +35,7 @@ Fields marked with an asterisk (*) are used internally by GOV.UK One Login. You 
 | [Client ID](#client-id) | `ClientID` | Your unique client ID. You must configure this into your service. |
 | [Client LoCs](#client-locs) | `ClientLoCs` | The level of confidence your service requests. The value is a string such as `P0`, `P1` or `P2`. |
 | [Client name (Service name)](#client-name) | `ClientName` | The name of your service, visible to users in the sign in journey. |
-| [Client secret](#client-secret) | `ClientSecret` | The client secret used to validate `/token` requests. Only used if the token authentication method is `client_secret_post`. |
+| [Client secret](#client-secret) | `ClientSecret` | The client secret that validates `/token` requests. Only used if the token authentication method is `client_secret_post`. |
 | Client type* | `ClientType` | Internal use only. The value is always `web`. |
 | [Contacts](#contacts) | `Contacts` | Email addresses of your service's technical contacts. |
 | Cookie consent shared* | `CookieConsentShared` | Internal use only. The value is always `false`. |
@@ -44,7 +44,7 @@ Fields marked with an asterisk (*) are used internally by GOV.UK One Login. You 
 | Is active* | `IsActive` | Internal use only. |
 | [JAR validation required](#jar-validation-required) | `JarValidationRequired` | Whether your service must send a signed JSON Web Token (JWT) authorisation request (JAR). |
 | [JWKS URL](#jwks-url) | `JwksUrl` | The URL of your JWKS endpoint. Needed if using JWKS to provide your public keys. |
-| [Landing page URL](#landing-page-url) | `LandingPageUrl` | The page users are redirected to after their in-person identity check. |
+| [Landing page URL](#landing-page-url) | `LandingPageUrl` | The page GOV.UK One Login redirects users to after their in-person identity check. |
 | [Max age enabled](#max-age-enabled) | `MaxAgeEnabled` | Whether your service enforces a maximum authentication age. Only available to services not on the GOV.UK domain and those handling particularly sensitive data. |
 | One Login service* | `OneLoginService` | Internal use only. The value is always `false`. |
 | Permit missing nonce* | `PermitMissingNonce` | Internal use only. The value is either `true` or `false`. Defaults to `false`. |
@@ -90,13 +90,15 @@ There's further guidance on [choosing which claims your service can request][int
 
 ## Client ID
 
-Your client ID is unique to your service and is created when you register. You must configure this into your service to make requests to GOV.UK One Login.
+Your client ID is unique to your service. GOV.UK One Login creates it when you register. You must configure this into your service to make requests to GOV.UK One Login.
 
 You cannot change your client ID. If you need a new one, you must register a new client.
 
 ## Client LoCs
 
 Set this to the level of confidence your service needs. The value is a string such as `P0` or `P2`.
+
+Currently GOV.UK One Login only supports `P0` and `P2`.
 
 There's further guidance on [choosing the level of identity confidence][integrate.choose-level-of-confidence].
 
@@ -110,7 +112,7 @@ There's further [guidance on naming your service][external.service-manual-naming
 
 ## Client secret
 
-Your client secret is used to validate `/token` requests made using your client ID. You only need a client secret if your [token authentication method](#token-authentication-method) is set to `client_secret_post`.
+Your client secret validates `/token` requests made using your client ID. You only need a client secret if your [token authentication method](#token-authentication-method) is set to `client_secret_post`.
 
 There's further guidance on setting up a client secret using [`client_secret_post`][integrate.third-party-client-secret].
 
@@ -146,7 +148,7 @@ There's further guidance on [setting up your public and private keys][integrate.
 
 ## Landing page URL
 
-`LandingPageUrl` is only needed if you are making identity requests. GOV.UK One Login redirects users to this landing page after their in-person identity check.
+You only need `LandingPageUrl` if you are making identity requests. GOV.UK One Login redirects users to this landing page after their in-person identity check.
 
 There's further guidance on [helping your users after their in-person identity check][integrate.in-person-identity-checks].
 
