@@ -55,8 +55,8 @@ Resources:
       Type: A
       HostedZoneId: !ImportValue TechDocsPublicHostedZoneId
       AliasTarget:
-        DNSName: !GetAtt ApplicationLoadBalancer.DNSName
-        HostedZoneId: !GetAtt ApplicationLoadBalancer.CanonicalHostedZoneID
+        DNSName: !GetAtt SpokeApplicationLoadBalancer.DNSName
+        HostedZoneId: !GetAtt SpokeApplicationLoadBalancer.CanonicalHostedZoneID
 
   TechDocsCertificate:
     Type: AWS::CertificateManager::Certificate
@@ -76,8 +76,8 @@ Resources:
       Type: A
       HostedZoneId: !ImportValue DocsSigninPublicHostedZoneId
       AliasTarget:
-        DNSName: !GetAtt ApplicationLoadBalancer.DNSName
-        HostedZoneId: !GetAtt ApplicationLoadBalancer.CanonicalHostedZoneID
+        DNSName: !GetAtt SpokeApplicationLoadBalancer.DNSName
+        HostedZoneId: !GetAtt SpokeApplicationLoadBalancer.CanonicalHostedZoneID
 
   #DocsSigninCertificate:
   #  Type: AWS::CertificateManager::Certificate
