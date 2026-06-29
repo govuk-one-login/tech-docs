@@ -535,7 +535,7 @@ Resources:
         - !GetAtt SpokeApplicationLoadBalancerSecurityGroup.GroupId
       Subnets:
         - Fn::ImportValue:
-            !Sub "${SpokeVpcStackName}-PublicSubnetIdA"Expand commentComment on line R538Resolved
+            !Sub "${SpokeVpcStackName}-PublicSubnetIdA"
         - Fn::ImportValue:
             !Sub "${SpokeVpcStackName}-PublicSubnetIdB"
       Type: application
