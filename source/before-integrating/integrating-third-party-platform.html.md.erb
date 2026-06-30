@@ -6,9 +6,9 @@ review_in: 6 months
 ---
 
 
-# Consider how to integrate third-party platforms
+# Integrating third-party platforms
 
-If you use a third-party platform (Software as a Service such as Salesforce or Microsoft Power Platform, or an identity provider such as Amazon Cognito or ForgeRock) to integrate with GOV.UK One Login, you might experience issues or specific limitations during integration.
+If you use a third-party platform (Software as a Service such as Salesforce or Microsoft Power Platform, or an identity provider such as Amazon Cognito or ForgeRock) to integrate with GOV.UK One Login, you might experience problems or specific limitations during integration.
 
 Contact GOV.UK One Login at govuk-one-login@digital.cabinet-office.gov.uk ([govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) will open a link to your mail client) if you’re using a third-party platform to integrate with GOV.UK One Login. 
 
@@ -16,20 +16,20 @@ GOV.UK One Login will update this page with information on integrating with thir
 
 | Platform | How to integrate with GOV.UK One Login                                                                                                                                                                                                                                                                                                                                            |
 |------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Amazon Cognito   | There's [guidance on configuring Amazon Cognito to use GOV.UK One Login as an external OpenID Connect provider](https://github.com/govuk-one-login/onboarding-examples/tree/main/clients/amazon-cognito) (opens separate repository). 
-| Salesforce       | You'll need to build an authentication provider plugin to integrate using Salesforce. <br></br><br></br> There's further [guidance on building an authentication provider plugin](https://github.com/govuk-one-login/onboarding-examples/blob/main/clients/salesforce-apex/README.md) (opens separate repository). 
+| Amazon Cognito   | There's [guidance on configuring Amazon Cognito to use GOV.UK One Login as an external OpenID Connect provider](https://github.com/govuk-one-login/onboarding-examples/tree/main/clients/amazon-cognito) (opens separate repository). |
+| Salesforce       | You'll need to build an authentication provider plugin to integrate using Salesforce. <br></br><br></br> There's further [guidance on building an authentication provider plugin](https://github.com/govuk-one-login/onboarding-examples/blob/main/clients/salesforce-apex/README.md) (opens separate repository). |
 
 
-## Set up client secret using `client_secret_post` 
+## Set up client secret using Client Secret POST
 
 You should only use `client_secret_post` as the token authentication method if: 
 
-* you only require authentication – `client_secret_post` is not supported for identity proving
+* you only need authentication – `client_secret_post` is not supported for identity proving
 * your third-party platform cannot support `private_key_jwt`
 
 Contact GOV.UK One Login at govuk-one-login@digital.cabinet-office.gov.uk ([govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) will open a link to your mail client) if you need to use `client_secret_post`. 
 
-You’ll use OpenSSL to generate a client secret and share the hashed version of the secret with the GOV.UK One Login onboarding team.
+You’ll use OpenSSL to create a client secret and share the hashed version of the secret with the GOV.UK One Login onboarding team.
 
 If using `client_secret_post`, whenever you make a request to the `/token` endpoint you’ll need to use the existing parameters and also add the following parameters to the token request: 
 
@@ -50,12 +50,12 @@ For Windows:
 1. Follow the documentation to install [Chocolatey](https://chocolatey.org/install). 
 1. Run `choco install openssl`.
 
-To test if your installation has been successful, run `openssl version`. 
+To test if your installation has been successful, run `openssl version`.
 
-### Generate the client secret and the salt using OpenSSL
+### Create the client secret and the salt using OpenSSL
 
-1. Generate the client secret by running `openssl rand 40 | openssl base64 -A -out CLIENT_SECRET.txt`.
-1. Generate the salt by running `openssl rand 64 | openssl base64 -A -out SALT.txt`.
+1. Create the client secret by running `openssl rand 40 | openssl base64 -A -out CLIENT_SECRET.txt`.
+1. Create the salt by running `openssl rand 64 | openssl base64 -A -out SALT.txt`.
 1. Store the plaintext client secret (`CLIENT_SECRET.txt`) in your preferred vault following your internal standards for handling sensitive data and following the [NCSC cloud security guidance on protecting secrets](https://www.ncsc.gov.uk/collection/cloud/using-cloud-services-securely/using-a-cloud-platform-securely#section_11). 
 1. Store the plaintext salt (`SALT.txt`) on your local machine as you’ll need this later.
 

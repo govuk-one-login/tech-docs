@@ -1,44 +1,218 @@
 ---
 title: Register and manage your service
 weight: 5.13
-last_reviewed_on: 2024-09-25
+last_reviewed_on: 2025-06-17
 review_in: 6 months
 ---
 
 # Register and manage your service
 
-You get a unique client ID when you register your service. You'll need this client ID to integrate each of your services with GOV.UK One Login. 
+You get a unique client ID when you register your service. You need this client ID to integrate each of your services with GOV.UK One Login.
 
-You should configure a client ID for each environment you have. For example, if you have staging, user acceptance testing, integration and production you should configure 4 client IDs. There's further [guidance on creating a configuration for each service you’re integrating][integrate.client-id].
+You should configure a client ID for each environment you have. For example, if you have staging, user acceptance testing, integration and production you should configure 4 client IDs. There's further [guidance on creating a configuration for each service you're integrating][integrate.client-id].
 
-Registering should take 5 minutes to complete. To register your service to use GOV.UK One Login, you'll need:
+Registering takes about 5 minutes to complete. To register your service to use GOV.UK One Login, you need:
 
 * a government email address
 * a mobile phone
 
 If you do not have a government email address or mobile phone, you should find a civil servant in your team who can register the service on your behalf.
 
-Whoever registers the service will have the entry tied to their email address. It is currently not possible to reassign ownership if someone leaves or to add multiple email addresses to a particular client. If you need access after someone has left, you can create an additional client using a different email address and transfer the configuration settings to the new account. 
+Whoever registers the service has the entry tied to their email address. You cannot reassign ownership if someone leaves or add multiple email addresses to a particular client. If you need access after someone has left, you can create an additional client using a different email address and transfer the configuration settings to the new account.
 
 1. Go to the [Get started with GOV.UK One Login][external.get-started-gov-uk-one-login] page and select *Create admin tool account*.
-1. Then, follow the on-screen instructions to enter your email address and confirm your email security code.
+1. Follow the on-screen instructions to enter your email address and confirm your email security code.
 1. Enter your mobile number and confirm your mobile security code.
-1. Fill in your client configuration details using this table. 
+1. Fill in your client configuration details using this table.
 
-| Name                        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| --------------------------  | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Client ID                   | GOV.UK One Login will assign your service a unique Client ID which you must configure into your service.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| Client name (Service name)  | Choose the name of your service. This will be visible to your users in the sign in journey.<br><br>Choose your client name.<br><br>The client name will appear in the user interface when GOV.UK One Login redirects your user back to your service so choose something your users would recognise.<br><br>There’s further [guidance on naming your service][external.service-manual-naming].                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| Contacts                    | Enter the email addresses of your service’s technical contacts – this can be a group email address, multiple separate email addresses, or a combination of both.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| Redirect URLs               | The URL we return your user to after they complete their GOV.UK One Login journey.<br><br>You can enter more than one.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| Post-logout URLs            | If you want to redirect your users after they log out, input one or more URLs. These will be where you redirect your users to after you have logged them out.<br><br>There’s further guidance on [logging your user out of GOV.UK One Login][integrate.managing-sessions-logout].                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| Back channel logout URI     | If you want to receive logout notifications from GOV.UK One Login, specify the URI of the endpoint you want GOV.UK One Login to call.<br><br>There’s further guidance on [requesting logout notifications from GOV.UK One Login][integrate.managing-sessions-backchannel-logout].                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| Landing Page URL            | It's not possible to configure this yet.<br><br>Send an email to [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) if you need to configure this.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| Sector identifier URI       | Specify your service's sector identifier.<br><br>You must not change the sector identifier once your service has started to sign up or migrate users. Doing this will change the subject identifiers GOV.UK One Login creates for each individual user.<br><br>There’s further [guidance on choosing your sector identifier][integrate.choose-sector-id].<br><br>If your service has more than one <code>redirect_uri</code>, you must set the sector identifier in line with the [OpenID Connect Core 1.0 specification][external.oidc-connect-core-pairwise-algorithm]].                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| Scopes                      | Enter the scopes your service requires. You must include the <code>openid</code> scope.<br><br>You may choose one or more of the following:<br><br><li><code>email</code><br><br><li><code>phone</code><br><br><br>There’s further [guidance on choosing which user attributes your service can request][integrate.choose-request-scope].                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| Claims                      | If you’re requesting identity verification, you must include <code>https://vocab.account.gov.uk/v1/coreIdentityJWT</code>. We recommend also including <code>https://vocab.account.gov.uk/v1/returnCode</code> to make your error handling more clear. There's further [guidance on return codes](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/prove-users-identity/#understand-your-user-s-return-code-claim). In addition, you can choose one or more of the following:<br><br><li><code>https://vocab.account.gov.uk/v1/passport</code><br><br><li><code>https://vocab.account.gov.uk/v1/drivingPermit</code><br><br><li><code>https://vocab.account.gov.uk/v1/address</code><br><br>There's further guidance on [choosing which claims your service can request][integrate.choose-request-claim]. |
-| Token Authentication method | Specify the token authentication method your service is using. This will be <code>private_key_jwt</code> or <code>client_secret_post</code>.<br><br>There’s further [guidance on using the correct token authentication method for your service][integrate.use-correct-token-auth-method].                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| Public key                  | Only include this if your service is using the <code>private_key_jwt</code> token authentication method or you are going to secure your <code>/authorize</code> request parameters in a [JAR][integrate.secure-authorisation-request].<br><br>To provide your public keys via a JWKS endpoint (strongly recommended for production) set the <b>Key source</b> to the JWKs URL and provide the URL for your publicly available JWKS endpoint.<br><br>To provide a static public key, set the <b>Key source</b> to Static key and enter the contents of your public key Privacy Enhanced Mail (PEM) file (or whichever file was created when you created your key pair).<br><br>There’s further [guidance on creating a key pair][integrate.generate-key-pair].                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ID token signing algorithm  | Choose either <code>RS256</code> or <code>ES256</code>.<br><br>By default, GOV.UK One Login will sign the <code>id_token</code> JSON Web Token (JWT) using the <code>ES256</code> algorithm but some third party tooling does not support <code>ES256</code>.  If your service needs an alternative algorithm, we can sign your `id_token` JWT using the `RS256` algorithm            
+Fields marked with an asterisk (*) are used internally by GOV.UK One Login. You cannot change these values.
+
+| Name | Field name | Description |
+| --- | --- | --- |
+| [Back channel logout URI](#back-channel-logout-uri) | `BackChannelLogoutUri` | The endpoint GOV.UK One Login calls to send logout notifications. |
+| Channel* | `Channel` | Internal use only. The value is always `web`. |
+| [Claims](#claims) | `Claims` | The claims your service requests from GOV.UK One Login. |
+| [Client ID](#client-id) | `ClientID` | Your unique client ID. You must configure this into your service. |
+| [Client LoCs](#client-locs) | `ClientLoCs` | The level of confidence your service requests. The value is a string such as `P0`, `P1` or `P2`. |
+| [Client name (Service name)](#client-name) | `ClientName` | The name of your service, visible to users in the sign in journey. |
+| [Client secret](#client-secret) | `ClientSecret` | The client secret that validates `/token` requests. Only used if the token authentication method is `client_secret_post`. |
+| Client type* | `ClientType` | Internal use only. The value is always `web`. |
+| [Contacts](#contacts) | `Contacts` | Email addresses of your service's technical contacts. |
+| Cookie consent shared* | `CookieConsentShared` | Internal use only. The value is always `false`. |
+| [ID token signing algorithm](#id-token-signing-algorithm) | `IdTokenSigningAlgorithm` | Either `RS256` or `ES256`. Defaults to `ES256`. |
+| [Identity verification supported](#identity-verification-supported) | `IdentityVerificationSupported` | Whether your service uses identity verification. |
+| Is active* | `IsActive` | Internal use only. |
+| [JAR validation required](#jar-validation-required) | `JarValidationRequired` | Whether your service must send a signed JSON Web Token (JWT) authorisation request (JAR). |
+| [JWKS URL](#jwks-url) | `JwksUrl` | The URL of your JWKS endpoint. Needed if using JWKS to provide your public keys. |
+| [Landing page URL](#landing-page-url) | `LandingPageUrl` | The page GOV.UK One Login redirects users to after their in-person identity check. |
+| [Max age enabled](#max-age-enabled) | `MaxAgeEnabled` | Whether your service enforces a maximum authentication age. Only available to services not on the GOV.UK domain and those handling particularly sensitive data. |
+| One Login service* | `OneLoginService` | Internal use only. The value is always `false`. |
+| Permit missing nonce* | `PermitMissingNonce` | Internal use only. The value is either `true` or `false`. Defaults to `false`. |
+| [PKCE enforced](#pkce-enforced) | `PKCEEnforced` | Whether your service must use Proof Key for Code Exchange (PKCE). |
+| [Post-logout URLs](#post-logout-urls) | `PostLogoutRedirectUrls` | URLs to redirect your users to after they log out. |
+| [Public key](#public-key) | `PublicKey` | Needed if using `private_key_jwt` or a signed authorisation request (JAR). |
+| [Public key source](#public-key-source) | `PublicKeySource` | How you share your public key with GOV.UK One Login. Either `STATIC` or `JWKS`. |
+| [Redirect URLs](#redirect-urls) | `RedirectUrls` | The URL GOV.UK One Login returns your user to after they complete their journey. |
+| [Scopes](#scopes) | `Scopes` | The scopes your service needs. You must include `openid`. |
+| [Sector identifier URI](#sector-identifier-uri) | `SectorIdentifierUri` | Your service's sector identifier. |
+| Service type* | `ServiceType` | Internal use only. The value is always `MANDATORY`. |
+| Smoke test* | `SmokeTest` | Internal use only. The value is either `true` or `false`. |
+| Subject type* | `SubjectType` | Internal use only. The value is always `pairwise`. |
+| Test client* | `TestClient` | Internal use only. The value is always `false`. |
+| Test client email allowlist* | `TestClientEmailAllowlist` | Internal use only. |
+| [Token authentication method](#token-authentication-method) | `TokenAuthMethod` | Either `private_key_jwt` or `client_secret_post`. |
+
+## Back channel logout URI
+
+Specify the URI of the endpoint you want GOV.UK One Login to call when sending logout notifications to your service.
+
+There's further guidance on [requesting logout notifications from GOV.UK One Login][integrate.managing-sessions-backchannel-logout].
+
+## Claims
+
+If you're doing identity verification, you need to specify which claims your service needs.
+
+You can choose one or more of the following:
+
+- `https://vocab.account.gov.uk/v1/passport`
+- `https://vocab.account.gov.uk/v1/drivingPermit`
+- `https://vocab.account.gov.uk/v1/address`
+- `https://vocab.account.gov.uk/v1/coreIdentityJWT`
+- `https://vocab.account.gov.uk/v1/returnCode`
+
+You should also include `https://vocab.account.gov.uk/v1/returnCode` to make your error handling clearer.
+
+There's further [guidance on return codes][integrate.return-codes].
+
+If you're requesting identity verification, you must include: `https://vocab.account.gov.uk/v1/coreIdentityJWT`
+
+There's further guidance on [choosing which claims your service can request][integrate.choose-request-claim].
+
+## Client ID
+
+Your client ID is unique to your service. GOV.UK One Login creates it when you register. You must configure this into your service to make requests to GOV.UK One Login.
+
+You cannot change your client ID. If you need a new one, you must register a new client.
+
+## Client LoCs
+
+Set this to the level of confidence your service needs. The value is a string such as `P0` or `P2`.
+
+Currently GOV.UK One Login only supports `P0` and `P2`.
+
+There's further guidance on [choosing the level of identity confidence][integrate.choose-level-of-confidence].
+
+## Client name
+
+Choose your client name.
+
+The client name appears in the user interface when GOV.UK One Login redirects your user back to your service so choose something your users would recognise.
+
+There's further [guidance on naming your service][external.service-manual-naming].
+
+## Client secret
+
+Your client secret validates `/token` requests made using your client ID. You only need a client secret if your [token authentication method](#token-authentication-method) is set to `client_secret_post`.
+
+There's further guidance on setting up a client secret using [`client_secret_post`][integrate.third-party-client-secret].
+
+## Contacts
+
+Enter the email addresses of your service's technical contacts. This can be a group email or multiple separate email addresses, or a combination of both.
+
+GOV.UK One Login uses these to notify your team about service changes or incidents.
+
+## ID token signing algorithm
+
+By default, GOV.UK One Login signs the `id_token` JSON Web Token (JWT) using the `ES256` algorithm but some third-party tooling does not support `ES256`. If your service needs an alternative algorithm, GOV.UK One Login can sign your `id_token` JWT using the `RS256` algorithm.
+
+## Identity verification supported
+
+Set this to `true` if your service uses GOV.UK One Login to prove your users' identities. Set this to `false` if your service only uses authentication.
+
+## JAR validation required
+
+Set this to `true` if your service must send a signed JSON Web Token (JWT) authorisation request (JAR) when making requests to the `/authorize` endpoint. Set this to `false` if your service does not use signed authorisation requests.
+
+If you set this to `true`, you must also provide a [public key](#public-key) so GOV.UK One Login can verify your signed requests.
+
+To get the security benefits from sending a request JAR, you should ask GOV.UK One Login to set this value to `true`.
+
+If you set this to `true`, GOV.UK One Login rejects `/authorize` requests that do not include a signed request JAR. There's further guidance on [securing your authorisation request parameters with JWT][integrate.secure-authorisation-request].
+
+## JWKS URL
+
+If you are providing your public keys via a JWKS endpoint, enter the URL of your publicly available JWKS endpoint.
+
+There's further guidance on [setting up your public and private keys][integrate.generate-key-pair].
+
+## Landing page URL
+
+You only need `LandingPageUrl` if you are making identity requests. GOV.UK One Login redirects users to this landing page after their in-person identity check.
+
+There's further guidance on [helping your users after their in-person identity check][integrate.in-person-identity-checks].
+
+Send an email to [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) if you need to configure this.
+
+## Max age enabled
+
+Set `MaxAgeEnabled` to `true` if your service needs to enforce a maximum authentication age. This is only available to services not on the GOV.UK domain and those handling particularly sensitive data.
+
+The value is either `true` or `false`.
+
+## PKCE enforced
+
+Specify whether your service must provide the parameters needed for Proof Key for Code Exchange (PKCE) protocol in the [`/authorize`][integrate.make-authorize-request] and [`/token`][integrate.make-token-request] requests.
+
+You can [read more about PKCE in RFC 7636](https://datatracker.ietf.org/doc/html/rfc7636).
+
+## Post-logout URLs
+
+If you want to redirect your users after they log out, enter one or more URLs. These are where you redirect your users to after you have logged them out.
+
+There's further guidance on [logging your user out of GOV.UK One Login][integrate.managing-sessions-logout].
+
+## Public key
+
+To provide your public keys via a JWKS endpoint (strongly recommended for production) set the **Key source** to the JWKs URL and provide the URL for your publicly available JWKS endpoint.
+
+To provide a static public key, set the **Key source** to Static key and enter the contents of your public key Privacy Enhanced Mail (PEM) file (or whichever file was created when you created your key pair).
+
+There's further guidance on [creating a key pair][integrate.generate-key-pair].
+
+## Public key source
+
+Set `PublicKeySource` to either `STATIC` or `JWKS`. This determines how you share your public key with GOV.UK One Login.
+
+You only need to set this if your [token authentication method](#token-authentication-method) is `private_key_jwt` or you are sending a signed authorisation request (JAR).
+
+## Redirect URLs
+
+Enter one or more of your service's redirect URLs. These are the URLs GOV.UK One Login returns your user to after they complete their journey.
+
+## Scopes
+
+Enter the scopes your service needs. You must include the `openid` scope.
+
+You may choose one or more of the following:
+
+- `email`
+- `phone`
+
+There's further [guidance on choosing which user attributes your service can request][integrate.choose-request-scope].
+
+## Sector identifier URI
+
+You must not change the sector identifier once your service has started to sign up or migrate users. Doing this changes the subject IDs GOV.UK One Login creates for each individual user.
+
+There's further [guidance on choosing your sector identifier][integrate.choose-sector-id].
+
+If your service has more than one `redirect_uri`, you must set the sector identifier in line with the [OpenID Connect Core 1.0 specification][external.oidc-connect-core-pairwise-algorithm].
+
+## Token authentication method
+
+Specify the token authentication method your service is using. This is either `private_key_jwt` or `client_secret_post`.
+
+There's further [guidance on using the correct token authentication method for your service][integrate.choose-correct-token-auth-method].
 
 <%= partial "partials/links" %>
