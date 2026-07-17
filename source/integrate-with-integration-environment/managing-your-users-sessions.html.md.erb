@@ -15,6 +15,17 @@ GOV.UK One Login’s session timeout duration is 1 hour. The 1 hour timeout star
 
 <%= warning_text('All services should build functionality to log a user out. However, if your session timeout duration is less than 1 hour, you must build functionality for your users to log themselves out of your service and GOV.UK One Login.') %>
 
+## Re-authenticating your users
+
+You may want to make sure your user is required to sign in interactively even when they have an existing GOV.UK One Login session.
+
+
+GOV.UK One Login only supports re-authentication requests using a populated ID token and `prompt=login` for JWT-secured OAuth 2.0 authorisation requests (JARs).
+
+
+GOV.UK One Login allows retries for each credential a user gets wrong. If a user exceeds the maximum retries allowed before the retry count expires then GOV.UK One Login logs the user out and will send the [login_required error](/integrate-with-integration-environment/authenticate-your-user/#understand-error-codes-returned-by-the-authorize-endpoint) to your service. You must handle this error and terminate the user's session in your service for security.
+
+
 ## Managing user sessions if your service session is less than 1 hour
 
 We advise that your service has either the same or a longer session expiry than GOV.UK One Login.
@@ -128,7 +139,7 @@ Once you’ve received a `POST` request to your `back_channel_logout_uri`, you m
 1. Check the JWT `alg` header matches the value for the key you are using. 
 1. Use the key to validate the signature on the logout token according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515).
 1. Check the value of `iss` (issuer) matches the Issuer Identifier specified in GOV.UK One Login’s [discovery endpoint](https://oidc.integration.account.gov.uk/.well-known/openid-configuration).
-1. Check the `aud` (audience) claim is the same client ID you received when you [registered your service to use GOV.UK One Login](https://docs.sign-in.service.gov.uk/before-integrating/set-up-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login).
+1. Check the `aud` (audience) claim is the same client ID you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service].
 1. Check the `iat` (issued at) claim is in the past.
 1. Check the `exp` (expiry) claim is in the future.
 1. Check the logout token contains a `sub` (subject identifier) claim, otherwise known as the unique ID of a user.

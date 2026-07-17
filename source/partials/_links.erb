@@ -2,41 +2,67 @@
 
 
 <!-- external links -->
-[external.oidc-discovery]:  https://oidc.integration.account.gov.uk/.well-known/openid-configuration
-[external.unix-epoch]: https://www.epochconverter.com/
 [external.bearer-token]: https://oauth.net/2/bearer-tokens/
 [external.ISO-8601-date]: https://schema.org/Date
-[external.postcode-file]: https://www.royalmail.com/find-a-postcode
+[external.get-started-gov-uk-one-login]: https://www.sign-in.service.gov.uk/getting-started
+[external.oidc-connect-core-pairwise-algorithm]: https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg
+[external.oidc-connect-core]: https://openid.net/specs/openid-connect-core-1_0.html
+[external.oidc-discovery-production]:  https://oidc.account.gov.uk/.well-known/openid-configuration
+[external.oidc-discovery]:  https://oidc.integration.account.gov.uk/.well-known/openid-configuration
 [external.os-places-api]: https://apidocs.os.uk/docs/os-places-dpa-output
+[external.postcode-file]: https://www.royalmail.com/find-a-postcode
+[external.self-service-admin]: https://admin.sign-in.service.gov.uk/register/enter-email-address
+[external.service-manual-naming]: https://www.gov.uk/service-manual/design/naming-your-service
+[external.unix-epoch]: https://www.epochconverter.com/
 
 <!-- before integrating links -->
 [integrate.before-integrating]: /before-integrating/
 [integrate.choose-level-of-auth]: /before-integrating/choose-the-level-of-authentication/#choose-the-level-of-authentication-for-your-service
 [integrate.choose-level-of-confidence]: /before-integrating/choose-the-level-of-identity-confidence/
+[integrate.choose-request-claim]: /before-integrating/choose-which-user-attributes-your-service-can-request/#choose-which-claims-your-service-can-request
 [integrate.choose-request-scope]: /before-integrating/choose-which-user-attributes-your-service-can-request/#choose-which-scopes-your-service-can-request
 [integrate.choose-sector-id]: /before-integrating/choose-your-sector-identifier/
+[integrate.choose-correct-token-auth-method]: /before-integrating/use-correct-token-authentication-method/
 [integrate.choose-user-attributes]: /before-integrating/choose-which-user-attributes-your-service-can-request/
 [integrate.client-id]: /before-integrating/create-individual-configurations-for-each-service/#understanding-the-client-identifier
 [integrate.create-configurations-for-each-service]: /before-integrating/create-individual-configurations-for-each-service/
-[integrate.generate-key-pair]: /before-integrating/generate-a-key/
+[integrate.set-up-public-private-key]: /before-integrating/set-up-your-public-and-private-keys/
+[integrate.generate-key-pair]: /before-integrating/set-up-your-public-and-private-keys/#create-a-key-pair
+[integrate.share-public-key]: /before-integrating/set-up-your-public-and-private-keys/#share-your-public-key-with-gov-uk-one-login
+[integrate.share-your-fixed-public-key]: /before-integrating/set-up-your-public-and-private-keys/#share-your-fixed-public-key
+[integrate.share-public-keys-JWKS-endpoint]: /before-integrating/set-up-your-public-and-private-keys/#share-your-public-keys-using-a-jwks-endpoint
 [integrate.make-authorize-request]: /integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-authorize-endpoint
-[integrate.register-your-service]: /before-integrating/set-up-your-service-s-configuration/#register-your-service-to-use-gov-uk-one-login
-[integrate.set-up-configuration]: /before-integrating/set-up-your-service-s-configuration/
+[integrate.register-your-service]: /before-integrating/register-and-manage-your-service/
+[integrate.set-up-configuration]: /before-integrating/register-and-manage-your-service/
+[integrate.token-authentication-method]: /before-integrating/register-and-manage-your-service/#register-and-manage-your-service
+[integrate.set-user-agent-header]: /before-integrating/set-user-agent-header/
+[integrate.connect-third-party]: /before-integrating/integrating-third-party-platform/#consider-how-to-integrate-third-party-platforms
 
 <!-- integrating links (Auth) -->
-[integrate.authenticate]: /integrate-with-integration-environment/authenticate-your-user/
-[integrate.generate-auth-code]: /integrate-with-integration-environment/authenticate-your-user/#generate-an-authorisation-code
 [integrate.integrate]: /integrate-with-integration-environment/
+[integrate.authenticate]: /integrate-with-integration-environment/authenticate-your-user/
+[integrate.secure-authorisation-request]: /integrate-with-integration-environment/authenticate-your-user/#secure-your-authorisation-request-parameters-with-jwt
+[integrate.generate-auth-code]: /integrate-with-integration-environment/authenticate-your-user/#generate-an-authorisation-code
 [integrate.make-authorization-request]: /integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-authorize-endpoint
-[integrate.make-token-request]: /integrate-with-integration-environment/authenticate-your-user/#make-a-token-request
-[integrate.receive-tokens]: /integrate-with-integration-environment/authenticate-your-user/#receive-response-for-make-a-token-request
+[integrate.understand-error-codes]: /integrate-with-integration-environment/authenticate-your-user/#understand-error-codes-returned-by-the-authorize-endpoint 
+[integrate.make-token-request]: /integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-token-endpoint
+[integrate.create-a-jwt-assertion]: /integrate-with-integration-environment/authenticate-your-user/#create-a-jwt-assertion
+[integrate.managing-sessions-logout]: /integrate-with-integration-environment/managing-your-users-sessions/#log-your-user-out-of-gov-uk-one-login
+[integrate.receive-tokens]: /integrate-with-integration-environment/authenticate-your-user/#responses-from-the-token-endpoint
 [integrate.replace-example-message]: /integrate-with-integration-environment/authenticate-your-user/#replace-the-placeholder-values-in-your-example
-[integrate.retrieve-user-info]: /integrate-with-integration-environment/authenticate-your-user/#retrieve-user-information
+[integrate.retrieve-user-info]: /integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-userinfo-endpoint
 [integrate.understand-id-token]: /integrate-with-integration-environment/authenticate-your-user/#understand-your-id-token
-[integrate.user-info-response]: /integrate-with-integration-environment/authenticate-your-user/#receive-response-for-retrieve-user-information
+[integrate.user-info-response]: /integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-userinfo-endpoint
+[integrate.managing-sessions-backchannel-logout]: /integrate-with-integration-environment/managing-your-users-sessions/#request-logout-notifications-from-gov-uk-one-login
+[integrate.using-a-public-key]: /integrate-with-integration-environment/authenticate-your-user/#validate-the-id-token-using-a-public-key
+[integrate.see-which-public-key-signed-the-ID-token]: /integrate-with-integration-environment/authenticate-your-user/#use-the-kid-to-see-which-public-key-signed-the-ID-token
+
+
+
 
 <!-- integrating links (Identity) -->
 [integrate.identity-proving]: /integrate-with-integration-environment/prove-users-identity/
+[integrate.in-person-identity-checks]: /integrate-with-integration-environment/helping-your-users-after-their-in-person-identity-checks/
 
 <!-- integrating links (logging out) -->
 [integrate.make-logout-request]: /integrate-with-integration-environment/managing-your-users-sessions/#log-your-user-out-of-gov-uk-one-login
@@ -45,3 +71,4 @@
 [integrate.test-connection]: /test-your-integration/
 [integrate.go-live]: /go-live/
 [integrate.support]: /support/#support
+

@@ -1,7 +1,7 @@
 ---
 title: Authenticate your user
 weight: 5.5
-last_reviewed_on: 2024-07-09
+last_reviewed_on: 2025-11-10
 review_in: 6 months
 ---
 
@@ -9,13 +9,28 @@ review_in: 6 months
 
 To get an access token which will allow you to access basic user information, you’ll need to integrate with [OAuth’s Authorization Code Flow](https://openid.net/specs/openid-connect-core-1_0.html).
 
-## Use the discovery endpoint
+## Use the integration discovery endpoint
 
-You can use the [discovery endpoint][external.oidc-discovery] (viewed at `https://oidc.integration.account.gov.uk/.well-known/openid-configuration`) to get information needed to interact with GOV.UK One Login, for example:
+You can use the [integration discovery endpoint][external.oidc-discovery] (viewed at `https://oidc.integration.account.gov.uk/.well-known/openid-configuration`) to get information needed to interact with GOV.UK One Login, for example:
 
 * issuer name
+* OIDC endpoints
 * information about the keys
-* supported scopes, which will contain the user attributes your service can request
+* supported claims and scopes, which will contain the user attributes your service can request
+
+When you configure your service for production, you can [use the production discovery endpoint](/configure-for-production/#use-the-production-discovery-endpoint).
+
+### Cache the discovery document
+
+You should cache the returned discovery document and reuse it instead of downloading the document for every request. The document will not regularly change and caching it reduces latency for your service.
+
+The `Cache-Control` HTTP header field in the `/.well-known/openid-configuration` endpoint contains a suggested caching period in seconds. This caching period is the time period that GOV.UK One Login expects the discovery document to remain valid.
+
+For example, a header with the value `Cache-Control: max-age=86400` would mean you cache the document for the max-age of 1 day (86400 seconds).
+
+You may not be able to refresh the cache from GOV.UK One Login’s discovery endpoint if there’s a temporary outage. If this happens, you should continue to trust the cached version until you’re able to refresh the cache.
+
+For more details on the Cache-Control header, see [RFC 9111: HTTP Caching](https://www.rfc-editor.org/rfc/rfc9111#field.cache-control).
 
 ## Make a request to the `/authorize` endpoint
 
@@ -26,7 +41,7 @@ You can send a request to the `/authorize` endpoint to:
 
 Choose one of the following example messages to make your own `GET` request. You can use the following table to [replace the placeholders in your example message][integrate.replace-example-message].
 
-### Make a request for authentication
+### Make a GET request to the `/authorize` endpoint
 
 To authenticate your user, customise the following example `GET` request by [replacing the example’s placeholder values][integrate.replace-example-message]. 
 
@@ -92,7 +107,8 @@ After you’ve made a request for authentication and identity, you should then c
     "https://vocab.account.gov.uk/v1/coreIdentityJWT": null,
     "https://vocab.account.gov.uk/v1/address": null,
     "https://vocab.account.gov.uk/v1/passport": null,
-    "https://vocab.account.gov.uk/v1/drivingPermit": null
+    "https://vocab.account.gov.uk/v1/drivingPermit": null,
+    "https://vocab.account.gov.uk/v1/returnCode": null 
   }
 }
 ```
@@ -154,7 +170,6 @@ Before you encode and sign the request object, it should look similar to this ex
 
 You can [replace your example’s placeholder values][integrate.replace-example-message].
 
-
 ### Replace the placeholder values in your example
 
 Use the guidance in the following table to replace placeholder values in your example message.
@@ -165,14 +180,18 @@ Use the guidance in the following table to replace placeholder values in your ex
 | `response_type` | Required             | You must set this value to be code: `response_type=code`.<br><br>If you’re using JAR, make sure the `response_type` values in the query parameters and the request object are identical. |
 | `scope`         | Required             | A space-separated list of scopes. You must include `openid` as one scope value. If you request `openid` but also request other incorrect scopes, the error `invalid_scope` will return with an HTTP 302 instead.<br><br>You should refer to the guidance on [choosing which user attributes your service can request][integrate.choose-user-attributes] for the `scope` parameter.<br><br>If you’re using JAR, make sure the `scope` values in the query parameters and the request object are identical. |
 | `client_id`     | Required             | The [client identifier][integrate.client-id], which we generated for you when you [registered your service to use GOV.UK One Login][integrate.register-your-service] must match your client configuration.<br><br>If you’re using JAR, make sure the `client_id` values in the query parameters and the request object are identical. |
-| `state`         | Required             | When you receive a response at the redirect URL, there must be a way to verify the response came for a request which you sent. The `state` value solves this issue by binding the request and response, which reduces impact of [Cross Site Request Forgery](https://owasp.org/www-community/attacks/csrf) attacks.<br>This value will be returned to the client in the authentication response. |
+| `state`         | Required             | When you receive a response at the redirect URL, there must be a way to verify the response came for a request which you sent. The `state` value solves this issue by binding the request and response, which reduces impact of [Cross Site Request Forgery](https://owasp.org/www-community/attacks/csrf) attacks.<br>This value will be returned to the client in the authentication response. <br> To avoid an `403 The request could not be satisfied` error the parameter should be:<ul><li>small</li><li>opaque and not open to inspection</li><li>a unique value, to avoid hitting the Web Application Firewall (WAF) limit on the `/logout endpoint` and the `/authorize endpoint`</li></ul><br> The WAF limit depends on the length of the whole query string. The limits are:<ul><li>4096 for `/authorize endpoint`</li><li>2048 for `/logout endpoint`</li></ul>|
 | `redirect_uri`  | Required             | You’ll have specified your `redirect_uri` when you [registered your service to use GOV.UK One Login][integrate.register-your-service].<br><br>To avoid an `HTTP 400 Bad Response` error, the redirect URI must exactly match one of the URIs configured in your client configuration and also include the protocol `https://` or `http`.<br><br>If you’re using request parameters, the value must be URL-encoded. |
 | `nonce`         | Required             | A unique value generated by your application that is used to verify the integrity of the `id_token` and mitigate replay attacks.<br>This value will be present in the `id_token` and should include the per-session state, as well as being impossible for attackers to guess.<br>Your application will need to verify the `nonce` claim value is the same as the `nonce` parameter sent in the authentication request. |
+| `response_mode` | Optional | [`response_mode`](https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html#ResponseModes) specifies the mechanism used when returning parameters from the `/authorize` endpoint. <br/><br/>You should only provide this parameter if your implementation cannot support `query`, which is the default mode for `response_type=code`.<br/><br/>If your implementation does not support `query`, you can set this parameter using `response_mode=fragment`.|
 | `aud`           | Optional             | If you’re using JAR, you must include `aud` in your JSON object.<br><br>You must set this value to specify GOV.UK One Login’s authorisation server as the intended audience: `aud=https://oidc.integration.account.gov.uk/authorize`. |
 | `iss`           | Optional             | If you’re using JAR, the `iss` parameter is required.<br><br>You must set this value to be your `client_id`. GOV.UK One Login generated your `client_id` when you [registered your service to use GOV.UK One Login][integrate.register-your-service]. |
 | `ui_locales`    | Optional             | GOV.UK One Login supports English and Welsh as language choices. <br><br> If your service is in Welsh, you may want to display GOV.UK One Login in Welsh for a consistent user experience. You can use `ui_locales` to do this. <br> <br> In the `ui_locales` parameter, you can choose either `en` (English) or `cy` (Welsh). <br><br> Using `ui_locales` is optional. If you do not include it, your service will continue using English by default. <br><br> GOV.UK One Login does not support any other languages. |
 | `vtr`           | Optional             | The `vtr` parameter represents ‘Vectors of Trust’ where you request authentication and, optionally, identity proving. For example, if you want the medium level of authentication and medium identity confidence, request `vtr=[“Cl.Cm.P2”]`. <br><br>You selected your Vector of Trust when you [chose the level of authentication][integrate.choose-level-of-auth] and [the level of identity confidence][integrate.choose-level-of-confidence] for your service.<br><br>You can read more about how to combine the vectors for authentication level and identity confidence in [Section 3 of RFC 8485](https://datatracker.ietf.org/doc/html/rfc8485#section-3.1). If you need identity proving, you must request `Cl.Cm` (the medium level of authentication).<br><br>If you do not specify the `vtr` parameter, your service will automatically log your users in at the medium level of authentication (`Cl.Cm`). This means you will not receive identity attributes in your response. |
 | `claims`        | Optional             | To get the identity attributes your service needs, you should specify these in the `claims` parameter using the `/userinfo` endpoint. The `/userinfo` endpoint returns a JSON object listing the requested claims.<br><br>You can read more about [choosing which user attributes your service can request][integrate.choose-user-attributes].<br><br>You can [read more about the structure of the claims request in OpenID Connect section 5.5](https://openid.net/specs/openid-connect-core-1_0.html#ClaimsParameter). |
+| `max_age`       | Optional             | `max_age` is only available to services not on the GOV.UK domain and those handling particularly sensitive data. When the `max_age` parameter is included in your request, your user will be forced to re-authenticate if the time in seconds since authentication is greater than `max_age`. `max_age` must be set to zero or a positive integer. <br><br>You'll need to [contact GOV.UK One Login support](https://www.sign-in.service.gov.uk/support) to request to use `max_age`. |
+| `code_challenge`| Optional             | `code_challenge` is part of the Proof Key for Code Exchange (PKCE) protocol and helps protect against 'Authorization Code' interception attacks on authorisation requests. Your service generates the `code_challenge` by transforming a `code_verifier` using a `code_challenge_method`. This parameter is required if your [client configuration enforces PKCE](/configure-for-production/#use-the-table-to-understand-the-json-configuration). <br><br>You can [read more about PKCE in RFC 7636](https://datatracker.ietf.org/doc/html/rfc7636).   |
+| `code_challenge_method`| Optional      |`code_challenge_method` specifies which [transformation method](https://datatracker.ietf.org/doc/html/rfc7636#section-4.2) your service used to generate the `code_challenge`. If your request includes `code_challenge` you must include this field. This parameter is required if your [client configuration enforces PKCE](/configure-for-production/#use-the-table-to-understand-the-json-configuration)<br><br>GOV.UK One Login only supports the `code_challenge_method` `S256`.|
 
 ### Generate an authorisation code
 
@@ -189,9 +208,9 @@ Location: https://YOUR_REDIRECT_URI?code=AUTHORIZATION_CODE&state=xyzABC123
 
 If your request included the `state` parameter, the URI will also include this parameter.
 
-### Error handling for ‘Make a request to the `/authorize` endpoint’
+### Understand error codes returned by the `/authorize` endpoint
 
-You must check the HTTP return code from   the `/authorize` request.
+You must check the HTTP return code from the `/authorize` request.
 
 #### HTTP 400 Bad Request
 
@@ -211,18 +230,9 @@ Location: https://YOUR_REDIRECT_URI?error=invalid_request
 &state=1234
 ```
 
-| Error                                     | More information about your error                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|-------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `unauthorized_client`                     | In rare circumstances, such as a security incident, One Login may prevent users from logging in to your service. If this happens, the error code `unauthorized_client` will be returned with the error description `client deactivated`. When your service receives this error, you must show the user a custom error page to explain that they cannot use your service at the moment and should try again later.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `invalid_request`                         | The request has one or more of the following issues: <ul><li>missing a required parameter</li><li>includes an invalid parameter value</li><li>includes a parameter more than once</li><li>not in the correct format</li></ul><br>You can [check which parameters GOV.UK One Login supports when you make an authorisation request][integrate.make-authorization-request].                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `invalid_request - Request vtr not valid` | You've requested single factor authentication and identity information. To make a successful identity request, you must request two-factor authentication and the identity level of confidence, for example `Cl.Cm.P2`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `invalid_scope`                           | The scope or scopes you have requested are invalid, unknown, or are not in the correct format.<br>You can read more about scopes in [choosing which user attributes your service can request][integrate.choose-user-attributes].                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `unsupported_response_type`               | Your service is not registered for the requested `response_type`. <br>You must set the `response_type` to be code: `response_type=code`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `server_error`                            | The GOV.UK One Login authentication server has experienced an internal server error.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `temporarily_unavailable`                 | If you're only making an authentication request (as opposed to requesting both authentication and identity), this error code means the GOV.UK One Login authentication server is temporarily unavailable, which might be caused by temporary overloading or planned maintenance. <br>Make your request again in a few minutes. <br>  <br> If you're making an identity request and you get this error, it means the identity proving and verification does not currently have capacity for this request.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `access_denied`                           | GOV.UK One Login returns this error in 3 potential scenarios.<br><br>The first scenario is that the identity evidence your user provided has a lower score than the identity confidence specified in your request. As a result, GOV.UK One Login could not return the medium level of identity confidence (`P2`) and instead returned a lower level of identity confidence.<br><br> If you’re using return codes, you will not receive this error. Instead, GOV.UK One Login returns an array of single letter `returnCode` values through the `userinfo` endpoint. Find more information on [understanding the return codes claim](/integrate-with-integration-environment/prove-users-identity/#understand-your-user-s-return-code-claim).<br><br>The second scenario is that your user selected **Cancel** during the identity verification process.<br><br>The third scenario is that the session in the user’s browser is unavailable. This can happen when your user’s cookies have been lost or your user changed browsers during the identity verification process. In this scenario, you should ask your user to log in again or restart the identity verification process. |
+<%= partial "partials/authorize-errors" %>
 
-## Make a token request
+## Make a request to the `/token` endpoint
 
 You need to exchange your [authorisation code][integrate.generate-auth-code] for tokens. You'll use these tokens to make a call to the `/userinfo` endpoint.
 
@@ -242,7 +252,7 @@ GOV.UK One Login will then authenticate your request by verifying the signature 
 
 To create a JWT assertion, you need to:
 
-1. Use the [key pair you generated][integrate.generate-key-pair] earlier in the process.
+1. Use the [key pair you created][integrate.generate-key-pair] earlier in the process.
 1. Create a JWT.
 1. Sign your JWT with the key you created - how you sign your JWT will vary depending on the language you’re using.
 
@@ -253,9 +263,9 @@ To create a JWT assertion, you need to create a JWT which contains certain requi
 
 | Claim   | Required or recommended | Description    |
 |---------|-------------------------|----------------|
-| `aud`   | Required                | `aud` stands for 'audience'. This identifies GOV.UK One Login’s authorisation server as an intended audience. This value should be the URL: https://oidc.integration.account.gov.uk/token. |
+| `aud`   | Required                | `aud` stands for 'audience'. This identifies GOV.UK One Login’s authorisation server as an intended audience. This value should be **one** of the following values:<ul><li> GOV.UK One Login’s token URL: `https://oidc.integration.account.gov.uk/token` </li><li> GOV.UK One Login’s issuer value: `https://oidc.integration.account.gov.uk/`</li></ul>. |
 | `iss`   | Required                | `iss` stands for 'issuer'. This claim should contain your `client_id` you got when you [registered your service to use GOV.UK One Login][integrate.register-your-service]. |
-| `sub`   | Required                | `sub` stands for 'subject'. This claim should contain your `client_id` you got when you [registered your service to use GOV.UK One Login][integrate.register-your-service]. There’s further guidance on how to use this value in the [response to the `/userinfo` endpoint](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#receive-response-for-retrieve-user-information).|
+| `sub`   | Required                | `sub` stands for 'subject'. This claim should contain your `client_id` you got when you [registered your service to use GOV.UK One Login][integrate.register-your-service]. There’s further guidance on how to use this value in the [response to the `/userinfo` endpoint](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#responses-from-the-userinfo-endpoint).|
 | `exp`   | Required                | `exp` stands for 'expiration time'. This is the expiration time for this token, which must be an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch].  This is the time after which you must not accept the JWT. We recommend an expiration after 5 minutes. <br>The current date and time must be before the expiration date and time listed in the `exp` claim. |
 | `jti`   | Required                | `jti` stands for ‘JWT ID’. In this claim, you should include a unique identifier for the token. <br>This unique identifier will prevent the token being reused as your application must only use these tokens once. |
 | `iat`   | Recommended             | `iat` stands for ‘issued at’. This identifies the time at which your application created the JWT. You can use this claim to understand the age of the JWT.<br>This must appear as an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch]. |
@@ -283,6 +293,7 @@ Now you have generated your JWT assertion, you’re ready to make a `POST` reque
 POST /token HTTP/1.1
 Host: oidc.integration.account.gov.uk
 Content-Type: application/x-www-form-urlencoded
+User-Agent: my-platform/version (https://my-service-url.gov.uk)
 
 grant_type=authorization_code
 &code=SplxlOBeZQQYbYS6WxSbIA
@@ -293,6 +304,7 @@ OiIiLCJqdGkiOiIifQ.r1Ylfhhy6VNSlhlhW1N89F3WfIGuko2rvSRWO4yK1BI
 ```
 
 <%= warning_text('This code example uses formatting that makes it easier to read. If you copy the example, you must make sure the request is:<ul><li>a continuous line of text separating each parameter with an ampersand (&)</li><li>not split across multiple lines</li><li>without any additional separators such as newline, commas or tabs</li></ul>') %>
+<%= warning_text('GOV.UK One Login requires the <a href="/before-integrating/set-user-agent-header/"><code>User-Agent</code> header</a> to be populated. If it absent or empty, your service will receive a 403 error.') %>
 
 | Parameter               | Required or recommended | Description                                                                                                                                            |
 |-------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -301,8 +313,9 @@ OiIiLCJqdGkiOiIifQ.r1Ylfhhy6VNSlhlhW1N89F3WfIGuko2rvSRWO4yK1BI
 | `client_assertion`      | Required                | You’ll include the JWT assertion you created in the payload when you make the `POST` request to the `/token` endpoint.                                     |
 | `client_assertion_type` | Required                | When you’re using `private_key_jwt`, you must set the value to `urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.                                   |
 | `code`                  | Required                | The code you received when you [generated an authorisation code][integrate.generate-auth-code].                                                                                        |
+| `code_verifier`         | Optional                | You should only include this parameter if your original `/authorize` request includes the `code_challenge` and `code_challenge_method` parameters.                                                                                        |
 
-### Receive response for ‘Make a token request’
+### Responses from the `/token` endpoint
 
 If your token request is successful, the `/token` endpoint will return a response similar to this example:
 
@@ -318,19 +331,18 @@ Content-Type: application/json
 }
 ```
 
-You can use the following table to understand the response for ‘Make a token request’.
+You can use the following table to understand the response from the `/token` endpoint.
 
 | Parameter       | Description    |
 |-----------------|----------------|
 | `access_token`  | The access token value is an opaque access token which you can use with the `/userinfo` endpoint to return a user's profile. |
 | `token_type`    | The token type value. GOV.UK One Login only supports the [bearer token][external.bearer-token]. |
 | `expires_in`    | The length of time the token is valid for. This is displayed in seconds. |
-| `scope`         | You can read more about scopes in [choosing which user attributes your service can request][integrate.choose-user-attributes]. |
 | `id_token`      | A signed JWT that contains basic attributes about the user. <br><br>By default, GOV.UK One Login signs this JWT using the `ES256` algorithm.<br><br>If your service cannot support the `ES256` algorithm (for example, some third-party tooling does not support `ES256`), GOV.UK One Login can sign the JWT using the `RS256` algorithm. You’ll have specified whether your service can support `ES256` when you [registered your service to use GOV.UK One Login][integrate.register-your-service].<br><br>The public key used to verify this JWT is available from the `jwks_uri` parameter found in the [discovery endpoint][external.oidc-discovery]. |
 
 ### Understand your ID token
 
-The `id_token` parameter in the response for ‘Make a token request’ contains the following claims:
+The `id_token` parameter in the response from the `/token` endpoint contains the following claims:
 
 
 ```
@@ -345,6 +357,7 @@ The `id_token` parameter in the response for ‘Make a token request’ contains
   "nonce": "lZk16Vmu8-h7r8L8bFFiHJxpC3L73UBpfb68WC1Qoqg",
   "vtm": "https://oidc.integration.account.gov.uk/trustmark",
   "sid": "dX5xv0XgHh6yfD1xy-ss_1EDK0I"
+  "auth_time": 1704894300
  }
 
 ```
@@ -363,24 +376,116 @@ You can use the following table to understand the ID token’s claims.
 | `nonce` | The `nonce` value your application provided when you made the request to the `/authorize` endpoint. |
 | `vtm`   | `vtm` stands for 'vector trust mark'. This is an HTTPS URL which lists the range of values GOV.UK One Login accepts and provides.  |
 | `sid`   | `sid` stands for ‘session identifier’. This uniquely identifies the user's journey within GOV.UK One Login. |
+| `auth_time` | `auth_time` is the time at which your user last authenticated. This will be an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch]. |
 
 Now you’ve understood what’s in your ID token, you’ll need to validate it.
 
+### Validate the signature of the ID token using a public key
+
+To validate the signature of the ID token, you must use a public key. GOV.UK One Login publishes the public keys in a [JWKS document](https://datatracker.ietf.org/doc/html/rfc7517). 
+
+<%= warning_text('GOV.UK One Login will regularly rotate its public keys. You must <a href="/integrate-with-integration-environment/authenticate-your-user/#use-the-kid-key-id-to-see-which-public-key-signed-the-id-token"> read the guidance on understanding GOV.UK One Login’s key rotation </a> to make sure your application continues to work as expected.') %>
+
+This is an example of a JWKS document published by GOV.UK One Login:
+
+```json
+{
+  "keys": [
+    {
+      "kty": "EC",
+      "use": "sig",
+      "crv": "P-256",
+      "kid": "644af598b780f54106ca0f3c017341bc230c4f8373f35f32e18e3e40cc7acff6",
+      "x": "5URVCgH4HQgkg37kiipfOGjyVft0R5CdjFJahRoJjEw",
+      "y": "QzrvsnDy3oY1yuz55voaAq9B1M5tfhgW3FBjh_n_F0U",
+      "alg": "ES256"
+    },
+    {
+      "kty": "EC",
+      "use": "sig",
+      "crv": "P-256",
+      "kid": "e1f5699d068448882e7866b49d24431b2f21bf1a8f3c2b2dde8f4066f0506f1b",
+      "x": "BJnIZvnzJ9D_YRu5YL8a3CXjBaa5AxlX1xSeWDLAn9k",
+      "y": "x4FU3lRtkeDukSWVJmDuw2nHVFVIZ8_69n4bJ6ik4bQ",
+      "alg": "ES256"
+    },
+    {
+      "kty": "RSA",
+      "e": "AQAB",
+      "use": "sig",
+      "kid": "76e79bfc350137593e5bd992b202e248fc97e7a20988a5d4fbe9a0273e54844e",
+      "alg": "RS256",
+      "n": "lGac-hw2cW5_amtNiDI-Nq2dEXt1x0nwOEIEFd8NwtYz7ha1GzNwO2LyFEoOvqIAcG0NFCAxgjkKD5QwcsThGijvMOLG3dPRMjhyB2S4bCmlkwLpW8vY4sJjc4bItdfuBtUxDA0SWqepr5h95RAsg9UP1LToJecJJR_duMzN-Nutu9qwbpIJph8tFjOFp_T37bVFk4vYkWfX-d4-TOImOOD75G0kgYoAJLS2SRovQAkbJwC1bdn_N8yw7RL9WIqZCwzqMqANdo3dEgSb04XD_CUzL0Y2zU3onewH9PhaMfb11JhsuijH3zRA0dwignDHp7pBw8uMxYSqhoeVO6V0jz8vYo27LyySR1ZLMg13bPNrtMnEC-LlRtZpxkcDLm7bkO-mPjYLrhGpDy7fSdr-6b2rsHzE_YerkZA_RgX_Qv-dZueX5tq2VRZu66QJAgdprZrUx34QBitSAvHL4zcI_Qn2aNl93DR-bT8lrkwB6UBz7EghmQivrwK84BjPircDWdivT4GcEzRdP0ed6PmpAmerHaalyWpLUNoIgVXLa_Px07SweNzyb13QFbiEaJ8p1UFT05KzIRxO8p18g7gWpH8-6jfkZtTOtJJKseNRSyKHgUK5eO9kgvy9sRXmmflV6pl4AMOEwMf4gZpbKtnLh4NETdGg5oSXEuTiF2MjmXE"
+    }
+  ]
+}
+
+```
+
+#### Use the `kid` (key ID) to see which public key signed the ID token
+
+When validating an ID token, the JWT header will include the `kid`.
+
+Follow the steps below to use the `kid` to find out which public key from the JWKS document was used to sign the JWT. This is important because GOV.UK One Login may have rotated its public keys and using the incorrect key will break your integration. 
+
+1. Download the JWKS document from the JWKS endpoint. This endpoint can be found as the `jwks_uri` value on the discovery endpoint: 
+  * Integration environment: [https://oidc.integration.account.gov.uk/.well-known/openid-configuration](https://oidc.integration.account.gov.uk/.well-known/openid-configuration) 
+  * Production environment: [https://oidc.account.gov.uk/.well-known/openid-configuration](https://oidc.account.gov.uk/.well-known/openid-configuration).
+1. Find the object in `keys` which has a `kid` field matching the `kid` from the JWT header in the ID token. 
+1. You must [validate that the JWT `alg` header matches](https://datatracker.ietf.org/doc/html/rfc8725#section-3.1) what was returned from the `jwks_uri`.
+1. Use the key to verify the signature of the ID token. 
+
+<%= warning_text('If the `kid` in the JWT header does not match a `kid` in the JWKS document, you must not trust that ID token. You should contact GOV.UK One Login through the <a href="https://www.sign-in.service.gov.uk/support">contact us form</a>, including the name of your service and client ID.') %>
+
+#### Caching the JWKS document 
+
+You should cache the returned JWKS document and reuse it instead of downloading the JWKS document for every signature you need to verify. The JWKS document will not regularly change and caching it reduces latency for your service.
+
+The `Cache-Control` HTTP header field in the JWKS endpoint contains a suggested caching period in seconds. This caching period is the time period that GOV.UK One Login expects the JWKS document to remain valid. 
+
+For example, a header with the value `Cache-Control: max-age=86400` would mean you cache the JWKS document for the `max-age` of 1 day (86400 seconds).
+
+You may not be able to refresh the cache from GOV.UK One Login’s JWKS endpoint if there's a temporary outage. If this happens, you should continue to trust the cached version until you’re able to refresh the cache.
+
+For more details on the `Cache-Control` header, see [RFC 9111: HTTP Caching](https://www.rfc-editor.org/rfc/rfc9111#field.cache-control). 
+
+#### Understanding the ID token signing key rotations
+
+The ID token signing keys will rotate as follows to enable you to test your integration and make any required changes if required:
+
+In integration
+
+- The week commencing **26 Jan 2026**
+- The week commencing **23 Feb 2026**
+
+In production
+
+- Every 6 months starting from the week commencing **30 Mar 2026**
+
+In some scenarios we may rotate keys at short notice.
+
+New public keys will appear in the `keys` array of the JWKS document before any rotation.
+
+Use the `Cache-Control` headers and [guidance on caching the JWKS document](/integrate-with-integration-environment/authenticate-your-user/#caching-the-jwks-document) to regularly poll the JWKS endpoint to detect new versions and make sure you’re using the latest key available.
+
+Once GOV.UK One Login has removed the old public key from the JWKS document, it will no longer be valid. Do not trust ID tokens signed with that key.
+
 #### Validate your ID token
 
-  <%= warning_text('You must perform all of the validation described below, or your integration may not be secure') %>
+  <%= warning_text('You must perform all of the validation described below, or your integration may not be secure.') %>
 
 
 1. If you’re using a library, check whether your library has support for validating ID tokens.
 1. The value of `iss` must exactly match the Issuer Identifier as specified in GOV.UK One Login’s [discovery endpoint][external.oidc-discovery].
 1. The `aud` claim must contain your client ID you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service].
-1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). You must first [validate that the JWT `alg` header matches](https://datatracker.ietf.org/doc/html/rfc8725#section-3.1) what was returned from the `jwks_uri`. Then you can use the value of the JWT `alg` header parameter to validate the ID token. Your application must use the keys provided by the [discovery endpoint][external.oidc-discovery].
+1. You must validate the signature according to the [JSON Web Signature Specification](https://datatracker.ietf.org/doc/html/rfc7515). Your application must [validate the signature of the ID token using a public key](/integrate-with-integration-environment/authenticate-your-user/#validate-the-signature-of-the-id-token-using-a-public-key).
 1. Check the current time is before the time in the `exp` claim.
 1. Check the current time is after the time in the `iat` claim.
 1. If you set a `nonce` value in the request to the `/authorize` endpoint, check this matches the `nonce` value in the ID token.
 1. The `vot` claim must contain the credential trust level you asked for in the request to the `/authorize` endpoint. The `vot` claim will only contain the credential trust level, not the level of confidence, even if you make an identity request. For example, if you set the `vtr` parameter to `Cl.Cm.P2`, you must ensure the `vot` claim is equal to `Cl.Cm`.
+1. If you included `max_age` in the request to the `/authorize` endpoint, you must validate that `auth_time` is greater than or equal to the current time minus the value of `max_age`. If false, you should reject the ID token and redirect the user to re-authenticate by sending a new request to the `/authorize` endpoint including `max_age`.
 
-### Error handling for ‘Make a token request’
+### Understand error codes returned by the `/token` endpoint
 
 To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
 
@@ -395,15 +500,9 @@ Content-Type: application/json
 }
 ```
 
-| Error                    | More information about your error     |
-|--------------------------|---------------------------------------|
-| `invalid_request`        | The request is missing a parameter so the server cannot proceed with the request. This error may also be returned if the request includes an unsupported parameter or repeats a parameter.<br><br>Review your parameters and check they are supported and not repeated. |
-| `invalid_client`         | Client authentication failed, which could be caused by the request containing an invalid `client_id` or an issue in validating the signature of the `client_assertion`. <br><br>To resolve, check:<br><ul><li>your `client_id` matches the `client_id` you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service]</li><li>you have signed your `client_assertion` JWT with the private key generated when you [registered your service to use GOV.UK One Login][integrate.register-your-service]</li><li>your service uses a [key signing algorithm which GOV.UK One Login supports](https://oidc.account.gov.uk/.well-known/openid-configuration) |
-| `invalid_grant`          | The authorisation code is invalid or expired. This is also the error which would return if the redirect URL given in the authorisation request does not match the URL provided in this access token request. |
-| `unauthorized_client`    | The application is successfully authenticated, but it's not registered to use the requested [grant type](https://oauth.net/2/grant-types/). |
-| `unsupported_grant_type` | The grant type is not supported by the server. |
+<%= partial "partials/token-errors" %>
 
-## Retrieve user information
+## Make a request to the `/userinfo` endpoint
 
 You can retrieve information about your users by making a request to the `/userinfo` endpoint.
 
@@ -417,9 +516,12 @@ An example request to the `/userinfo` endpoint would look similar to this exampl
 GET /userinfo HTTP/1.1
 Host: oidc.integration.account.gov.uk
 Authorization: Bearer <access_token>
+User-Agent: my-platform/version (https://my-service-url.gov.uk)
 ```
 
-### Receive response for ‘Retrieve user information’
+<%= warning_text('GOV.UK One Login requires the <a href="/before-integrating/set-user-agent-header/"><code>User-Agent</code> header</a> to be populated. If it absent or empty, your service will receive a 403 error') %>
+
+### Responses from the `/userinfo` endpoint
 
 The response you’ll get after making a request to the `/userinfo` endpoint will be a JSON object containing user attributes.
 
@@ -432,7 +534,7 @@ Content-Type: application/json
   "sub": "urn:fdc:gov.uk:2022:56P4CMsGh_02YOlWpd8PAOI-2sVlB2nsNU7mcLZYhYw=",
   "email": "test@example.com",
   "email_verified": true,
-  "phone_number": "01406946277",
+  "phone_number": "+441406946277",
   "phone_number_verified": true
 }
 ```
@@ -444,11 +546,12 @@ If you included a [level of identity confidence][integrate.choose-level-of-confi
 | `sub` | The subject identifier (`sub`) is the unique ID for a user. This will not change unless your user deletes their GOV.UK One Login and sets it up again. <br><br> Do not use the `sub` as the primary identifier for your user. <br><br> Instead, generate your own unique value for your user within your service and map this against the GOV.UK One Login `sub`.  <br><br> Mapping the `sub` makes account recovery easier. For example, if a user deletes their GOV.UK One Login, you can re-map the user’s new `sub` to your service without creating a new primary identifier for your user. |
 | `email` | The email address your user entered when they registered their GOV.UK One Login. <br><br> Do not:<br><ul><li> use `email` as the primary identifier for your user (the `email` claim can change or an end user can lose access to it which makes it unreliable as a unique identifier)  </li><li>ask your user to create a GOV.UK One Login with a specific email address, for example, a university email – if you need this, you’ll need to build additional functionality to verify it yourself </li><li>ask your user to change the email address they use for their GOV.UK One Login |
 | `email_verified`  | This means the email was verified using a one-time code when the user created their account. This is always `true`. |
-| `phone\_number` | This is the phone number your user entered when they registered their GOV.UK One Login. This will not appear if the user used an authenticator app for their two-factor authentication.  |
-| `phone\_number\_verified` | This will be returned as:<br><ul> </li><li>`true` when the user has selected the text message option for receiving a security code </li><li>`false` when the user has selected the authenticator app option for receiving a security code  |
+| `phone_number` | This is the phone number your user chose as their current preferred method for receiving two-factor authentication codes. This will only be present when the user's preference is to receive two-factor authentication codes by phone. <br> </br> <br> </br> GOV.UK One Login returns this in the E.164 format with no spaces for both UK and international phone numbers: `+{country-code}Number`.  |
+| `phone_number_verified` | This will be returned as:<br><ul> </li><li>`true` when the user's current preference is set to receive a security code by phone </li><li>`false` when the user's current preference is not set to receive a security code by phone |
+| `wallet_subject_id` | This will be returned in the format: <br>`urn:fdc:wallet.account.gov.uk:2024:3c_jJtXcLttICSNrkW7M1vO2_w-SMDm2nrHsZpWQQ9` <br><br>where the part after `urn:fdc:` is [Base 64 Encoding with URL and Filename Safe Alphabet](https://datatracker.ietf.org/doc/html/rfc4648#section-5) of the output from a SHA256 hash function. <br><br>`wallet_subject_id` is a pairwise identifier that GOV.UK Wallet uses when it issues a credential. By comparing the returned value with the value GOV.UK Wallet submits when requesting a credential, you can be sure that the user logged into your service and GOV.UK Wallet are the same user. <br><br>You must include this scope if you plan to [onboard with GOV.UK Wallet](https://docs.wallet.service.gov.uk/issue-credentials/before-integrating.html#onboard-with-gov-uk-one-login) after you have onboarded with GOV.UK One Login.     |
 
 
-### Error handling for ‘Retrieve user information’
+### Understand error codes returned by the `/userinfo` endpoint
 
 To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
 
@@ -465,9 +568,7 @@ WWW-Authenticate: Bearer error="invalid_token",
 error_description="The Access Token expired"
 ```
 
-| Error           | More information about your error    |
-|-----------------|--------------------------------------|
-| `invalid_token` | GOV.UK One Login denied your request as you have an invalid or missing bearer access token.<br><br>To proceed, you must use the authorisation header field to send the token as a [bearer token][external.bearer-token]. |
+<%= partial "partials/userinfo-errors" %>
 
 Once you’ve authenticated your user, you can continue with [proving your user’s identity][integrate.identity-proving]. 
 

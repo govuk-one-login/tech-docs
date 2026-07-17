@@ -1,0 +1,28 @@
+---
+title: Setting a User-Agent header on HTTP requests
+weight: 1
+last_reviewed_on: 2025-10-22
+review_in: 6 months
+---
+
+
+# Setting a User-Agent header on HTTP requests
+
+When your service calls GOV.UK One Login directly it is important to ensure your HTTP client sets a
+[`User-Agent`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/User-Agent) header in all HTTP
+requests.
+
+Failure to set the required header will result in your service receiving a `403 Forbidden` error message from the
+GOV.UK One Login service.
+
+Most libraries and platforms do this automatically, but some do not. Your User-Agent header should contain your platform
+or library and the version, for example `curl/7.64.1` or `PostmanRuntime/7.26.5`.
+
+You can further augment this by identifying your service, by including the service URL,
+as this could be useful when debugging any issues you be encountering, for example:
+
+```
+User-Agent: my-platform/version (https://my-service-url.gov.uk)
+```
+
+The value you choose should be consistently used on every direct call to the GOV.UK One Login.

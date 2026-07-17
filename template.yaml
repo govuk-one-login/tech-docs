@@ -10,6 +10,14 @@ Parameters:
       run.
     Type: String
 
+  # Spoke VPC Parameter Starts Here
+  SpokeVpcStackName:
+    Description: >
+      The name of the stack that defines the Spoke VPC in which the second
+      set of containers will run.
+    Type: String
+  # Spoke VPC Parameter Ends Here
+
   PipelineStackName:
     Description: "The name of the pipeline stack that deploys this application stack"
     Type: String
@@ -47,8 +55,8 @@ Resources:
       Type: A
       HostedZoneId: !ImportValue TechDocsPublicHostedZoneId
       AliasTarget:
-        DNSName: !GetAtt ApplicationLoadBalancer.DNSName
-        HostedZoneId: !GetAtt ApplicationLoadBalancer.CanonicalHostedZoneID
+        DNSName: !GetAtt SpokeApplicationLoadBalancer.DNSName
+        HostedZoneId: !GetAtt SpokeApplicationLoadBalancer.CanonicalHostedZoneID
 
   TechDocsCertificate:
     Type: AWS::CertificateManager::Certificate
@@ -68,17 +76,8 @@ Resources:
       Type: A
       HostedZoneId: !ImportValue DocsSigninPublicHostedZoneId
       AliasTarget:
-        DNSName: !GetAtt ApplicationLoadBalancer.DNSName
-        HostedZoneId: !GetAtt ApplicationLoadBalancer.CanonicalHostedZoneID
-
-  #DocsSigninCertificate:
-  #  Type: AWS::CertificateManager::Certificate
-  #  Properties:
-  #    DomainName: "docs.sign-in.service.gov.uk"
-  #    DomainValidationOptions:
-  #      - DomainName: "docs.sign-in.service.gov.uk"
-  #        HostedZoneId: !ImportValue DocsSigninPublicHostedZoneId
-  #    ValidationMethod: DNS
+        DNSName: !GetAtt SpokeApplicationLoadBalancer.DNSName
+        HostedZoneId: !GetAtt SpokeApplicationLoadBalancer.CanonicalHostedZoneID
 
   #
   # Fargate cluster
@@ -98,105 +97,6 @@ Resources:
         - Key: Source
           Value: govuk-one-login/team-manual/deploy/template.yaml #one day
 
-  ContainerService:
-    Type: AWS::ECS::Service
-    Properties:
-      Cluster: !Ref FargateCluster
-      LaunchType: FARGATE
-      LoadBalancers:
-        - ContainerName: nginx
-          ContainerPort: 80
-          TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroup
-      HealthCheckGracePeriodSeconds: 30
-      DesiredCount: 2
-      NetworkConfiguration:
-        AwsvpcConfiguration:
-          AssignPublicIp: DISABLED
-          SecurityGroups:
-            - !GetAtt ContainerServiceSecurityGroup.GroupId
-          Subnets:
-            - Fn::ImportValue:
-                !Sub "${VpcStackName}-PrivateSubnetIdA"
-            - Fn::ImportValue:
-                !Sub "${VpcStackName}-PrivateSubnetIdB"
-      PropagateTags: SERVICE
-      TaskDefinition: !Ref TaskDefinition
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-ContainerService"
-        - Key: Service
-          Value: ci/cd
-        - Key: Source
-          Value: govuk-one-login/team-manual/deploy/template.yaml
-    DependsOn:
-      - ApplicationLoadBalancerListener
-
-  ContainerAutoScalingTarget:
-    Type: AWS::ApplicationAutoScaling::ScalableTarget
-    Properties:
-      MaxCapacity: 2
-      MinCapacity: 2
-      ResourceId: !Join
-        - '/'
-        - - "service"
-          - !Ref FargateCluster
-          - !GetAtt ContainerService.Name
-      RoleARN: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService"
-      ScalableDimension: ecs:service:DesiredCount
-      ServiceNamespace: ecs
-
-  ContainerAutoScalingPolicy:
-    DependsOn: ContainerAutoScalingTarget
-    Type: AWS::ApplicationAutoScaling::ScalingPolicy
-    Properties:
-      PolicyName: containerAutoScalingPolicy
-      PolicyType: TargetTrackingScaling
-      ResourceId: !Join
-        - '/'
-        - - "service"
-          - !Ref FargateCluster
-          - !GetAtt ContainerService.Name
-      ScalableDimension: ecs:service:DesiredCount
-      ServiceNamespace: ecs
-      TargetTrackingScalingPolicyConfiguration:
-        PredefinedMetricSpecification:
-          PredefinedMetricType: ECSServiceAverageCPUUtilization
-        TargetValue: 70
-
-  ContainerServiceSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Security Group to access the Container Service
-      GroupName: !Join
-        - "-"
-        - - !Ref AWS::StackName
-          - ContainerService
-          - Fn::Select:
-              - 4
-              - Fn::Split:
-                  - "-"
-                  - Fn::Select:
-                      - 2
-                      - Fn::Split:
-                          - "/"
-                          - Ref: AWS::StackId
-      SecurityGroupIngress:
-        - Description: Allow traffic from the load balancer on port 80
-          SourceSecurityGroupId: !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
-          IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-      VpcId:
-        Fn::ImportValue:
-          !Sub "${VpcStackName}-VpcId"
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-ContainerServiceSecurityGroup"
-        - Key: Service
-          Value: ci/cd
-        - Key: Source
-          Value: govuk-one-login/team-manual/deploy/template.yaml
-
   #
   # Fargate tasks
   #
@@ -207,6 +107,14 @@ Resources:
       ContainerDefinitions:
         - Name: nginx
           Image: "CONTAINER-IMAGE-PLACEHOLDER"
+          ReadonlyRootFilesystem: true
+          MountPoints:
+            - SourceVolume: nginx-cache
+              ContainerPath: /var/cache/nginx
+            - SourceVolume: nginx-run
+              ContainerPath: /var/run
+            - SourceVolume: nginx-conf
+              ContainerPath: /etc/nginx/conf.d
           PortMappings:
             - ContainerPort: 80
               Protocol: tcp
@@ -218,6 +126,10 @@ Resources:
               awslogs-region: "eu-west-2"
               awslogs-create-group: "true"
               awslogs-stream-prefix: "ecs"
+      Volumes:
+        - Name: nginx-cache
+        - Name: nginx-run
+        - Name: nginx-conf
       Cpu: 256
       Memory: 512
       ExecutionRoleArn: !GetAtt TaskExecutionRole.Arn
@@ -267,23 +179,128 @@ Resources:
         - Key: Source
           Value: govuk-one-login/tech-docs/template.yaml
 
-
-  # Application Load balancing
+  #
+  # Spoke VPC - Fargate cluster resources Start Here
   #
 
-  ApplicationLoadBalancer:
+  SpokeContainerService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref FargateCluster
+      LaunchType: FARGATE
+      LoadBalancers:
+        - ContainerName: nginx
+          ContainerPort: 80
+          TargetGroupArn: !Ref SpokeApplicationLoadBalancerTargetGroup
+      HealthCheckGracePeriodSeconds: 30
+      DesiredCount: 2
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - !GetAtt SpokeContainerServiceSecurityGroup.GroupId
+          Subnets:
+            - Fn::ImportValue:
+                !Sub "${SpokeVpcStackName}-PrivateSubnetIdA"
+            - Fn::ImportValue:
+                !Sub "${SpokeVpcStackName}-PrivateSubnetIdB"
+      PropagateTags: SERVICE
+      TaskDefinition: !Ref TaskDefinition
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-SpokeContainerService"
+        - Key: Service
+          Value: ci/cd
+        - Key: Source
+          Value: govuk-one-login/team-manual/deploy/template.yaml
+    DependsOn:
+      - SpokeApplicationLoadBalancerListener
+
+  SpokeContainerAutoScalingTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Properties:
+      MaxCapacity: 2
+      MinCapacity: 2
+      ResourceId: !Join
+        - '/'
+        - - "service"
+          - !Ref FargateCluster
+          - !GetAtt SpokeContainerService.Name
+      RoleARN: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService"
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+
+  SpokeContainerAutoScalingPolicy:
+    DependsOn: SpokeContainerAutoScalingTarget
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: spokeContainerAutoScalingPolicy
+      PolicyType: TargetTrackingScaling
+      ResourceId: !Join
+        - '/'
+        - - "service"
+          - !Ref FargateCluster
+          - !GetAtt SpokeContainerService.Name
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+      TargetTrackingScalingPolicyConfiguration:
+        PredefinedMetricSpecification:
+          PredefinedMetricType: ECSServiceAverageCPUUtilization
+        TargetValue: 70
+
+  SpokeContainerServiceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group to access the Spoke Container Service
+      GroupName: !Join
+        - "-"
+        - - !Ref AWS::StackName
+          - SpokeContainerService
+          - Fn::Select:
+              - 4
+              - Fn::Split:
+                  - "-"
+                  - Fn::Select:
+                      - 2
+                      - Fn::Split:
+                          - "/"
+                          - Ref: AWS::StackId
+      SecurityGroupIngress:
+        - Description: Allow traffic from the spoke load balancer on port 80
+          SourceSecurityGroupId: !GetAtt SpokeApplicationLoadBalancerSecurityGroup.GroupId
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+      VpcId:
+        Fn::ImportValue:
+          !Sub "${SpokeVpcStackName}-VpcId"
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-SpokeContainerServiceSecurityGroup"
+        - Key: Service
+          Value: ci/cd
+        - Key: Source
+          Value: govuk-one-login/team-manual/deploy/template.yaml
+  #
+  # Spoke VPC - Fargate cluster resources End Here
+  #
+
+  #
+  # Spoke VPC - Application Load Balancing Starts Here
+  #
+
+  SpokeApplicationLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Scheme: internet-facing
       SecurityGroups:
-        - !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
+        - !GetAtt SpokeApplicationLoadBalancerSecurityGroup.GroupId
       Subnets:
         - Fn::ImportValue:
-            !Sub "${VpcStackName}-FirewallSubnetIdA"
+            !Sub "${SpokeVpcStackName}-PublicSubnetIdA"
         - Fn::ImportValue:
-            !Sub "${VpcStackName}-FirewallSubnetIdB"
+            !Sub "${SpokeVpcStackName}-PublicSubnetIdB"
       Type: application
-
       LoadBalancerAttributes:
         - Key: access_logs.s3.enabled
           Value: "true"
@@ -293,13 +310,13 @@ Resources:
           Value: "true"
       Tags:
         - Key: Name
-          Value: !Sub "${AWS::StackName}-ApplicationLoadBalancer"
+          Value: !Sub "${AWS::StackName}-SpokeApplicationLoadBalancer"
         - Key: Service
           Value: ci/cd
         - Key: Source
           Value: govuk-one-login/tech-docs/template.yaml
 
-  ApplicationLoadBalancerTargetGroup:
+  SpokeApplicationLoadBalancerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       HealthCheckEnabled: TRUE
@@ -311,25 +328,22 @@ Resources:
       HealthyThresholdCount: 2
       Port: 80
       Protocol: HTTP
-      #ProtocolVersion: HTTP1
       Matcher:
         HttpCode: 200
       TargetType: ip
       VpcId:
         Fn::ImportValue:
-          !Sub "${VpcStackName}-VpcId"
+          !Sub "${SpokeVpcStackName}-VpcId"
       Tags:
         - Key: Name
-          Value: !Sub "${AWS::StackName}-ALBTargetGroup"
+          Value: !Sub "${AWS::StackName}-SpokeALBTargetGroup"
         - Key: Service
           Value: ci/cd
         - Key: Source
           Value: govuk-one-login/tech-docs/template.yaml
 
-  ApplicationLoadBalancerListener:
+  SpokeApplicationLoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
-    # checkov:skip=CKV_AWS_2:Certificate generation must be resolved before the listener can use HTTPS.
-    # checkov:skip=CKV_AWS_103:The load balancer cannot use TLS v1.2 until HTTPS is enabled.
     Metadata:
       checkov:
         skip:
@@ -340,23 +354,23 @@ Resources:
     Properties:
       DefaultActions:
         - Order: 1
-          TargetGroupArn: !Ref ApplicationLoadBalancerTargetGroup
+          TargetGroupArn: !Ref SpokeApplicationLoadBalancerTargetGroup
           Type: forward
-      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      LoadBalancerArn: !Ref SpokeApplicationLoadBalancer
       Port: 443
       Protocol: HTTPS
       SslPolicy: ELBSecurityPolicy-TLS13-1-2-2021-06
       Certificates:
         - CertificateArn: !Ref TechDocsCertificate
 
-  ApplicationLoadBalancerSecurityGroup:
+  SpokeApplicationLoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Security Group for the Application Load Balancer
+      GroupDescription: Security Group for the Spoke Application Load Balancer
       GroupName: !Join
         - "-"
         - - !Ref AWS::StackName
-          - ApplicationLoadBalancer
+          - SpokeApplicationLoadBalancer
           - Fn::Select:
               - 4
               - Fn::Split:
@@ -368,34 +382,44 @@ Resources:
                           - Ref: AWS::StackId
       VpcId:
         Fn::ImportValue:
-          !Sub "${VpcStackName}-VpcId"
+          !Sub "${SpokeVpcStackName}-VpcId"
       Tags:
         - Key: Name
-          Value: !Sub "${AWS::StackName}-ALBSecurityGroup"
+          Value: !Sub "${AWS::StackName}-SpokeALBSecurityGroup"
         - Key: Service
           Value: ci/cd
         - Key: Source
           Value: govuk-one-login/tech-docs/template.yaml
 
-  ApplicationLoadBalancerSecurityGroupIngress:
+  SpokeApplicationLoadBalancerSecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
-      GroupId: !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
+      GroupId: !GetAtt SpokeApplicationLoadBalancerSecurityGroup.GroupId
       CidrIp: 0.0.0.0/0
       Description: Allow traffic from the internet on port 443
       IpProtocol: tcp
       FromPort: 443
       ToPort: 443
 
-  ApplicationLoadBalancerSecurityGroupEgress:
+  SpokeApplicationLoadBalancerSecurityGroupEgress:
     Type: AWS::EC2::SecurityGroupEgress
     Properties:
-      GroupId: !GetAtt ApplicationLoadBalancerSecurityGroup.GroupId
-      DestinationSecurityGroupId: !GetAtt ContainerServiceSecurityGroup.GroupId
-      Description: Allow traffic to Container Service on port 80
+      GroupId: !GetAtt SpokeApplicationLoadBalancerSecurityGroup.GroupId
+      DestinationSecurityGroupId: !GetAtt SpokeContainerServiceSecurityGroup.GroupId
+      Description: Allow traffic to Spoke Container Service on port 80
       IpProtocol: tcp
       FromPort: 80
       ToPort: 80
+
+  SpokeWAFv2ACLAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    Properties:
+      ResourceArn: !Ref SpokeApplicationLoadBalancer
+      WebACLArn: !ImportValue docs-waf-Waf-WebAcl-arn
+
+  #
+  # Spoke VPC - Application Load Balancing Ends Here
+  #
 
   #
   # Logging
@@ -481,6 +505,16 @@ Resources:
             Condition:
               StringEquals:
                 "aws:SourceAccount": !Ref AWS::AccountId
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - !GetAtt AccessLogsBucket.Arn
+              - !Sub "${AccessLogsBucket.Arn}/*"
+            Condition:
+              Bool:
+                "aws:SecureTransport": "false"
 
   KmsKey:
     Type: AWS::KMS::Key
@@ -516,29 +550,27 @@ Resources:
         - Key: Source
           Value: govuk-one-login/team-manual/deploy/template.yaml
 
-
-  WAFv2ACLAssociation:
-    Type: AWS::WAFv2::WebACLAssociation
-    Properties:
-      ResourceArn: !Ref ApplicationLoadBalancer
-      WebACLArn: !ImportValue docs-waf-Waf-WebAcl-arn
-
 Outputs:
 
   PipelineStackName:
     Condition: OutputPipelineStackName
     Description: "The name of the pipeline stack that deploys this application stack"
     Value: !Ref PipelineStackName
-  ALBDNS:
-    Description: "The DNS of the application load balancer"
-    Value: !GetAtt ApplicationLoadBalancer.DNSName
+
+  #
+  # Spoke VPC Outputs Start Here
+  #
+  SpokeALBDNS:
+    Description: "The DNS of the spoke application load balancer"
+    Value: !GetAtt SpokeApplicationLoadBalancer.DNSName
     Export:
-      Name: TechDocsALBDNS
-  ALBHostedZone:
-    Description: "The DNS of the application load balancer"
-    Value: !GetAtt ApplicationLoadBalancer.CanonicalHostedZoneID
+      Name: TechDocsSpokeALBDNS
+  SpokeALBHostedZone:
+    Description: "The hosted zone ID of the spoke application load balancer"
+    Value: !GetAtt SpokeApplicationLoadBalancer.CanonicalHostedZoneID
     Export:
-      Name: TechDocsALBHostedZone
+      Name: TechDocsSpokeALBHostedZone
 
-
-
+  #
+  # Spoke VPC Outputs End Here
+  #
