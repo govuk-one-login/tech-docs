@@ -1,56 +1,234 @@
 ---
-title: Configure your service for production
+title: Create a production configuration for your service
 weight: 3.5
-last_reviewed_on: 2025-02-20
+last_reviewed_on: 2026-07-27
 review_in: 6 months
 ---
 
 
-# Configure your service for production
-
-<%= warning_text('You must configure your service for production at least 2 weeks before you start using the production environment in private beta or public beta.') %>
-
-Before you can configure your service for production, you must [integrate with GOV.UK One Login's integration environment][integrate.integrate].
-
-1. Tell your Engagement Manager that you need to configure your service in production – if you do not have an Engagement Manager, [complete the form to register your interest](https://www.sign-in.service.gov.uk/register). You'll need to complete this form a minimum of 6 weeks before your go-live date. 
-1. You only need to send your Engagement Manager the service name and client ID of the client you’ve been testing in your integration configuration. The GOV.UK One Login team will send you a draft configuration in JSON format including the new client ID for your production service. 
-1. Update the JSON configuration by replacing the placeholder values with your service's configuration. There’s [guidance on understanding the JSON configuration](/configure-for-production/#use-the-table-to-understand-the-json-configuration). 
-1. Send your modified JSON configuration back to your Engagement Manager by email. The GOV.UK One Login team will check your production configuration and contact you if we need more information.
-1. Configure the new client ID into your own application code and deploy to your production environment. 
-1. Test your application works in production. This could be a limited test with a small number of users or a limited private beta.
-
-## Use the table to understand the JSON configuration
+# Create a production configuration for your service
+Before you can integrate with the GOV.UK One Login production environment, you must create a production configuration for your service.
 
 
-| Field | Notes |
-| :------ | :---- |
-| `BackChannelLogoutUri` | If you want to receive logout notifications from GOV.UK One Login, specify the production URI of the endpoint you want GOV.UK One Login to call.  <br><br>This must be a production-grade URI with domains without reference to `http://` and `localhost`. <br><br>There’s further guidance on [requesting logout notifications from GOV.UK One Login](/integrate-with-integration-environment/managing-your-users-sessions/#request-logout-notifications-from-gov-uk-one-login).  |
-| `ClientID` | GOV.UK One Login will fill in `ClientID` with your production client ID.  You do not need to do anything. |
-| `Claims` | If you’re doing identity verification, you’ll need to specify which claims your service requires.  You may choose one or more of the following:<br><ul> </li><li>`https://vocab.account.gov.uk/v1/passport` </li><li>`https://vocab.account.gov.uk/v1/drivingPermit` </li><li>`https://vocab.account.gov.uk/v1/coreIdentityJWT` </li><li>`https://vocab.account.gov.uk/v1/address` </li><li>`https://vocab.account.gov.uk/v1/returnCode`  |
-| `ClientName` | Choose your client name.  The client name will appear in the user interface when GOV.UK One Login redirects your user back to your service so choose something your users would recognise. <br><br>There’s further [guidance on naming your service](https://www.gov.uk/service-manual/design/naming-your-service). |
-| `ClientType` | Leave this field as `web`.  |
-| `Contacts` | Enter your service’s technical contact email addresses – this can be a group email or multiple separate email addresses, or a combination of both. |
-| `CookieConsentShared` | Leave this field as `false`.  |
-| `IdentityVerificationSupported` | If you’re using identity verification, this should be `true`.  <br><br>If you only need authentication, this should be `false`. |
-| `IdTokenSigningAlgorithm` | This will be `ES256` or `RS256`. You can find the one you’re using in your application’s code.  |
-| `LandingPageUrl`  | `LandingPageUrl` is only required if you are making identity requests. <br><br>It's strongly recommended you specify a `LandingPageUrl` when making identity requests. Users will be redirected to this landing page after their in-person identity check. <br><br>Your URL must be production-grade without reference to `http://` and `localhost`. <br><br>There’s further guidance on [helping your users after their in-person identity check](/integrate-with-integration-environment/helping-your-users-after-their-in-person-identity-checks/#helping-your-users-after-their-in-person-identity-checks). |
-| `OneLoginService` | Leave this field as `false`.  |
-| `PostLogoutRedirectUrls` | If you want to redirect your users after they log out, input one or more production URLs. These will be where you redirect your users to after you have logged them out. <br><br>These must be production-grade URLs without reference to `http://` and `localhost`. <br><br>There’s further guidance on [logging your user out of GOV.UK One Login](/integrate-with-integration-environment/managing-your-users-sessions/#log-your-user-out-of-gov-uk-one-login).   |
-| `PublicKey` | `PublicKey` is only required if you’re using the `private_key_jwt` token authentication method.  <br><br>Enter the contents of your public key Privacy Enhanced Mail (PEM) file (or whichever file was created when you created your key pair). <br><br>There’s further [guidance on generating a key pair][integrate.generate-key-pair].  |
-| `OneLoginService` | Leave this field as `false`.  |
-| `JarValidationRequired` | GOV.UK One Login will fill in this field.  |
-| `RedirectUrls` | Enter one or more of your service’s production redirect URLs. These must be production-grade URLs without reference to `http://` and `localhost`. |
-| `Scopes` | Enter the scopes your service requires. You must include the `openid` scope. <br><br>You may choose one or more of the following:<br><ul> </li><li>email </li><li>phone </ul><br><br>There’s further [guidance on choosing which user attributes your service can request](/before-integrating/choose-which-user-attributes-your-service-can-request/#choose-which-scopes-your-service-can-request).  |
-| `SectorIdentifierUri` | Specify your service's sector identifier.  <br><br>You must not change the sector identifier once your service has started to sign up or migrate users. Doing this will change the subject identifiers GOV.UK One Login creates for each individual user. <br><br>There’s further [guidance on choosing your sector identifier](/before-integrating/choose-your-sector-identifier/). <br><br>If your service has more than one `redirect_uri`, you must set the sector identifier in line with the [OpenID Connect Core 1.0 specification](https://openid.net/specs/openid-connect-core-1_0.html#PairwiseAlg).  |
-| `ServiceType` | Leave this field as `MANDATORY`.  |
-| `SubjectType` | Leave this field as `pairwise`. |
-| `TestClient` | Leave this field as `false`.  |
-| `TokenAuthMethod` | Specify the token authentication method your service is using. This will be `private_key_jwt` or `client_secret_post`. <br><br>There’s further [guidance on using the correct token authentication method for your service](/before-integrating/use-correct-token-authentication-method/).   |
-| `PKCEEnforced` | Specify whether your service must provide the parameters required for Proof Key for Code Exchange (PKCE) protocol in the [authorize](/integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-authorize-endpoint) and [token](/integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-token-endpoint) requests. <br><br>You can [read more about PKCE in RFC 7636](https://datatracker.ietf.org/doc/html/rfc7636).   |
+The Service Level Agreement (SLA) for creating your GOV.UK One Login production configuration is 10 working days. 
 
 
-## Use the production discovery endpoint
+You must request your production service be set up at least 10 days before you want to start using it in private or public beta. You should give yourself enough time to check your integration with GOV.UK One Login before your go-live date. 
 
-You can use the [production discovery endpoint][external.oidc-discovery-production] (viewed at `https://oidc.account.gov.uk/.well-known/openid-configuration`).
+
+You must connect to the GOV.UK One Login production environment only from your own service’s production environment.
+
+
+## Prerequisites 
+
+
+Before you configure your service for production, you'll need to have worked with your Engagement Manager to complete the governance for your service. For example, you'll need to have signed your Memorandum of Understanding (MOU), considered fraud and security, and set up analytics. 
+
+
+If you do not have an Engagement Manager, [complete the form to register your interest](https://www.sign-in.service.gov.uk/register) for one. You’ll need to complete this form a minimum of 6 weeks before your go-live date.
+
+
+## Set up a production configuration
+
+
+Any changes made to integration configurations will not apply to your production configuration. 
+
+
+You can continue to use your configurations in integration independent of the production configuration.
+
+
+You cannot use the GOV.UK One Login Admin Tool to configure a production configuration.
+
+
+To set up your production configuration:
+
+1. Send your Engagement Manager and Technical Architect:
+ * the `ClientID` of your tested integration configuration 
+ * 2 or more email addresses of technical contacts from your team who will be responsible for providing the production configuration values
+
+1. The GOV.UK One Login team will email a JSON draft production configuration to the contacts you provided. The draft configuration will be based on the configuration for the integration `ClientID` you provided in step 1, and will contain the production `ClientID` your service should use. If you're using `client_secret_post`, the GOV.UK One Login team will also ask you to create a production secret and send the hashed version of the secret to GOV.UK One Login. There's further guidance on [integrating third-party platforms with GOV.UK One Login](https://docs.sign-in.service.gov.uk/before-integrating/integrating-third-party-platform/#set-up-client-secret-using-client-secret-post).
+
+1. Your technical contacts must [replace the JSON production configuration attribute placeholders](#replace-placeholder-attributes-in-the-JSON-production-configuration) with your production environment-specific values.
+
+1. Your technical contacts must respond to the email containing the draft configuration with the updated JSON draft production configuration back.
+
+1. The GOV.UK One Login team reviews the supplied configuration and will request clarification if needed.
+
+1. The GOV.UK One Login team creates a production configuration based on the agreed JSON. This may take a number of days.
+
+1. The GOV.UK One Login team emails your technical contacts when we have created your production configuration and you can test your service. The email will reconfirm the `ClientID` for the production configuration provided in step 2.
+
+1. You must configure your service to use the new production `ClientID`
+ * if you're using `private_key_jwt`, you should also update your private RSA key.
+ * if you're using `client_secret_post`, you should also update the client secret.
+ * use the production discovery endpoint (viewed at https://oidc.account.gov.uk/.well-known/openid-configuration).
+
+1. Test your production configuration to check it’s working correctly. 
+
+1. You're now ready for your users to start using GOV.UK One Login. You must let your Engagement Manager know when it's live and you have users using your service. 
+
+## Making changes after your service is live
+
+After your production configuration is live, you must make any changes through the [Live Service Hub](https://onelogingovuk.service-now.com/csm?id=csm_sc_cat_item&sys_id=83902cb51b4822900a549978b04bcbed).  
+
+## Replace placeholder attributes in the JSON production configuration 
+
+This is guidance to help you replace the placeholder JSON attributes in the production configuration.
+The values will vary depending on how your service interacts with GOV.UK One Login.
+You must not change any values other than the placeholders in the provided JSON.
+
+| Placeholder name           | JSON attribute           | Required or optional                                                                                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                                                                                           |
+|----------------------------|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| {BACKCHANNEL_LOGOUT_URI}   | `BackChannelLogoutUri`   | Required if you need [logout notifications](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/managing-your-users-sessions/#request-logout-notifications-from-gov-uk-one-login). You'll be asked for this if you configured a `BackChannelLogoutUri` in the integration client. | Your endpoint where you want to receive [back channel logout notifications](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/managing-your-users-sessions/#request-logout-notifications-from-gov-uk-one-login).                                                             |
+| {CLIENT_NAME}              | `ClientName`             | Required                                                                                                                                                                                                                                                                                                 | The human-readable name of your production configuration.                                                                                                                                                                                                                                             |
+| {CONTACTS}                 | `Contacts`               | Required                                                                                                                                                                                                                                                                                                 | List one or more email addresses for the technical contacts for your service.                                                                                                                                                                                                                         |
+| {JAR_VALIDATION_REQUIRED}  | `JarValidationRequired`  | Required                                                                                                                                                                                                                                                                                                 | Enforce use of JWT in authorize request.                                                                                                                                                                                                                                                              |
+| {JWKS_URL}                 | `JwksUrl`                | Required if the `PublicKeySource` attribute is set to `JWKS`                                                                                                                                                                                                                                             | The JWKS endpoint where GOV.UK One Login can access the public keys used to verify signed JWTs sent in the `/authorize` request and/or the `/token` request .                                                                                                                                         |
+| {LANDINGPAGE_URL}          | `LandingPageUrl`         | Strongly recommended if your service can request identity, for example if the `IdentityVerificationSupported` attribute is set to `true`. You'll be asked for this if you configured a `LandingPageUrl` in the integration client                                                                        | The URL GOV.UK One Login will redirect your user to on completion of a [face-to-face identity check](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/helping-your-users-after-their-in-person-identity-checks/#helping-your-users-after-their-in-person-identity-checks ). |
+| {POSTLOGOUT_REDIRECT_URLS} | `PostLogoutRedirectUrls` | Strongly recommended if you are offering your user the ability to logout from GOV.UK One Login You'll be asked for this if you configured `PostLogoutRedirectUrls` in the integration client                                                                                                             | There's further [guidance on logging your user out](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/managing-your-users-sessions/#make-a-request-to-log-your-user-out-of-gov-uk-one-login).                                                                                |
+| {PROVIDE_SEPARATELY}       | `ClientSecret`           | Required if you're using `client_secret_post` as your token authentication method.                                                                                                                                                                                                                       | You must leave the {PROVIDE SEPARATELY} placeholder in place and [provide the client secret in a separate email](https://docs.sign-in.service.gov.uk/before-integrating/integrating-third-party-platform/#email-the-argon2id-formatted-string-to-gov-uk-one-login ).                                  |
+| {PUBLIC_KEY}               | `PublicKey`              | Required if the `PublicKeySource` attribute is set to `STATIC`                                                                                                                                                                                                                                           | A public key you can use to verify signed JWTs sent in the `/authorize` request.                                                                                                                                                                                                                      |
+| {PUBLIC_KEY_SOURCE}        | `PublicKeySource`        | Required                                                                                                                                                                                                                                                                                                 | indicates whether the public key is manually provided by the relying party or if the public keys will be provided by the relying party as a publicly accessible JWKS endpoint                                                                                                                         |
+| {REDIRECT_URLS}            | `RedirectUrls`           | Required                                                                                                                                                                                                                                                                                                 | The list of `redirect_url` values your service will be sending in production.                                                                                                                                                                                                                         |
+| {SECTORIDENTIFIER_URI}     | `SectorIdentifierUri`    | Required                                                                                                                                                                                                                                                                                                 |There's further [guidance on using sector identifiers](https://docs.sign-in.service.gov.uk/before-integrating/choose-your-sector-identifier/#choose-your-sector-identifier).|
+
+### Examples of JSON production configuration with placeholders
+#### Authentication-only using `private_key_jwt`
+
+```
+{
+"ClientID": "2nhgqtHQtJn9pVnJ74V1wY7Llo0",
+"Channel": "WEB",
+"ClientLoCs": [
+   "P0"
+],
+"ClientName": "{CLIENT_NAME}",
+"ClientType": "web",
+"CookieConsentShared": false,
+"IdentityVerificationSupported": false,
+"IdTokenSigningAlgorithm": "RS256",
+"IsActive": true,
+"JarValidationRequired": true,
+"MaxAgeEnabled": false,
+"OneLoginService": false,
+"PermitMissingNonce": false,
+"PKCEEnforced": false,
+"PostLogoutRedirectUrls": [
+   "{POSTLOGOUT_REDIRECT_URLS}"
+],
+"PublicKey": "{PUBLIC_KEY}",
+"PublicKeySource": "STATIC",
+"RedirectUrls": [
+   "{REDIRECT_URLS}"
+],
+"Scopes": [
+   "openid",
+   "email",
+   "phone"
+],
+"SectorIdentifierUri": "{SECTOR_IDENTIFIER_URL}",
+"ServiceType": "MANDATORY",
+"SmokeTest": false,
+"SubjectType": "pairwise",
+"TestClient": false,
+"TestClientEmailAllowlist": [
+],
+"TokenAuthMethod": "private_key_jwt"
+}
+```
+
+#### Authentication and identity using `private_key_jwt`
+
+```
+{
+ "ClientID": "JIS7mbqOcs8auNqL4v33aZqEKBs",
+ "BackChannelLogoutUri": "{BACKCHANNEL_LOGOUT_URL}",
+ "Channel": "WEB",
+ "Claims": [
+    "{CLAIMS}"
+ ],
+ "ClientLoCs": [
+    "P2"
+ ],
+ "ClientName": "{CLIENT_NAME}",
+ "ClientType": "web",
+ "CookieConsentShared": false,
+ "IdentityVerificationSupported": true,
+ "IdTokenSigningAlgorithm": "RS256",
+ "IsActive": true,
+ "JarValidationRequired": false,
+ "JwksUrl": "{JWKS_URL}",
+ "LandingPageUrl": "{LANDING_PAGEURL}",
+ "MaxAgeEnabled": false,
+ "OneLoginService": false,
+ "PermitMissingNonce": false,
+ "PKCEEnforced": false,
+ "PostLogoutRedirectUrls": [
+    "{POSTLOGOUT_REDIRECT_URLS}"
+ ],
+ "PublicKeySource": "JWKS",
+ "RedirectUrls": [
+    "{REDIRECT_URLS}"
+ ],
+ "Scopes": [
+    "openid",
+    "email",
+    "phone"
+ ],
+ "SectorIdentifierUri": "{SECTORIDENTIFIER_URI}",
+ "ServiceType": "MANDATORY",
+ "SmokeTest": false,
+ "SubjectType": "pairwise",
+ "TestClient": false,
+ "TestClientEmailAllowlist": [
+ ],
+ "TokenAuthMethod": "private_key_jwt"
+}
+```
+
+#### Authentication and identity using `client_secret_post`
+In this example the `ClientID` would be the production client-id for GOV.UK One Login. Also, you must provide the `ClientSecret` separately using the mailbox. There's further guidance on [integrating third-party platforms with GOV.UK One Login](https://docs.sign-in.service.gov.uk/before-integrating/integrating-third-party-platform/#set-up-client-secret-using-client-secret-post).
+
+```
+{
+"ClientID": "H69dApWzYRzVOQPHVl8ZJgfCfe0",      
+"Channel": "WEB",
+"ClientLoCs": [
+   "P0"
+],
+"ClientName": "CLIENT_NAME}",
+"ClientSecret": "{PROVIDED SEPARATELY}",                        
+"ClientType": "web",
+"CookieConsentShared": false,
+"IdentityVerificationSupported": false,
+"IdTokenSigningAlgorithm": "ES256",
+"IsActive": true,
+"JarValidationRequired": false,
+"MaxAgeEnabled": false,
+"OneLoginService": false,
+"PermitMissingNonce": false,
+"PKCEEnforced": false,
+"PostLogoutRedirectUrls": [
+   "{POSTLOGOUT_REDIRECT_URLS}"
+],
+"PublicKeySource": "STATIC",
+"RedirectUrls": [
+   "{REDIRECT_URLS}"
+],
+"Scopes": [
+   "openid",
+   "email",
+   "phone"
+],
+"SectorIdentifierUri": "{SECTORIDENTIFIER_URI}",
+"ServiceType": "MANDATORY",
+"SmokeTest": false,
+"SubjectType": "pairwise",
+"TestClient": false,
+"TestClientEmailAllowlist": [
+],
+"TokenAuthMethod": "client_secret_post"
+}
+```
 
 <%= partial "partials/links" %>
