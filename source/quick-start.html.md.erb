@@ -25,7 +25,7 @@ There's further guidance on using the [GOV.UK One Login simulator](/test-your-in
 
 ## Prerequisites
 
-1. If you do not already have it, [install git](https://github.com/git-guides/install-git). 
+1. If you do not already have it, [install Git](https://github.com/git-guides/install-git). 
 1. If you do not already have it, [install Docker Desktop](https://docs.docker.com/get-started/get-docker/) (you'll use this to run the simulator).
 1. [Check you are on v4.34 or higher for Docker Desktop](https://www.docker.com/blog/how-to-check-docker-version/). 
 1. [Enable Docker Host networking](https://docs.docker.com/engine/network/drivers/host/#docker-desktop).  
@@ -33,8 +33,8 @@ There's further guidance on using the [GOV.UK One Login simulator](/test-your-in
     
 ## Run the example service with the GOV.UK One Login simulator using Docker Compose
  
-1. On the command line, run `git clone https://github.com/govuk-one-login/onboarding-examples && cd onboarding-examples/clients/nodejs`. This will get the example Typescript code and set your working directory.
-1. On the command line, run `docker compose up`.
+1. In a terminal, run `git clone https://github.com/govuk-one-login/onboarding-examples && cd onboarding-examples/clients/nodejs`. This will get the example Typescript code and set your working directory.
+1. In a terminal, run `docker compose up`.
 1. Open `http://localhost:8080`. 
 1. Select **Make a request for authentication**. 
 1. If you want to run an identity journey, select **Make a request for authentication and identity**. 
@@ -42,7 +42,7 @@ There's further guidance on using the [GOV.UK One Login simulator](/test-your-in
 
 ## Run the example service with the GOV.UK One Login simulator using source code
 
-1. On the command line, run `git clone https://github.com/govuk-one-login/onboarding-examples && cd onboarding-examples/clients/nodejs`. This will get the example Typescript code and set your working directory.
+1. In a terminal, run `git clone https://github.com/govuk-one-login/onboarding-examples && cd onboarding-examples/clients/nodejs`. This will get the example Typescript code and set your working directory.
 1. Run `nvm install 22.11.0 && nvm use 22.11.0`. This makes sure you're using the correct version of Node.js. 
 1. Run `npm run simulator:start` to start the simulator in a Docker container.
 1. Check the simulator is working by running `npm run simulator:config`. You should see the simulator configuration appear. 
@@ -50,7 +50,7 @@ There's further guidance on using the [GOV.UK One Login simulator](/test-your-in
 1. View the example service by going to `http://localhost:8080` in your browser.
 1. Select **Make a request for authentication**. You may want to use your browser's developer tools to view the web traffic, including the request to the `/authorize` endpoint and its response.
 1. You should see the response from the `/userinfo` and `/token` endpoints: ID and access tokens and user attributes. 
-1. If you want to run an identity journey, select **Verify** again and you should see a successful identity response including the `coreIdentityJWT`, `returnCode` (empty), `address` claims. 
+1. If you want to run an identity journey, select **Verify** again and you should see a successful identity response including the `coreIdentityJWT`, `returnCode` (empty), and `address` claims. 
 1. Select **Sign out** in the top header.
 1. You'll see a page which says **Logged out**. 
 
@@ -67,11 +67,11 @@ Before you start, make sure you have a:
 
 1. On the command line, run `git clone https://github.com/govuk-one-login/onboarding-examples && cd onboarding-examples/clients/nodejs`. This will get the example Typescript code and set your working directory.
 1. Run `nvm install 22.11.0 && nvm use 22.11.0`. This makes sure you're using the correct version of Node.js. 
-1. Run `npm run generatekeys`. This generates a key pair if one does not exist yet. 
+1. Run `npm run generatekeys`. This creates a key pair if one does not exist yet. 
 1. Launch the [GOV.UK One Login admin tool](https://admin.sign-in.service.gov.uk/register/enter-email-address).
-1. Follow on-screen instructions to [register and manage your service](https://docs.sign-in.service.gov.uk/before-integrating/register-and-manage-your-service/) in the integration environment.
+1. Follow onscreen instructions to [register and manage your service](https://docs.sign-in.service.gov.uk/before-integrating/register-and-manage-your-service/) in the integration environment.
 1. Configure your service name or names as `onboarding-example - {DEPARTMENT} - {SERVICE_TEAM_NAME}`
-1. Find your `Client ID` value and make a record of it. You'll need this later when configuring the example application.
+1. Find your `Client_ID` value and make a record of it. You'll need this later when configuring the example application.
 1. Configure your service including (at a minimum): 
     * a redirect URI: `http://localhost:8080/oidc/authorization-code/callback`
     * a public key (copy the static public key you created earlier from the `./public_key.pem` file, excluding the headers)
@@ -81,7 +81,7 @@ Before you start, make sure you have a:
 
 #### Configure the example application 
  
-1. Create a `.env.integration` configuration file by copying the `.env.integration.example` file to `.env.integration`. 
+1. Create an `.env.integration` configuration file by copying the `.env.integration.example` file to `.env.integration`. 
 1. Edit `.env.integration` in your preferred source editor and update:
     * the `{CLIENT_ID}` placeholder to contain the Client ID from the GOV.UK One Login admin tool
     * the `{PRIVATE_KEY}` placeholder with the contents of the `./private_key.pem` file you created earlier (excluding the headers and removing the line breaks)
@@ -91,7 +91,7 @@ Before you start, make sure you have a:
 1. Run `npm ci && npm run dev:int` – this installs the dependencies and runs the application. 
 1. View the example service by going to `http://localhost:8080` in your browser.
 1. Select **Make a request for authentication**. You may want to use your browser's developer tools to view the web traffic, including the request to the `/authorize` endpoint and its response.
-1. Follow the on-screen instructions to create a GOV.UK One Login. 
+1. Follow the onscreen instructions to create a GOV.UK One Login. 
 1. You should see the response from the `/userinfo` and `/token` endpoints: ID and access tokens and user attributes. 
 
 If you want to run an authentication-only journey, you can stop here. 
@@ -102,13 +102,12 @@ If you want to run an authentication and identity journey, you should do the fol
 
 1. Update your client configuration in the integration environment using the [GOV.UK One Login admin tool](https://admin.sign-in.service.gov.uk/register/enter-email-address):
     * set **Prove user’s identities** to **Yes**
-    * set the claims to `coreIdentityJWT`, `returnCode` and  `address`
+    * set the claims to `coreIdentityJWT`, `returnCode`, and  `address`
 1. [Follow the guidance to test a successful identity proving journey](/test-your-integration/using-integration-for-testing/#test-a-successful-identity-proving-journey), starting at step 3.
 1. You need to request fictional users and their knowledge-based verification (KBV) answers to help you test your journeys. [Contact GOV.UK One Login](mailto:govuk-one-login@digital.cabinet-office.gov.uk) to access this test user data.
-1. Using this test user data, you should see a successful identity response including the `coreIdentityJWT`, `returnCode` (empty), `address` claims. If you do not, [get in touch](https://docs.sign-in.service.gov.uk/support/).
+1. Using this test user data, you should see a successful identity response including the `coreIdentityJWT`, `returnCode` (empty), and `address` claims. If you do not, [get in touch](https://docs.sign-in.service.gov.uk/support/).
 
 If you have any issues:
 
-* [get in touch on the govuk-one-login-tech-support Slack channel](https://ukgovernmentdigital.slack.com/archives/C02K303R44R)
-* [contact GOV.UK One Login](mailto:govuk-one-login@digital.cabinet-office.gov.uk) on email
-
+* use this email address to contact us: [govuk-one-login@digital.cabinet-office.gov.uk](govuk-one-login@digital.cabinet-office.gov.uk)
+* or [get in touch on the <code>govuk-one-login-tech-support</code> Slack channel](https://ukgovernmentdigital.slack.com/archives/C02K303R44R)
