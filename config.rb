@@ -28,9 +28,8 @@ after_build do |builder|
             "https://www.icao.int/publications/Documents/9303_p3_cons_en.pdf", # ICAO site is being migrated so the doc is temporarily unavailable but the resulting page points the user to an alternative
             /https\:\/\/www.sign-in.service.gov.uk/,  # SSE / Product pages are currently experiencing issues, which causes this to timeout (requests take over 10 seconds)
             "https://apidocs.os.uk/docs/os-places-dpa-output", # They've broken their TLS cert so ignore for now
-            "https://github.com/govuk-one-login/simulator/blob/main/docs/configuration.md", # GitHub rate limits cause 429 errors,
-            "https://github.com/govuk-one-login/onboarding-examples/blob/main/tools/f2f-test/README.md", # GitHub rate limits cause 429 errors,
-            "https://onelogingovuk.service-now.com/", # Avoid intermittent 403 errors from servicenow that breaks the build
+            /https\:\/\/github.com\/govuk-one-login/, # GitHub rate limits cause 429 errors,
+            /https\:\/\/onelogingovuk.service-now.com/, # Avoid intermittent 403 errors from servicenow that breaks the build
         ],
         :swap_urls => { config[:tech_docs][:host] => "" },
         # reduce concurrency to avoid overwhelming external servers
