@@ -267,12 +267,6 @@ Once GOV.UK One Login has removed the old public key from the DID document, it w
    in [the `id_token` from your token request](../authenticate-your-user/#understand-your-id-token).
 1. Check the current time is before the time in the `exp` claim.
 
-### Check your user’s level of authentication protection matches the requested level
-
-You must look for the `vot` (Vector of Trust) claim in the ID token and make sure the level of protection matches or exceeds the level a user needs to access your service. The `vot` claim will only contain the credential trust level, not the level of confidence, even if you make an identity request.
-Additionally, if you ask for medium confidence (`P2`) you must also request a protection level of `Cl.Cm`. This means logging in with two-factor authentication. If you do not do this, you'll receive the error: `invalid_request - Request vtr not valid`.
-
-
 ### Process your user’s identity credential
 
 The identity credential contains the following claims as properties of `credentialSubject`.
