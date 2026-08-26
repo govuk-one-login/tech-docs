@@ -18,7 +18,7 @@ You can use the [integration discovery endpoint][external.oidc-discovery] (viewe
 * information about the keys
 * supported claims and scopes, which will contain the user attributes your service can request
 
-When you configure your service for production, you can [use the production discovery endpoint](/configure-for-production/#use-the-production-discovery-endpoint).
+When you configure your service for production, you can [use the production discovery endpoint](/configure-for-production/#set-up-a-production-configuration).
 
 ### Cache the discovery document
 
@@ -380,7 +380,7 @@ You can use the following table to understand the ID token’s claims.
 | `sub`   | `sub` stands for the subject identifier or the unique ID of a user. |
 | `aud`   | `aud` stands for the audience, which will be the `client_id` you received when you [registered your service to use GOV.UK One Login][integrate.register-your-service]. |
 | `iss`   | `iss` stands for the GOV.UK One Login OpenID Provider's 'issuer' identifier as specified in the [discovery endpoint][external.oidc-discovery]. |
-| `vot`   | `vot` stands for 'Vector of Trust'. Check the `vot` matches the authentication protection level you requested in your authorisation request. The `vot` claim will only contain the credential trust level and not the level of confidence, even if you make an identity request.  |
+| `vot`   | `vot` stands for 'Vector of Trust'. |
 | `exp`   | `exp` stands for ‘expiration time’. This is the expiration time for this token, which will be an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch]. |
 | `iat`   | `iat` stands for ‘issued at’. This identifies the time at which GOV.UK One Login created the JWT. You can use this claim to understand the age of the JWT.This will appear as an integer timestamp representing the number of seconds since the [Unix Epoch][external.unix-epoch]. |
 | `nonce` | The `nonce` value your application provided when you made the request to the `/authorize` endpoint. |
