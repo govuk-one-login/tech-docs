@@ -1,7 +1,7 @@
 ---
 title: Prove your user's identity
 weight: 5.6
-last_reviewed_on: 2025-02-12
+last_reviewed_on: 2026-08-26
 review_in: 6 months
 ---
 
@@ -17,7 +17,7 @@ Your service’s needs will determine how you process the other claims that GOV.
 You’ll probably need to match against information held by your service or organisations you work with.
 
 Most claims are represented by JSON objects. The [core identity claim](#understand-your-user-s-core-identity-claim) is a
-JSON web token (JWT) protected by an electronic signature for additional security.
+JSON Web Token (JWT) protected by an electronic signature for additional security.
 
 You’ll receive a response from `/userinfo` that will look similar to this example:
 
@@ -30,7 +30,7 @@ Content-Type: application/json
   "email_verified": true,
   "phone": "+441406946277",
   "phone_verified": true,
-  "https://vocab.account.gov.uk/v1/coreIdentityJWT": <JWT>,
+  "https://vocab.account.gov.uk/v1/coreIdentityJWT": {JWT},
   "https://vocab.account.gov.uk/v1/address": [
     {
       "uprn": 10022812929,
@@ -88,9 +88,9 @@ The core identity is valid for 30 minutes, starting when it is issued. Do not st
 
 If your service persists the data inside the core identity, you should extract the name and date of birth and store those. 
 
-<%= warning_text("If the <code>https://vocab.account.gov.uk/v1/coreIdentityJWT</code> property is not present, then GOV.UK One Login was not able to prove your user's identity.") %>
+<%= warning_text("If the <code>https://vocab.account.gov.uk/v1/coreIdentityJWT</code> field is empty, then GOV.UK One Login was not able to prove your user's identity.") %>
 
-You’ll need a public key to validate this JWT. You can download a Decentralized Identifiers (DID) document containing the current JSON Web Key (JWK) public key – there’s further [guidance on validating the core identity claim JWT using a public key](/integrate-with-integration-environment/prove-users-identity/#validate-the-core-identity-claim-jwt-using-a-public-key).
+You’ll need a public key to validate the JWT. You can download a Decentralized Identifiers (DID) document containing the current public JSON Web Key (JWK) – there’s further [guidance on validating the core identity claim JWT using a public key](/integrate-with-integration-environment/prove-users-identity/#validate-the-core-identity-claim-jwt-using-a-public-key).
 
 The JWT contains the following claims:
 
@@ -169,7 +169,7 @@ user are contained in the `credentialSubject` JSON object.
 
 ### Validate the core identity claim JWT using a public key
 
-To validate the core identity claim JWT, you must use a public key. GOV.UK One Login publishes the public keys in a [Decentralized Identifier (DID) document](https://www.w3.org/TR/did-core/). 
+To validate the core identity claim JWT, you must use a public key. GOV.UK One Login publishes the public keys in a [Decentralized Identifiers (DID) document](https://www.w3.org/TR/did-core/). 
 
 <%= warning_text('GOV.UK One Login regularly rotates its public keys. You must <a href="/integrate-with-integration-environment/prove-users-identity/#understand-the-core-identity-signing-key-rotations">read the guidance on understanding GOV.UK One Login’s key rotation</a> to make sure your application continues to work as expected.') %>
 
@@ -202,31 +202,33 @@ This is an example of a web DID document published by GOV.UK One Login:
 
 When validating a JWT, the JWT header will include the `kid` (key ID). This will be either `did:web:identity.integration.account.gov.uk#{UNIQUE_KEY_IDENTIFIER}` for the integration environment, or `did:web:identity.account.gov.uk#{UNIQUE_KEY_IDENTIFIER}` for the production environment. 
 
-GOV.UK One Login uses a simplified version of the DID resolution algorithm from the [did:web Method Specification](https://w3c-ccg.github.io/did-method-web/#read-resolve). Third-party libraries may have features which ‘resolves’ the DID – this means turning the `kid` into the URL for the DID document and then downloading the DID. However, you must not use a third-party library’s DID resolution. This could make your application vulnerable to trusting an invalid identity.
+GOV.UK One Login uses a simplified version of the DID resolution algorithm from the [did:web Method Specification](https://w3c-ccg.github.io/did-method-web/#read-resolve). Third-party libraries may have features which ‘resolve’ the DID – this means turning the `kid` into the URL for the DID document and then downloading the DID. However, you must not use a third-party library’s DID resolution. This could make your application vulnerable to trusting an invalid identity.
 
 You should only trust the DID documents located at:
 
 * integration – [https://identity.integration.account.gov.uk/.well-known/did.json](https://identity.integration.account.gov.uk/.well-known/did.json)
 * production – [https://identity.account.gov.uk/.well-known/did.json](https://identity.account.gov.uk/.well-known/did.json)
 
-To retrieve the DID document, you should make HTTP request to the appropriate endpoint, for example:
+To retrieve the DID document, you should make a HTTP request to the appropriate endpoint, for example:
 
 ```
 GET /.well-known/did.json HTTP/1.1
 Host: identity.integration.account.gov.uk
 User-Agent: my-platform/version (https://my-service-url.gov.uk)
 ```
-<%= warning_text('GOV.UK One Login requires the <a href="/before-integrating/set-user-agent-header/"><code>User-Agent</code> header</a> to be populated. If it absent or empty, your service will receive a 403 error') %>
+<%= warning_text('GOV.UK One Login requires the <a href="/before-integrating/set-user-agent-header/"><code>User-Agent</code> header</a> to be populated. If it is absent or empty, your service will receive a `403 (Forbidden)` HTTP status code.') %>
 
 GOV.UK One Login will always publish the DID documents on the URLs above and will never change the publication URLs without notifying you. 
 
 Follow the steps below to use the `kid` to determine which public key from the DID document was used to sign the JWT. This is important because GOV.UK One Login may have rotated its public keys and using the incorrect key will break your integration. 
 
-1. Split the `kid` from the JWT header into two parts: the controller ID (before the `#`) and the unique key ID (after the `#`). For example, in the `kid` `did:web:identity.integration.account.gov.uk#c9f8da1c87525bb41653583c2d05274e85805ab7d0abc58376c7128129daa936`, the controller ID is `did:web:identity.integration.account.gov.uk` and the unique key ID is `c9f8da1c87525bb41653583c2d05274e85805ab7d0abc58376c7128129daa936`.
+1. Split the `kid` from the JWT header into two parts: 
+  * the `controller` ID (before the `#`)
+  * the unique key ID (after the `#`). For example, in the `kid` `did:web:identity.integration.account.gov.uk#c9f8da1c87525bb41653583c2d05274e85805ab7d0abc58376c7128129daa936`, the controller ID is `did:web:identity.integration.account.gov.uk` and the unique key ID is `c9f8da1c87525bb41653583c2d05274e85805ab7d0abc58376c7128129daa936`
 1. Download the DID document from the DID endpoint you need: 
-  * Integration: [https://identity.integration.account.gov.uk/.well-known/did.json](https://identity.integration.account.gov.uk/.well-known/did.json) 
-  * Production: [https://identity.account.gov.uk/.well-known/did.json](https://identity.account.gov.uk/.well-known/did.json).
-1. Make sure the controller ID matches the `id` in the DID document.
+  * integration: [https://identity.integration.account.gov.uk/.well-known/did.json](https://identity.integration.account.gov.uk/.well-known/did.json) 
+  * production: [https://identity.account.gov.uk/.well-known/did.json](https://identity.account.gov.uk/.well-known/did.json)
+1. Make sure the `controller` ID matches the `id` in the DID document.
 1. Find the object in `assertionMethods` which has an `id` field matching the `kid` from the JWT header. If there are multiple keys in the DID document, GOV.UK One Login is in the process of rotating its keys. If you receive a `kid` that does not correspond to an `id` in the DID document, do not trust the identity and contact GOV.UK One Login to report an incident.
 1. Use the `publicKeyJwk` object of the key you want to use to verify the signature. 
 
@@ -236,7 +238,7 @@ You should cache the returned DID document and re-use it instead of downloading 
 
 The `Cache-Control` HTTP header field in the DID endpoint contains a suggested caching period. This caching period is how long GOV.UK One Login expects the DID document to remain valid. 
 
-For example, a header with the value `Cache-Control: max-age=3600, private…` would mean you cache the DID document for the `max-age` of 1 hour (3600 seconds = 1 hour). `private` stops any other caches or proxies from caching the DID document.
+For example, a header with the value `Cache-Control: max-age=3600, private…` would mean you cache the DID document for the `max-age` of 1 hour (`3600` seconds = 1 hour). `private` stops any other caches or proxies from caching the DID document.
 
 Occasionally, you may not be able to refresh the cache from GOV.UK One Login’s URL, for example if there’s a temporary outage. If this happens, you should continue to trust the cached version until you’re able to refresh the cache.
 
@@ -249,7 +251,7 @@ GOV.UK One Login will rotate its keys for the:
 * integration environment - weekly from 29 October 2024 so you can test your integration
 * production environment - every 6 months starting from 30 January 2025
 
-GOV.UK One Login may need to rotate keys at short notice, for example if a key is compromised. New public keys will appear in the `assertionMethod` array of the DID document before any rotation.
+GOV.UK One Login may need to rotate keys at short notice, for example if a key is compromised. New public keys will appear in the `assertionMethod` object of the DID document before any rotation.
 
 Use the `Cache-Control` headers and [guidance on caching the DID document](/integrate-with-integration-environment/prove-users-identity/#cache-the-did-document) to regularly poll the DID endpoint to detect new versions and make sure you’re using the latest key.
 
@@ -273,7 +275,7 @@ The identity credential contains the following claims as properties of `credenti
 
 | Property    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 |-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`      | A list showing the name proven by GOV.UK One Login. At the moment the list will only contain the user’s current name. In the future this list will reflect name changes by using the `validFrom` and `validUntil` metadata properties. If `validUntil` is `null` or not present, that name is your user’s current name. If `validFrom` is `null` or not present, your user may have used that name from birth. <br><br> Each name is presented as an array in the `nameParts` property. Each part of the name is either a `GivenName` or a `FamilyName`, identified in its `type` property. The `value` property could be any text string. GOV.UK One Login cannot specify a maximum length or restrictions on what characters may appear. <br><br> `GivenName` or `FamilyName` can appear in any order within the list. The order of names may depend on either your user’s preferences or the order they appear on documents used to prove your user’s identity. |
+| `name`      | A list showing the name proven by GOV.UK One Login. At the moment the list will only contain the user’s current name. In the future this list will reflect name changes by using the `validFrom` and `validUntil` metadata properties. If `validUntil` is `null` or not present, that name is your user’s current name. If `validFrom` is `null` or not present, your user may have used that name from birth. <br><br> Each name is presented as an object in the `nameParts` property. Each part of the name is either a `GivenName` or a `FamilyName`, identified in its `type` property. The `value` property could be any text string. GOV.UK One Login cannot specify a maximum length or restrictions on what characters may appear. <br><br> `GivenName` or `FamilyName` can appear in any order within the list. The order of names may depend on either your user’s preferences or the order they appear on documents used to prove your user’s identity. |
 | `birthDate` | A list of [ISO 8601 date][external.ISO-8601-date] strings. There may be multiple dates of birth, for example, if there’s evidence an incorrect date of birth was previously recorded for your user. The date of birth GOV.UK One Login has highest confidence in will be the first item in the list.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ## Understand your user’s address claim
@@ -297,7 +299,7 @@ Each JSON object in the list may contain any of the following properties:
 | `validFrom`                      | [ISO 8601 date][external.ISO-8601-date] strings representing the date your user moved into the address.<br></br> <br></br>GOV.UK One Login only collects the year from the user. The month and day will always default to `01`. For example, if the user moved in 2024, the `validFrom` date would be `2024-01-01`.                                                         |
 | `validUntil`                     | [ISO 8601 date][external.ISO-8601-date] strings representing the date your user moved from the address. This property is not included for your user’s current address.<br></br> <br></br>GOV.UK One Login only collects the year from the user. The month and day will always default to `01`. For example, if the user moved in 2024, the `validUntil` date would be `2024-01-01`.  <br></br> <br></br>  If a user tells us an address is their current address, then `validUntil` will not be returned. |
 | `uprn`                           | GOV.UK One Login will provide a [Unique Property Reference Number (UPRN)](https://www.gov.uk/government/publications/open-standards-for-government/identifying-property-and-street-information) for UK addresses only. <br></br> <br></br> If a user has edited their address, the UPRN field will automatically clear.                                                    |
-| `organisationName`               | Maps to `ORGANISATION_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                  |
+| <nobr>`organisationName`</nobr>  | Maps to `ORGANISATION_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                  |
 | `departmentName`                 | Maps to `DEPARTMENT_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                    |
 | `subBuildingName`                | Maps to `SUB_BUILDING_NAME` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].<br><br>`subBuildingName` may accompany either `buildingName` or `buildingNumber`.                                                                                                |
 | `buildingNumber`                 | Maps to `BUILDING_NUMBER` in the [Postcode Address File][external.postcode-file] and [Ordnance Survey Places API][external.os-places-api].                                                                                                                                                                                    |
@@ -360,23 +362,23 @@ A sample international address returned would look similar to this:
 The <code>https://vocab.account.gov.uk/v1/passport</code> claim contains the details of your user’s passport, if they
 submitted one when proving their identity.
 
-| Property         | Definition                                                                                                                                                                                                                                                                                              |
-|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `documentNumber` | The passport number.                                                                                                                                                                                                                                                                                    |
-| `icaoIssuerCode` | An identifier for the state or organisation that issued the passport. This is defined by the International Civil Aviation Organization (ICAO) standard [9303 Machine Readable Travel Documents](https://www.icao.int/publications/Documents/9303_p3_cons_en.pdf). The identifier is up to 3 characters. |
-| `expiryDate`     | The expiration date as an [ISO 8601 date][external.ISO-8601-date] string.                                                                                                                                                                                                                               |
+| Property                      | Definition                                                                                                                                                                                                                                                                                              |
+|-------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <nobr>`documentNumber`</nobr> | The passport number.                                                                                                                                                                                                                                                                                    |
+| <nobr>`icaoIssuerCode`</nobr> | An identifier for the state or organisation that issued the passport. This is defined by the International Civil Aviation Organization (ICAO) standard [9303 Machine Readable Travel Documents](https://www.icao.int/publications/Documents/9303_p3_cons_en.pdf). The identifier is up to 3 characters. |
+| `expiryDate`                  | The expiration date as an [ISO 8601 date][external.ISO-8601-date] string.                                                                                                                                                                                                                               |
 
 
 ## Understand your user's driving licence claim
 The <code>https://vocab.account.gov.uk/v1/drivingPermit</code> claim contains the details of your user’s driving
 licence, if they submitted one when proving their identity.
 
-| Property         | Definition                                                                                                                                                                                                                            |
-|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `expiryDate`     | The expiry date of the driving licence as an [ISO 8601 date][external.ISO-8601-date] string.                                                                                                                                          |
-| `issueNumber`    | The last 2 characters of the driving licence number – these show how many times the user has received a new driving licence. You'll only receive this property for licences issued by the Driver and Vehicle Licensing Agency (DVLA). |
-| `issuedBy`       | The organisation that issued the driving licence.                                                                                                                                                                                     |
-| `personalNumber` | The driver number of the driving licence. This is a string unique to the user.                                                                                                                                                        |
+| Property                    | Definition                                                                                                                                                                                                                            |
+|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `expiryDate`                | The expiry date of the driving licence as an [ISO 8601 date][external.ISO-8601-date] string.                                                                                                                                          |
+| <nobr>`issueNumber`</nobr>  | The last 2 characters of the driving licence number – these show how many times the user has received a new driving licence. You'll only receive this property for licences issued by the Driver and Vehicle Licensing Agency (DVLA). |
+| `issuedBy`                  | The organisation that issued the driving licence.                                                                                                                                                                                     |
+| `personalNumber`            | The driver number of the driving licence. This is a string unique to the user.                                                                                                                                                        |
 
 ## Understand your user’s return code claim
 
@@ -393,10 +395,12 @@ When you use this claim and there’s an issue with the evidence your user provi
 
 1. You’ll receive an authorisation code in the `redirect_uri` instead of an `access_denied` error.
 1. Use this authorisation code to get an ID token and an access token.
-1. When you make a request to the `/userinfo` endpoint using the access token, the response may contain only authentication data, and an array of one or more `returnCode` values, which will each be a letter.
+1. When you make a request to the `/userinfo` endpoint using the access token, the response may contain only authentication data, and an object of one or more `returnCode` values, which will each be a letter.
 1. For security reasons, you’ll need to contact GOV.UK One Login on [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) for more detailed information on what issue each `returnCode` value stands for.  
 
-Currently, there are 9 `returnCode` values which GOV.UK One Login could return if there’s an issue with the evidence your user provided to prove their identity. You may receive a return code even if a user’s identity verification is successful, for example, if a user is a politically exposed person. Contact GOV.UK One Login on [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) for more detailed information on what each return code means.  
+Currently, there are 9 `returnCode` values which GOV.UK One Login could return if there’s an issue with the evidence your user provided to prove their identity. 
+
+You may receive a return code even if a user’s identity verification is successful, for example, if a user is a politically exposed person. Contact GOV.UK One Login on [govuk-one-login@digital.cabinet-office.gov.uk](mailto:govuk-one-login@digital.cabinet-office.gov.uk) for more detailed information on what each return code means.  
 
 | Property         | Definition                                                                                                                                                                                                                            |
 |------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
