@@ -228,7 +228,7 @@ If your `GET` request to the `/authorize` endpoint produces a `Request is missin
 
 You should [check you have included the correct parameters][integrate.replace-example-message], especially the `client_id`, `redirect_uri`, `response_type`, and `scope` parameters.
 
-#### 302 (Found ) 
+#### 302 (Found) 
 To understand more about what the error is, you can look in the response. Depending on the type of error you receive, the response may contain an `error` and an `error_description` which will provide you with information.
 
 If there’s an error in your request, you’ll be redirected to the URI you specified for `redirect_uri` in the authorisation URL. You’ll be able to see the error description tagged onto the end of the authorisation URL, for example:
