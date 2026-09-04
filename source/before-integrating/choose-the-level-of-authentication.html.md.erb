@@ -1,7 +1,7 @@
 ---
 title: Choose the level of authentication for your service
 weight: 2.5
-last_reviewed_on: 2022-11-11
+last_reviewed_on: 2026-09--4
 review_in: 6 months
 ---
 
@@ -15,8 +15,8 @@ GOV.UK One Login currently supports the following authentication levels, also kn
 
 | Levels of protection       | Vector value                | Description of the levels of protection                                                                                                                                                                                                                                                                                                                                                                                                                |
 |----------------------------|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Low level of protection    | `Cl` (credential low)       | This vector requires your users to have a username and password combination. <br>You should only use this option if your service does not hold personal information about your users, for example if your service is about booking in an MOT. <br>All services use `Cl.Cm` as the authentication level by default, unless you change your authentication level to `Cl`.<br><br>If you request `Cl`, you will not be able to request identity attributes.     |
-| Medium level of protection | `Cl.Cm` (credential medium) | This vector requires your users to have a username and password combination, as well as using two-factor authentication (2FA). GOV.UK One Login currently supports 2FA either through a one-time password sent through SMS, or an authenticator app.<br>All services use `Cl.Cm` as the authentication level by default, unless you change your authentication level to `Cl`. <br><br>If you need to request identity attributes, you must request `Cl.Cm`.  |
+| Low level of protection    | `Cl` (credential low)       | This vector requires your users to have a username and password combination. <br><br>You should only use this option if your service does not hold personal information about your users, for example if your service is about booking in an MOT. <br><br>All services use `Cl.Cm` as the authentication level by default, unless you change your authentication level to `Cl`.<br><br>If you request `Cl`, you will not be able to request identity attributes.     |
+| Medium level of protection | `Cl.Cm` (credential medium) | This vector requires your users to have a username and password combination, as well as using two-factor authentication (2FA). GOV.UK One Login currently supports 2FA either through a one-time password sent through SMS, or an authenticator app. <br><br>All services use `Cl.Cm` as the authentication level by default, unless you change your authentication level to `Cl`. <br><br>If you need to request identity attributes, you must request `Cl.Cm`.  |
 
 You'll include your level of authentication in your request to the `/authorize` endpoint.
 
