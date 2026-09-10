@@ -6,17 +6,8 @@ Description: >
 Parameters:
   VpcStackName:
     Description: >
-      The name of the stack that defines the new spoke VPC (Large size) in which
-      the second set of containers will run.
+      The name of the stack that defines the VPC in which the containers will run.
     Type: String
-
-  # Spoke VPC Parameter Starts Here
-  SpokeVpcStackName:
-    Description: >
-      The name of the stack that defines the Spoke VPC in which the second
-      set of containers will run.
-    Type: String
-  # Spoke VPC Parameter Ends Here
 
   PipelineStackName:
     Description: "The name of the pipeline stack that deploys this application stack"
