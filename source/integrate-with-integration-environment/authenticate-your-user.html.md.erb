@@ -1,7 +1,7 @@
 ---
 title: Authenticate your user
 weight: 5.5
-last_reviewed_on: 2026-08-19
+last_reviewed_on: 2026-09-18
 review_in: 6 months
 ---
 
@@ -554,7 +554,7 @@ If you included a [level of identity confidence][integrate.choose-level-of-confi
 
 | Claim returned | Description  |
 |----------------|--------------|
-| `sub` | The subject identifier (`sub`) is the unique ID for a user. This will not change unless your user deletes their GOV.UK One Login and sets it up again. <br><br> Do not use the `sub` as the primary identifier for your user. Instead, generate your own unique value for your user within your service and map this against the GOV.UK One Login `sub`.  <br><br> Mapping the `sub` makes account recovery easier. For example, if a user deletes their GOV.UK One Login, you can re-map the user’s new `sub` to your service without creating a new primary identifier for your user. |
+| `sub` | The subject identifier (`sub`) is the unique ID for a user. This will not change unless your user's GOV.UK One Login is deleted and they set it up again. <br><br> Do not use the `sub` as the primary identifier for your user. Instead, generate your own unique value for your user within your service and map this against the GOV.UK One Login `sub`.  <br><br> Mapping the `sub` makes account recovery easier. For example, you can re-map the user’s new `sub` to your service without creating a new primary identifier for your user if: <br><ul><li>they delete their GOV.UK One Login</li> <li>their GOV.UK One Login is deleted due to inactivity (5 years)</li> |
 | `email` | The email address your user entered when they registered their GOV.UK One Login. <br><br> Do not:<br><ul><li> use `email` as the primary identifier for your user (the `email` claim can change or a user can lose access to it which makes it unreliable as a unique identifier)  </li><li>ask your user to create a GOV.UK One Login with a specific email address, for example, a university email – if you need this, you’ll need to build additional functionality to verify it yourself </li><li>ask your user to change the email address they use for their GOV.UK One Login |
 | `email_verified`  | This means the email was verified using a one-time code when the user created their account. This is always `true`. |
 | `phone_number` | This is the phone number your user chose as their current preferred method for receiving two-factor authentication codes. This will only be present when the user's preference is to receive two-factor authentication codes by phone. <br> </br> <br> </br> GOV.UK One Login returns this in the E.164 format with no spaces for both UK and international phone numbers: `+{country-code}Number`.  |
