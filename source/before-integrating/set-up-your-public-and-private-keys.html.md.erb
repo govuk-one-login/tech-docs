@@ -1,7 +1,7 @@
 ---
 title: Set up your public and private keys
 weight: 5.01
-last_reviewed_on: 2026-04-23
+last_reviewed_on: 2026-09-04
 review_in: 6 months
 ---
 
@@ -22,7 +22,7 @@ GOV.UK One Login will only accept public keys generated using the RSA public key
 
 You can create a key pair using [OpenSSL](https://openssl-library.org/).
 
-Install OpenSSL, and create a key pair by running this command in your command line:
+Install OpenSSL, and create a key pair by running this command in your terminal:
 
 ```
 openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
@@ -31,32 +31,32 @@ openssl rsa -pubout -in private_key.pem -out public_key.pem
 ```
 The `openssl genpkey` command generates a private key or key pair using [OpenSSL](https://openssl-library.org/).
 
-|Parameter and value|Description|
+| Parameter and value | Description |
 |-----|-----|
 |`-algorithm RSA`|Sets RSA as the public key algorithm used to create the key pair.|
-|`-out private_key.pem`|Saves the contents of the private key to a file named private_key.pem.|
-|`-pkeyopt rsa_keygen_bits:2048`| Sets the public key to 2048 bits.|
+|`-out private_key.pem`|Saves the contents of the private key to a file named `private_key.pem`.|
+|`-pkeyopt rsa_keygen_bits:2048`| Sets the public key to `2048` bits.|
 
 The `openssl rsa` command processes RSA keys to print the contents of the keys to a file.
 
-|Parameter and value|Description|
+| Parameter and value | Description |
 |-----|-----|
 |`-pubout`| Creates a public key from a given private key file.|
 |`-in private_key.pem`| Uses the specified private key file to create a corresponding public key.|
-|`-out public_key.pem`| Saves the contents of the public key created to a file named public_key.pem.|
+|`-out public_key.pem`| Saves the contents of the public key created to a file named `public_key.pem`.|
 
 You have now created your key pair. They will appear as 2 separate files on your machine:
 
 * `public_key.pem` - this is your public key, which you will need to share with GOV.UK One Login
-* `private_key.pem` - this is your private key which you should store securely and not share
+* `private_key.pem` - this is your private key, which you should store securely and not share
 
 <%= warning_text('Once you’ve created your private key, you should store the key in a secure location, such as a file vault. You should not share your private key. You should also create a new key pair for each environment you use.') %>
 
 ## Share your public keys with GOV.UK One Login
 
-You need to share your public keys with GOV.UK One Login to use both the integration and production environment. You can share your public keys using one of the following methods:
+You need to share your public keys with GOV.UK One Login to use both the integration and production environments. You can share your public keys using one of the following methods:
 
-* [a JSON Web Key Set (JWKS) endpoint][integrate.share-public-keys-JWKS-endpoint] - **strongly recommended**
+* [a JSON Web Key Set (JWKS) endpoint][integrate.share-public-keys-JWKS-endpoint] - strongly recommended
 
 * [a fixed public key][integrate.share-your-fixed-public-key] - not recommended for production
 
@@ -72,7 +72,7 @@ We recommend using a JWKS endpoint to share your public keys. To make sure your 
 * use the HTTPS scheme
 * be publicly accessible
 * respond to a `HTTP GET` request
-* return a `HTTP 200 (OK)` with a JWKS within 5 seconds of a `GET` request
+* return a `HTTP 200 (OK)` status code with a JWKS within 5 seconds of a `GET` request
 * return one or more RSA signing keys in JWKS format
 * return a unique Key ID (`kid`) parameter in each (`JWKS`) entry
 
@@ -91,7 +91,7 @@ Your JWKS endpoint should give a JSON response similar to the following example:
   ]
 }
 ```
-<%= warning_text('If you are sharing your public keys using a JWKS endpoint, you must provide a kid in any request JWTs, or assertion JWTs, that you provide to GOV.UK One Login.') %>
+<%= warning_text('If you are sharing your public keys using a JWKS endpoint, you must provide a <code>kid</code> in any request or assertion JWTs that you provide to GOV.UK One Login.') %>
 
 ### Change how you share your public keys
 
@@ -100,9 +100,9 @@ If your service currently shares static keys, you can change to sharing keys thr
 1. Begin in your test environment. 
 2. Deploy your publicly available JWKS endpoint to return your test environment public keys. These must include a `kid`.
 3. Update your code to include a `kid` in the JWT headers for both the:
-  * request JWT you provide in the `GET /authorize` request. See [secure your authorisation request][integrate.secure-authorisation-request] if you're using a JWT-secured OAuth 2.0 authorisation request (JAR).
-  * client_assertion JWT your provide in the `GET /token` request. See [create a JWT assertion][integrate.create-a-jwt-assertion] for more details on the process. 
-4. Deploy the updated code for your service to your test environment. GOV.UK One Login will ignore the `kid` in the header, and will continue to use the `STATIC` key, until you complete the process by updating your configuration.
+  * request JWT you provide in the `GET /authorize` request. See [secure your authorisation request][integrate.secure-authorisation-request] if you're using a JWT-secured OAuth 2.0 authorisation request (JAR)
+  * `client_assertion` JWT your provide in the `GET /token` request. See [create a JWT assertion][integrate.create-a-jwt-assertion] for more details on the process
+4. Deploy the updated code for your service to your test environment. GOV.UK One Login will ignore the `kid` in the header and continue to use the `STATIC` key until you complete the process by updating your configuration.
 
 Use the [GOV.UK One Login admin tool](https://admin.sign-in.service.gov.uk/register/enter-email-address) to update the configuration for your test service. This will also specify the use of your exposed test environment JWKS endpoint. 
 
@@ -118,7 +118,7 @@ Use the [GOV.UK One Login admin tool](https://admin.sign-in.service.gov.uk/regis
 Make the following changes to your production environment:
 
 1. Deploy a publicly available production JWKS endpoint to return your production public keys. These must include a `kid`. Also include an entry for the currently configured public keys to avoid downtime when changing to using keys from the JWKS endpoint. 
-2. Deploy the updated code for your service to production. GOV.UK One Login will ignore the `kid` in the header and will continue to use the `STATIC` key until the configuration has been updated. 
+2. Deploy the updated code for your service to production. GOV.UK One Login will ignore the `kid` in the header and continue to use the `STATIC` key until the configuration has been updated. 
 3. Create a request through the [Live Service Hub](https://onelogingovuk.service-now.com/csm?id=csm_sc_cat_item&sys_id=83902cb51b4822900a549978b04bcbed) to update your production configuration.<br>
    Make sure you tell us:<br>
    * your client ID
@@ -146,4 +146,3 @@ You can configure GOV.UK One Login to use a fixed public key to validate your JW
 7. Select **Confirm**.
 
 <%= partial "partials/links" %>
-
