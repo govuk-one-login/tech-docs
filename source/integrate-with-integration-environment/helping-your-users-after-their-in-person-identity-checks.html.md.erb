@@ -1,15 +1,15 @@
 ---
 title: Helping your users after their in person identity checks
 weight: 5.8
-last_reviewed_on: 2025-09-04
+last_reviewed_on: 2026-08-27
 review_in: 6 months
 ---
 
 # Helping your users after their in person identity checks
 
-<%= warning_text('If you need identity verification, we strongly recommended that you create a landing page / <code>LandingPageUrl</code> to support your users after their in-person identity checks. This is also known as the face-to-face journey. There is further <a href="https://github.com/govuk-one-login/onboarding-examples/tree/main/tools/f2f-test">guidance on creating and testing a landing page</a>. If you do not provide a landing page, your user will not be returned to your service after they have completed their in-person identity checks. If your service is authentication-only, you do not need to do this.') %>
+<%= warning_text('If you need identity verification, we strongly recommended that you create a landing page / <code>LandingPageUrl</code> to support your users after their in-person identity checks. This is also known as the face-to-face journey. There is further <a href="https://github.com/govuk-one-login/onboarding-examples/tree/main/tools/f2f-test">guidance on creating and testing a landing page</a>. <br><br> If you do not provide a landing page, your user will not be returned to your service after they have completed their in-person identity checks. If your service is authentication-only, you do not need to do this.') %>
 
- In some scenarios, your user may have to prove their identity ‘face-to-face’, for example after using the Post Office or if they have a European driving licence.
+ In some scenarios, your user may have to prove their identity ‘face-to-face’, for example after using the Post Office or if they have a European driving licence. The process is:
     
  1. Trained identity staff process the user’s documents and take their photo to compare the user’s claimed identity to their documentation. 
  1. The identity staff do not tell the user the result of their identity check immediately. Instead, your user will receive an email with the subject **Sign in to view the result of your identity check**, which can take up to 24 hours to arrive.
@@ -29,7 +29,7 @@ This landing page will:
 * help your user to see the status of their recent identity check 
 * continue your user's sign-up process for your service 
     
-Before you start, you must have followed the recommendation to [split out authentication and identity requests](/integrate-with-integration-environment/authenticate-your-user/#make-a-request-for-authentication-and-identity). 
+Before you start, you must have [split out authentication and identity requests](/integrate-with-integration-environment/authenticate-your-user/#make-a-request-for-authentication-and-identity). 
     
 We recommend your user returns to the point where they left to do the in-person check rather than starting over again. You can do this if you stored the user's `sub` when the user initially authenticated with your service.
     
@@ -43,7 +43,7 @@ We recommend your user returns to the point where they left to do the in-person 
 1. Your service makes a [token request](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-token-endpoint) to the `/token` endpoint.
 1. Your service receives an [ID token and access token](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#responses-from-the-token-endpoint) in the response.
 1. Your service makes a request to the `/userinfo` endpoint to retrieve user information.
-1. Your service receives a response containing the user attributes `sub`, `email` and `phone`.
+1. Your service receives a response containing the user attributes `sub`, `email`, and `phone`.
 1. Your service confirms that your user is on an in-person return journey (you'll have stored that this user is on an in-person return journey in step 2). 
 1. This is where the in-person journey differs from a normal GOV.UK One Login flow. Your service shows the user the 'in-person check return screen' which prompts the user to continue their journey for retrieving the result of their identity check. This will be the first page your service shows the user. 
 1. Your service makes a request for both authentication and identity to the `/authorize` endpoint with the vector of trust `Cl.Cm.P2` (medium authentication and medium level of identity confidence). There’s further [guidance on making an authentication and identity request](/integrate-with-integration-environment/authenticate-your-user/#make-a-request-for-authentication-and-identity). 
@@ -51,8 +51,8 @@ We recommend your user returns to the point where they left to do the in-person 
 1. GOV.UK One Login redirects your user to your `redirect_uri`.
 Your service makes a [token request](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-token-endpoint) to the `/token` endpoint.
 1. Your service receives an [ID token and access token](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#responses-from-the-token-endpoint) in the response.
-1. Your service makes a request to the `/userinfo` endpoint to retrieve user information.
-1. Your service receives a response containing user attributes (`sub`, `email`, `phone` and whichever claims your service requested, for example `coreIdentityJWT`) and the results of the identity check.
+1. Your service makes a request to the `/userinfo` endpoint to get user information.
+1. Your service receives a response containing user attributes (`sub`, `email`, `phone`, and whichever claims your service requested, for example `coreIdentityJWT`) and the results of the identity check.
 1. Your service returns your user to where they started their original identity check. 
     
     
