@@ -83,18 +83,18 @@ There are also [attributes configurable only by GOV.UK One Login](/before-integr
 
 | Name                         | Field                        | Configuration method                |
 | ---------------------------- | ---------------------------- | ----------------------------------- |
-| Channel                      | `Channel`                  | Not applicable - internal use only. |
-| Client type                  | `ClientType`               | Not applicable - internal use only. |
-| Cookie consent shared        | `CookieConsentShared`      | Not applicable - internal use only. |
-| Consent required             | `ConsentRequired`          | Not applicable - internal use only. |
-| Is active                    | `IsActive`                 | Not applicable - internal use only. |
-| Is deprecated                | `IsDeprecated`             | Not applicable - internal use only. |
-| One Login service            | `OneLoginService`          | Not applicable - internal use only. |
-| Service type                 | `ServiceType`              | Not applicable - internal use only. |
-| Smoke test                   | `SmokeTest`                | Not applicable - internal use only. |
-| Subject type                 | `SubjectType`              | Not applicable - internal use only. |
-| Test client                  | `TestClient`               | Not applicable - internal use only. |
-| Test client email allow list | `TestClientEmailAllowlist` | Not applicable - internal use only. |
+| [Channel](#channel)                      | `Channel`                  | Not applicable - internal use only. |
+| [Client type](#client-type)                  | `ClientType`               | Not applicable - internal use only. |
+| [Cookie consent shared](#cookie-consent-shared)        | `CookieConsentShared`      | Not applicable - internal use only. |
+| [Consent required](#consent-required)             | `ConsentRequired`          | Not applicable - internal use only. |
+| [Is active](#is-active)                    | `IsActive`                 | Not applicable - internal use only. |
+| [Is deprecated](#is-deprecated)                | `IsDeprecated`             | Not applicable - internal use only. |
+| [One Login service](#one-login-service)            | `OneLoginService`          | Not applicable - internal use only. |
+| [Service type](#service-type)                 | `ServiceType`              | Not applicable - internal use only. |
+| [Smoke test](#smoke-test)                   | `SmokeTest`                | Not applicable - internal use only. |
+| [Subject type](#subject-type)                 | `SubjectType`              | Not applicable - internal use only. |
+| [Test client](#test-client)                  | `TestClient`               | Not applicable - internal use only. |
+| [Test client email allow list](#) | `TestClientEmailAllowlist` | Not applicable - internal use only. |
 
 ### Backchannel logout URI 
 
@@ -267,6 +267,10 @@ Set this to:
 Whether the service is active or deactivated. 
 
  
+### Is deprecated 
+
+To be filled in.
+
 
 ### JAR validation required 
 
@@ -383,8 +387,10 @@ Either `STATIC` or `JWKS`.
 Only required if the `TokenAuthenticationMethod` is `private_key_jwt` or you're sending a signed authorisation request (JAR). 
 
  
+### Rate limit
 
- 
+If you want to test a rate limit you can get in touch with GOV.UK One Login to request it being set in integration.
+
 
 ### Redirect URLs 
 
@@ -461,6 +467,10 @@ The subject type is always `pairwise`. You cannot change this value.
 This is always `false`. You cannot change this value.  
 
  
+### Test client email allow list
+
+To fill in. 
+
 
 ### Token authentication method 
 
