@@ -71,7 +71,7 @@ There are also [attributes configurable only by GOV.UK One Login](/before-integr
 | [Post-logout URLs](#post-logout-urls)                | `PostLogoutRedirectUrls`        | GOV.UK One Login admin tool              | The set of URLs you may request your user is redirected to at the end of their logout journey.                                                                                                                                                                                                            |
 | [Public key](#public-key)                      | `PublicKey`                     | GOV.UK One Login admin tool              | Needed if using `private_key_jwt` or a signed authorisation request (JAR).                                                                                                                                                                                                                              |
 | [Public key source](#public-key-source)               | `PublicKeySource`               | GOV.UK One Login admin tool              | Either `STATIC` or `JWKS`. Only required if the `TokenAuthenticationMethod` is `private_key_jwt` or you're sending a signed authorisation request (JAR).                                                                                                                                        |
-| Rate limit                     | `RateLimit`                     | By request - contact GOV.UK One Login    | The number of authorise requests per minute allowed before GOV.UK One Login will start rejecting requests.                                                                                                                                                                                                |
+| [Rate limit](#rate-limit)                     | `RateLimit`                     | By request - contact GOV.UK One Login    | The number of authorise requests per minute allowed before GOV.UK One Login will start rejecting requests.                                                                                                                                                                                                |
 | [Redirect URLs](#redirect-urls)                   | `RedirectUrls`                  | GOV.UK One Login admin tool              | The URL GOV.UK One Login returns your user to after they complete their journey.                                                                                                                                                                                                                          |
 | [Scopes](#scopes)                          | `Scopes`                        | GOV.UK One Login admin tool              | The scopes your service may request. You must include `openid`.                                                                                                                                                                                                                                         |
 | [Sector identifier URI](#sector-identifier-uri)           | `SectorIdentifierUri`           | GOV.UK One Login admin tool              | Your service's sector identifier.  <br>You must not change the sector identifier once your service has started to sign up or migrate users. Doing this will change the subject IDs GOV.UK One Login creates for each individual user, which may mean you have to rebind your users. Proceed with caution.   |
@@ -86,7 +86,6 @@ There are also [attributes configurable only by GOV.UK One Login](/before-integr
 | [Channel](#channel)                      | `Channel`                  | Not applicable - internal use only. |
 | [Client type](#client-type)                  | `ClientType`               | Not applicable - internal use only. |
 | [Cookie consent shared](#cookie-consent-shared)        | `CookieConsentShared`      | Not applicable - internal use only. |
-| [Consent required](#consent-required)             | `ConsentRequired`          | Not applicable - internal use only. |
 | [Is active](#is-active)                    | `IsActive`                 | Not applicable - internal use only. |
 | [Is deprecated](#is-deprecated)                | `IsDeprecated`             | Not applicable - internal use only. |
 | [One Login service](#one-login-service)            | `OneLoginService`          | Not applicable - internal use only. |
@@ -228,12 +227,6 @@ GOV.UK One Login uses these to notify your team about service changes or inciden
 
 Cookie consent shared is always `false`. You cannot change this value. 
 
-
-
-### Consent required
-
-To be filled in. 
- 
 
 
 ### Contacts 
