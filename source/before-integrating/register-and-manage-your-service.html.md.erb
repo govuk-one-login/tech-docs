@@ -7,19 +7,12 @@ review_in: 6 months
 
 # Register and manage your service
 
-You get a unique client ID when you register your service. You'll need this client ID to integrate each of your services with GOV.UK One Login. 
-
-You should configure a client ID for each environment you have. For example, if you have staging, user acceptance testing, integration and production you should configure 4 client IDs. There's further [guidance on creating a configuration for each service you’re integrating][integrate.client-id].
-
 Registering should take 5 minutes to complete. To register your service to use GOV.UK One Login, you'll need:
 
 * a government email address
 * a mobile phone
 
 If you do not have a government email address or mobile phone, you should find a civil servant in your team who can register the service on your behalf. 
-
-Whoever registers the service has the entry tied to their email address. You cannot reassign ownership if someone leaves or add multiple email addresses to a particular client. If you need access after someone has left, you can create an additional client using a different email address and transfer the configuration settings to the new account. 
-
 
 1. Go to the [Get started with GOV.UK One Login][external.get-started-gov-uk-one-login] page and select **Create admin tool account**. 
 
@@ -29,7 +22,6 @@ Whoever registers the service has the entry tied to their email address. You can
 
 1. Fill in your client configuration details using this list: 
 
- 
 
 * [Client ID](/before-integrating/create-individual-configurations-for-each-service/#client-id)
 * [Client name (Service name)](/before-integrating/create-individual-configurations-for-each-service/#client-name) 
@@ -45,6 +37,16 @@ Whoever registers the service has the entry tied to their email address. You can
 * [Sector identifier URI](/before-integrating/create-individual-configurations-for-each-service/#sector-identifier-uri) 
 * [Token authentication method](/before-integrating/create-individual-configurations-for-each-service/#token-authentication-method)
 
- 
+### Configuring your client ID
+
+You get a unique client ID when you register your service. You'll need this client ID to integrate each of your services with GOV.UK One Login. 
+
+You should configure a client ID for each environment you have. For example, if you have staging, user acceptance testing, integration and production you should configure 4 client IDs. There's further [guidance on creating a configuration for each service you’re integrating][integrate.client-id].
+
+When you create a client configuration, it is tied to the GOV.UK admin tool account of the user who created it. You cannot change the configuration if the owner is not available.
+
+It is currently not possible to assign or transfer the ownership of the client configuration to another GOV.UK admin tool user's account. In this situation, a different admin tool user should create an additional client configuration and copy any required settings from the original configuration.
+
+The new configuration will have a new client ID. You'll need to update your services to the new client ID.
 
 <%= partial "partials/links" %>
