@@ -222,6 +222,11 @@ If your request included the `state` parameter, the URI will also include this p
 
 You must check the HTTP status code from the `/authorize` request.
 
+#### 500 (Internal Server Error)
+
+If your `GET` request to the `/authorize` endpoint produces a `500 (Internal Server Error)` HTTP status code an unexpected error scenario has occurred.
+
+
 #### 400 (Bad Request)
 
 If your `GET` request to the `/authorize` endpoint produces a `Request is missing parameters` or `Invalid request` error with a `400 (Bad Request)` HTTP status code, it might be because the parameters are not included correctly.
