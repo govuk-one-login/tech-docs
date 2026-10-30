@@ -76,9 +76,9 @@ We recommend using a JWKS endpoint to share your public keys. To make sure your 
 * return one or more RSA signing keys in JWKS format
 * return a unique Key ID (`kid`) parameter in each (`JWKS`) entry
  
-If your JWKS endpoint is not publicly accessible, GOV.UK One Login will not be able to retrieve your public keys and validate your JWTs and will return and error response to your `/authorize` and / or `/token` requests.
+If your JWKS endpoint is not publicly accessible, GOV.UK One Login will not be able to retrieve your public keys and validate your JWTs and will return an error response to your `/authorize` and / or `/token` requests.
 
-<%= warning_text('GOV.UK One Login cannot provide IP addresses that can be added to a whitelist controlling access to your JWKS endpoint.') %>
+<%= warning_text('GOV.UK One Login uses dynamically allocated IP addresses.  This means that it cannot provide IP addresses that can be added to a whitelist controlling access to your JWKS endpoint.') %>
 
 Your JWKS endpoint should give a JSON response similar to the following example: 
 
