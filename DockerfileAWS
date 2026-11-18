@@ -1,4 +1,4 @@
-FROM nginx:mainline-alpine-slim@sha256:f45171d36c76a8b2f5ef97108a3a8a2294248a6578a0a180edc2d78f7d2edc26
+FROM nginx:mainline-alpine-slim@sha256:ec0a9262ad198244bd6f7cdd827a0a16caa1974e4db315394d166c6764e8ad4d
 
 COPY build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
