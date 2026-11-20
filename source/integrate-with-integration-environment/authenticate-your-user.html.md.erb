@@ -590,4 +590,42 @@ Once you’ve authenticated your user, you can continue with [proving your user�
 
 If you’re only authenticating your users, skip the next section and move onto [managing your users' sessions](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/managing-your-users-sessions/#managing-your-users-39-sessions).
 
+## Re-authenticating your users
+
+You can make sure that the GOV.UK One Login user that is currently logged in is still present by making a re-authentication request which forces that user to re-authenticate. You may wish to do this when: 
+
+* users have enabled Single Sign On (SSO) 
+* scenarios which involve entering sensitive data
+
+### Making a re-authentication request
+
+To make a reauthentication request you must make an [authorize request] (https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#make-a-request-to-the-authorize-endpoint)and provide the following additional parameters. 
+
+|Parameter name |	|Required or optional |	|Required value (for re-authentication) |
+|---------------|--------------|-------------------------------------------------|
+|`prompt``| Required|`login`|
+|`id_token_hint`|Required|An ID token previously found for you for the user from GOV.UK One Login.  If the id_token_hint is not provided the user will not be required to re-authenticate and a successful /authorize response will be returned to you.  |
+
+
+
+To make a re-authentication request you must provide the request parameters as a [JWT-secured OAuth 2.0 authorisation request (JAR)](https://docs.sign-in.service.gov.uk/integrate-with-integration-environment/authenticate-your-user/#secure-your-authorisation-request-parameters-with-jwt). If a request JAR is not provided, the user will not be required to re-authenticate and a successful authorize response will be returned to you. GOV.UK One Login will accept an expired id_token 
+
+If a `vtr` is provided in the authorize request e.g a `Cl.Cm.P2`, the authentication portion of this e.g `Cl.Cm` will be used to work out the confidence level that the user is required to authenticate to.  If no `vtr` is provided, the authentication vtr will be taken from the `id_token_hint`. This means that the user will need to authenticate to the same confidence level as when they first authenticated to get the id token provided in the hint.
+
+### Successful re-authentication
+
+If the user successfully re-authenticates as the same user that initially logged in, you will receive an authorize success response. This will contain an authentication code and you should use this to retrieve an [updated id token] (https://docs.sign-in.service.gov.uk/how-gov-uk-one-login-works/#exchange-the-authorisation-code-for-an-id-token-and-an-access-token).
+
+### Unsuccessful re-authentication
+
+If the user does not successfully re-authenticate, they will not be given the option to return to your service and you will not receive a response. 
+If an invalid `id_hint_token` is provided you will receive a 302 error response with an "invalid_request" error and the description will be "Unable to validate id_token_hint". 
+
+### Reauthenticating when entering your service 
+
+If you want to force users to re-authenticate when they first interact with your service, then you will need to check if you already have a GOV.UK One Login token id.  If not, before making the authorize request with the login prompt, you will need to make a standard authorize request and get an id token to use in a subsequent re-authenticate request.
+
+To prevent the user being forced to login during the standard authorize request and then again immediately after, during the reauthenticate authorize request, you need to examine the ``id token` from the standard authorize request to check if the `auth_time` parameter is a time after you made the request.  If it is, then the user has had to either login as part of your initial standard authentication request or has had to enter an additional authentication factor and you may not want them to re-authenticate immediately.
+
+
 <%= partial "partials/links" %>
